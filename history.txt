@@ -1,0 +1,270 @@
+------------------------------------------------------------------------------
+Noret (12.Jan.2006):
+- Added "Inverse check" option for filters
+------------------------------------------------------------------------------
+Noret (10.Nov.2005):
+- Added log reader autodetection
+- Added own log format reader/writer to allow mixed packet versions in the same log
+- Client version is read from server logs (client crash only)
+- Progress bar rewriten
+- Used custom form for error messages
+------------------------------------------------------------------------------
+Noret (1.Nov.2005):
+- Added log reader for 1.7 dol server logs (reads client crashes data)
+------------------------------------------------------------------------------
+Noret (16.Oct.2005):
+- NAnt build file added
+- Selected packets in PacketCode filter can be listed
+- Optimized file loading a bit
+- Last 10 recent opened/saved files are listed (only if v3 text format was used)
+------------------------------------------------------------------------------
+Noret (25.Aug.2005):
+- Changed timestamp to 0:00:00.000, Trydon request
+------------------------------------------------------------------------------
+Noret (19.Aug.2005):
+- PacketPropertyValueFilter use sub string search for string properties, rest still use exact match
+- Reading more data than contained in the packet throws an exception
+- Some memory usage optimizations
+- Properly initialized:
+StoC_0xD6_DisableSkill.cs
+StoC_0x70_PlayerGroupUpdate.cs
+StoC_0x70_PlayerGroupUpdate_169.cs
+StoC_0x70_PlayerGroupUpdate_173.cs
+------------------------------------------------------------------------------
+Noret (9.Jul.2005):
+- Item's model in StoC_0x02_InventoryUpdate_172 is read properly now
+- Packet time is read correct again
+- New:
+Binary log reader and writer; opening 400mb log took 5:30 min
+Text log writer; opening 950mb log (same packets) took 4:49 min
+StoC_0x15_EquipmentUpdate_176.cs
+------------------------------------------------------------------------------
+Duff (29.Jun.2005):
+CtoS_0x6F_KeepItneractRequest.cs
+StoC_0x65_HookpointUpdate.cs
+------------------------------------------------------------------------------
+Noret (7.Jun.2005):
+- RawData shows first byte index for every line in decimal format
+- Exceptions during packet Init() are shown in the log data
+- Properly initialized packets:
+StoC_0x16_VariousUpdate.cs
+StoC_0x16_VariousUpdate_169.cs
+StoC_0x16_VariousUpdate_175.cs
+StoC_0x9E_RegionInitTables.cs
+StoC_0xC4_CustomTextWindow.cs
+StoC_0xC4_CustomTextWindow_175.cs
+StoC_0xFD_CharacterOverview.cs
+StoC_0xFD_CharacterOverview_173.cs
+------------------------------------------------------------------------------
+Noret (22.May.2005):
+- Optimized log initialization
+- Rewriten progress window to solve some odd deadlock
+------------------------------------------------------------------------------
+Noret (19.May.2005):
+- Templates for packet code filter
+- Filter list entries of "Packet property value" filter can be modified
+- On log data update, cursor is positioned on the same packet it was before update
+- Menu item: View => Packet time difference, to show time difference of visible packets
+- New log action: "Show raw data" - shows raw packet data which can be copy/pasted to the CustomPacket.cs script
+------------------------------------------------------------------------------
+Noret (18.May.2005):
+- New filter: "Packet property value"
+- New filter mode "combine filters" - ignores the packet only if all filters ignore it
+- OID filter allows StoC_0x4D_SpellMessage_174 if "include messages" selected
+------------------------------------------------------------------------------
+Noret (18.May.2005):
+*) Code from Tiv:
+CtoS_0x79_SellItem.cs
+CtoS_0xB5_PickupObject.cs
+CtoS_0xC8_PlayerRide.cs
+CtoS_0xD0_CheckLos.cs
+StoC_0x4C_VisualEffect.cs
+StoC_0x4D_SpellMessage_174.cs
+StoC_0x70_PlayerGroupUpdate.cs
+StoC_0x70_PlayerGroupUpdate_169.cs
+StoC_0x70_PlayerGroupUpdate_174.cs
+StoC_0xC8_PlayerRide.cs
+StoC_0xD0_CheckLos.cs
+StoC_0xEE_NpcChangeProperties.cs
+StoC_0xF3_TimerWindow.cs
+*) Code from me
+- Log actions (activated with right mouse button click on the log data):
+  "Show known Oids" and "Show player info"
+------------------------------------------------------------------------------
+Noret (17.May.2005):
+*) Code from Tiv:
+- CtoS_0xF4_CryptKeyRequest sets log version
+- New decoded packets
+CtoS_0x71_UseItem.cs
+CtoS_0x78_BuyItem.cs
+*) Code from me
+- "Enable" checkbox for OID filter
+------------------------------------------------------------------------------
+Noret (16.May.2005):
+*) Code from Tiv:
+StoC_0x7B_TrainerWindow.cs
+*) Code from me
+CtoS_0x7C_PlayerTrainRequest.cs
+CtoS_0x7D_UseSpellList.cs
+CtoS_0x7D_UseSpellList_172.cs
+CtoS_0x90_RegionChangeRequest.cs
+CtoS_0x99_OpenDoorRequest.cs
+CtoS_0xDD_PlayerMoveItemRequest.cs
+StoC_0x99_SetDoorOpenState.cs
+------------------------------------------------------------------------------
+Noret (15.May.2005):
+*) Code from Tiv:
+- New decoded packets
+CtoS_0xBA_PlayerShortState.cs
+StoC_0x8D_PlayerWireFrame.cs
+StoC_0xB7_RegionChange.cs
+StoC_0xB7_RegionChange_173.cs
+StoC_0xB7_RegionChange_174.cs
+StoC_0xD6_DisableSkill.cs
+StoC_0xF6_ChangeTarget.cs
+*) Code from me
+- Packet protocol is read from the header
+- Added priority for all attributes, no more random order in open/save/filters lists.
+  (lower number = lower position in the list)
+- Multiple files can be loaded to the same log
+- Default descriptions are initialized by version -1 packets' description
+- New decoded packets
+CtoS_0x14_UdpInitRequest.cs
+CtoS_0x74_ChangeAttackModeRequest.cs
+CtoS_0x7A_ObjectInteractRequest.cs
+CtoS_0x82_DialogResponse.cs
+CtoS_0x87_InviteToGroup.cs
+CtoS_0x90_RegionChangeRequest.cs
+CtoS_0x9F_DisbandFromGroup.cs
+CtoS_0xA5_ObjectUpdateRequest.cs
+CtoS_0xBB_UseSkill.cs
+CtoS_0xC7_PlayerSitRequest.cs
+CtoS_0xD5_PlayerCreationRequest.cs
+CtoS_0xD8_DetailDisplayRequest.cs
+StoC_0x21_SetDebugMode.cs
+StoC_0x73_SpellCastAnimationInterrupt.cs
+StoC_0x74_SetAttackMode.cs
+StoC_0x81_ShowDialog.cs
+StoC_0x89_PlayerRevive.cs
+StoC_0x92_SetWeather.cs
+StoC_0xAE_PlayerDied.cs
+StoC_0xBD_SetEncumberance.cs
+StoC_0xDB_ModelChange.cs
+StoC_0xDE_SetObjectGuildId.cs
+StoC_0xE1_ObjectDelete.cs
+StoC_0xF9_EmoteAnimation.cs
+------------------------------------------------------------------------------
+Noret (14.May.2005):
+*) Code from Tiv:
+- New decoded packets
+CtoS_0xA9_PlayerPosition.cs
+CtoS_0xA9_PlayerPosition_172.cs
+CtoS_0xEC_GroundTarget.cs
+StoC_0x12_CreateMovingObject.cs
+StoC_0xA9_PlayerPosition.cs
+StoC_0xA9_PlayerPosition_172.cs
+*) Code from me
+- OID filter use OID list now
+------------------------------------------------------------------------------
+Noret (14.May.2005):
+*) Code from Tiv:
+- New decoded packets:
+StoC_0x16_VariousUpdate subcode 6
+StoC_0x16_VariousUpdate_169 subcode 6
+StoC_0xFB_CharStatsUpdate_175
+- Fix for StoC_0x88_PetWindowUpdate
+*) Code from me
+- "Ignore version overwrites" checkbox to igrnore all log version changes during log init
+- Fixed endless loop in StoC_0xC5_AddFriends and StoC_0x13_MLQuestUpdate
+- Memory usage optimizations and shows which packet decoder throws out of memory exception
+- Log data updates are automatically disabled if opened log contains over 100k packets.
+  Enable at your own risk, better save it to a file and use another viewer to "read" it.
+- New decoded packet:
+StoC_0xC4_CustomTextWindow_175
+------------------------------------------------------------------------------
+Noret (13.May.2005):
+*) Code from Tiv:
+- Fixes to StoC_0x4B_PlayerCreate_172
+           StoC_0x4B_PlayerCreate_174
+           StoC_0x20_PlayerPositionAndObjectID_171
+           StoC_0x20_PlayerPositionAndObjectID_174
+- New decoded packets:
+StoC_0x13_MLQuestUpdate.cs
+StoC_0x16_VariousUpdate.cs subcode 5
+StoC_0x62_KeepClaim.cs
+StoC_0x67_KeepUpdate.cs
+*) Code from me
+- New buttons for PacketCodeFilter: Invert and SelectAllKnown
+- New decoded packets:
+CtoS_0x10_CharacterSelectRequest.cs
+CtoS_0x10_CharacterSelectRequest_175.cs
+CtoS_0x9D_RegionListRequest.cs
+CtoS_0xA3_PingReply.cs
+CtoS_0xBF_GameOpenRequest.cs
+CtoS_0xD4_WorldInitRequest.cs
+CtoS_0xF4_CryptKeyRequest.cs
+CtoS_0xFC_CharacterOverviewRequest.cs
+StoC_0x28_SetSessionId.cs
+StoC_0x29_PingReply.cs
+StoC_0x2A_LoginGranted.cs
+StoC_0x2A_LoginGranted_175.cs
+StoC_0x2D_GameOpenReply.cs
+StoC_0x75_SetConcentrationList.cs
+StoC_0x7E_SetTime.cs
+StoC_0x7F_UpdateIcons.cs
+StoC_0x7F_UpdateIcons_173.cs
+StoC_0xAD_StatusUpdate.cs
+StoC_0xC5_AddFriends.cs
+StoC_0xF0_CharCreateReply.cs
+StoC_0xFE_SetRealm.cs
+------------------------------------------------------------------------------
+Noret (12.May.2005):
+*) Code from me
+- Changes to StoC_0xD9_ItemDoorCreate fields (was also renamed)
+- Not initialized packet data is writen after human readable data
+- New filter: "Show only known but incomplete packets"
+*) Code from Tiv
+- New decoded packets:
+StoC_0x69_KeepOverview.cs
+StoC_0x6C_KeepComponentOverview.cs
+StoC_0x6D_KeepComponentUpdate.cs
+------------------------------------------------------------------------------
+Noret (12.May.2005):
+- Fixed couple bugs
+- Added unknown packets count
+- New decoded packets:
+StoC_0x17_MerchantWindow.cs
+StoC_0x1B_SpellEffectAnimation.cs
+StoC_0x4B_PlayerCreate_172.cs
+StoC_0x4B_PlayerCreate_174.cs
+StoC_0x4B_PlayerCreate_175.cs
+StoC_0x72_SpellCastAnimation.cs
+StoC_0x91_UpdatePoints.cs
+StoC_0xA2_RemoveObject.cs
+StoC_0xB6_UpdateMaxSpeed.cs
+StoC_0xBC_CombatAnimation.cs
+StoC_0xD4_PlayerCreate.cs
+StoC_0xD9_ItemCreate.cs
+StoC_0xD9_ItemCreate_171.cs
+StoC_0xDA_NpcCreate.cs
+StoC_0xDA_NpcCreate_171.cs
+StoC_0xFA_UpdateMoney.cs
+------------------------------------------------------------------------------
+Noret (12.May.2005):
+
+First release.
+
+- Instant parser: Copy/paste any data in the box and get instant results.
+  Daoc Logger packets are detected by the header (line starts with '<').
+  Code box supports xor using '^', can xor couple numbers too.
+- Filters:
+  - By packet code
+  - By oid of decoded packets
+- Readers:
+  - Daoc logger v3+ text logs
+- Writers:
+  - Human readable text logs
+  - Sample writer to give an idea of how it can be used with decoded packets.
+    Can write SQL command scripts, anything.
+
+Some decoded packets by Tiv.

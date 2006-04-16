@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<project name="PacketLogConverter" default="build" basedir=".">
+    <target name="build" description="compiles the source code">
+        <solution solutionfile="PacketLogConverter.sln" configuration="debug" />
+    </target>
+</project>

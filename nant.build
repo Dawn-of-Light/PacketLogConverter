@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+    <project name="Packetparser" default="debug" basedir=".">
+      
+      <target name="clean" description="Delete all previously compiled binaries.">
+          <delete>
+              <fileset>
+                  <include name="./bin/**" />
+                  <include name="./obj/**" />
+              </fileset>
+          </delete>
+      </target>
+      
+      <target name="debug">
+        <property name="configuration.name" value="debug"/>          
+      	<call target="clean" />
+        <call target="build" />
+      </target>
+      
+      <target name="release">
+        <property name="configuration.name" value="release"/>
+      	<call target="clean" />
+        <call target="build" />
+      </target>
+      
+      <target name="build">
+        <delete dir="${configuration.name}" failonerror="false" />
+        <solution configuration="${configuration.name}" solutionfile="./packetlogconverter.sln">
+        </solution>
+      </target>
+    </project>

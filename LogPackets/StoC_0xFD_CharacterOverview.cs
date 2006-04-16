@@ -1,0 +1,177 @@
+using System.Collections;
+using System.Text;
+
+namespace PacketLogConverter.LogPackets
+{
+	[LogPacket(0xFD, -1, ePacketDirection.ServerToClient, "Character Overview")]
+	public class StoC_0xFD_CharacterOverview : Packet
+	{
+		protected string accountName;
+		protected CharData[] chars;
+
+		#region public access properties
+
+		public string AccountName { get { return accountName; } }
+		public CharData[] Chars { get { return chars; } }
+
+		#endregion
+
+		public override string GetPacketDataString()
+		{
+			StringBuilder str = new StringBuilder(8192);
+
+			str.AppendFormat("account name: \"{0}\"\n", accountName);
+			for (int i = 0; i < chars.Length; i++)
+			{
+				CharData ch = chars[i];
+
+				str.AppendFormat("name:\"{0}\" zone:\"{1}\" class:\"{2}\" race:\"{3}\" level:{4} classId:{5} realm:{6} gender:{7} race:{8} model:0x{9:X4} regId1:{10} regId2:{11} unk1:0x{12:X8}\n",
+					ch.charName, ch.zoneDescription, ch.className, ch.raceName, ch.level, ch.classID, ch.realm, ch.gender, ch.race, ch.model, ch.regionID, ch.regionID2, ch.unk1);
+				str.AppendFormat("\tstr:{0} dex:{1} con:{2} qui:{3} int:{4} pie:{5} emp:{6} chr:{7}", ch.statStr, ch.statDex, ch.statCon, ch.statQui, ch.statInt, ch.statPie, ch.statEmp, ch.statChr);
+
+				str.Append("\n\tarmor models: (");
+				foreach (DictionaryEntry entry in ch.armorModelBySlot)
+				{
+					int slot = (int)entry.Key;
+					ushort model = (ushort)entry.Value;
+					if (slot != 0x15) str.Append("; ");
+					str.AppendFormat("slot:0x{0:X2} model:0x{1:X4}", slot, model);
+				}
+
+				str.Append(")\n\tarmor colors: (");
+				foreach (DictionaryEntry entry in ch.armorColorBySlot)
+				{
+					int slot = (int)entry.Key;
+					ushort color = (ushort)entry.Value;
+					if (slot != 0x15) str.Append("; ");
+					str.AppendFormat("slot:0x{0:X2} model:0x{1:X4}", slot, color);
+				}
+
+				str.Append(")\n\tweapon model: (");
+				foreach (DictionaryEntry entry in ch.weaponModelBySlot)
+				{
+					int slot = (int)entry.Key;
+					ushort model = (ushort)entry.Value;
+					if (slot != 0x0A) str.Append("; ");
+					str.AppendFormat("slot:0x{0:X2} model:0x{1:X4}", slot, model);
+				}
+
+				str.AppendFormat(")\n\tactiveRightSlot:0x{0:X2} activeLeftSlot:0x{1:X2} SIzone:0x{2:X2} unk2:0x{3:X2}\n", ch.activeRightSlot, ch.activeLeftSlot, ch.siZone, ch.unk2);
+			}
+
+			str.Append("and 104 bytes more unused");
+
+			return str.ToString();
+		}
+
+		/// <summary>
+		/// Initializes the packet. All data parsing must be done here.
+		/// </summary>
+		public override void Init()
+		{
+			ArrayList temp = new ArrayList();
+
+			Position = 0;
+
+			accountName = ReadString(24);
+
+			while (Position + 184 < Length)
+			{
+				CharData charData = new CharData();
+
+				charData.charName = ReadString(24);
+				Skip(24); // ?
+				charData.zoneDescription = ReadString(24);
+				charData.className = ReadString(24);
+				charData.raceName = ReadString(24);
+				charData.level = ReadByte();
+				charData.classID = ReadByte();
+				charData.realm = ReadByte();
+				charData.temp = ReadByte();
+				charData.gender = (byte)((charData.temp >> 4) & 1);
+				charData.race = (byte)((charData.temp & 0x0F) | (charData.temp >> 5));
+				charData.model = ReadShortLowEndian();
+				charData.regionID = ReadByte();
+				charData.regionID2 = ReadByte();
+				charData.unk1 = ReadInt();
+				charData.statStr = ReadByte();
+				charData.statDex = ReadByte();
+				charData.statCon = ReadByte();
+				charData.statQui = ReadByte();
+				charData.statInt = ReadByte();
+				charData.statPie = ReadByte();
+				charData.statEmp = ReadByte();
+				charData.statChr = ReadByte();
+
+				charData.armorModelBySlot = new SortedList(0x1D-0x15);
+				for (int slot = 0x15; slot < 0x1D; slot++)
+				{
+					charData.armorModelBySlot.Add(slot, ReadShortLowEndian());
+				}
+
+				charData.armorColorBySlot = new SortedList(0x1D-0x15);
+				for (int slot = 0x15; slot < 0x1D; slot++)
+				{
+					charData.armorColorBySlot.Add(slot, ReadShortLowEndian());
+				}
+
+				charData.weaponModelBySlot = new SortedList(0x0E-0x0A);
+				for (int slot = 0x0A; slot < 0x0E; slot++)
+				{
+					charData.weaponModelBySlot.Add(slot, ReadShortLowEndian());
+				}
+
+				charData.activeRightSlot = ReadByte();
+				charData.activeLeftSlot = ReadByte();
+				charData.siZone = ReadByte();
+				charData.unk2 = ReadByte();
+
+				temp.Add(charData);
+			}
+
+			chars = (CharData[])temp.ToArray(typeof (CharData));
+			Skip(104);
+		}
+
+		public class CharData
+		{
+			public string charName;
+			public string zoneDescription;
+			public string className;
+			public string raceName;
+			public byte level;
+			public byte classID;
+			public byte realm;
+			public byte temp;
+			public byte gender;
+			public byte race;
+			public ushort model;
+			public byte regionID;
+			public byte regionID2;
+			public uint unk1;
+			public byte statStr;
+			public byte statDex;
+			public byte statCon;
+			public byte statQui;
+			public byte statInt;
+			public byte statPie;
+			public byte statEmp;
+			public byte statChr;
+			public SortedList armorModelBySlot;
+			public SortedList armorColorBySlot;
+			public SortedList weaponModelBySlot;
+			public byte activeRightSlot;
+			public byte activeLeftSlot;
+			public byte siZone;
+			public byte unk2;
+		}
+
+		/// <summary>
+		/// Constructs new instance with given capacity
+		/// </summary>
+		/// <param name="capacity"></param>
+		public StoC_0xFD_CharacterOverview(int capacity) : base(capacity)
+		{
+		}
+	}
+}
