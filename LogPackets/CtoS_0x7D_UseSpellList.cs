@@ -25,22 +25,24 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			string speed = (flagSpeedData & 0x1FF).ToString();
-			if ((flagSpeedData & 0x200) == 0x200)
-				speed = "-" + speed;
-			if ((flagSpeedData & 0x800) == 0x800)
-				speed += ",PetInView";
-			if ((flagSpeedData & 0x1000) == 0x1000)
-				speed += ",GTinView";
-			if ((flagSpeedData & 0x4000) == 0x4000)
-				speed += ",Strafe";// Swim under water
-			if ((flagSpeedData & 0xA000) == 0xA000)
-				speed += ",TargetInView";
-			if ((flagSpeedData & 0xA000) == 0x8000)
-				speed += ",TargetInViewLOSnot";
-			if ((flagSpeedData & 0xA000) == 0x2000)
-				speed += ",TargetNotInViewLOSInView";
-			str.AppendFormat("flagSpeedData:0x{0:X4} heading:0x{1:X4} spellLevel:{2,-2} spellLineIndex:{3} unk1:0x{4:X4} (speed:{5})", flagSpeedData, heading, spellLevel, spellLineIndex, unk1, speed);
+			str.AppendFormat("flagSpeedData:0x{0:X4} heading:0x{1:X4} spellLevel:{2,-2} spellLineIndex:{3} unk1:0x{4:X4}", flagSpeedData, heading, spellLevel, spellLineIndex, unk1);
+			if (flagsDescription)
+			{
+				string speed = (flagSpeedData & 0x1FF).ToString();
+				if ((flagSpeedData & 0x200) == 0x200)
+					speed = "-" + speed;
+				if ((flagSpeedData & 0x800) == 0x800)
+					speed += ",PetInView";
+				if ((flagSpeedData & 0x1000) == 0x1000)
+					speed += ",GTinView";
+				if ((flagSpeedData & 0x4000) == 0x4000)
+					speed += ",Strafe";// Swim under water
+				if ((flagSpeedData & 0x2000) == 0x2000)
+					speed += ",CheckTargetInView";
+				if ((flagSpeedData & 0x8000) == 0x8000)
+					speed += ",TargetInView";
+				str.AppendFormat(" (speed:{0})", speed);
+			}
 
 			return str.ToString();
 		}

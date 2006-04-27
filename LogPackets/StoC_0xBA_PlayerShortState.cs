@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xBA, -1, ePacketDirection.ServerToClient, "Player Short State")]
@@ -18,7 +20,7 @@ namespace PacketLogConverter.LogPackets
 			Jump_land = 2,
 			Jump_rise = 3,
 			Sit = 4,
-			Died = 5,
+			Dead = 5,
 			Ride = 6,
 			Climb = 7,
 		}
@@ -40,27 +42,35 @@ namespace PacketLogConverter.LogPackets
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
-			string status = ((PlrState)(state)).ToString().ToLower();
-			if ((flags & 0x01) == 0x01)
-				status += " UNKx01";
-			if ((flags & 0x40) == 0x40)
-				status += " UNKx40";
-			if ((flags & 0x02) == 0x02)
-				status += " Stealth";
-			if ((flags & 0x04) == 0x04)
-				status += " controlPet";
-			if ((flags & 0x08) == 0x08)
-				status += " GT";
-			if ((flags & 0x30) == 0x30)
-				status += " target";
-			if ((flags & 0x30) == 0x10)
-				status += " targetLost";
-			if ((flags & 0x80) == 0x80)
-				status += " torch";
-			if ((health & 0x80) == 0x80)
-				status += " combat";
-			return string.Format("sessionId:0x{0:X4} heading:0x{1:X4}(0x{6:X2}) flags:0x{2:X2} health:{3,3}% unk1:0x{7:X2} unk2:0x{8:X4} state:{4}({5})",
-				sessionId, heading & 0xFFF, flags, health & 0x7F, state, status, (heading & 0xFFF ^ heading) >> 8, unk1, unk2);
+			StringBuilder str = new StringBuilder();
+
+			str.AppendFormat("sessionId:0x{0:X4} heading:0x{1:X4} flags:0x{2:X2} health:{3,3}% unk1:0x{5:X2} unk2:0x{6:X4} state:{4}",
+				sessionId, heading, flags, health & 0x7F, state, unk1, unk2);
+			if (flagsDescription)
+			{
+				string status = state > 0 ? ((PlrState)state).ToString() : "";
+				if ((flags & 0x01) == 0x01)
+					status += ",UNKx01";
+				if ((flags & 0x02) == 0x02)
+					status += ",Stealth";
+				if ((flags & 0x40) == 0x40)
+					status += ",UNKx40";
+				if ((flags & 0x04) == 0x04)
+					status += ",PetInView";
+				if ((flags & 0x08) == 0x08)
+					status += ",GTinView";
+				if ((flags & 0x10) == 0x10)
+					status += ",CheckTargetInView";
+				if ((flags & 0x20) == 0x20)
+					status += ",TargetInView";
+				if ((flags & 0x80) == 0x80)
+					status += ",Torch";
+				if ((health & 0x80) == 0x80)
+					status += ",Combat";
+				if (status.Length > 0)
+					str.AppendFormat(" ({0})", status);
+			}
+			return str.ToString();
 		}
 
 		/// <summary>

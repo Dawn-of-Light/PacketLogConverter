@@ -62,7 +62,7 @@ namespace PacketLogConverter.LogPackets
 			Jump = 2,
 			debugFly= 3,
 			Sit = 4,
-			Died = 5,
+			Dead = 5,
 			Ride = 6,
 			Climb = 7,
 		}
@@ -92,9 +92,9 @@ namespace PacketLogConverter.LogPackets
 					flags += ",Diving";
 				if ((flag & 0x08) == 0x08)
 					flags += ",GT";
-				if ((flag & 0x10) == 0x10) // ?
-					flags += ",HaveTarget";
-				if ((flag & 0x20) == 0x20) // ?
+				if ((flag & 0x10) == 0x10)
+					flags += ",CheckTargetInView";
+				if ((flag & 0x20) == 0x20)
 					flags += ",TargetInView";
 				if ((flag & 0x40) == 0x40)
 					flags += ",MoveTo";
