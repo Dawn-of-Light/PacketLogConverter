@@ -21,7 +21,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			return string.Format("version:{0}.{1}.{2} accountName:\"{3}\" accountPassword:\"{4}\" and 50 bytes ignored!",
 				clientVersionMajor, clientVersionMinor, clientVersionBuild, clientAccountName, clientAccountPassword);

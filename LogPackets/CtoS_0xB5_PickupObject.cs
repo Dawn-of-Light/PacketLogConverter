@@ -23,7 +23,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("playerOid:0x{0:X4} playerX:{1,-6} playerY:{2,-6} unk1:{3:X4}",

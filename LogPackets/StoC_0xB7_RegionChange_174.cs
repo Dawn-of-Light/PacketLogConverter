@@ -17,11 +17,11 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("{0} serverId:0x{1:X2} unk3_174:0x{2:X2} unk3_174:0x{3:X4}", base.GetPacketDataString(), serverId, unk3_174, unk4_174);
+			str.AppendFormat("{0} serverId:0x{1:X2} unk3_174:0x{2:X2} unk3_174:0x{3:X4}", base.GetPacketDataString(flagsDescription), serverId, unk3_174, unk4_174);
 
 			return str.ToString();
 		}

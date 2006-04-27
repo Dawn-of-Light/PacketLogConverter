@@ -68,6 +68,7 @@ namespace PacketLogConverter
 		private System.Windows.Forms.MenuItem menuItem5;
 		private System.Windows.Forms.MenuItem menuRecentFiles;
 		private System.Windows.Forms.MenuItem menuExitApp;
+		private System.Windows.Forms.MenuItem mnuPacketFlags;
 		private Label label3;
 
 		public MainForm()
@@ -103,6 +104,10 @@ namespace PacketLogConverter
 			this.menuOpenFile = new System.Windows.Forms.MenuItem();
 			this.menuOpenAnother = new System.Windows.Forms.MenuItem();
 			this.menuSaveFile = new System.Windows.Forms.MenuItem();
+			this.menuItem3 = new System.Windows.Forms.MenuItem();
+			this.menuRecentFiles = new System.Windows.Forms.MenuItem();
+			this.menuItem5 = new System.Windows.Forms.MenuItem();
+			this.menuExitApp = new System.Windows.Forms.MenuItem();
 			this.menuItem2 = new System.Windows.Forms.MenuItem();
 			this.packetTimeDiffMenuItem = new System.Windows.Forms.MenuItem();
 			this.openLogDialog = new System.Windows.Forms.OpenFileDialog();
@@ -141,10 +146,7 @@ namespace PacketLogConverter
 			this.logDataFindTextBox = new System.Windows.Forms.TextBox();
 			this.logDataText = new System.Windows.Forms.RichTextBox();
 			this.openAnotherLogDialog = new System.Windows.Forms.OpenFileDialog();
-			this.menuItem3 = new System.Windows.Forms.MenuItem();
-			this.menuRecentFiles = new System.Windows.Forms.MenuItem();
-			this.menuItem5 = new System.Windows.Forms.MenuItem();
-			this.menuExitApp = new System.Windows.Forms.MenuItem();
+			this.mnuPacketFlags = new System.Windows.Forms.MenuItem();
 			this.mainFormTabs.SuspendLayout();
 			this.instantParseTab.SuspendLayout();
 			this.instantResultGroupBox1.SuspendLayout();
@@ -193,11 +195,33 @@ namespace PacketLogConverter
 			this.menuSaveFile.Text = "&Save...";
 			this.menuSaveFile.Click += new System.EventHandler(this.menuSaveFile_Click);
 			// 
+			// menuItem3
+			// 
+			this.menuItem3.Index = 3;
+			this.menuItem3.Text = "-";
+			// 
+			// menuRecentFiles
+			// 
+			this.menuRecentFiles.Index = 4;
+			this.menuRecentFiles.Text = "&Recent Files";
+			// 
+			// menuItem5
+			// 
+			this.menuItem5.Index = 5;
+			this.menuItem5.Text = "-";
+			// 
+			// menuExitApp
+			// 
+			this.menuExitApp.Index = 6;
+			this.menuExitApp.Text = "E&xit";
+			this.menuExitApp.Click += new System.EventHandler(this.menuExitApp_Click);
+			// 
 			// menuItem2
 			// 
 			this.menuItem2.Index = 1;
 			this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					  this.packetTimeDiffMenuItem});
+																					  this.packetTimeDiffMenuItem,
+																					  this.mnuPacketFlags});
 			this.menuItem2.Text = "&View";
 			// 
 			// packetTimeDiffMenuItem
@@ -571,26 +595,11 @@ namespace PacketLogConverter
 			// 
 			this.openAnotherLogDialog.Multiselect = true;
 			// 
-			// menuItem3
+			// mnuPacketFlags
 			// 
-			this.menuItem3.Index = 3;
-			this.menuItem3.Text = "-";
-			// 
-			// menuRecentFiles
-			// 
-			this.menuRecentFiles.Index = 4;
-			this.menuRecentFiles.Text = "&Recent Files";
-			// 
-			// menuItem5
-			// 
-			this.menuItem5.Index = 5;
-			this.menuItem5.Text = "-";
-			// 
-			// menuExitApp
-			// 
-			this.menuExitApp.Index = 6;
-			this.menuExitApp.Text = "E&xit";
-			this.menuExitApp.Click += new System.EventHandler(this.menuExitApp_Click);
+			this.mnuPacketFlags.Index = 1;
+			this.mnuPacketFlags.Text = "Packet flags";
+			this.mnuPacketFlags.Click += new System.EventHandler(this.mnuPacketFlags_Click);
 			// 
 			// MainForm
 			// 
@@ -959,7 +968,7 @@ namespace PacketLogConverter
 			
 			OpenData data = (OpenData) state;
 			LogReaderDelegate e = FilesLoaded;
-			if (e != null)
+			if (e != null && data != null)
 				e(data.Reader);
 		}
 
@@ -1182,7 +1191,10 @@ namespace PacketLogConverter
 					}
 					pak.LogTextIndex = text.Length;
 					++packetsCount;
-					text.Append(pak.ToHumanReadableString(baseTime)).Append('\n');
+					
+					// main description
+					text.Append(pak.ToHumanReadableString(baseTime, mnuPacketFlags.Checked))
+						.Append('\n');
 					if (timeDiff)
 						baseTime = pak.Time;
 				}
@@ -1279,6 +1291,12 @@ namespace PacketLogConverter
 		private void packetTimeDiffMenuItem_Click(object sender, System.EventArgs e)
 		{
 			packetTimeDiffMenuItem.Checked = !packetTimeDiffMenuItem.Checked;
+			UpdateLogDataTab();
+		}
+		
+		private void mnuPacketFlags_Click(object sender, System.EventArgs e)
+		{
+			mnuPacketFlags.Checked = !mnuPacketFlags.Checked;
 			UpdateLogDataTab();
 		}
 
@@ -1450,7 +1468,7 @@ namespace PacketLogConverter
 				pak.Init();
 				pak.PositionAfterInit = pak.Position;
 				pak.Initialized = true;
-				result.Append(pak.GetPacketDataString());
+				result.Append(pak.GetPacketDataString(true));
 			}
 			catch (OutOfMemoryException e)
 			{

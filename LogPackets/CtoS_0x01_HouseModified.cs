@@ -4,10 +4,13 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x01, -1, ePacketDirection.ClientToServer, "House modified")]
-	public class CtoS_0x01_HouseModified: Packet
+	public class CtoS_0x01_HouseModified: Packet, IOidPacket
 	{
 		protected ushort sessionId;
 		protected short[] objects;
+
+		public int Oid1 { get { return sessionId; } }
+		public int Oid2 { get { return int.MinValue; } }
 
 		#region public access properties
 
@@ -16,7 +19,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("sessionId:0x{0:X4}", sessionId);

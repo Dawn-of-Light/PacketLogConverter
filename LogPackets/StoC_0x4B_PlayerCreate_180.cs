@@ -21,9 +21,9 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
-			string str = base.GetPacketDataString();
+			string str = base.GetPacketDataString(flagsDescription);
 			str += string.Format(" horseId:{0}", horseId);
 			if (horseId != 0)
 				str += string.Format(" horseBoot:{0,-2} BootColor:0x{1:X4} horseSaddle:{2,-2} SaddleColor:0x{3:X2}",

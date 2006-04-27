@@ -30,7 +30,7 @@ namespace PacketLogConverter.LogPackets
 			ChampionAbilities = 0x02,
 		}
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 

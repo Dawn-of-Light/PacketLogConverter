@@ -6,15 +6,6 @@ namespace PacketLogConverter.LogPackets
 	public class CtoS_0xA9_PlayerPosition_172 : CtoS_0xA9_PlayerPosition
 	{
 
-		public override string GetPacketDataString()
-		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("sessionId:0x{0:X4} status:0x{1:X2} speed:{2,-3} heading:0x{3:X4}(0x{13:X2}) currentZone({4,-3}): ({5,-6} {6,-6} {7,-4}) flyFlags:0x{8:X2} speed2:{9,-4} flags:0x{10:X2} health:{11,3}%{12}",
-				sessionId, (status & 0x1FF ^ status) >> 8 ,status & 0x1FF, heading & 0xFFF, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, (speed & 0x7FF ^ speed) >> 8, speed & 0x7FF, flag, health & 0x7F, ((health>>7)==1)?" combat":"", (heading & 0xFFF ^ heading) >> 8);
-			return str.ToString();
-		}
-
 		/// <summary>
 		/// Initializes the packet. All data parsing must be done here.
 		/// </summary>

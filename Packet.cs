@@ -212,7 +212,19 @@ namespace PacketLogConverter
 			uint data = ReadIntLowEndian();
 			return Util.GetFloat(data);
 		}
-		
+
+		public TimeSpan ReadTimeSpan()
+		{
+			uint data = ReadInt();
+			return Util.GetTimeSpan(data);
+		}
+
+		public TimeSpan ReadTimeSpanLowEndian()
+		{
+			uint data = ReadIntLowEndian();
+			return Util.GetTimeSpan(data);
+		}
+
 		/// <summary>
 		/// Skips 'num' bytes ahead in the stream
 		/// </summary>
@@ -273,7 +285,7 @@ namespace PacketLogConverter
 			}
 		}
 
-		public virtual string ToHumanReadableString(TimeSpan baseTime)
+		public virtual string ToHumanReadableString(TimeSpan baseTime, bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder(512);
 
@@ -314,7 +326,7 @@ namespace PacketLogConverter
 			}
 			try
 			{
-				packetData += GetPacketDataString();
+				packetData += GetPacketDataString(flagsDescription);
 			}
 			catch (Exception e)
 			{
@@ -355,8 +367,9 @@ namespace PacketLogConverter
 		/// <summary>
 		/// Gets all the packet data as a human readable string
 		/// </summary>
+		/// <param name="flagsDescription">Include flags description in output</param> 
 		/// <returns></returns>
-		public virtual string GetPacketDataString()
+		public virtual string GetPacketDataString(bool flagsDescription)
 		{
 			return string.Empty;
 		}
@@ -407,6 +420,5 @@ namespace PacketLogConverter
 		public virtual void InitLog(PacketLog log)
 		{
 		}
-
 	}
 }

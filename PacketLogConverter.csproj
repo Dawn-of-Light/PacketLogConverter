@@ -1,938 +1,1527 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <ProductVersion>8.0.50727</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8559DC92-0B16-424D-840D-09107BD1D98A}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>App.ico</ApplicationIcon>
-    <AssemblyKeyContainerName>
-    </AssemblyKeyContainerName>
-    <AssemblyName>PacketLogConverter</AssemblyName>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
-    <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
-    <DefaultTargetSchema>IE50</DefaultTargetSchema>
-    <DelaySign>false</DelaySign>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>PacketLogConverter</RootNamespace>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
-    <DebugSymbols>true</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
-    <Optimize>true</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>full</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
-    <DebugSymbols>false</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
-    <Optimize>true</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>none</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System">
-      <Name>System</Name>
-    </Reference>
-    <Reference Include="System.Data">
-      <Name>System.Data</Name>
-    </Reference>
-    <Reference Include="System.Drawing">
-      <Name>System.Drawing</Name>
-    </Reference>
-    <Reference Include="System.Windows.Forms">
-      <Name>System.Windows.Forms</Name>
-    </Reference>
-    <Reference Include="System.Xml">
-      <Name>System.XML</Name>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App.ico" />
-    <Content Include="gpl.txt" />
-    <Content Include="history.txt" />
-    <Compile Include="AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BufferedStringReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DefaultPacketDescriptions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ErrorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FilterManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ILogAction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ILogFilter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ILogReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ILogWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="IOidPacket.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Log.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogActionAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogActions\InfoWindowForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LogActions\ShowKeepComponents.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogActions\ShowKnownOidAction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogActions\ShowPlayerCombatAction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogActions\ShowPlayerInfoAction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogActions\ShowRawData.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogFilterAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogFilters\KnownIncompletePacketsFilter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogFilters\ObjectIdFilterForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LogFilters\PacketCodeFilterForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LogFilters\PacketPropertyValueFilterForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LogPacketAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x00_HouseMenuRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x01_HouseModified.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x05_HousePermissionRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x07_HousePermissionSet.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x0B_HouseEnterRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x0C_HouseItemPlacementRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x0D_UnknownPacket.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x0E_HouseDecorationChangeAngle.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x10_CharacterSelectRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x10_CharacterSelectRequest_174.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x11_PlayerMarketSearch.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x14_UdpInitRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x18_HouseDecorationRotateRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x1A_SetMarketPrice.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x1C_WithdrawMerchantMoney.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x1D_UnknownPacket.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x2B_PlayerWorldInitialized.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x37_ClientCrash.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x48_WarmapShow.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x4F_QuestRemoveRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x64_KeepBuyHookPoint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x66_WarmapBonuses.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x6F_KeepInteractRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x71_UseItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x74_ChangeAttackModeRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x76_CancelConcSpell.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x78_BuyItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x79_SellItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x7A_ObjectInteractRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x7C_PlayerTrainRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x7D_UseSpellList.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x7D_UseSpellList_172.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x80_DestroyInventoryItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x82_DialogResponse.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x84_LookingForGroup.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x85_FindLookingForGroup.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x87_InviteToGroup.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x8A_PetWindowCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x90_RegionChangeRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x98_PlayerAcceptGoupInvite.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x99_OpenDoorRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x9D_RegionListRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x9F_DisbandFromGroup.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xA3_PingReply.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xA5_ObjectUpdateRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xA7_LoginRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xA7_LoginRequest_174.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xA9_PlayerPosition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xA9_PlayerPosition_172.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xAC_PlayerResetCharacter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xAF_PlayerCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xB0_TargetChange.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xB5_PickupObject.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xB8_Disconnect.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xBA_PlayerShortState.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xBB_UseSkill.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xBE_NpcCreationRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xBF_GameOpenRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xC0_CharacterDelete.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xC2_CharacterNameBadCheck.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xC7_PlayerSitRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xC8_PlayerRide.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xCA_PlayerBonusesRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xCB_CharacterNameDublicateCheck.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xCD_CharacterCreationConfirm.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xD0_CheckLos.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xD4_WorldInitRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xD5_PlayerCreationRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xD8_DetailDisplayRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xDC_MessageFilter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xDC_MessageFilter_171.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xDD_PlayerMoveItemRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xE0_AppraiseItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xE8_PlayerWorldInitializeRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xEB_ModifyTradeWindow.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xEC_GroundTarget.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xED_CraftItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xF2_UdpPing.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xF4_CryptKeyRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xF5_SiegeWeaponInteract.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xF8_EffectRemoveRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xFC_CharacterOverviewRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xFC_CharacterOverviewRequest_177.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xFF_CharacterCreate174.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0xXX_Template.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x02_InventoryUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x02_InventoryUpdate_172.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x02_InventoryUpdate_182.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x04_CharacterJump.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x05_HousePermission.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x08_HouseInsideUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x09_HouseDecorationUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x0A_PlayerExitHouse.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x0F_HousePointView.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x12_CreateMovingObject.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x13_MLQuestUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x15_EquipmentUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x15_EquipmentUpdate_172.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x15_EquipmentUpdate_176.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x16_VariousUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x16_VariousUpdate_169.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x16_VariousUpdate_175.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x16_VariousUpdate_179.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x17_MerchantWindow.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x18_HouseDecorationRotate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x1B_SpellEffectAnimation.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x1B_SpellEffectAnimation_174.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x1E_ConsignmentMerchantMoney.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x1F_MarketMerchant.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x20_PlayerPositionAndObjectID.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x20_PlayerPositionAndObjectID_171.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x20_PlayerPositionAndObjectID_174.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x21_SetDebugMode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x22_VersionAndCryptKey.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x28_SetSessionId.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x29_PingReply.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x2A_LoginGranted.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x2A_LoginGranted_175.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x2B_PlayerWorldInitializeResponse.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x2C_LoginDenied.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x2D_GameOpenReply.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x2F_UdpInitResponse.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x49_WarmapClaimedKeeps.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x4A_WarmapDetails.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x4B_PlayerCreate_172.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x4B_PlayerCreate_174.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x4B_PlayerCreate_175.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x4B_PlayerCreate_180.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x4C_VisualEffect.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x4D_SpellMessage_174.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x4E_ControlledHorse.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x61_KeepRepair.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x62_KeepClaim.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x63_KeepSiegeStore.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x65_HookpointUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x66_WarmapBonuses.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x66_WarmapBonuses_174.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x67_KeepUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x69_KeepOverview.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x6C_KeepComponentOverview.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x6D_KeepComponentUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x70_PlayerGroupUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x70_PlayerGroupUpdate_169.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x70_PlayerGroupUpdate_173.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x72_SpellCastAnimation.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x73_SpellCastAnimationInterrupt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x74_SetAttackMode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x75_SetConcentrationList.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x7B_TrainerWindow.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x7E_SetTime.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x7F_UpdateIcons.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x7F_UpdateIcons_173.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x81_ShowDialog.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x83_QuestUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x83_QuestUpdate_170.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x83_QuestUpdate_173.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x86_FindGroupMemberUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x86_FindGroupMemberUpdate_176.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x88_PetWindowUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x88_PetWindowUpdate_181.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x89_PlayerRevive.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x8D_PlayerWireFrame.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x91_UpdatePoints.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x91_UpdatePoints_179.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x92_SetWeather.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x99_SetDoorOpenState.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0x9E_RegionInitTables.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xA1_NpcUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xA2_RemoveObject.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xA4_PlayerQuit.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xA9_PlayerPosition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xA9_PlayerPosition_172.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xAD_StatusUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xAE_PlayerDied.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xAF_Message.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xB1_StartArena.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xB6_UpdateMaxSpeed.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xB7_RegionChange.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xB7_RegionChange_173.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xB7_RegionChange_174.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xBA_PlayerShortState.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xBC_CombatAnimation.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xBD_SetEncumberance.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xC3_BadNameCheckResponse.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xC4_CustomTextWindow.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xC4_CustomTextWindow_175.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xC4_CustomTextWindow_181.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xC5_AddFriends.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xC6_RemoveFriends.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xC8_PlayerRide.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xC9_PlaySound.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xCC_NameDublicateCheckResponse.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xD0_CheckLos.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xD1_HouseCreate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xD2_HouseUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xD3_CraftResult.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xD4_PlayerCreate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xD6_DisableSkill.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xD9_ItemDoorCreate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xD9_ItemDoorCreate_171.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xDA_NpcCreate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xDA_NpcCreate_171.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xDB_ModelChange.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xDE_SetObjectGuildId.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xE1_ObjectDelete.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xE3_SiegeWeaponAnimation.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xEA_TradeWindow.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xEA_TradeWindow_172.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xEE_NpcChangeProperties.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xEF_PlayMusic.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xF0_CharCreateReply.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xF3_TimerWindow.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xF5_SiegeWeaponInteract.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xF6_ChangeTarget.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xF7_ShowHelpWindow.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xF9_EmoteAnimation.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xFA_UpdateMoney.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xFB_CharStatsUpdate.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xFB_CharStatsUpdate_175.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xFD_CharacterOverview.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xFD_CharacterOverview_173.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xFE_SetRealm.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\StoC_0xXX_Template.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogReaderAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogReaders\AutoDetectLogReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogReaders\DaocLoggerV3BinaryLogReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogReaders\DaocLoggerV3TextLogReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogReaders\DaocLoggerV3TextLogReaderStats.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogReaders\DolServerV17LogReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogReaders\PacketLogConverterV1LogReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogWriterAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogWriters\DaocLoggerV3BinaryLogWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogWriters\DaocLoggerV3TextLogWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogWriters\InventoryItemsSampleWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogWriters\NpcUpdateUnkSpeedBitsWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogWriters\PacketLogConverterV1LogWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogWriters\ShortLogWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Marshal.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Packet.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PacketLog.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PacketManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Progress.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ProgressForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ReportForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Util.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <EmbeddedResource Include="ErrorForm.resx">
-      <DependentUpon>ErrorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LogActions\InfoWindowForm.resx">
-      <DependentUpon>InfoWindowForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LogFilters\ObjectIdFilterForm.resx">
-      <DependentUpon>ObjectIdFilterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LogFilters\PacketCodeFilterForm.resx">
-      <DependentUpon>PacketCodeFilterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LogFilters\PacketPropertyValueFilterForm.resx">
-      <DependentUpon>PacketPropertyValueFilterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProgressForm.resx">
-      <DependentUpon>ProgressForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ReportForm.resx">
-      <DependentUpon>ReportForm.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-</Project>
+<VisualStudioProject>
+    <CSHARP
+        ProjectType = "Local"
+        ProductVersion = "7.10.3077"
+        SchemaVersion = "2.0"
+        ProjectGuid = "{8559DC92-0B16-424D-840D-09107BD1D98A}"
+    >
+        <Build>
+            <Settings
+                ApplicationIcon = "App.ico"
+                AssemblyKeyContainerName = ""
+                AssemblyName = "PacketLogConverter"
+                AssemblyOriginatorKeyFile = ""
+                DefaultClientScript = "JScript"
+                DefaultHTMLPageLayout = "Grid"
+                DefaultTargetSchema = "IE50"
+                DelaySign = "false"
+                OutputType = "WinExe"
+                PreBuildEvent = ""
+                PostBuildEvent = ""
+                RootNamespace = "PacketLogConverter"
+                RunPostBuildEvent = "OnBuildSuccess"
+                StartupObject = ""
+            >
+                <Config
+                    Name = "Debug"
+                    AllowUnsafeBlocks = "true"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "DEBUG;TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "true"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "true"
+                    OutputPath = "bin\Debug\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+                <Config
+                    Name = "Release"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "false"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "true"
+                    OutputPath = "bin\Release\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
+            </Settings>
+            <References>
+                <Reference
+                    Name = "System"
+                    AssemblyName = "System"
+                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
+                />
+                <Reference
+                    Name = "System.Data"
+                    AssemblyName = "System.Data"
+                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
+                />
+                <Reference
+                    Name = "System.Drawing"
+                    AssemblyName = "System.Drawing"
+                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
+                />
+                <Reference
+                    Name = "System.Windows.Forms"
+                    AssemblyName = "System.Windows.Forms"
+                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
+                />
+                <Reference
+                    Name = "System.XML"
+                    AssemblyName = "System.Xml"
+                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
+                />
+            </References>
+        </Build>
+        <Files>
+            <Include>
+                <File
+                    RelPath = "App.ico"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "BufferedStringReader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DefaultPacketDescriptions.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ErrorForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ErrorForm.resx"
+                    DependentUpon = "ErrorForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "FilterManager.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "gpl.txt"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "history.txt"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "ILogAction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ILogFilter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ILogReader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ILogWriter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IOidPacket.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Log.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogActionAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogFilterAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPacketAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogReaderAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogWriterAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MainForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MainForm.resx"
+                    DependentUpon = "MainForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Marshal.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Packet.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PacketLog.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PacketManager.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Progress.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ProgressForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ProgressForm.resx"
+                    DependentUpon = "ProgressForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "ReportForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ReportForm.resx"
+                    DependentUpon = "ReportForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Util.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogActions\InfoWindowForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogActions\InfoWindowForm.resx"
+                    DependentUpon = "InfoWindowForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "LogActions\ShowKeepComponents.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogActions\ShowKnownOidAction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogActions\ShowPlayerCombatAction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogActions\ShowPlayerInfoAction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogActions\ShowRawData.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogFilters\KnownIncompletePacketsFilter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogFilters\ObjectIdFilterForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogFilters\ObjectIdFilterForm.resx"
+                    DependentUpon = "ObjectIdFilterForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "LogFilters\PacketCodeFilterForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogFilters\PacketCodeFilterForm.resx"
+                    DependentUpon = "PacketCodeFilterForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "LogFilters\PacketPropertyValueFilterForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogFilters\PacketPropertyValueFilterForm.resx"
+                    DependentUpon = "PacketPropertyValueFilterForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x00_HouseMenuRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x01_HouseModified.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x05_HousePermissionRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x07_HousePermissionSet.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x0B_HouseEnterRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x0C_HouseItemPlacementRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x0D_UnknownPacket.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x0E_HouseDecorationChangeAngle.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x10_CharacterSelectRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x10_CharacterSelectRequest_174.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x11_PlayerMarketSearch.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x14_UdpInitRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x18_HouseDecorationRotateRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x1A_SetMarketPrice.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x1C_WithdrawMerchantMoney.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x1D_UnknownPacket.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x2B_PlayerWorldInitialized.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x37_ClientCrash.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x48_WarmapShow.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x4F_QuestRemoveRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x64_KeepBuyHookPoint.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x66_WarmapBonuses.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x6F_KeepInteractRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x71_UseItem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x74_ChangeAttackModeRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x76_CancelConcSpell.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x78_BuyItem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x79_SellItem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x7A_ObjectInteractRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x7C_PlayerTrainRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x7D_UseSpellList.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x7D_UseSpellList_172.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x80_DestroyInventoryItem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x82_DialogResponse.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x84_LookingForGroup.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x85_FindLookingForGroup.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x87_InviteToGroup.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x8A_PetWindowCommand.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x90_RegionChangeRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x98_PlayerAcceptGoupInvite.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x99_OpenDoorRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x9D_RegionListRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x9F_DisbandFromGroup.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xA3_PingReply.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xA5_ObjectUpdateRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xA7_LoginRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xA7_LoginRequest_174.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xA7_LoginRequest_178.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xA9_PlayerPosition.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xA9_PlayerPosition_172.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xAC_PlayerResetCharacter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xAF_PlayerCommand.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xB0_TargetChange.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xB5_PickupObject.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xB8_Disconnect.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xBA_PlayerShortState.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xBB_UseSkill.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xBE_NpcCreationRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xBF_GameOpenRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xC0_CharacterDelete.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xC2_CharacterNameBadCheck.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xC7_PlayerSitRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xC8_PlayerRide.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xCA_PlayerBonusesRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xCB_CharacterNameDublicateCheck.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xCD_CharacterCreationConfirm.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xD0_CheckLos.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xD4_WorldInitRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xD4_WorldInitRequest_172.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xD5_PlayerCreationRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xD8_DetailDisplayRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xDC_MessageFilter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xDC_MessageFilter_171.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xDD_PlayerMoveItemRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xE0_AppraiseItem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xE2_PlayerChooseEmblemResponse.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xE8_PlayerWorldInitializeRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xEB_ModifyTradeWindow.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xEC_GroundTarget.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xED_CraftItem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xF2_UdpPing.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xF4_CryptKeyRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xF5_SiegeWeaponInteract.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xF8_EffectRemoveRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xFC_CharacterOverviewRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xFC_CharacterOverviewRequest_177.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xFF_CharacterCreate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xFF_CharacterCreate173.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xXX_Template.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x02_InventoryUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x02_InventoryUpdate_172.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x02_InventoryUpdate_182.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x04_CharacterJump.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x05_HousePermission.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x08_HouseInsideUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x09_HouseDecorationUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x0A_PlayerExitHouse.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x0F_HousePointView.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x12_CreateMovingObject.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x13_MLQuestUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x15_EquipmentUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x15_EquipmentUpdate_172.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x15_EquipmentUpdate_176.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x16_VariousUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x16_VariousUpdate_169.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x16_VariousUpdate_175.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x16_VariousUpdate_179.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x17_MerchantWindow.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x18_HouseDecorationRotate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x1B_SpellEffectAnimation.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x1B_SpellEffectAnimation_174.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x1E_ConsignmentMerchantMoney.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x1F_MarketMerchant.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x20_PlayerPositionAndObjectID.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x20_PlayerPositionAndObjectID_171.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x20_PlayerPositionAndObjectID_174.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x21_SetDebugMode.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x22_VersionAndCryptKey.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x28_SetSessionId.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x29_PingReply.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x2A_LoginGranted.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x2A_LoginGranted_175.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x2B_PlayerWorldInitializeResponse.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x2C_LoginDenied.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x2D_GameOpenReply.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x2F_UdpInitResponse.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x49_WarmapClaimedKeeps.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x4A_WarmapDetails.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x4B_PlayerCreate_172.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x4B_PlayerCreate_174.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x4B_PlayerCreate_175.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x4B_PlayerCreate_180.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x4C_VisualEffect.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x4D_SpellMessage_174.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x4E_ControlledHorse.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x61_KeepRepair.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x62_KeepClaim.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x63_KeepSiegeStore.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x65_HookpointUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x66_WarmapBonuses.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x66_WarmapBonuses_174.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x67_KeepUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x69_KeepOverview.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x6C_KeepComponentOverview.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x6D_KeepComponentUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x70_PlayerGroupUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x70_PlayerGroupUpdate_169.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x70_PlayerGroupUpdate_173.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x72_SpellCastAnimation.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x73_SpellCastAnimationInterrupt.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x74_SetAttackMode.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x75_SetConcentrationList.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x7B_TrainerWindow.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x7E_SetTime.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x7F_UpdateIcons.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x7F_UpdateIcons_173.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x81_ShowDialog.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x83_QuestUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x83_QuestUpdate_170.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x83_QuestUpdate_173.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x83_QuestUpdate_183.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x86_FindGroupMemberUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x86_FindGroupMemberUpdate_176.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x88_PetWindowUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x88_PetWindowUpdate_181.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x89_PlayerRevive.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x8D_PlayerWireFrame.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x91_UpdatePoints.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x91_UpdatePoints_179.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x92_SetWeather.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x99_SetDoorOpenState.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x9E_RegionInitTables.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xA1_NpcUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xA2_RemoveObject.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xA4_PlayerQuit.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xA9_PlayerPosition.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xA9_PlayerPosition_172.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xAD_StatusUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xAE_PlayerDied.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xAF_Message.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xB1_StartArena.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xB6_UpdateMaxSpeed.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xB7_RegionChange.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xB7_RegionChange_173.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xB7_RegionChange_174.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xBA_PlayerShortState.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xBC_CombatAnimation.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xBD_SetEncumberance.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xC3_BadNameCheckResponse.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xC4_CustomTextWindow.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xC4_CustomTextWindow_175.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xC4_CustomTextWindow_181.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xC5_AddFriends.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xC6_RemoveFriends.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xC8_PlayerRide.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xC9_PlaySound.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xCC_NameDublicateCheckResponse.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xD0_CheckLos.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xD1_HouseCreate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xD2_HouseUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xD3_CraftResult.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xD4_PlayerCreate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xD6_DisableSkill.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xD9_ItemDoorCreate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xD9_ItemDoorCreate_171.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xDA_NpcCreate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xDA_NpcCreate_171.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xDB_ModelChange.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xDE_SetObjectGuildId.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xE1_ObjectDelete.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xE3_SiegeWeaponAnimation.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xEA_TradeWindow.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xEA_TradeWindow_172.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xEE_NpcChangeProperties.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xEF_PlayMusic.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xF0_CharCreateReply.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xF3_TimerWindow.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xF5_SiegeWeaponInteract.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xF6_ChangeTarget.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xF7_ShowHelpWindow.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xF9_EmoteAnimation.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xFA_UpdateMoney.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xFB_CharStatsUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xFB_CharStatsUpdate_175.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xFD_CharacterOverview.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xFD_CharacterOverview_173.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xFE_SetRealm.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xXX_Template.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogReaders\AutoDetectLogReader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogReaders\DaocLoggerV3BinaryLogReader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogReaders\DaocLoggerV3TextLogReader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogReaders\DaocLoggerV3TextLogReaderStats.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogReaders\DolServerV17LogReader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogReaders\PacketLogConverterV1LogReader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogWriters\DaocLoggerV3BinaryLogWriter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogWriters\DaocLoggerV3TextLogWriter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogWriters\InventoryItemsSampleWriter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogWriters\NpcUpdateUnkSpeedBitsWriter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogWriters\PacketLogConverterV1LogWriter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogWriters\ShortLogWriter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+            </Include>
+        </Files>
+    </CSHARP>
+</VisualStudioProject>
+

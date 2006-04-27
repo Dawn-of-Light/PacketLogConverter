@@ -37,7 +37,7 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("\nPLAYER GROUP UPDATE:  count:{0,-2} unk1:{1} unk2:{2}", count, unk1, unk2);
 

@@ -16,7 +16,7 @@ namespace PacketLogConverter.LogPackets
 		public string Name { get { return name; } }
 		public string Desc { get { return desc; } }
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("index:{0,-2} NameLen:{1,-3} descLen:{2,-3}", index, lenName, lenDesc);

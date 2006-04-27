@@ -13,7 +13,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			return string.Format("UDP:{0}({1})", useUDP, (useUDP == 1) ? "Enable" : "Disable");
 		}

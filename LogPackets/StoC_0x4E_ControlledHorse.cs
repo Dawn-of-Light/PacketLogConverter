@@ -33,7 +33,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("oid:0x{0:X4} horseId:{1,-2} horseBoot:{2,-2} BootColor:0x{3:X4} horseSaddle:{4,-2} SaddleColor:0x{5:X2}",

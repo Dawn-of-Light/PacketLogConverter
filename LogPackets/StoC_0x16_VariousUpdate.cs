@@ -16,7 +16,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 
@@ -24,7 +24,7 @@ namespace PacketLogConverter.LogPackets
 			if (subData == null)
 				str.AppendFormat(" UNKNOWN SUBCODE");
 			else
-				subData.MakeString(str);
+				subData.MakeString(str, flagsDescription);
 
 			return str.ToString();
 		}
@@ -61,7 +61,7 @@ namespace PacketLogConverter.LogPackets
 		public abstract class ASubData
 		{
 			abstract public void Init(StoC_0x16_VariousUpdate pak);
-			abstract public void MakeString(StringBuilder str);
+			abstract public void MakeString(StringBuilder str, bool flagsDescription);
 		}
 
 		#region subcode 1 - Skills Update
@@ -87,14 +87,14 @@ namespace PacketLogConverter.LogPackets
 		{
 			public byte count;
 			public byte subtype;
-			public byte unk1;
+			public byte startIndex;
 			public Skill[] data;
 
 			public override void Init(StoC_0x16_VariousUpdate pak)
 			{
 				count = pak.ReadByte();
 				subtype = pak.ReadByte();
-				unk1 = pak.ReadByte();
+				startIndex = pak.ReadByte();
 				data = new Skill[count];
 
 				for (int i = 0; i < count; i++)
@@ -112,13 +112,20 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				str.AppendFormat("\nSKILLS UPDATE:  count:{0,-2} subtype:{1} unk1:{2}", count, subtype, unk1);
-
+				str.AppendFormat("\nSKILLS UPDATE:  count:{0,-2} subtype:{1} startIndex:{2}", count, subtype, startIndex);
+				int index = -1;
 				foreach (Skill skill in data)
 				{
-					str.AppendFormat("\n\tlevel:{0,-2} type:{1}({2,-14}) stlOpen:0x{3:X4} bonus:{4,-2} icon:0x{5:X4} name:\"{6}\"",
+					str.Append("\n\t");
+					if (flagsDescription)
+					{
+					 	if((int)skill.page > 0)
+							index++;
+						str.AppendFormat("[{0,-2}] ", index);
+					}
+					str.AppendFormat("level:{0,-2} type:{1}({2,-14}) stlOpen:0x{3:X4} bonus:{4,-2} icon:0x{5:X4} name:\"{6}\"",
 						skill.level, (int)skill.page, skill.page.ToString().ToLower(), skill.stlOpen, skill.bonus, skill.icon, skill.name);
 				}
 			}
@@ -171,7 +178,7 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("\nSPELLS LIST UPDATE:  count:{0,-2} subtype:{1} lineIndex:{2,-2}", count, subtype, lineIndex);
 				foreach (Spell spell in list)
@@ -270,7 +277,7 @@ namespace PacketLogConverter.LogPackets
 				maTitle = pak.ReadPascalString();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("\nPLAYER UPDATE:  count:{0} subtype:{1} level:{2} name:\"{3}\" health:{4} className:\"{5}\" profession:\"{6}\" title:\"{7}\" realmLevel:{8} realmTitle:\"{9}\" realmSpecPoints:{10} classBaseName:\"{11}\" guildName:\"{12}\" lastName:\"{13}\" raceName:\"{14}\" guildRank:\"{15}\" crafterGuild:\"{16}\" crafterTitle:\"{17}\" ML:\"{18}\"({19})",
 					count, subtype, playerLevel, playerName, health, className, profession, title, realmLevel, realmTitle, realmSpecPoints, classBaseName, guildName, lastName, raceName, guildRank, crafterGuild, crafterTitle, maTitle, mlLevel);
@@ -333,7 +340,7 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("\nPLAYER STATE UPDATE:  count:{0,-2} unk1:{1,-2} unk2:{2,-2}", count, unk1, unk2);
 				str.AppendFormat("\n\tweapDam:{0,2}.{1,-3} weapSkill:{2,-4} effectiveAF:{3}",
@@ -394,7 +401,7 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("\nPLAYER GROUP UPDATE:  count:{0,-2} unk1:{1} unk2:{2}", count, unk1, unk2);
 
@@ -456,7 +463,7 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("\nCRAFTING SKILLS UPDATE:  count:{0,-2} subtype:{1} unk1:{2}", skillsCount, subtype, unk1);
 

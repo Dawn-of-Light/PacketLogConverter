@@ -7,7 +7,8 @@ namespace PacketLogConverter.LogPackets
 	public class StoC_0xA1_NpcUpdate : Packet, IOidPacket
 	{
 		protected ushort temp;
-		protected ushort speed;
+		protected short speed;
+		protected short speedZ;
 		protected ushort heading;
 		protected ushort currentZoneX;
 		protected ushort targetZoneX;
@@ -28,7 +29,8 @@ namespace PacketLogConverter.LogPackets
 		#region public access properties
 
 		public ushort Temp { get { return temp; } }
-		public ushort Speed { get { return speed; } }
+		public short Speed { get { return speed; } }
+		public short SpeedZ { get { return speedZ; } }
 		public ushort Heading { get { return heading; } }
 		public ushort CurrentZoneX { get { return currentZoneX; } }
 		public ushort TargetZoneX { get { return targetZoneX; } }
@@ -45,13 +47,28 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("oid:0x{0:X4} speed:0x{1:X4} heading:0x{2:X4} currentZone({3,-3}): ({4,-6} {5,-6} {6,-5}) walkToZone({7,-3}): ({8,-6} {9,-6} {10,-5}) health:{11,3}% targetOID:0x{12:X4} flags:0x{13:X2}(realm:{14},0x{15:X2})",
-			                 npcOID, speed, heading, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, targetZoneId, targetZoneX, targetZoneY, targetZoneZ, healthPercent, targetOID, flags, flags>>6, flags & 0x3F);
-
+			str.AppendFormat("oid:0x{0:X4} speed:{1,-4} speedZ:{2,-3} heading:0x{3:X4} currentZone({4,-3}): ({5,-6} {6,-6} {7,-5}) walkToZone({8,-3}): ({9,-6} {10,-6} {11,-5}) health:{12,3}% targetOID:0x{13:X4} flags:0x{14:X2}",
+			                 npcOID, speed, speedZ, heading, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, targetZoneId, targetZoneX, targetZoneY, targetZoneZ, healthPercent, targetOID, flags);
+			if (flagsDescription)
+			{
+				string flag = string.Format("realm:{0}",(flags >> 6) & 3);
+				if ((flags & 0x01) == 0x01)
+					flag += ",Ghost";
+				if ((flags & 0x02) == 0x02)
+					flag += ",Inventory";
+				if ((flags & 0x04) == 0x04)
+					flag += ",UNKx04";
+				if ((flags & 0x08) == 0x08)
+					flag += ",UNKx08";
+				if ((flags & 0x10) == 0x10)
+					flag += ",Peace";
+				if ((flags & 0x20) == 0x20)
+					flag += ",Fly";
+				str.AppendFormat(" ({0})", flag);
+			}
 			Convert.ToString(44, 2);
 			return str.ToString();
 		}
@@ -64,10 +81,14 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			temp = ReadShort();
-			speed = temp;
-//			speed = (temp & 0x7FFF); // TODO
-//			if ((temp & 0x8000) != 0) speed = -speed;
+			speed = (short)(temp & 0x7FF);
+			if ((temp & 0x800) == 0x800)
+				speed = (short)-speed;
 			heading = ReadShort();
+			heading = (ushort)(heading & 0xFFF);
+			speedZ = (short)(((temp & 0x7000) >> 8) | (heading >> 12));
+			if ((temp & 0x8000) == 0x8000)
+				speedZ = (short)-speedZ;
 			currentZoneX = ReadShort();
 			targetZoneX = ReadShort();
 			currentZoneY = ReadShort();

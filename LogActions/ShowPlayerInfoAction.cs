@@ -39,6 +39,9 @@ namespace PacketLogConverter.LogActions
 			int concentrationPercent = -1;
 			int speed = -1;
 			int maxspeed = -1;
+			int clientTargetOid = -1;
+			int serverTargetOid = -1;
+			string loc = "UNKNOWN";
 			string state = "";
 			string charName = "UNKNOWN";
 
@@ -59,8 +62,12 @@ namespace PacketLogConverter.LogActions
 						state += ",StrafeLeft";
 					if ((pos.Status & 0x2000) == 0x2000)
 						state += "Move";
+					if ((pos.Flag & 0x01) == 0x01)
+						state += ",CtoS_0xA9_Flagx01";
 					if ((pos.Flag & 0x02) == 0x02)
 						state += ",Diving";
+					if ((pos.Flag & 0x04) == 0x04)
+						state += ",PetInView";
 					if ((pos.Flag & 0x08) == 0x08)
 						state += ",GT";
 					if ((pos.Flag & 0x10) == 0x10)
@@ -71,11 +78,24 @@ namespace PacketLogConverter.LogActions
 						state += ",MoveTo";
 					if ((pos.Health & 0x80) == 0x80)
 						state += ",Combat";
+					if ((pos.Speed & 0x8000) == 0x8000)
+						state += ",FallDown";
+					loc = string.Format("({0,-3}): ({1,-6} {2,-6} {3,-5})", pos.CurrentZoneId, pos.CurrentZoneX, pos.CurrentZoneY, pos.CurrentZoneZ);
 				}
 				else if (pak is CtoS_0x10_CharacterSelectRequest)
 				{
 					CtoS_0x10_CharacterSelectRequest login = (CtoS_0x10_CharacterSelectRequest)pak;
 					charName = login.CharName;
+				}
+				else if (pak is CtoS_0xB0_TargetChange)
+				{
+					CtoS_0xB0_TargetChange trg = (CtoS_0xB0_TargetChange)pak;
+					clientTargetOid = trg.Oid;
+				}
+				else if (pak is StoC_0xF6_ChangeTarget)
+				{
+					StoC_0xF6_ChangeTarget trg = (StoC_0xF6_ChangeTarget)pak;
+					serverTargetOid = trg.Oid;
 				}
 				else if (pak is StoC_0xB6_UpdateMaxSpeed)
 				{
@@ -113,12 +133,15 @@ namespace PacketLogConverter.LogActions
 			str.AppendFormat("         mana: {0,3}%\n", ValueToString(manaPercent));
 			str.AppendFormat("    endurance: {0,3}%\n", ValueToString(endurancePercent));
 			str.AppendFormat("concentration: {0,3}%\n", ValueToString(concentrationPercent));
-			str.AppendFormat("        state: {0}\n", state);
+			str.AppendFormat(" clientTarget: 0x{0}\n", ValueToString(clientTargetOid, "X4"));
+			str.AppendFormat(" serverTarget: 0x{0}\n", ValueToString(serverTargetOid, "X4"));
+			str.AppendFormat(" current zone: {0}\n", loc);
+			str.AppendFormat("        flags: {0}\n", state);
 
 			InfoWindowForm infoWindow = new InfoWindowForm();
 			infoWindow.Text = "Player info (right click to close)";
 			infoWindow.Width = 500;
-			infoWindow.Height = 220;
+			infoWindow.Height = 265;
 			infoWindow.InfoRichTextBox.Text = str.ToString();
 			infoWindow.StartWindowThread();
 

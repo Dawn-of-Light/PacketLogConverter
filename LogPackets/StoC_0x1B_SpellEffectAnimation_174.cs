@@ -6,7 +6,7 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x1B, 174, ePacketDirection.ServerToClient, "Spell effect animation v174")]
 	public class StoC_0x1B_SpellEffectAnimation_174 : StoC_0x1B_SpellEffectAnimation
 	{
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("casterOid:0x{0:X4} spellId:{1,-5} targetOid:0x{2:X4} boltTime:{3,-3} noSound:{4} success:0x{5:X2}",

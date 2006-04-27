@@ -23,7 +23,7 @@ namespace PacketLogConverter.LogWriters
 					if (FilterManager.IsPacketIgnored(packet))
 						continue;
 
-					s.WriteLine(packet.ToHumanReadableString(baseTime));
+					s.WriteLine(packet.ToHumanReadableString(baseTime, true));
 				}
 			}
 		}

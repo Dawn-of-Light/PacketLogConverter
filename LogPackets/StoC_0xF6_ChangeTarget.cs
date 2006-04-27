@@ -4,7 +4,8 @@ namespace PacketLogConverter.LogPackets
 	public class StoC_0xF6_ChangeTarget : Packet, IOidPacket
 	{
 		protected ushort oid;
-		protected ushort unk1;
+		protected byte type;
+		protected byte unk1;
 
 		public int Oid1 { get { return oid; } }
 		public int Oid2 { get { return int.MinValue; } }
@@ -12,13 +13,14 @@ namespace PacketLogConverter.LogPackets
 		#region public access properties
 
 		public ushort Oid { get { return oid; } }
-		public ushort Unk1 { get { return unk1; } }
+		public byte Type { get { return type; } }
+		public byte Unk1 { get { return unk1; } }
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
-			return string.Format("oid:0x{0:X4} unk1:0x{1:X4}", oid, unk1);
+			return string.Format("oid:0x{0:X4} type:{1} unk1:0x{2:X2}", oid, type, unk1);
 		}
 
 		/// <summary>
@@ -28,7 +30,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 			oid = ReadShort();
-			unk1= ReadShort();
+			type = ReadByte();
+			unk1= ReadByte();
 		}
 
 		/// <summary>

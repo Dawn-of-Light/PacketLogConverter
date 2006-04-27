@@ -17,10 +17,10 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			str.Append(base.GetPacketDataString());
+			str.Append(base.GetPacketDataString(flagsDescription));
 			string effects;
 			switch (spellEffects)
 			{

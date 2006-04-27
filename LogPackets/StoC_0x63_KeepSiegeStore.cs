@@ -32,7 +32,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("keepId:0x{0:X4} componentId:0x{1:X4} hookPointId:0x{2:X4} f1:{3} f2:{4} f3:{5} count:{6} unk1:{7} unk2:{8}",

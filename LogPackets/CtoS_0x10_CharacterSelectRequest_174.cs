@@ -13,9 +13,9 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
-			return "serverId:0x" + serverId.ToString("X2") + " " + base.GetPacketDataString();
+			return "serverId:0x" + serverId.ToString("X2") + " " + base.GetPacketDataString(flagsDescription);
 		}
 
 		/// <summary>

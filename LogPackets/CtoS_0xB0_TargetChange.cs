@@ -16,7 +16,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			return string.Format("oid:0x{0:X4} unk1:0x{1:X4}", oid, unk1);
 		}

@@ -18,11 +18,16 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			TimeSpan timeUp = new TimeSpan((long) timeStamp * 1000); // TimeSpan in 100-nanosecond
-			str.AppendFormat("timeStamp:0x{0:X8} unk1:0x{1:X8} unk2:0x{2:X8} upTime:{3}", timeStamp, unk1, unk2, timeUp);
+
+			str.AppendFormat("timeStamp:0x{0:X8} unk1:0x{1:X8} unk2:0x{2:X8}", timeStamp, unk1, unk2);
+			if (flagsDescription)
+			{
+				TimeSpan timeUp = new TimeSpan((long) timeStamp * 1000); // TimeSpan in 100-nanosecond
+				str.AppendFormat(" upTime:{0}", timeUp);
+			}
 
 			return str.ToString();
 		}

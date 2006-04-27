@@ -48,7 +48,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("slot:{0,2} skill:{1,2} resist:{2,2} bonus:{3,2} hp:{4,2} power:{5,2} proc:{6} qtyMin:{7,3} qtyMax:{8,3} levelMin:{9,2} levelMax:{10,2} priceMin:{11,2} priceMax:{12,2} visual:{13} page:{14,2} unk:0x{15:X2}{16:X4} filter:{17}",

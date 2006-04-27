@@ -6,7 +6,7 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x15, 172, ePacketDirection.ServerToClient, "Equipment update v172")]
 	public class StoC_0x15_EquipmentUpdate_172 : StoC_0x15_EquipmentUpdate
 	{
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 

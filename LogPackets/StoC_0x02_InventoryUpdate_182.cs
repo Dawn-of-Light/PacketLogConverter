@@ -6,7 +6,7 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x02, 182, ePacketDirection.ServerToClient, "Inventory update v182")]
 	public class StoC_0x02_InventoryUpdate_182 : StoC_0x02_InventoryUpdate
 	{
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder(16 + m_slotsCount*32);
 			str.AppendFormat("slots:{0} bits:0x{1:X2} visibleSlots:0x{2:X2} preAction:0x{3:X2}", SlotsCount, Bits, VisibleSlots, PreAction);
@@ -48,37 +48,39 @@ namespace PacketLogConverter.LogPackets
 				Item item = new Item();
 
 				item.slot = ReadByte();
-				item.level = ReadByte();
-
-				item.value1 = ReadByte();
-				item.value2 = ReadByte();
-
-				item.hand = ReadByte();
-				byte temp = ReadByte(); //WriteByte((byte) ((item.Type_Damage*64) + item.Object_Type));
-				item.damageType = (byte)(temp >> 6);
-				item.objectType = (byte)(temp & 0x3F);
-				item.weight = ReadShort();
-				item.condition = ReadByte();
-				item.durability = ReadByte();
-				item.quality = ReadByte();
-				item.bonus = ReadByte();
-				item.model = ReadShort();
-				item.extension = ReadByte();
-				item.color = ReadShort();
-				item.flag = ReadByte();
-				if ((item.flag & 0x08) == 0x08)
+				if (Position < Length)
 				{
-					item.effectIcon = ReadShort();
-					item.effectName = ReadPascalString();
-				}
-				if ((item.flag & 0x10) == 0x10)
-				{
-					item.effectIcon2 = ReadShort();
-					item.effectName2 = ReadPascalString();
-				}
-				item.effect = ReadByte();
-				item.name = ReadPascalString();
+					item.level = ReadByte();
 
+					item.value1 = ReadByte();
+					item.value2 = ReadByte();
+
+					item.hand = ReadByte();
+					byte temp = ReadByte(); //WriteByte((byte) ((item.Type_Damage*64) + item.Object_Type));
+					item.damageType = (byte)(temp >> 6);
+					item.objectType = (byte)(temp & 0x3F);
+					item.weight = ReadShort();
+					item.condition = ReadByte();
+					item.durability = ReadByte();
+					item.quality = ReadByte();
+					item.bonus = ReadByte();
+					item.model = ReadShort();
+					item.extension = ReadByte();
+					item.color = ReadShort();
+					item.flag = ReadByte();
+					if ((item.flag & 0x08) == 0x08)
+					{
+						item.effectIcon = ReadShort();
+						item.effectName = ReadPascalString();
+					}
+					if ((item.flag & 0x10) == 0x10)
+					{
+						item.effectIcon2 = ReadShort();
+						item.effectName2 = ReadPascalString();
+					}
+					item.effect = ReadByte();
+					item.name = ReadPascalString();
+				}
 				m_items[i] = item;
 			}
 		}

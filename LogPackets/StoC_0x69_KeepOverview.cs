@@ -31,7 +31,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("keepId:0x{0:X4} x:{1,-6} y:{2,-6} heading:0x{3:X4} realm:{4} level:{5,-2} model:0x{6:X2} unk1:{7} unk2:{8} unk3:0x{9:X2}",

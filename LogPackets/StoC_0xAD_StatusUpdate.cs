@@ -25,11 +25,11 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("health:{0,3}% mana:{1,3}% endu:{4,3}% conc:{5,3}% alive:0x{2:X4} sitting:{3} unk1:{6}",
+			str.AppendFormat("health:{0,3}% mana:{1,3}% alive:0x{2:X4} sitting:{3} endurance:{4,3}% concentration:{5,3}% unk1:0x{6:X2}",
 				healthPercent, manaPercent, alive, sitting, endurancePercent, concentrationPercent, unk1);
 
 			return str.ToString();

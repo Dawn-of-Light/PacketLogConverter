@@ -16,7 +16,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder(8192);
 
@@ -25,9 +25,9 @@ namespace PacketLogConverter.LogPackets
 			{
 				CharData ch = chars[i];
 
-				str.AppendFormat("name:\"{0}\" zone:\"{1}\" class:\"{2}\" race:\"{3}\" level:{4} classId:{5} realm:{6} gender:{7} race:{8} model:0x{9:X4} regId1:{10} regId2:{11} unk1:0x{12:X8}\n",
+				str.AppendFormat("name:\"{0}\" zone:\"{1}\" class:\"{2}\" race:\"{3}\" level:{4} classId:{5} realm:{6} gender:{7} race:{8} model:0x{9:X4} regId1:{10} regId2:{11} unk1:0x{12:X8}",
 					ch.charName, ch.zoneDescription, ch.className, ch.raceName, ch.level, ch.classID, ch.realm, ch.gender, ch.race, ch.model, ch.regionID, ch.regionID2, ch.unk1);
-				str.AppendFormat("\tstr:{0} dex:{1} con:{2} qui:{3} int:{4} pie:{5} emp:{6} chr:{7}", ch.statStr, ch.statDex, ch.statCon, ch.statQui, ch.statInt, ch.statPie, ch.statEmp, ch.statChr);
+				str.AppendFormat("\n\tstr:{0} dex:{1} con:{2} qui:{3} int:{4} pie:{5} emp:{6} chr:{7}", ch.statStr, ch.statDex, ch.statCon, ch.statQui, ch.statInt, ch.statPie, ch.statEmp, ch.statChr);
 
 				str.Append("\n\tarmor models: (");
 				foreach (DictionaryEntry entry in ch.armorModelBySlot)
@@ -57,6 +57,17 @@ namespace PacketLogConverter.LogPackets
 				}
 
 				str.AppendFormat(")\n\tactiveRightSlot:0x{0:X2} activeLeftSlot:0x{1:X2} SIzone:0x{2:X2} unk2:0x{3:X2}\n", ch.activeRightSlot, ch.activeLeftSlot, ch.siZone, ch.unk2);
+				if (ch.unk3.Length > 0)
+				{
+					str.Append("\tunk3:(");
+					for (int j = 0; j < ch.unk3.Length ; j++)
+					{
+						if (j > 0)
+							str.Append(',');
+						str.AppendFormat("0x{0:X2}", ch.unk3[j]);
+					}
+					str.Append(")\n");
+				}
 			}
 
 			str.Append("and 104 bytes more unused");
@@ -80,7 +91,11 @@ namespace PacketLogConverter.LogPackets
 				CharData charData = new CharData();
 
 				charData.charName = ReadString(24);
-				Skip(24); // ?
+				Skip(11); // ?
+				ArrayList tmp = new ArrayList(13);
+				for (byte j=0; j<13; j++)
+					tmp.Add(ReadByte());
+				charData.unk3 = (byte[])tmp.ToArray(typeof (byte));
 				charData.zoneDescription = ReadString(24);
 				charData.className = ReadString(24);
 				charData.raceName = ReadString(24);
@@ -164,6 +179,7 @@ namespace PacketLogConverter.LogPackets
 			public byte activeLeftSlot;
 			public byte siZone;
 			public byte unk2;
+			public byte[] unk3;
 		}
 
 		/// <summary>

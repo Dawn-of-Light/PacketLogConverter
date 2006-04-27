@@ -34,7 +34,7 @@ namespace PacketLogConverter.LogPackets
 		
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 			for (byte i=0; i<16 ; i++)

@@ -17,7 +17,8 @@ namespace PacketLogConverter.LogPackets
 		protected byte flag;
 		protected byte health;
 
-		public int Oid1
+		public int Oid1 { get { return sessionId; } }
+		public int Oid2
 		{
 			get
 			{
@@ -27,7 +28,6 @@ namespace PacketLogConverter.LogPackets
 					return int.MinValue;
 			}
 		}
-		public int Oid2 { get { return int.MinValue; } }
 
 		#region public access properties
 
@@ -55,12 +55,58 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public enum PlrState : byte
+		{
+			Stand = 0,
+			Swim = 1,
+			Jump = 2,
+			debugFly= 3,
+			Sit = 4,
+			Died = 5,
+			Ride = 6,
+			Climb = 7,
+		}
+
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("sessionId:0x{0:X4} status:0x{1:X2} speed:{2,-3} {3}:0x{4:X4}(0x{14:X2}) currentZone({5,-3}): ({6,-6} {7,-6} {8,-4}) flyFlags:0x{9:X2} speed2:{10,-4} flags:0x{11:X2} health:{12,3}%{13}",
-				sessionId, (status & 0x1FF ^ status) >> 8 ,status & 0x1FF, ((status & 0x1C00) == 0x1800) ? "mountId" : "heading", heading & 0xFFF, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, (speed & 0x7FF ^ speed) >> 8, speed & 0x7FF, flag, health & 0x7F, ((health>>7)==1)?" combat":"", (heading & 0xFFF ^ heading) >> 8);
+			str.AppendFormat("sessionId:0x{0:X4} status:0x{1:X2} speed:{2,-3} {3}:0x{4:X4}(0x{13:X2}) currentZone({5,-3}): ({6,-6} {7,-6} {8,-5}) flyFlags:0x{9:X2} speedZ:{10,-4} flags:0x{11:X2} health:{12,3}%",
+				sessionId, (status & 0x1FF ^ status) >> 8 ,status & 0x1FF, ((status & 0x1C00) == 0x1800) ? "mountId" : "heading", ((status & 0x1C00) == 0x1800) ? heading : heading & 0xFFF, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, (speed & 0x7FF ^ speed) >> 8, speed & 0x7FF, flag, health & 0x7F, ((status & 0x1C00) == 0x1800) ? 0 : (heading & 0xFFF ^ heading) >> 8);
+			if (flagsDescription)
+			{
+				byte plrState = (byte)((status >> 10) & 7);
+				string flags = plrState > 0 ? ((PlrState)plrState).ToString() : "";
+				if ((status & 0x200) == 0x200)
+					flags += ",Backward";
+				if ((status & 0x8000) == 0x8000)
+					flags += ",StrafeRight";
+				if ((status & 0x4000) == 0x4000)
+					flags += ",StrafeLeft";
+				if ((status & 0x2000) == 0x2000)
+					flags += "Move";
+				if ((flag & 0x01) == 0x01)
+					flags += ",Wireframe";
+				if ((flag & 0x02) == 0x02)
+					flags += ",Stealth";
+				if ((flag & 0x04) == 0x04)
+					flags += ",Diving";
+				if ((flag & 0x08) == 0x08)
+					flags += ",GT";
+				if ((flag & 0x10) == 0x10) // ?
+					flags += ",HaveTarget";
+				if ((flag & 0x20) == 0x20) // ?
+					flags += ",TargetInView";
+				if ((flag & 0x40) == 0x40)
+					flags += ",MoveTo";
+				if ((flag & 0x80) == 0x80)
+					flags += ",Torch";
+				if ((health & 0x80) == 0x80)
+					flags += ",Combat";
+				if ((speed & 0x8000) == 0x8000)
+					flags += ",FallDown";
+				if (flags.Length > 0)
+					str.Append(" ("+flags+")");
+			}
 			return str.ToString();
 		}
 

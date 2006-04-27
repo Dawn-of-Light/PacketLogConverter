@@ -34,7 +34,7 @@ namespace PacketLogConverter.LogPackets
 			hookPoints = 5
 		}
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("position:0x{0:X4} houseOid:0x{1:X4} itemType:{2}({3}) unk1:0x{4:X2} unk2:0x{5:X4}",

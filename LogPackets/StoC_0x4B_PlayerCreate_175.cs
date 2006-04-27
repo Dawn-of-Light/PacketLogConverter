@@ -13,9 +13,9 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
-			string str = base.GetPacketDataString();
+			string str = base.GetPacketDataString(flagsDescription);
 			str += " unk1_175:" + unk1_175;
 			return str;
 		}

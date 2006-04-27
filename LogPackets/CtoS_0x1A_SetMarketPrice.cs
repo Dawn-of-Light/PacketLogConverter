@@ -19,7 +19,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("slot:{0,2} price:{1,-7} unk1:0x{2:X2} unk2:0x{3:X4}", slot, price, unk1, unk2);

@@ -128,5 +128,10 @@ namespace PacketLogConverter
 		{
 			return *(float*) &data;
 		}
+
+		public unsafe static TimeSpan GetTimeSpan(uint data)
+		{
+			return *(TimeSpan*) &data;
+		}
 	}
 }

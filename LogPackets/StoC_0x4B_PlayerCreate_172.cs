@@ -28,7 +28,7 @@ namespace PacketLogConverter.LogPackets
 		protected byte trailingZero;
 
 		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		public int Oid2 { get { return sessionId; } }
 
 		#region public access properties
 
@@ -55,7 +55,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 

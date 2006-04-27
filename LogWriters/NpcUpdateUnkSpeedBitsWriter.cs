@@ -29,7 +29,7 @@ namespace PacketLogConverter.LogWriters
 					if ((npcUpdate.Temp & 0xF000) == 0) continue;
 					if ((npcUpdate.Temp & 0x0FFF) != 0) continue;
 
-					s.WriteLine(npcUpdate.ToHumanReadableString(baseTime));
+					s.WriteLine(npcUpdate.ToHumanReadableString(baseTime, true));
 					if (!oids.Contains(npcUpdate.NpcOid))
 						oids.Add(npcUpdate.NpcOid);
 					ArrayList bitsList = (ArrayList)bitsByOid[npcUpdate.NpcOid];

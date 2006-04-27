@@ -43,7 +43,7 @@ namespace PacketLogConverter.LogPackets
 			accept = 2,
 		};
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("\n\tcode:{0}({1}) repair:{2} combine:{3} unk1:0x{4:X2} unk2:0x{5:X4} unk3:0x{6:X4}",

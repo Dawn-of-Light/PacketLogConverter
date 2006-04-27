@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x88, 181, ePacketDirection.ServerToClient, "Pet window update 181")]
@@ -18,12 +20,14 @@ namespace PacketLogConverter.LogPackets
 			walkState = ReadByte(); //1-follow, 2-stay, 3-goto, 4-here
 			unused2 = ReadByte();
 
+			ArrayList effects = new ArrayList(8);
 			int effectsCount = ReadByte();
 
 			for(int i = 0; i < effectsCount; i++)
 			{
-				petEffects[i] = ReadShort();
+				effects.Add(ReadShort());
 			}
+			petEffects = (ushort[])effects.ToArray(typeof (ushort));
 		}
 
 		/// <summary>

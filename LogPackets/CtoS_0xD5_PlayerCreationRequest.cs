@@ -4,10 +4,13 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xD5, -1, ePacketDirection.ClientToServer, "Player creation request")]
-	public class CtoS_0xD5_PlayerCreationRequest : Packet
+	public class CtoS_0xD5_PlayerCreationRequest : Packet, IOidPacket
 	{
 		protected ushort sessionId;
 		protected ushort unk1;
+
+		public int Oid1 { get { return sessionId; } }
+		public int Oid2 { get { return int.MinValue; } }
 
 		#region public access properties
 
@@ -16,7 +19,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 

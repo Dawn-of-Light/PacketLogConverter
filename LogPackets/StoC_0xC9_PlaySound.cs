@@ -5,7 +5,7 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0xC9, -1, ePacketDirection.ServerToClient, "GS_F_PLAY_SOUND?")]
 	public class StoC_0xC9_PlaySound : Packet
 	{
-		protected ushort unk1;
+		protected ushort soundId;//from sounds\cc_sounds.csv
 		protected ushort zoneId;
 		protected ushort x;
 		protected ushort y;
@@ -14,7 +14,7 @@ namespace PacketLogConverter.LogPackets
 
 		#region public access properties
 
-		public ushort Unk1 { get { return unk1; } }
+		public ushort SoundId { get { return soundId; } }
 		public ushort ZoneId { get { return zoneId; } }
 		public ushort X { get { return x; } }
 		public ushort Y { get { return y; } }
@@ -23,12 +23,12 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("id?:{0:X4} zoneId:{1,-3} x:{2,-5} y:{3,-5} z:{4,-5} radius:{5}",
-				unk1, zoneId, x, y, z, radius);
+			str.AppendFormat("soundId:0x{0:X4} zoneId:{1,-3} x:{2,-5} y:{3,-5} z:{4,-5} radius:{5}",
+				soundId, zoneId, x, y, z, radius);
 
 			return str.ToString();
 		}
@@ -40,7 +40,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			unk1 = ReadShort();
+			soundId = ReadShort();
 			zoneId = ReadShort();
 			x = ReadShort();
 			y = ReadShort();

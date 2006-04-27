@@ -25,9 +25,9 @@ namespace PacketLogConverter.LogPackets
 				championTitle = pak.ReadPascalString();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				base.MakeString(str);
+				base.MakeString(str, flagsDescription);
 				str.AppendFormat(" championTitle:\"{0}\" championLevel:{1}", championTitle, championLevel);
 			}
 		}

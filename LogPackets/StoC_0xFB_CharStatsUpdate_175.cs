@@ -113,7 +113,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 			if (flag==0)	str.Append("\n\t      stat |str|dex|con|qui|int|pie|emp|chr|");

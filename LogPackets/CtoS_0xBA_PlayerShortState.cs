@@ -38,9 +38,15 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString()
+		public override string GetPacketDataString(bool flagsDescription)
 		{
 			string status = ((PlrState)(state)).ToString().ToLower();
+			if ((flags & 0x01) == 0x01)
+				status += " UNKx01";
+			if ((flags & 0x02) == 0x02)
+				status += " UNKx02";
+			if ((flags & 0x40) == 0x40)
+				status += " UNKx40";
 			if ((flags & 0x04) == 0x04)
 				status += " controlPet";
 			if ((flags & 0x08) == 0x08)
@@ -53,10 +59,8 @@ namespace PacketLogConverter.LogPackets
 				status += " torch";
 			if ((health & 0x80) == 0x80)
 				status += " combat";
-			return string.Format("sessionId:0x{0:X4} heading:{1,-4} flags:0x{2:X2} health:{3,3}% state:{4}({5})",
-				sessionId, heading, flags, health & 0x7F, state, status);
-//			return string.Format("sessionId:0x{0:X4} heading:{1,-4} flags:0x{2:X2} health:{3,3}% state:{4}({5}) unk1:0x{6:X2} unk2:0x{7:X4}",
-//				sessionId, heading, flags, health & 0x7F, state, status, unk1, unk2);
+			return string.Format("sessionId:0x{0:X4} heading:{1,-4} flags:0x{2:X2} health:{3,3}% unk1:0x{6:X2} unk2:0x{7:X4} state:{4}({5})",
+				sessionId, heading, flags, health & 0x7F, state, status, unk1, unk2);
 		}
 
 		/// <summary>
