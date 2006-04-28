@@ -1,21 +1,11 @@
+using System.Collections;
+using System.Text;
+
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xA7, 174, ePacketDirection.ClientToServer, "Login request v174")]
 	public class CtoS_0xA7_LoginRequest_174 : CtoS_0xA7_LoginRequest
 	{
-		protected byte cryptKeyRequests;
-
-		#region public access properties
-
-		public byte CryptKeyRequests { get { return cryptKeyRequests; } }
-
-		#endregion
-
-		public override string GetPacketDataString(bool flagsDescription)
-		{
-			return string.Format("version:{0}.{1}.{2} accountName:\"{3}\" accountPassword:\"{4}\" cryptKeyRequests:0x{5:X2}",
-				clientVersionMajor, clientVersionMinor, clientVersionBuild, clientAccountName, clientAccountPassword, cryptKeyRequests);
-		}
 
 		/// <summary>
 		/// Initializes the packet. All data parsing must be done here.
@@ -29,9 +19,25 @@ namespace PacketLogConverter.LogPackets
 			clientVersionMinor = ReadByte();
 			clientVersionBuild = ReadByte();
 			clientAccountPassword = ReadString(19);
-			Skip(28);
-			cryptKeyRequests = ReadByte();
-			Skip(22);
+			ArrayList arr = new ArrayList(8);
+			unk1 = ReadInt();
+			unk2 = ReadInt();
+			for(byte i = 0; i < 4; i++)
+				arr.Add(ReadInt());
+			Aunk1 = (uint[])arr.ToArray(typeof (uint));
+			unk3 = ReadInt();
+//			Skip(28); cryptKeyRequests; Skip(22);
+			arr.Clear();
+			for(byte i = 0; i < 8; i++)
+				arr.Add(ReadByte());
+			AunkB = (byte[])arr.ToArray(typeof (byte));
+			cryptKeyRequests = AunkB[0];
+			arr.Clear();
+			for(byte i = 0; i < 3; i++)
+				arr.Add(ReadInt());
+			Aunk2 = (uint[])arr.ToArray(typeof (uint));
+			unkB1 = ReadByte();
+			unkS1 = ReadShort();
 			clientAccountName = ReadString(20);
 		}
 
