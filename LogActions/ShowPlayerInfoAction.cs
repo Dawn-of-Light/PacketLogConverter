@@ -71,7 +71,7 @@ namespace PacketLogConverter.LogActions
 					if ((pos.Flag & 0x08) == 0x08)
 						state += ",GT";
 					if ((pos.Flag & 0x10) == 0x10)
-						state += ",HaveTarget";
+						state += ",CheckTargetInView";
 					if ((pos.Flag & 0x20) == 0x20)
 						state += ",TargetInView";
 					if ((pos.Flag & 0x40) == 0x40)
@@ -134,7 +134,7 @@ namespace PacketLogConverter.LogActions
 			str.AppendFormat("    endurance: {0,3}%\n", ValueToString(endurancePercent));
 			str.AppendFormat("concentration: {0,3}%\n", ValueToString(concentrationPercent));
 			str.AppendFormat(" clientTarget: 0x{0}\n", ValueToString(clientTargetOid, "X4"));
-			str.AppendFormat(" serverTarget: 0x{0}\n", ValueToString(serverTargetOid, "X4"));
+			str.AppendFormat("  checkTarget: 0x{0}\n", ValueToString(serverTargetOid, "X4"));
 			str.AppendFormat(" current zone: {0}\n", loc);
 			str.AppendFormat("        flags: {0}\n", state);
 
