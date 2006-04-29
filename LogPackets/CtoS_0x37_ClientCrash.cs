@@ -49,7 +49,7 @@ namespace PacketLogConverter.LogPackets
 			StringBuilder str = new StringBuilder();
 
 			str.AppendFormat("module:{0} version:{1} CS=0x{2:X4} EIP=0x{3:X8} clnType:{4} region:{5,-3} uptime:{6}s codeError:0x{7:X2}(windowMode:{8})", module, version, cs, eip, clnType, region, uptime, options, options & 0x1);
-			str.AppendFormat("\n\tstack1?:0x{0:X8} stack2?:0x{1:X8} stack3?:0x{2:X8} stack4?:0x{3:X8}", stack1, stack2, stack3, stack4);
+			str.AppendFormat("\n\tstack:0x{0:X8} 0x{1:X8} 0x{2:X8} 0x{3:X8}", stack1, stack2, stack3, stack4);
 
 			return str.ToString();
 		}

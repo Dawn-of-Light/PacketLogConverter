@@ -133,5 +133,11 @@ namespace PacketLogConverter
 		{
 			return *(TimeSpan*) &data;
 		}
+
+		public static DateTime GetDateTime(uint data)
+		{
+			System.DateTime dateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
+			return dateTime.AddSeconds((double)data);
+		}
 	}
 }

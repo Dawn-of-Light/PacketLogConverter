@@ -18,27 +18,23 @@ namespace PacketLogConverter.LogPackets
 			clientVersionMinor = ReadByte();
 			clientVersionBuild = ReadByte();
 			clientAccountPassword = ReadString(19);
-			ArrayList arr = new ArrayList(8);
-			unk1 = ReadInt();
-			unk2 = ReadInt();
-			for(byte i = 0; i < 4; i++)
-			{
-				arr.Add(ReadInt());
-			}
-			Aunk1 = (uint[])arr.ToArray(typeof (uint));
-			unk3 = ReadInt();
+			unk1 = ReadIntLowEndian();
+			unk2 = ReadIntLowEndian();
+			Aunk1 = ReadIntLowEndian();
+			Aunk2 = ReadIntLowEndian();
+			Aunk3 = ReadIntLowEndian();
+			Aunk4 = ReadIntLowEndian();
+			unk3 = ReadIntLowEndian();
 //			Skip(32); cryptKeyRequests; Skip(18);
-			arr.Clear();
-			for(byte i = 0; i < 8; i++)
-				arr.Add(ReadByte());
-			AunkB = (byte[])arr.ToArray(typeof (byte));
-			cryptKeyRequests = AunkB[4];
-			arr.Clear();
+			edi = ReadIntLowEndian();
+			AunkB = ReadIntLowEndian();
+			cryptKeyRequests = (byte)(AunkB);
+			ArrayList arr = new ArrayList(4);
 			for(byte i = 0; i < 3; i++)
 			{
-				arr.Add(ReadInt());
+				arr.Add(ReadIntLowEndian());
 			}
-			Aunk2 = (uint[])arr.ToArray(typeof (uint));
+			AunkI = (uint[])arr.ToArray(typeof (uint));
 			unkB1 = ReadByte();
 			unkS1 = ReadShort();
 			clientAccountName = ReadString(20);
