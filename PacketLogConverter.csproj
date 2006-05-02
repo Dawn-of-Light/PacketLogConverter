@@ -531,6 +531,26 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "LogPackets\CtoS_0x9D_RegionListRequest_172.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x9D_RegionListRequest_174.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x9D_RegionListRequest_180.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x9D_RegionListRequest_183.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "LogPackets\CtoS_0x9F_DisbandFromGroup.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -8,10 +8,13 @@ namespace PacketLogConverter.LogPackets
 	public class StoC_0x70_PlayerGroupUpdate : Packet
 	{
 		protected object[] updates;
+		protected byte playerIndex; 
 
 		#region public access properties
 
 		public object[] Updates { get { return updates; } }
+		public byte PlayerIndex { get { return (byte)(playerIndex & 0xF); } }
+		public byte Type { get { return (byte)(playerIndex & 0xF0); } }
 
 		#endregion
 
@@ -36,7 +39,7 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			ArrayList groupUpdates = new ArrayList();
-			byte playerIndex = ReadByte();
+			playerIndex = ReadByte();
 			while (playerIndex != 0)
 			{
 				switch (playerIndex & 0xF0)

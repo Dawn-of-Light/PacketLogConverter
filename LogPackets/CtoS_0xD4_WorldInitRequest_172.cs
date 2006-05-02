@@ -2,7 +2,7 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0xD4, 172, ePacketDirection.ClientToServer, "World init request_172")]
+	[LogPacket(0xD4, 172, ePacketDirection.ClientToServer, "World init request v172")]
 	public class CtoS_0xD4_WorldInitRequest_172 : CtoS_0xD4_WorldInitRequest
 	{
 
@@ -15,6 +15,11 @@ namespace PacketLogConverter.LogPackets
 			unk1 = ReadInt();
 			unk2 = ReadInt();
 			regionId = (short)ReadShort();
+			unk3 = ReadInt();
+			model = ReadShort();
+			unk4 = ReadByte();
+			slot = ReadByte();
+			unk5 = ReadInt();
 		}
 
 		/// <summary>

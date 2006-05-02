@@ -19,7 +19,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("jumpSpotId:{0} unk1:0x{1:X4}", jumpSpotId, unk1);
+			str.AppendFormat("jumpSpotId:{0,-3} unk1:0x{1:X4}", jumpSpotId, unk1);
 
 			return str.ToString();
 		}

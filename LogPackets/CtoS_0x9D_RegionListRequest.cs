@@ -5,17 +5,21 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x9D, -1, ePacketDirection.ClientToServer, "Region list request")]
 	public class CtoS_0x9D_RegionListRequest : Packet
 	{
-		protected byte unk1;
+		protected byte flag;
 
 		#region public access properties
 
-		public byte Unk1 { get { return unk1; } }
+		public byte Flag { get { return flag; } }
 
 		#endregion
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
-			return "unk1:0x"+unk1.ToString("X2");
+			StringBuilder str = new StringBuilder();
+
+			str.AppendFormat("flag:{0}", flag);
+
+			return str.ToString();
 		}
 
 		/// <summary>
@@ -25,7 +29,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			unk1 = ReadByte();
+			flag = ReadByte();
 		}
 
 		/// <summary>
