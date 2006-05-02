@@ -10,7 +10,10 @@ namespace PacketLogConverter.LogPackets
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
-			return base.GetPacketDataString(flagsDescription) + "\n\tnew in 1.80 0x" + unk4.ToString("X8") + " 0x" + unk5.ToString("X8");
+			string str = base.GetPacketDataString(flagsDescription);
+			if (flag > 0)
+				str += "\n\tnew in 1.80 0x" + unk4.ToString("X8") + " 0x" + unk5.ToString("X8");
+			return str;
 		}
 
 		/// <summary>

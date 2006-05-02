@@ -9,7 +9,10 @@ namespace PacketLogConverter.LogPackets
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
-			return base.GetPacketDataString(flagsDescription) + " 0x" + unkB.ToString("X2");
+			string str = base.GetPacketDataString(flagsDescription);
+			if (flag > 0)
+				str += " 0x" + unkB.ToString("X2");
+			return str;
 		}
 
 		/// <summary>

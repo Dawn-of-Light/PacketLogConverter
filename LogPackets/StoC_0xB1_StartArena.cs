@@ -30,8 +30,8 @@ namespace PacketLogConverter.LogPackets
 
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("unk1:0x{0:X2} region:{1,-3} serverIp:\"{2}\" portFrom:{3} portTo:{4} unk3:0x{5:X4} un4:0x{6:X4}",
-				unk1, region, serverIp, portFrom, portTo, unk3, unk4);
+			str.AppendFormat("clienTypeRequired:{0} unk1:0x{1:X1} region:{2,-3} serverIp:\"{3}\" portFrom:{4} portTo:{5} unk3:0x{6:X4} un4:0x{7:X4}",
+				unk1 >> 4, unk1 & 0x0F, region, serverIp, portFrom, portTo, unk3, unk4);
 
 			return str.ToString();
 		}
