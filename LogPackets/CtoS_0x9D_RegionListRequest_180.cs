@@ -10,15 +10,7 @@ namespace PacketLogConverter.LogPackets
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("dBslot:{0,-2} flag:{1}", slot, flag);
-			if (flag > 0)
-			{
-				str.AppendFormat(" resolutions:0x{0:X4} options:0x{1:X4} unk:0x{2:X8} 0x{3:X8} 0x{4:X8} 0x{5:X4} 0x{6:X8} 0x{7:X8}",
-					resolution, options, unk1, unk2, unk3, unkS, unk4, unk5);
-			}
-			return str.ToString();
+			return base.GetPacketDataString(flagsDescription) + "\n\tnew in 1.80 0x" + unk4.ToString("X8") + " 0x" + unk5.ToString("X8");
 		}
 
 		/// <summary>

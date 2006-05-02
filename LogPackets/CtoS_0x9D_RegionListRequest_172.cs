@@ -23,7 +23,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("dBslot:{0,-2} flag:{1}", slot, flag);
+			str.AppendFormat("dBslot:{0,-2} flagOption::{1}", slot, flag);
 			if (flag > 0)
 			{
 				str.AppendFormat(" resolutions:0x{0:X4} options:0x{1:X4} unk:0x{2:X8} 0x{3:X8} 0x{4:X8}",
