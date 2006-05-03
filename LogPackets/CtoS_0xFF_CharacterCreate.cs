@@ -83,7 +83,6 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			accountName = ReadString(24);
-			byte cloakHoodUp;
 
 			while (Position < Length)
 			{

@@ -42,7 +42,6 @@ namespace PacketLogConverter.LogPackets
 
 			m_items = new Item[m_slotsCount];
 
-			ushort effect;
 			for (int i = 0; i < m_slotsCount; i++)
 			{
 				Item item = new Item();

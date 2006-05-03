@@ -10,7 +10,7 @@ namespace PacketLogConverter.LogPackets
 		protected byte unk1;
 		protected ushort houseOid;
 		protected Access permission;
-		protected byte unk2; // trailng zero ?
+		protected byte zero; // trailng zero ?
 
 		public int Oid1 { get { return houseOid; } }
 		public int Oid2 { get { return int.MinValue; } }
@@ -21,7 +21,7 @@ namespace PacketLogConverter.LogPackets
 		public byte Unk1 { get { return unk1; } }
 		public ushort Oid { get { return houseOid; } }
 		public Access Permission { get { return permission; } }
-		public byte Unk2 { get { return unk2; } }
+		public byte Zero { get { return zero; } }
 
 		#endregion
 
@@ -29,10 +29,44 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("unk1:0x{0:X2} houseOid:0x{1:X4} unk2:0x{2:X2}", unk1, houseOid, unk2);
-			str.AppendFormat("\n\tlevel:{0} unk1:0x{1:X2} unk2:0x{2:X2} unk3:0x{3:X2} unk4:0x{4:X2} unk5:0x{5:X2} unk6:0x{6:X2} unk7:0x{7:X2} unk8:0x{8:X2} unk9:0x{9:X2} unk10:0x{10:X2} unk11:0x{11:X2} unk12:0x{12:X2} unk13:0x{13:X2} unk14:0x{14:X2} unk15:0x{15:X2}",
-				level, permission.unk1, permission.unk2, permission.unk3, permission.unk4, permission.unk5, permission.unk6, permission.unk7, permission.unk8,
-				permission.unk9, permission.unk10, permission.unk11, permission.unk12, permission.unk13, permission.unk14, permission.unk15);
+			str.AppendFormat("unk1:0x{0:X2} houseOid:0x{1:X4} trailngZero?:0x{2:X2}", unk1, houseOid, zero);
+			str.AppendFormat("\n\tLevel:{0} Enter:{1} Vault1:{2} Vault2:{3} Vault3:{4} Vault4:{5} Appearance:{6} Interior:{7} Garden:{8} Banish:{9} useMerchant:{10} Tools:{11} Bind:{12} Merchant:0x{13:X2} payRent:{14} zero?:0x{15:X2}",
+				level, permission.enter, permission.vault1, permission.vault2, permission.vault3, permission.vault4, permission.appearance, permission.interior, permission.garden,
+				permission.banish, permission.useMerchant, permission.tools, permission.bind, permission.merchant, permission.payRent, permission.unk1);
+			if (flagsDescription)
+			{
+				str.AppendFormat("\n\tVault1 = View:({0,-6}) Add:({1,-6}) Remove:({2,-6})",
+					((permission.vault1 & 4) == 4 ? "Enable" : "Disable"),
+					((permission.vault1 & 2) == 2 ? "Enable" : "Disable"),
+					((permission.vault1 & 1) == 1 ? "Enable" : "Disable"));
+				str.AppendFormat("\n\tVault2 = View:({0,-6}) Add:({1,-6}) Remove:({2,-6})",
+					((permission.vault2 & 4) == 4 ? "Enable" : "Disable"),
+					((permission.vault2 & 2) == 2 ? "Enable" : "Disable"),
+					((permission.vault2 & 1) == 1 ? "Enable" : "Disable"));
+				str.AppendFormat("\n\tVault3 = View:({0,-6}) Add:({1,-6}) Remove:({2,-6})",
+					((permission.vault3 & 4) == 4 ? "Enable" : "Disable"),
+					((permission.vault3 & 2) == 2 ? "Enable" : "Disable"),
+					((permission.vault3 & 1) == 1 ? "Enable" : "Disable"));
+				str.AppendFormat("\n\tVault4 = View:({0,-6}) Add:({1,-6}) Remove:({2,-6})",
+					((permission.vault4 & 4) == 4 ? "Enable" : "Disable"),
+					((permission.vault4 & 2) == 2 ? "Enable" : "Disable"),
+					((permission.vault4 & 1) == 1 ? "Enable" : "Disable"));
+				str.AppendFormat("\n\tDecorations-> Interior = Add:({0,-6}) Remove:({1,-6})",
+					((permission.interior & 2) == 2 ? "Enable" : "Disable"),
+					((permission.interior & 1) == 1 ? "Enable" : "Disable"));
+				str.AppendFormat("\n\tDecoration-> Garden = Add:({0,-6}) Remove:({1,-6})",
+					((permission.garden & 2) == 2 ? "Enable" : "Disable"),
+					((permission.garden & 1) == 1 ? "Enable" : "Disable"));
+				str.AppendFormat("\n\tAccess-> Tools:({0})", ((permission.tools & 1) == 1 ? "Enable" : "Disable"));
+				str.AppendFormat("\n\tAccess-> Use Merchant:({0})", ((permission.useMerchant & 1) == 1 ? "Enable" : "Disable"));
+				str.AppendFormat("\n\tAccess-> Enter House:({0})", ((permission.enter & 1) == 1 ? "Enable" : "Disable"));
+				str.AppendFormat("\n\tAccess-> Ablility to Banish:({0})", ((permission.banish & 1) == 1 ? "Enable" : "Disable"));
+				str.AppendFormat("\n\tAccess-> Use Bind Stones:({0})", ((permission.bind & 1) == 1 ? "Enable" : "Disable"));
+				str.AppendFormat("\n\tAccess-> Change external Appearance:({0})", ((permission.appearance & 1) == 1 ? "Enable" : "Disable"));
+				str.AppendFormat("\n\tAccess-> Pay rent:({0})", ((permission.payRent & 1) == 1 ? "Enable" : "Disable"));
+				str.AppendFormat("\n\tAccess-> Add/Remove to/from Consign.Merchant:({0})", ((permission.merchant & 3) == 3 ? "Enable" : "Disable"));
+				str.AppendFormat("\n\tAccess-> Withdraw from Consignment Merchant:({0})", ((permission.merchant & 0x10) == 0x10 ? "Enable" : "Disable"));
+			}
 
 			return str.ToString();
 		}
@@ -48,41 +82,41 @@ namespace PacketLogConverter.LogPackets
 			unk1 = ReadByte();
 			houseOid = ReadShort();
 			permission = new Access();
+			permission.enter = ReadByte();
+			permission.vault1 = ReadByte();
+			permission.vault2 = ReadByte();
+			permission.vault3 = ReadByte();
+			permission.vault4 = ReadByte();
+			permission.appearance = ReadByte();
+			permission.interior = ReadByte();
+			permission.garden = ReadByte();
+			permission.banish = ReadByte();
+			permission.useMerchant = ReadByte();
+			permission.tools = ReadByte();
+			permission.bind = ReadByte();
+			permission.merchant = ReadByte();
+			permission.payRent = ReadByte();
 			permission.unk1 = ReadByte();
-			permission.unk2 = ReadByte();
-			permission.unk3 = ReadByte();
-			permission.unk4 = ReadByte();
-			permission.unk5 = ReadByte();
-			permission.unk6 = ReadByte();
-			permission.unk7 = ReadByte();
-			permission.unk8 = ReadByte();
-			permission.unk9 = ReadByte();
-			permission.unk10 = ReadByte();
-			permission.unk11 = ReadByte();
-			permission.unk12 = ReadByte();
-			permission.unk13 = ReadByte();
-			permission.unk14 = ReadByte();
-			permission.unk15 = ReadByte();
-			unk2 = ReadByte();
+			zero = ReadByte();
 		}
 
 		public class Access
 		{
+			public byte enter;
+			public byte vault1;
+			public byte vault2;
+			public byte vault3;
+			public byte vault4;
+			public byte appearance;
+			public byte interior;
+			public byte garden;
+			public byte banish;
+			public byte useMerchant;
+			public byte tools;
+			public byte bind;
+			public byte merchant;
+			public byte payRent;
 			public byte unk1;
-			public byte unk2;
-			public byte unk3;
-			public byte unk4;
-			public byte unk5;
-			public byte unk6;
-			public byte unk7;
-			public byte unk8;
-			public byte unk9;
-			public byte unk10;
-			public byte unk11;
-			public byte unk12;
-			public byte unk13;
-			public byte unk14;
-			public byte unk15;
 		}
 
 		/// <summary>
