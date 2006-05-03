@@ -1351,6 +1351,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "LogPackets\StoC_0xD5_InitPlayer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "LogPackets\StoC_0xD6_DisableSkill.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
