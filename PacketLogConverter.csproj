@@ -731,6 +731,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "LogPackets\CtoS_0xE4_ShipHookpointInteract.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "LogPackets\CtoS_0xE8_PlayerWorldInitializeRequest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -1412,6 +1417,11 @@
                 />
                 <File
                     RelPath = "LogPackets\StoC_0xE3_SiegeWeaponAnimation.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xE5_ShipSiegeStore.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -1,23 +1,33 @@
-using System.Collections;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0x17, -1, ePacketDirection.ServerToClient, "Merchant window")]
-	public class StoC_0x17_MerchantWindow : Packet
+	[LogPacket(0xE5, -1, ePacketDirection.ServerToClient, "Ship hookpoint Store")]
+	public class StoC_0xE5_ShipHookpointStore: Packet, IOidPacket
 	{
+		protected ushort objectOid;
+		protected ushort componentId;
+		protected ushort hookPointId;
+		protected byte flag1; // can Buy for Money
+		protected byte flag2; // can Buy for BP
+		protected byte flag3; // cab Buy for GBP
 		protected byte itemCount;
-		protected byte windowType;
-		protected byte page;
-		protected byte unk1;
+		protected byte unk1; // windowType ?
+		protected byte unk2; // page ?
 		protected MerchantItem[] items;
+
+		public int Oid1 { get { return objectOid; } }
+		public int Oid2 { get { return int.MinValue; } }
 
 		#region public access properties
 
+		public ushort ObjectOid { get { return objectOid; } }
+		public ushort ComponentId { get { return componentId; } }
+		public ushort HookPointId { get { return hookPointId; } }
+		public byte Flag1 { get { return flag1; } }
+		public byte Flag2 { get { return flag2; } }
+		public byte Flag3 { get { return flag3; } }
 		public byte ItemCount { get { return itemCount; } }
-		public byte WindowType { get { return windowType; } }
-		public byte Page { get { return page; } }
-		public byte Unk1 { get { return unk1; } }
 		public MerchantItem[] Items { get { return items; } }
 
 		#endregion
@@ -26,29 +36,30 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("\n\tcount:{0,-2} windowType:{1} page:{2} unk1:{3}", itemCount, windowType, page, unk1);
+			str.AppendFormat("objectOid:0x{0:X4} componentId:0x{1:X4} hookPointId:0x{2:X4} buyMoney:{3} buyBP:{4} buyGBP:{5} itemCount:{6} unk1:{7} unk2:{8}",
+				objectOid, componentId, hookPointId, flag1, flag2, flag3, itemCount, unk1, unk2);
 
 			for (int i = 0; i < itemCount; i++)
 			{
 				MerchantItem item = items[i];
 				str.AppendFormat("\n\tindex:{0,-2} level:{1,-2} value1:{2,-3} spd_abs:{3,-3} hand:0x{4:X2} damageAndObjectType:0x{5:X2} canUse:{6} value2:0x{7:X4} price:{8,-8} model:0x{9:X4} name:\"{10}\"",
-				                 item.index, item.level, item.value1, item.spd_abs, item.hand, item.damageAndObjectType, item.canUse, item.value2, item.price, item.model, item.name);
+					item.index, item.level, item.value1, item.spd_abs, item.hand, item.damageAndObjectType, item.canUse, item.value2, item.price, item.model, item.name);
 			}
-
 			return str.ToString();
 		}
 
-		/// <summary>
-		/// Initializes the packet. All data parsing must be done here.
-		/// </summary>
 		public override void Init()
 		{
 			Position = 0;
-
+			objectOid = ReadShort();
+			componentId = ReadShort();
+			hookPointId = ReadShort();
+			flag1 = ReadByte();
+			flag2 = ReadByte();
+			flag3 = ReadByte();
 			itemCount = ReadByte();
-			windowType = ReadByte();
-			page = ReadByte();
 			unk1 = ReadByte();
+			unk2 = ReadByte();
 
 			items = new MerchantItem[itemCount];
 
@@ -91,7 +102,7 @@ namespace PacketLogConverter.LogPackets
 		/// Constructs new instance with given capacity
 		/// </summary>
 		/// <param name="capacity"></param>
-		public StoC_0x17_MerchantWindow(int capacity) : base(capacity)
+		public StoC_0xE5_ShipHookpointStore(int capacity) : base(capacity)
 		{
 		}
 	}

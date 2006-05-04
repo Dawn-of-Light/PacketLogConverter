@@ -9,13 +9,13 @@ namespace PacketLogConverter.LogPackets
 		protected ushort keepId;
 		protected ushort componentId;
 		protected ushort hookPointId;
-		protected byte flag1;
-		protected byte flag2;
-		protected byte flag3;
-		protected byte count;
-		protected byte unk1;
-		protected byte unk2;
-		protected Item[] siegeItems;
+		protected byte flag1; // can Buy for Money
+		protected byte flag2; // can Buy for BP
+		protected byte flag3; // cab Buy for GBP
+		protected byte itemCount;
+		protected byte unk1; // windowType ?
+		protected byte unk2; // page ?
+		protected MerchantItem[] items;
 
 		#region public access properties
 
@@ -25,23 +25,22 @@ namespace PacketLogConverter.LogPackets
 		public byte Flag1 { get { return flag1; } }
 		public byte Flag2 { get { return flag2; } }
 		public byte Flag3 { get { return flag3; } }
-		public byte Count { get { return count; } }
-		public byte Unk1 { get { return unk1; } }
-		public byte Unk2 { get { return unk2; } }
-		public Item[] SiegeItems { get { return siegeItems; } }
+		public byte ItemCount { get { return itemCount; } }
+		public MerchantItem[] Items { get { return items; } }
 
 		#endregion
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			str.AppendFormat("keepId:0x{0:X4} componentId:0x{1:X4} hookPointId:0x{2:X4} f1:{3} f2:{4} f3:{5} count:{6} unk1:{7} unk2:{8}",
-				keepId, componentId, hookPointId, flag1, flag2, flag3, count, unk1, unk2);
-			for (int i = 0; i < count; i++)
+			str.AppendFormat("keepId:0x{0:X4} componentId:0x{1:X4} hookPointId:0x{2:X4} buyMoney:{3} buyBP:{4} buyGBP:{5} count:{6} unk1:{7} unk2:{8}",
+				keepId, componentId, hookPointId, flag1, flag2, flag3, itemCount, unk1, unk2);
+
+			for (int i = 0; i < itemCount; i++)
 			{
-				Item item = siegeItems[i];
-				str.AppendFormat("\n\tid:0x{0:X2} unk1:0x{1:X4} unk2:0x{2:X4} unk3:0x{3:X4} unk4:0x{4:X4} price:{5,-3} icon:0x{6:X4} name:{7}",
-					item.id, item.unk1, item.unk2, item.unk3, item.unk4, item.price, item.icon, item.name);
+				MerchantItem item = items[i];
+				str.AppendFormat("\n\tindex:{0,-2} level:{1,-2} value1:{2,-3} spd_abs:{3,-3} hand:0x{4:X2} damageAndObjectType:0x{5:X2} canUse:{6} value2:0x{7:X4} price:{8,-8} model:0x{9:X4} name:\"{10}\"",
+					item.index, item.level, item.value1, item.spd_abs, item.hand, item.damageAndObjectType, item.canUse, item.value2, item.price, item.model, item.name);
 			}
 			return str.ToString();
 		}
@@ -55,34 +54,44 @@ namespace PacketLogConverter.LogPackets
 			flag1 = ReadByte();
 			flag2 = ReadByte();
 			flag3 = ReadByte();
-			count = ReadByte();
+			itemCount = ReadByte();
 			unk1 = ReadByte();
 			unk2 = ReadByte();
-			siegeItems = new Item[count];
-			for(int i = 0; i < count; i++)
+
+			items = new MerchantItem[itemCount];
+
+			for (int i = 0; i < itemCount; i++)
 			{
-				Item item = new Item();
-				item.id = ReadByte();
-				item.unk1 = ReadShort();
-				item.unk2 = ReadShort();
-				item.unk3 = ReadShort();
-				item.unk4 = ReadShort();
+				MerchantItem item = new MerchantItem();
+
+				item.index = ReadByte();
+				item.level = ReadByte();
+				item.value1 = ReadByte();
+				item.spd_abs = ReadByte();
+				item.hand = ReadByte(); // >>6 to get hand
+				item.damageAndObjectType = ReadByte();
+				item.canUse = ReadByte();
+				item.value2 = ReadShort();
 				item.price = ReadInt();
-				item.icon = ReadShort();
+				item.model = ReadShort();
 				item.name = ReadPascalString();
-				siegeItems[i] = item;
+
+				items[i] = item;
 			}
 		}
 
-		public struct Item
+		public struct MerchantItem
 		{
-			public byte id;
-			public ushort unk1;
-			public ushort unk2;
-			public ushort unk3;
-			public ushort unk4;
+			public byte index;
+			public byte level;
+			public byte value1;
+			public byte spd_abs;
+			public byte hand;
+			public byte damageAndObjectType;
+			public byte canUse;
+			public ushort value2;
 			public uint price;
-			public ushort icon;
+			public ushort model;
 			public string name;
 		}
 
