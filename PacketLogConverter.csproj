@@ -331,7 +331,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "LogPackets\CtoS_0x03_HousePermissionListRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "LogPackets\CtoS_0x05_HousePermissionRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x06_HousePermissionListSet.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -797,6 +807,11 @@
                 />
                 <File
                     RelPath = "LogPackets\StoC_0x02_InventoryUpdate_182.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x03_HousePermissionList.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -3,8 +3,8 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0x05, -1, ePacketDirection.ClientToServer, "House Friend Level permission request")]
-	public class CtoS_0x05_HousePermissionRequest: Packet, IOidPacket
+	[LogPacket(0x03, -1, ePacketDirection.ClientToServer, "House Friend Permission List request")]
+	public class CtoS_0x03_HousePermissionListRequest: Packet, IOidPacket
 	{
 		protected ushort unk1;
 		protected ushort houseOid;
@@ -43,7 +43,7 @@ namespace PacketLogConverter.LogPackets
 		/// Constructs new instance with given capacity
 		/// </summary>
 		/// <param name="capacity"></param>
-		public CtoS_0x05_HousePermissionRequest(int capacity) : base(capacity)
+		public CtoS_0x03_HousePermissionListRequest(int capacity) : base(capacity)
 		{
 		}
 	}

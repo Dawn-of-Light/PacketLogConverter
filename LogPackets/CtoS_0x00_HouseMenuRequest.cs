@@ -27,8 +27,17 @@ namespace PacketLogConverter.LogPackets
 			string code_type;
 			switch (code)
 			{
+				case 0:
+					code_type = "garden";
+					break;
+				case 1:
+					code_type = "buyInteriorDecoration";
+					break;
 				case 2:
 					code_type = "outside";
+					break;
+				case 7:
+					code_type = "houseInfo";
 					break;
 				case 8:
 					code_type = "inside";
