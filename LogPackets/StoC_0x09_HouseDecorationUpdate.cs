@@ -23,6 +23,14 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
+		public enum ePlaceType: byte
+		{
+			wallDecoration = 0,
+			floorDecoration = 1,
+			exteriorDecoration = 2,
+			hookPoints = 3
+		}
+
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
@@ -32,8 +40,8 @@ namespace PacketLogConverter.LogPackets
 			for (int i = 0; i < count; i++)
 			{
 				Furniture furniture = (Furniture)m_furnitures[i];
-				str.AppendFormat("\n\tindex:{0,2} model:0x{1:X4} color:0x{2:X4} unk1:0x{3:X4} (x:{4,-5} y:{5,-5}) angle:{6} size:{7,3}% position:{8,-2} placemode:{9}",
-				furniture.index, furniture.model, furniture.color, furniture.unk1, furniture.x, furniture.y, furniture.angle, furniture.size, furniture.position, furniture.placemode);
+				str.AppendFormat("\n\tindex:{0,2} model:0x{1:X4} color:0x{2:X4} unk1:0x{3:X2}{4:X2} (x:{5,-5} y:{6,-5}) angle:{7,-3} size:{8,3}% surface:{9,-2} place:{10}({11})",
+				furniture.index, furniture.model, furniture.color, furniture.type, furniture.unk1, furniture.x, furniture.y, furniture.angle, furniture.size, furniture.surface, furniture.place, (ePlaceType)furniture.place);
 			}
 
 			return str.ToString();
@@ -57,13 +65,14 @@ namespace PacketLogConverter.LogPackets
 				furniture.index = ReadByte();
 				furniture.model = ReadShort();
 				furniture.color = ReadShort();
-				furniture.unk1 = ReadShort();
+				furniture.type = ReadByte();
+				furniture.unk1 = ReadByte();
 				furniture.x = (short)ReadShort();
 				furniture.y = (short)ReadShort();
 				furniture.angle = ReadShort();
 				furniture.size = ReadByte();
-				furniture.position = ReadByte();
-				furniture.placemode = ReadByte();
+				furniture.surface = ReadByte();
+				furniture.place = ReadByte();
 
 				m_furnitures[i] = furniture;
 			}
@@ -74,13 +83,14 @@ namespace PacketLogConverter.LogPackets
 			public byte index;
 			public ushort model;
 			public ushort color;
-			public ushort unk1;
+			public byte type;
+			public byte unk1;
 			public short x;
 			public short y;
 			public ushort angle;
 			public byte size;
-			public byte position;
-			public byte placemode;
+			public byte surface;
+			public byte place;
 		}
 
 		/// <summary>

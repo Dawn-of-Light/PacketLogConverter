@@ -3,12 +3,12 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0x0D, -1, ePacketDirection.ClientToServer, "Modify house decoration ?")]
-	public class CtoS_0x0D_UnknownPacket: Packet, IOidPacket
+	[LogPacket(0x0D, -1, ePacketDirection.ClientToServer, "Remove house decoration")]
+	public class CtoS_0x0D_RemoveHouseDecoration: Packet, IOidPacket
 	{
-		protected ushort position;
+		protected ushort index;
 		protected ushort houseOid;
-		protected byte itemType;
+		protected byte place;
 		protected byte unk1;
 		protected ushort unk2;
 
@@ -17,15 +17,15 @@ namespace PacketLogConverter.LogPackets
 
 		#region public access properties
 
-		public ushort Pos { get { return position; } }
+		public ushort Index { get { return index; } }
 		public ushort Oid { get { return houseOid; } }
-		public byte ItemType { get { return itemType; } }
+		public byte Place { get { return place; } }
 		public byte Unk1 { get { return unk1; } }
 		public ushort Unk2 { get { return unk2; } }
 
 		#endregion
 
-		public enum eItemType: byte
+		public enum ePlaceType: byte
 		{
 			gardenDecoration = 1,
 			wallDecoration = 2,
@@ -37,8 +37,8 @@ namespace PacketLogConverter.LogPackets
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			str.AppendFormat("position:0x{0:X4} houseOid:0x{1:X4} itemType:{2}({3}) unk1:0x{4:X2} unk2:0x{5:X4}",
-				position, houseOid, itemType, (eItemType)itemType, unk1, unk2);
+			str.AppendFormat("index:0x{0:X4} houseOid:0x{1:X4} place:{2}({5}) unk1:0x{3:X2} unk2:0x{4:X4}",
+				index, houseOid, place, unk1, unk2, (ePlaceType)place);
 
 			return str.ToString();
 		}
@@ -50,9 +50,9 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			position = ReadShort();
+			index = ReadShort();
 			houseOid = ReadShort();
-			itemType = ReadByte();
+			place = ReadByte();
 			unk1 = ReadByte();
 			unk2 = ReadShort();
 		}
@@ -61,7 +61,7 @@ namespace PacketLogConverter.LogPackets
 		/// Constructs new instance with given capacity
 		/// </summary>
 		/// <param name="capacity"></param>
-		public CtoS_0x0D_UnknownPacket(int capacity) : base(capacity)
+		public CtoS_0x0D_RemoveHouseDecoration(int capacity) : base(capacity)
 		{
 		}
 	}

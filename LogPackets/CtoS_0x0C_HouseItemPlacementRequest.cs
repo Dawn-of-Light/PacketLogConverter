@@ -8,8 +8,8 @@ namespace PacketLogConverter.LogPackets
 	{
 		protected ushort slot;
 		protected ushort houseOid;
-		protected ushort housePoint;
-		protected byte itemType;
+		protected ushort surface;
+		protected byte place;
 		protected byte rotation;
 		protected short x;
 		protected short y;
@@ -21,15 +21,15 @@ namespace PacketLogConverter.LogPackets
 
 		public ushort Slot { get { return slot; } }
 		public ushort HouseOid { get { return houseOid; } }
-		public ushort HousePoint { get { return housePoint; } }
-		public byte ItemType { get { return itemType; } }
+		public ushort Surface { get { return surface; } }
+		public byte Place { get { return place; } }
 		public byte Rotation { get { return rotation; } }
 		public short X { get { return x; } }
 		public short Y { get { return y; } }
 
 		#endregion
 
-		public enum eItemType: byte
+		public enum ePlaceType: byte
 		{
 			gardenDecoration = 1,
 			wallDecoration = 2,
@@ -42,8 +42,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("slot:{0,-3} houseOid:0x{1:X4} position:0x{2:X2} itemType:{3}({4}) rotation:{5} (x:{6} y:{7})",
-				slot, houseOid, housePoint, itemType, (eItemType)itemType, rotation, x, y);
+			str.AppendFormat("slot:{0,-3} houseOid:0x{1:X4} surface:{2} place:{3}({4}) rotation:{5} (x:{6} y:{7})",
+				slot, houseOid, surface, place, (ePlaceType)place, rotation, x, y);
 
 			return str.ToString();
 		}
@@ -57,8 +57,8 @@ namespace PacketLogConverter.LogPackets
 
 			slot = ReadShort();
 			houseOid = ReadShort();
-			housePoint = ReadShort();
-			itemType = ReadByte();
+			surface = ReadShort();
+			place = ReadByte();
 			rotation = ReadByte();
 			x = (short)ReadShort();
 			y = (short)ReadShort();

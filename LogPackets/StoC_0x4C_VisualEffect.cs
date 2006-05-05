@@ -336,19 +336,21 @@ namespace PacketLogConverter.LogPackets
 		{
 			public byte flag;
 			public ushort unk1;
-			public ushort guildEmblem;
+			public ushort emblem;
 
 			public override void Init(StoC_0x4C_VisualEffect pak)
 			{
 				flag = pak.ReadByte();
 				unk1 = pak.ReadShort(); // Flag use new guildEmblem
-				guildEmblem = pak.ReadShort();
+				emblem = pak.ReadShort();
 			}
 
 			public override void MakeString(StringBuilder str)
 			{
-				str.AppendFormat("(Banner) flag:{0}({1}) unk1:0x{2:X4} guildEmblem:{3}",
-					flag, (flag == 1 ? "Disable" : "Enable"), unk1, guildEmblem);
+				str.AppendFormat("(Banner) flag:{0}({1}) newEmblem:0x{2:X4} guildEmblem:{3}",
+					flag, (flag == 1 ? "Disable" : "Enable"), unk1, emblem);
+//				if (flagsDescription && emblem != 0)
+//				  str.AppendFormat(" (guildLogo:{0,-3} pattern:{1} primaryColor:{2,-2} secondaryColor:{3})", (unk1 << 7) | (emblem >> 9), (emblem >> 7) & 2, (emblem >> 3) & 0x0F, emblem & 7);
 			}
 		}
 

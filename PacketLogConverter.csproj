@@ -361,7 +361,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "LogPackets\CtoS_0x0D_UnknownPacket.cs"
+                    RelPath = "LogPackets\CtoS_0x0D_RemoveHouseDecoration.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -837,6 +837,11 @@
                 />
                 <File
                     RelPath = "LogPackets\StoC_0x09_HouseDecorationUpdate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x09_HouseDecorationUpdate_176.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

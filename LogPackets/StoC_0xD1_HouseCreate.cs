@@ -14,15 +14,15 @@ namespace PacketLogConverter.LogPackets
 		protected byte unk1;
 		protected byte colorPorch;
 		protected byte unk2;
-		protected int modelPorch;
-		protected int emblem;
+		protected byte modelPorch;
+		protected ushort emblem;
 		protected byte modelHouse;
 		protected byte modelRoof;
 		protected byte modelWall;
 		protected byte modelDoor;
 		protected byte modelTruss;
 		protected byte materialPorch;
-		protected byte modelWindow;
+		protected byte materialShutter;
 		protected string name;
 
 		public int Oid1 { get { return houseOid; } }
@@ -38,15 +38,15 @@ namespace PacketLogConverter.LogPackets
 		public byte Unk1 { get { return unk1; } }
 		public byte ColorPorch { get { return colorPorch; } }
 		public byte Unk2 { get { return unk2; } }
-		public int ModelPorch { get { return modelPorch; } }
-		public int Emblem { get { return emblem; } }
+		public byte ModelPorch { get { return modelPorch; } }
+		public ushort Emblem { get { return emblem; } }
 		public byte ModelHouse { get { return modelHouse; } }
 		public byte ModelRoof { get { return modelRoof; } }
 		public byte ModelWall { get { return modelWall; } }
 		public byte ModelDoor { get { return modelDoor; } }
 		public byte ModelTruss { get { return modelTruss; } }
 		public byte MaterialPorch { get { return materialPorch; } }
-		public byte ModelWindow { get { return modelWindow; } }
+		public byte MaterialShutter { get { return materialShutter; } }
 		public string Name { get { return name; } }
 
 		#endregion
@@ -55,8 +55,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("houseOid:0x{0:X4} heading:0x{1:X4} x:{2,-6} y:{3,-6} z:{4,-5} ownerName:\"{17}\"\n\tunk1:0x{5:X2} colorPorch:{6,-2} unk2:0x{7:X2} modelPorch:{8} emblem:0x{9:X4} modelHouse:{10} modelRoof:{11} modelWall:{12} modelDoor:{13} modelTruss:{14} materialPorch:{15} modelWindow:{16,-3}",
-				houseOid, heading, x, y, z, unk1, colorPorch, unk2, modelPorch, emblem, modelHouse, modelRoof, modelWall, modelDoor, modelTruss, materialPorch, modelWindow, name);
+			str.AppendFormat("houseOid:0x{0:X4} heading:0x{1:X4} x:{2,-6} y:{3,-6} z:{4,-5} ownerName:\"{17}\"\n\tunk1:0x{5:X2} tentColor:{6,-2} unk2:0x{7:X2} modelPorch:{8} emblem:0x{9:X4} modelHouse:{10} roofMaterial:{11} wallMaterial:{12} doorMaterial:{13} woodColor:{14} porchMaterial:{15} shutterMaterial:{16,-3}",
+				houseOid, heading, x, y, z, unk1, colorPorch, unk2, modelPorch, emblem, modelHouse, modelRoof, modelWall, modelDoor, modelTruss, materialPorch, materialShutter, name);
 
 			return str.ToString();
 		}
@@ -77,7 +77,6 @@ namespace PacketLogConverter.LogPackets
 			colorPorch = ReadByte();
 			unk1 = ReadByte();
 			modelPorch = ReadByte();
-			unk2 = ReadByte();
 			emblem = ReadShort();
 			modelHouse= ReadByte();
 			modelRoof = ReadByte();
@@ -85,7 +84,8 @@ namespace PacketLogConverter.LogPackets
 			modelDoor = ReadByte();
 			modelTruss = ReadByte();
 			materialPorch = ReadByte();
-			modelWindow = ReadByte();
+			materialShutter = ReadByte();
+			unk2 = ReadByte();
 			name = ReadPascalString();
 		}
 

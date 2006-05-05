@@ -33,8 +33,8 @@ namespace PacketLogConverter.LogPackets
 			for (int i = 0; i < m_items.Length; i++)
 			{
 				Item item = (Item)m_items[i];
-				str.AppendFormat("\n\tindex:{0,-2} model:0x{1:X4} position:0x{2:X2} rotation:{3}",
-					item.index, item.model, item.position, item.rotation);
+				str.AppendFormat("\n\tindex:{0,-2} model:0x{1:X4} place:0x{2:X2} rotation:{3}",
+					item.index, item.model, item.place, item.rotation);
 			}
 
 			return str.ToString();
@@ -58,7 +58,7 @@ namespace PacketLogConverter.LogPackets
 
 				item.index = ReadByte();
 				item.model = ReadShort();
-				item.position = ReadByte();
+				item.place = ReadByte();
 				item.rotation = ReadByte();
 
 				m_items[i] = item;
@@ -69,7 +69,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			public byte index;
 			public ushort model;
-			public byte position;
+			public byte place;
 			public byte rotation;
 		}
 

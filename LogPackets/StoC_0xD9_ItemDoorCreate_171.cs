@@ -51,6 +51,8 @@ namespace PacketLogConverter.LogPackets
 					}
 				}
 			}
+			if (flagsDescription && emblem != 0)
+			  str.AppendFormat(" guildLogo:{0,-3} pattern:{1} primaryColor:{2,-2} secondaryColor:{3}", (((unk1_171 & 0x2000000) >> 25) << 7) | (emblem >> 9), (emblem >> 7) & 2, (emblem >> 3) & 0x0F, emblem & 7);
 
 			return str.ToString();
 		}
