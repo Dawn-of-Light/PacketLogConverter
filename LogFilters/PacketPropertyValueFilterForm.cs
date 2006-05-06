@@ -484,7 +484,7 @@ namespace PacketLogConverter.LogFilters
 			{
 				// needed for proper list updates
 				ClassProperty prop = obj as ClassProperty;
-				if (prop == null || property == null || prop.property != property)
+				if (prop == null || prop.property != property)
 					return false;
 				return true;
 			}
