@@ -125,6 +125,7 @@ namespace PacketLogConverter
 			m_parentForm.Refresh();
 
 			StateObjectCallback callback = WorkFinishedCallback;
+			WorkFinishedCallback = null;
 			try
 			{
 				if (callback != null)

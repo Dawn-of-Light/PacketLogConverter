@@ -69,7 +69,6 @@ namespace PacketLogConverter.LogPackets
 					flag += ",Fly";
 				str.AppendFormat(" ({0})", flag);
 			}
-			Convert.ToString(44, 2);
 			return str.ToString();
 		}
 

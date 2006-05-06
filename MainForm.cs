@@ -942,7 +942,17 @@ namespace PacketLogConverter
 			PacketLog log = CurrentLog;
 			if (log == null)
 				log = new PacketLog();
-			log.IgnoreVersionChanges = li_ignoreVersionChanges.Checked;
+
+			log.IgnoreVersionChanges = false;
+			int val = -1;
+			Util.ParseInt(li_clientVersion.Text, out val);
+			log.Version = val;
+
+			if (li_ignoreVersionChanges.Checked)
+			{
+				log.IgnoreVersionChanges = true;
+			}
+			
 			LoadFiles(data.Reader, log, data.Files, progress);
 			m_currentLog = log;
 
@@ -1316,7 +1326,7 @@ namespace PacketLogConverter
 			else
 			{
 				li_packetsCount.Text = string.Empty;
-				li_clientVersion.Text = string.Empty;
+//				li_clientVersion.Text = string.Empty; // leave unchanged
 				li_unknownPacketsCount.Text = string.Empty;
 				li_changesLabel.Text = string.Empty;
 			}
