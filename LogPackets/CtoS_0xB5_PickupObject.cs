@@ -8,17 +8,17 @@ namespace PacketLogConverter.LogPackets
 	{
 		protected uint playerX;
 		protected uint playerY;
-		protected ushort playerOid;
+		protected ushort sessionId;
 		protected ushort unk1;
 
-		public int Oid1 { get { return playerOid; } }
+		public int Oid1 { get { return sessionId; } }
 		public int Oid2 { get { return int.MinValue; } }
 
 		#region public access properties
 
 		public uint PlayerX { get { return playerX; } }
 		public uint PlayerY { get { return playerY; } }
-		public ushort PlayerOid { get { return playerOid; } }
+		public ushort SessionId { get { return sessionId; } }
 		public ushort Unk1 { get { return unk1; } }
 
 		#endregion
@@ -26,8 +26,8 @@ namespace PacketLogConverter.LogPackets
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			str.AppendFormat("playerOid:0x{0:X4} playerX:{1,-6} playerY:{2,-6} unk1:{3:X4}",
-					playerOid, playerX, playerY, unk1);
+			str.AppendFormat("sessionId:0x{0:X4} playerX:{1,-6} playerY:{2,-6} unk1:{3:X4}",
+					sessionId, playerX, playerY, unk1);
 
 			return str.ToString();
 		}
@@ -41,7 +41,7 @@ namespace PacketLogConverter.LogPackets
 
 			playerX = ReadInt();
 			playerY = ReadInt();
-			playerOid = ReadShort();
+			sessionId = ReadShort();
 			unk1 = ReadShort();
 		}
 

@@ -29,6 +29,8 @@ namespace PacketLogConverter.LogPackets
 				if (i > 0)
 					str.Append(',');
 				str.AppendFormat("[{0}]={1}", i, objects[i]);
+				if (flagsDescription && objects[i] > 0)
+					str.AppendFormat("(page:{0}/slot:{1})", (byte)(objects[i]/30), objects[i]%30);
 			}
 			str.Append(")");
 			return str.ToString();

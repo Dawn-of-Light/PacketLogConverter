@@ -164,6 +164,7 @@ namespace PacketLogConverter.LogFilters
 				ctos.SetItemChecked(0x01, true); // ?
 				ctos.SetItemChecked(0x03, true);
 				ctos.SetItemChecked(0x05, true);
+				ctos.SetItemChecked(0x06, true);
 				ctos.SetItemChecked(0x07, true);
 				ctos.SetItemChecked(0x09, true);
 				ctos.SetItemChecked(0x0B, true);

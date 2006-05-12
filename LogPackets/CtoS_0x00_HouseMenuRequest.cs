@@ -28,19 +28,31 @@ namespace PacketLogConverter.LogPackets
 			switch (code)
 			{
 				case 0:
-					code_type = "garden";
+					code_type = "gardenStore";
 					break;
 				case 1:
-					code_type = "buyInteriorDecoration";
+					code_type = "InteriorDecorationStore";
 					break;
 				case 2:
-					code_type = "outside";
+					code_type = "outsideMenu";
+					break;
+				case 3:
+					code_type = "houseMerchantStore";
+					break;
+				case 4:
+					code_type = "houseVaultStore";
+					break;
+				case 5:
+					code_type = "houseToolsStore";
+					break;
+				case 6:
+					code_type = "houseBindstoneStore";
 					break;
 				case 7:
 					code_type = "houseInfo";
 					break;
 				case 8:
-					code_type = "inside";
+					code_type = "insideMenu";
 					break;
 				default:
 					code_type = "UNKNOWN";

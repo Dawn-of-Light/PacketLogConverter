@@ -12,7 +12,7 @@ namespace PacketLogConverter.LogPackets
 		protected uint y;
 		protected ushort heading;
 		protected byte unk1;
-		protected byte colorPorch;
+		protected ushort colorPorch;
 		protected byte unk2;
 		protected byte modelPorch;
 		protected ushort emblem;
@@ -36,7 +36,7 @@ namespace PacketLogConverter.LogPackets
 		public uint Y{ get { return y; } }
 		public ushort Heading { get { return heading; } }
 		public byte Unk1 { get { return unk1; } }
-		public byte ColorPorch { get { return colorPorch; } }
+		public ushort ColorPorch { get { return colorPorch; } }
 		public byte Unk2 { get { return unk2; } }
 		public byte ModelPorch { get { return modelPorch; } }
 		public ushort Emblem { get { return emblem; } }
@@ -55,8 +55,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("houseOid:0x{0:X4} heading:0x{1:X4} x:{2,-6} y:{3,-6} z:{4,-5} ownerName:\"{17}\"\n\tunk1:0x{5:X2} tentColor:{6,-2} unk2:0x{7:X2} modelPorch:{8} emblem:0x{9:X4} modelHouse:{10} roofMaterial:{11} wallMaterial:{12} doorMaterial:{13} woodColor:{14} porchMaterial:{15} shutterMaterial:{16,-3}",
-				houseOid, heading, x, y, z, unk1, colorPorch, unk2, modelPorch, emblem, modelHouse, modelRoof, modelWall, modelDoor, modelTruss, materialPorch, materialShutter, name);
+			str.AppendFormat("houseOid:0x{0:X4} heading:0x{1:X4} x:{2,-6} y:{3,-6} z:{4,-5} ownerName:\"{17}\"\n\ttentColor:0x{5:X4} unk1:0x{6:X2} modelPorch:{7,-2} emblem:0x{8:X4} modelHouse:{9,-2} roofMaterial:{10} wallMaterial:{11} doorMaterial:{12} woodColor:{13} porchMaterial:{14} shutterMaterial:{15,-3} unk2:0x{16:X2}",
+				houseOid, heading, x, y, z, colorPorch, unk1, modelPorch, emblem, modelHouse, modelRoof, modelWall, modelDoor, modelTruss, materialPorch, materialShutter, unk2, name);
 
 			return str.ToString();
 		}
@@ -73,8 +73,7 @@ namespace PacketLogConverter.LogPackets
 			x = ReadInt();
 			y = ReadInt();
 			heading = ReadShort();
-			unk1 = ReadByte();
-			colorPorch = ReadByte();
+			colorPorch = ReadShort();
 			unk1 = ReadByte();
 			modelPorch = ReadByte();
 			emblem = ReadShort();

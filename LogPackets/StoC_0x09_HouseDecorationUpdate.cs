@@ -40,8 +40,11 @@ namespace PacketLogConverter.LogPackets
 			for (int i = 0; i < count; i++)
 			{
 				Furniture furniture = (Furniture)m_furnitures[i];
-				str.AppendFormat("\n\tindex:{0,2} model:0x{1:X4} color:0x{2:X4} unk1:0x{3:X2}{4:X2} (x:{5,-5} y:{6,-5}) angle:{7,-3} size:{8,3}% surface:{9,-2} place:{10}({11})",
-				furniture.index, furniture.model, furniture.color, furniture.type, furniture.unk1, furniture.x, furniture.y, furniture.angle, furniture.size, furniture.surface, furniture.place, (ePlaceType)furniture.place);
+				if (furniture.flagRemove)
+					str.AppendFormat("\n\tindex:{0,2} remove", furniture.index);
+				else
+					str.AppendFormat("\n\tindex:{0,2} model:0x{1:X4} color:0x{2:X4} unk1:0x{3:X2}{4:X2} (x:{5,-5} y:{6,-5}) angle:{7,-3} size:{8,3}% surface:{9,-2} place:{10}({11})",
+					furniture.index, furniture.model, furniture.color, furniture.type, furniture.unk1, furniture.x, furniture.y, furniture.angle, furniture.size, furniture.surface, furniture.place, (ePlaceType)furniture.place);
 			}
 
 			return str.ToString();
@@ -61,19 +64,23 @@ namespace PacketLogConverter.LogPackets
 			for (int i = 0; i < count; i++)
 			{
 				Furniture furniture = new Furniture();
-
+				furniture.flagRemove = false;
 				furniture.index = ReadByte();
-				furniture.model = ReadShort();
-				furniture.color = ReadShort();
-				furniture.type = ReadByte();
-				furniture.unk1 = ReadByte();
-				furniture.x = (short)ReadShort();
-				furniture.y = (short)ReadShort();
-				furniture.angle = ReadShort();
-				furniture.size = ReadByte();
-				furniture.surface = ReadByte();
-				furniture.place = ReadByte();
-
+				if (Position < Length)
+				{
+					furniture.model = ReadShort();
+					furniture.color = ReadShort();
+					furniture.type = ReadByte();
+					furniture.unk1 = ReadByte();
+					furniture.x = (short)ReadShort();
+					furniture.y = (short)ReadShort();
+					furniture.angle = ReadShort();
+					furniture.size = ReadByte();
+					furniture.surface = ReadByte();
+					furniture.place = ReadByte();
+				}
+				else
+					furniture.flagRemove = true;
 				m_furnitures[i] = furniture;
 			}
 		}
@@ -91,6 +98,7 @@ namespace PacketLogConverter.LogPackets
 			public byte size;
 			public byte surface;
 			public byte place;
+			public bool flagRemove;
 		}
 
 		/// <summary>
