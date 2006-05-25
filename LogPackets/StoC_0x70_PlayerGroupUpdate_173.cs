@@ -51,7 +51,7 @@ namespace PacketLogConverter.LogPackets
 
 			public override string ToString()
 			{
-				return string.Format("player{0}: region:{1,-3} x:{2,-5} y:{3,-5}", player, region, x, y);
+				return string.Format("player{0}: zone:{1,-3} x:{2,-5} y:{3,-5}", player, region, x, y);
 			}
 		}
 

@@ -37,26 +37,26 @@ namespace PacketLogConverter.LogPackets
 			{
 				str.AppendFormat("\n\tVault1 = View:({0,-6}) Add:({1,-6}) Remove:({2,-6})",
 					((permission.vault1 & 4) == 4 ? "Enable" : "Disable"),
-					((permission.vault1 & 2) == 2 ? "Enable" : "Disable"),
-					((permission.vault1 & 1) == 1 ? "Enable" : "Disable"));
+					((permission.vault1 & 1) == 1 ? "Enable" : "Disable"),
+					((permission.vault1 & 2) == 2 ? "Enable" : "Disable"));
 				str.AppendFormat("\n\tVault2 = View:({0,-6}) Add:({1,-6}) Remove:({2,-6})",
 					((permission.vault2 & 4) == 4 ? "Enable" : "Disable"),
-					((permission.vault2 & 2) == 2 ? "Enable" : "Disable"),
-					((permission.vault2 & 1) == 1 ? "Enable" : "Disable"));
+					((permission.vault2 & 1) == 1 ? "Enable" : "Disable"),
+					((permission.vault2 & 2) == 2 ? "Enable" : "Disable"));
 				str.AppendFormat("\n\tVault3 = View:({0,-6}) Add:({1,-6}) Remove:({2,-6})",
 					((permission.vault3 & 4) == 4 ? "Enable" : "Disable"),
-					((permission.vault3 & 2) == 2 ? "Enable" : "Disable"),
-					((permission.vault3 & 1) == 1 ? "Enable" : "Disable"));
+					((permission.vault3 & 1) == 1 ? "Enable" : "Disable"),
+					((permission.vault3 & 2) == 2 ? "Enable" : "Disable"));
 				str.AppendFormat("\n\tVault4 = View:({0,-6}) Add:({1,-6}) Remove:({2,-6})",
 					((permission.vault4 & 4) == 4 ? "Enable" : "Disable"),
-					((permission.vault4 & 2) == 2 ? "Enable" : "Disable"),
-					((permission.vault4 & 1) == 1 ? "Enable" : "Disable"));
+					((permission.vault4 & 1) == 1 ? "Enable" : "Disable"),
+					((permission.vault4 & 2) == 2 ? "Enable" : "Disable"));
 				str.AppendFormat("\n\tDecorations-> Interior = Add:({0,-6}) Remove:({1,-6})",
-					((permission.interior & 2) == 2 ? "Enable" : "Disable"),
-					((permission.interior & 1) == 1 ? "Enable" : "Disable"));
+					((permission.interior & 1) == 1 ? "Enable" : "Disable"),
+					((permission.interior & 2) == 2 ? "Enable" : "Disable"));
 				str.AppendFormat("\n\tDecoration-> Garden = Add:({0,-6}) Remove:({1,-6})",
-					((permission.garden & 2) == 2 ? "Enable" : "Disable"),
-					((permission.garden & 1) == 1 ? "Enable" : "Disable"));
+					((permission.garden & 1) == 1 ? "Enable" : "Disable"),
+					((permission.garden & 2) == 2 ? "Enable" : "Disable"));
 				str.AppendFormat("\n\tAccess-> Tools:({0})", ((permission.tools & 1) == 1 ? "Enable" : "Disable"));
 				str.AppendFormat("\n\tAccess-> Use Merchant:({0})", ((permission.useMerchant & 1) == 1 ? "Enable" : "Disable"));
 				str.AppendFormat("\n\tAccess-> Enter House:({0})", ((permission.enter & 1) == 1 ? "Enable" : "Disable"));

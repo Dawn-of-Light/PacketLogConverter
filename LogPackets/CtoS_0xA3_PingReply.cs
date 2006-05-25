@@ -25,7 +25,7 @@ namespace PacketLogConverter.LogPackets
 			str.AppendFormat("timeStamp:0x{0:X8} unk1:0x{1:X8} unk2:0x{2:X8}", timeStamp, unk1, unk2);
 			if (flagsDescription)
 			{
-				TimeSpan timeUp = new TimeSpan((long) timeStamp * 1000); // TimeSpan in 100-nanosecond
+				TimeSpan timeUp = new TimeSpan((long)timeStamp * 1000); // TimeSpan in 100-nanosecond
 				str.AppendFormat(" upTime:{0}", timeUp);
 			}
 
