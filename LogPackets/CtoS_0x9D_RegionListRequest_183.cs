@@ -5,13 +5,13 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x9D, 183, ePacketDirection.ClientToServer, "Region list request v183")]
 	public class CtoS_0x9D_RegionListRequest_183 : CtoS_0x9D_RegionListRequest_180
 	{
-		protected byte unkB;
+		protected byte procType;
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			string str = base.GetPacketDataString(flagsDescription);
 			if (flag > 0)
-				str += " 0x" + unkB.ToString("X2");
+				str += " ProcessorType:" + procType.ToString("D");
 			return str;
 		}
 
@@ -29,12 +29,16 @@ namespace PacketLogConverter.LogPackets
 				resolution = ReadShort();
 				options = ReadShort();
 				unk1 = ReadInt();
-				unk2 = ReadInt();
-				unk3 = ReadInt();
-				unkS = ReadShort();
-				unk4 = ReadInt();
-				unk5 = ReadInt();
-				unkB = ReadByte();
+				figureVersion = ReadInt();
+				figureVersion1 = ReadByte();
+				skin = ReadByte();
+				unk2 = ReadByte();
+				regionExpantions = ReadByte();
+				classId = ReadByte();
+				expantions = ReadByte();
+				VedioVendorId1 = ReadIntLowEndian();
+				VedioVendorId2 = ReadIntLowEndian();
+				procType = ReadByte();
 				zero = ReadByte();
 			}
 		}

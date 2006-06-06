@@ -21,12 +21,29 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
+		public enum eClientType : int
+		{
+			Classic = 1,
+			ShroudedIsles = 2,
+			TrialsOfAtlantis = 3,
+			Catacombs = 4,
+			DarknessRising = 5,
+		}
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 
 			str.AppendFormat("rc4Enabled:{0} clientTypeAndAddons:0x{1:X2} clientVersion:{2}.{3}.{4}",
 				rc4Enabled, clientTypeAndAddons, clientVersionMajor, clientVersionMinor, clientVersionBuild);
+			if (flagsDescription)
+			{
+				str.AppendFormat("\n\tclient:{0}", (eClientType)(clientTypeAndAddons & 0x0F));
+				str.Append(" expantions:");
+				if ((clientTypeAndAddons & 0x80) == 0x80)
+					str.Append(", NewFrontiers");
+				if ((clientTypeAndAddons & 0x40) == 0x40)
+					str.Append(", Foundations(Housing)");
+			}
 
 			return str.ToString();
 		}

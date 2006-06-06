@@ -5,14 +5,14 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x9D, 180, ePacketDirection.ClientToServer, "Region list request v180")]
 	public class CtoS_0x9D_RegionListRequest_180 : CtoS_0x9D_RegionListRequest_174
 	{
-		protected uint unk4;
-		protected uint unk5;
+		protected uint VedioVendorId1;
+		protected uint VedioVendorId2;
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			string str = base.GetPacketDataString(flagsDescription);
 			if (flag > 0)
-				str += "\n\tnew in 1.80 0x" + unk4.ToString("X8") + " 0x" + unk5.ToString("X8");
+				str += "\n\tnew in 1.80 VideoCard VendorId:0x" + VedioVendorId1.ToString("X8") + "(0x" + VedioVendorId2.ToString("X8") + ")";
 			return str;
 		}
 
@@ -30,11 +30,15 @@ namespace PacketLogConverter.LogPackets
 				resolution = ReadShort();
 				options = ReadShort();
 				unk1 = ReadInt();
-				unk2 = ReadInt();
-				unk3 = ReadInt();
-				unkS = ReadShort();
-				unk4 = ReadInt();
-				unk5 = ReadInt();
+				figureVersion = ReadInt();
+				figureVersion1 = ReadByte();
+				skin = ReadByte();
+				unk2 = ReadByte();
+				regionExpantions = ReadByte();
+				classId = ReadByte();
+				expantions = ReadByte();
+				VedioVendorId1 = ReadIntLowEndian();
+				VedioVendorId2 = ReadIntLowEndian();
 				zero = ReadByte();
 			}
 		}

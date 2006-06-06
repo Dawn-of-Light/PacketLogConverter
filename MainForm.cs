@@ -69,6 +69,7 @@ namespace PacketLogConverter
 		private System.Windows.Forms.MenuItem menuRecentFiles;
 		private System.Windows.Forms.MenuItem menuExitApp;
 		private System.Windows.Forms.MenuItem mnuPacketFlags;
+		private System.Windows.Forms.MenuItem mnuPacketSequence;
 		private Label label3;
 
 		public MainForm()
@@ -147,6 +148,7 @@ namespace PacketLogConverter
 			this.logDataText = new System.Windows.Forms.RichTextBox();
 			this.openAnotherLogDialog = new System.Windows.Forms.OpenFileDialog();
 			this.mnuPacketFlags = new System.Windows.Forms.MenuItem();
+			this.mnuPacketSequence = new System.Windows.Forms.MenuItem();
 			this.mainFormTabs.SuspendLayout();
 			this.instantParseTab.SuspendLayout();
 			this.instantResultGroupBox1.SuspendLayout();
@@ -221,6 +223,7 @@ namespace PacketLogConverter
 			this.menuItem2.Index = 1;
 			this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
 																					  this.packetTimeDiffMenuItem,
+																					  this.mnuPacketSequence,
 																					  this.mnuPacketFlags});
 			this.menuItem2.Text = "&View";
 			// 
@@ -597,9 +600,15 @@ namespace PacketLogConverter
 			// 
 			// mnuPacketFlags
 			// 
-			this.mnuPacketFlags.Index = 1;
+			this.mnuPacketFlags.Index = 2;
 			this.mnuPacketFlags.Text = "Packet flags";
 			this.mnuPacketFlags.Click += new System.EventHandler(this.mnuPacketFlags_Click);
+			// 
+			// mnuPacketFlags
+			// 
+			this.mnuPacketSequence.Index = 1;
+			this.mnuPacketSequence.Text = "Packet sequence ";
+			this.mnuPacketSequence.Click += new System.EventHandler(this.mnuPacketSequence_Click);
 			// 
 			// MainForm
 			// 
@@ -1188,12 +1197,32 @@ namespace PacketLogConverter
 				if (logDataText.TextLength > 0)
 					selectedPacketIndex = CurrentLog.GetPacketIndexByTextIndex(logDataText.SelectionStart);
 				int packetsCount = 0;
+				int packetsCountIn = 0;
+				int packetsCountOut = 0;
 				bool timeDiff = packetTimeDiffMenuItem.Checked;
+				bool showPacketSequence = mnuPacketSequence.Checked;
 				TimeSpan baseTime = new TimeSpan(0);
 
 				StringBuilder text = new StringBuilder();
 				foreach (Packet pak in CurrentLog)
 				{
+					int pakIndex = 0;
+					if (showPacketSequence)
+					{
+						if (pak.Protocol == ePacketProtocol.TCP)
+						{
+							if (pak.Direction == ePacketDirection.ClientToServer)
+							{
+								packetsCountOut++;
+								pakIndex = packetsCountOut;
+							}
+							else
+							{
+								packetsCountIn++;
+								pakIndex = packetsCountIn;
+							}
+						}
+					}
 					if (FilterManager.IsPacketIgnored(pak))
 					{
 						pak.LogTextIndex = -1;
@@ -1201,6 +1230,11 @@ namespace PacketLogConverter
 					}
 					pak.LogTextIndex = text.Length;
 					++packetsCount;
+
+					if (showPacketSequence)
+					{
+						text.AppendFormat("{0}:{1,-5} ", pak.Protocol, pakIndex);
+					}
 					
 					// main description
 					text.Append(pak.ToHumanReadableString(baseTime, mnuPacketFlags.Checked))
@@ -1307,6 +1341,12 @@ namespace PacketLogConverter
 		private void mnuPacketFlags_Click(object sender, System.EventArgs e)
 		{
 			mnuPacketFlags.Checked = !mnuPacketFlags.Checked;
+			UpdateLogDataTab();
+		}
+
+		private void mnuPacketSequence_Click(object sender, System.EventArgs e)
+		{
+			mnuPacketSequence.Checked = !mnuPacketSequence.Checked;
 			UpdateLogDataTab();
 		}
 

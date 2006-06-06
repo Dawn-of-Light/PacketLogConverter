@@ -9,8 +9,11 @@ namespace PacketLogConverter.LogPackets
 		protected ushort resolution;
 		protected ushort options;
 		protected uint unk1;
-		protected uint unk2;
-		protected uint unk3;
+		protected uint figureVersion;
+		protected byte figureVersion1;
+		protected byte skin;
+		protected byte unk2;
+		protected byte regionExpantions;
 		protected byte zero;
 
 		#region public access properties
@@ -23,11 +26,56 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("dBslot:{0,-2} flagOption::{1}", slot, flag);
+			str.AppendFormat("dBslot:{0,-2} flagOption:{1}", slot, flag);
 			if (flag > 0)
 			{
-				str.AppendFormat(" resolutions:0x{0:X4} options:0x{1:X4} unk:0x{2:X8} 0x{3:X8} 0x{4:X8}",
-					resolution, options, unk1, unk2, unk3);
+				str.AppendFormat(" resolutions:0x{0:X4} options:0x{1:X4} figureVersion:0x{2:X8}{3:X2} memory:{4,2}({9,-2}) unk1:0x{5:X6} skin:0x{6:X2} unk2:0x{7:X2} regionExpantions:0x{8:X2}",
+					resolution, options, figureVersion, figureVersion1, unk1 >> 24, unk1 & 0xFFFFFF, skin, unk2, regionExpantions, (unk1 >> 24) * 64);
+				if (flagsDescription)
+				{
+					str.Append("\n\tExpantions:");
+//					str.Append(", Shrouded Isles");
+//					str.Append(", Trials of Atlantis");
+//					str.Append(", Catacombs");
+					if ((regionExpantions & 0x01) == 0x01)
+						str.Append(", Foundations(Housing)");
+					if ((regionExpantions & 0x02) == 0x02)
+						str.Append(", NewFrontiers");
+					string description = string.Format("\n\t{0}*{1}", (resolution >> 8) * 10, (resolution & 0xFF) * 10);
+					if ((options & 0x800) == 0x800)
+						description += " WindowMode";
+					else
+						description += " FullScreen";
+					if ((options & 0x100) == 0x100)
+						description += ", Use Atlantis Trees";
+					if ((options & 0x200) != 0x200)
+						description += ", Use Atlantis Terrain";
+					if ((options & 0x8000) != 0x8000)
+						description += ", Dynamic Shadow";
+					if ((options & 0x6400) == 0x4400)
+						description += ", Classic Water";
+					else if ((options & 0x6400) == 0x2000)
+						description += ", Shrouded Isles Water";
+					else if ((options & 0x6400) == 0x4000)
+						description += ", Reflective Water";
+					if ((options & 0x20) == 0x20)
+						description += ", Use Classic Name Font";
+					if ((options & 0x40) == 0x40)
+						description += ", Font Size: Normal";
+					else
+						description += ", Font Size: Small";
+					if (skin == 0)
+						description += ", Skin: Shrouded Isles";
+					else if (skin == 3)
+						description += ", Skin: Atlantis";
+					else if (skin == 7)
+						description += ", Skin: Custom";
+					else
+						description += ", Skin: ?" + skin.ToString();
+					if ((options & 0x1000) == 0x1000)
+						description += ", RuningSecondDaoc";
+					str.Append(description);
+				}
 			}
 
 			return str.ToString();
@@ -47,8 +95,11 @@ namespace PacketLogConverter.LogPackets
 				resolution = ReadShort();
 				options = ReadShort();
 				unk1 = ReadInt();
-				unk2 = ReadInt();
-				unk3 = ReadInt();
+				figureVersion = ReadInt();
+				figureVersion1 = ReadByte();
+				skin = ReadByte();
+				unk2 = ReadByte();
+				regionExpantions = ReadByte();
 				zero = ReadByte();
 			}
 		}

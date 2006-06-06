@@ -51,7 +51,7 @@ namespace PacketLogConverter.LogPackets
 				if ((flags & 0x0800) == 0x0800) // ControledPet in view
 					flag += ",PetInView";
 				if ((flags & 0x1000) == 0x1000) // GT
-					flag += "GTinView";
+					flag += ",GTinView";
 				if ((flags & 0x2000) == 0x2000) // LOS
 					flag += ",CheckTargetInView";
 				if ((flags & 0x4000) == 0x4000) // LOS
