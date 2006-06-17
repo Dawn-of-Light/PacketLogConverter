@@ -14,7 +14,7 @@ namespace PacketLogConverter.LogPackets
 		protected byte options;
 		protected byte unk4;
 		protected byte clnType;
-		protected byte unk5;
+		protected byte procType;
 		protected byte unk6;
 		protected ushort region;
 		protected uint uptime;
@@ -33,7 +33,7 @@ namespace PacketLogConverter.LogPackets
 		public byte Options { get { return options; } }
 		public byte Unk4 { get { return unk4; } }
 		public byte ClnType { get { return clnType; } }
-		public byte Unk5 { get { return unk5; } }
+		public byte ProcType { get { return procType; } }
 		public byte Unk6 { get { return unk6; } }
 		public ushort Region { get { return region; } }
 		public uint Uptime { get { return uptime; } }
@@ -48,8 +48,11 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("module:{0} version:{1} CS=0x{2:X4} EIP=0x{3:X8} clnType:{4} region:{5,-3} uptime:{6}s codeError:0x{7:X2}(windowMode:{8})", module, version, cs, eip, clnType, region, uptime, options, options & 0x1);
+			str.AppendFormat("module:{0} version:{1} CS=0x{2:X4} EIP=0x{3:X8} processorType:{4} region:{5,-3} uptime:{6}s codeError:0x{7:X2}(windowMode:{8}{9} error:{10})",
+				module, version, cs, eip, procType, region, uptime, options, options & 0x1, ((options & 0x02) == 0x02) ? ", SecondCopyDaoc" : "", options >> 2);
 			str.AppendFormat("\n\tstack:0x{0:X8} 0x{1:X8} 0x{2:X8} 0x{3:X8}", stack1, stack2, stack3, stack4);
+			if (flagsDescription)
+				str.AppendFormat("\n\tunk4:{0} clnType?:{1} procType?:{2} unk6:{3}", unk4, clnType, procType, unk6);
 
 			return str.ToString();
 		}
@@ -71,7 +74,7 @@ namespace PacketLogConverter.LogPackets
 			Skip(16);
 			unk4 = ReadByte();
 			clnType = ReadByte();
-			unk5 = ReadByte();
+			procType = ReadByte();
 			unk6 = ReadByte();
 			region = ReadShort();
 			Skip(2);

@@ -32,7 +32,7 @@ namespace PacketLogConverter.LogPackets
 				figureVersion = ReadInt();
 				figureVersion1 = ReadByte();
 				skin = ReadByte();
-				unk2 = ReadByte();
+				race = ReadByte();
 				regionExpantions = ReadByte();
 				classId = ReadByte();
 				expantions = ReadByte();

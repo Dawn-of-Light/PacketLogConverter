@@ -15,8 +15,8 @@ namespace PacketLogConverter.LogPackets
 			str.AppendFormat("dBslot:{0,-2} flagOption:{1}", slot, flag);
 			if (flag > 0)
 			{
-				str.AppendFormat(" resolutions:0x{0:X4} options:0x{1:X4} figureVersion:0x{2:X8}{3:X2} memory:{4}({11,-2}) unk1:0x{5:X6} skin:0x{6:X2} unk2:0x{7:X2} regionExpantions:0x{8:X2} classId:{9,-2} expantions:0x{10:X2}",
-					resolution, options, figureVersion, figureVersion1, unk1 >> 24, unk1 & 0xFFFFFF, skin, unk2, regionExpantions, classId, expantions, (unk1 >> 24) * 64);
+				str.AppendFormat(" resolutions:0x{0:X4} options:0x{1:X4} figureVersion:0x{2:X8}{3:X2} memory:{4}({11,-2}) unk1:0x{5:X6} skin:0x{6:X2} race:{7,-2} regionExpantions:0x{8:X2} classId:{9,-2} expantions:0x{10:X2}",
+					resolution, options, figureVersion, figureVersion1, unk1 >> 24, unk1 & 0xFFFFFF, skin, race > 18 ? 18 - race : race, regionExpantions, classId, expantions, (unk1 >> 24) * 64);
 				if (flagsDescription)
 				{
 					str.Append("\n\tExpantions:");
@@ -99,7 +99,7 @@ namespace PacketLogConverter.LogPackets
 				figureVersion = ReadInt();
 				figureVersion1 = ReadByte();
 				skin = ReadByte();
-				unk2 = ReadByte();
+				race = ReadByte();
 				regionExpantions = ReadByte();
 				classId = ReadByte();
 				expantions = ReadByte();

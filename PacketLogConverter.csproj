@@ -1536,6 +1536,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "LogReaders\DolServerV17DebugLogReader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "LogReaders\DolServerV17LogReader.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
