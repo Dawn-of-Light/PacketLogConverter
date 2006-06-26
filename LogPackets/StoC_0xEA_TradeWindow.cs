@@ -170,7 +170,12 @@ namespace PacketLogConverter.LogPackets
 			public byte extension; // new in 1.72
 			public ushort color;
 			public ushort effect;
+			public byte flag;
 			public string name;
+			public ushort effectIcon; // new 1.82
+			public string effectName; // new 1.82
+			public ushort effectIcon2; // new 1.82
+			public string effectName2; // new 1.82
 		}
 
 		/// <summary>

@@ -1171,6 +1171,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "LogPackets\StoC_0x83_QuestUpdate_184.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "LogPackets\StoC_0x86_FindGroupMemberUpdate.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -1437,6 +1442,11 @@
                 />
                 <File
                     RelPath = "LogPackets\StoC_0xEA_TradeWindow_172.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xEA_TradeWindow_182.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
