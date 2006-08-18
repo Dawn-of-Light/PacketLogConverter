@@ -52,12 +52,20 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
+		public enum tradeCommand : byte
+		{
+			unknown = 0,
+			change = 1,
+			begin = 2,
+			close = 3,
+		};
+
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("code:{0} recieveItems:{1} repair:{2} combine:{3} unk1:{4} unk2:{5} unk3:{6} description:\"{7}\"",
-				tradeCode, itemCount, repair, combine, unk1, unk2, unk3, tradeDescription);
+			str.AppendFormat("code:{0}({8}) recieveItems:{1} repair:{2} combine:{3} unk1:{4} unk2:{5} unk3:{6} description:\"{7}\"",
+				tradeCode, itemCount, repair, combine, unk1, unk2, unk3, tradeDescription, (tradeCommand)tradeCode);
 			str.AppendFormat("\n\tgive money (copper:{0,-2} silver:{1,-2} gold:{2,-3} platinum:{3} mithril:{4,-3})",
 				copperPlayer, silverPlayer, goldPlayer, platinumPlayer, mithrilPlayer);
 			str.AppendFormat("\n\ttake money (copper:{0,-2} silver:{1,-2} gold:{2,-3} platinum:{3} mithril:{4,-3})",

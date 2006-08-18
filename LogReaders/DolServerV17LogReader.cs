@@ -155,7 +155,17 @@ namespace PacketLogConverter.LogReaders
 		private TimeSpan ParseTime(string line)
 		{
 			int hours, minutes, seconds, milliseconds;
-			if (line[2] == ':' && line[5] == ':' && line[8] == ',')
+			if (line[0] == '[' && line[3] == ':' && line[6] == ':' && line[9] == ',')
+			{
+				if (Util.ParseDecFast(line, 1, 2, out hours)
+					&& Util.ParseDecFast(line, 4, 2, out minutes)
+					&& Util.ParseDecFast(line, 7, 2, out seconds)
+					&& Util.ParseDecFast(line, 10, 3, out milliseconds))
+				{
+					return new TimeSpan(0, hours, minutes, seconds, milliseconds);
+				}
+			}
+			else if (line[2] == ':' && line[5] == ':' && line[8] == ',')
 			{
 				if (Util.ParseDecFast(line, 0, 2, out hours)
 					&& Util.ParseDecFast(line, 3, 2, out minutes)

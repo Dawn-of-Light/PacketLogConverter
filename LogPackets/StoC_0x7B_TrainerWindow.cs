@@ -152,20 +152,19 @@ namespace PacketLogConverter.LogPackets
 					skill.index = pak.ReadByte();
 					skill.countSpells = pak.ReadByte();
 					skill.m_spells = new ChampionSpell[skill.countSpells];
-					pak.Position -= 2;
 					for (int index = 0; index < skill.countSpells; index++)
 					{
 						ChampionSpell spell = new ChampionSpell();
-						spell.indexSkill = pak.ReadByte();
-						spell.countSpells = pak.ReadByte();
 						spell.index = pak.ReadByte();
 						spell.cost = pak.ReadByte();
 						spell.icon = pak.ReadShortLowEndian();
 						spell.name = pak.ReadPascalString();
-
+						spell.unk1 = pak.ReadByte();
+						spell.unk2 = pak.ReadByte();
 						skill.m_spells[index] = spell;
+						if (spell.unk2 > 0)
+							pak.Skip(spell.unk2);
 					}
-					skill.unk1 = pak.ReadShort();
 					m_skills[i] = skill;
 				}
 			}
@@ -175,13 +174,13 @@ namespace PacketLogConverter.LogPackets
 				for (int i = 0; i < countRows; i++)
 				{
 					ChampionSkill skill = (ChampionSkill)m_skills[i];
-					str.AppendFormat("\n\tskillIndex:{0,-3} countSpells:{1,-2} unk1:0x{2:X4}",
-						skill.index, skill.countSpells, skill.unk1);
+					str.AppendFormat("\n\tskillIndex:{0,-3} countSpells:{1,-2}",
+						skill.index, skill.countSpells);
 					for (int j = 0; j < skill.countSpells; j++)
 					{
 						ChampionSpell spell = (ChampionSpell)skill.m_spells[j];
-						str.AppendFormat("\n\tindex:{0,-3} cost:{1,-2} icon:0x{2:X4} \"{3}\"",
-							spell.index, spell.cost, spell.icon, spell.name);
+						str.AppendFormat("\n\tindex:{0,-3} cost:{1,-2} icon:0x{2:X4} \"{3}\" unk:0x{4:X2}{5:X2}",
+							spell.index, spell.cost, spell.icon, spell.name, spell.unk1, spell.unk2);
 					}
 				}
 			}
@@ -192,7 +191,6 @@ namespace PacketLogConverter.LogPackets
 			public byte index;
 			public byte countSpells;
 			public ChampionSpell[] m_spells;
-			public ushort unk1;
 		}
 
 		public struct ChampionSpell
@@ -203,6 +201,8 @@ namespace PacketLogConverter.LogPackets
 			public byte cost;
 			public ushort icon;
 			public string name;
+			public byte unk1;
+			public byte unk2;
 		}
 
 		#endregion

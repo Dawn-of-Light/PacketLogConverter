@@ -1421,7 +1421,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "LogPackets\StoC_0xDF_ChangeGroundTarget.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "LogPackets\StoC_0xE1_ObjectDelete.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xE2_PlayerChangeEmblem.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

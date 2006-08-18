@@ -10,6 +10,7 @@ namespace PacketLogConverter.LogPackets
 		protected byte majorVersion;
 		protected byte minorVersion;
 		protected byte build;
+		protected ushort keyLenght;
 
 		#region public access properties
 
@@ -18,6 +19,7 @@ namespace PacketLogConverter.LogPackets
 		public byte MajorVersion { get { return majorVersion; } }
 		public byte MinorVersion { get { return minorVersion; } }
 		public byte Build { get { return build; } }
+		public ushort KeyLenght { get { return keyLenght; } }
 
 		#endregion
 
@@ -25,8 +27,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("encryption:{0} isSI:0x{1:X2} majorVersion:{2} minorVersion:{3} build:{4} and 211 more bytes",
-			                 encryption, isSI, majorVersion, minorVersion, build);
+			str.AppendFormat("encryption:{0} isSI:0x{1:X2} majorVersion:{2} minorVersion:{3} build:{4} keyLenght:{5}",
+			                 encryption, isSI, majorVersion, minorVersion, build, keyLenght);
 
 			return str.ToString();
 		}
@@ -44,7 +46,10 @@ namespace PacketLogConverter.LogPackets
 			minorVersion = ReadByte();
 			build = ReadByte();
 			if (encryption == 1)
-				Skip(211);
+			{
+				keyLenght = ReadShort();
+				Skip(keyLenght);
+			}
 		}
 
 		/// <summary>

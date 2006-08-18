@@ -6,22 +6,45 @@ namespace PacketLogConverter.LogPackets
 	public class StoC_0x62_KeepClaim : Packet
 	{
 		protected ushort keepId;
-		protected ushort realm;
-		protected ushort level;
+		protected byte permission;
+		protected byte keepType;
+		protected byte targetLevel;
+		protected byte level;
 
 		#region public access properties
 
 		public ushort KeepId { get { return keepId; } }
-		public ushort Realm { get { return realm; } }
-		public ushort Level { get { return level; } }
+		public byte Permission { get { return permission; } }
+		public byte KeepType { get { return keepType; } }
+		public byte TargetLevel { get { return targetLevel; } }
+		public byte Level { get { return level; } }
 
 		#endregion
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			str.AppendFormat("keepId:0x{0:X4} realm:{1} level:{2}",
-				keepId, realm, level);
+			string type;
+			switch (keepType)
+			{
+				case 0:
+					type = "generic";
+					break;
+				case 1:
+					type = "melee";
+					break;
+				case 2:
+					type = "magic";
+					break;
+				case 4:
+					type = "stealth";
+					break;
+				default:
+					type = "unknown";
+					break;
+			}
+			str.AppendFormat("keepId:0x{0:X4} permission:{1} keepType:{2}({5}) to-level:{3} level:{4}",
+				keepId, permission, keepType, targetLevel, level, type);
 			return str.ToString();
 		}
 
@@ -29,8 +52,10 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 			keepId = ReadShort();
-			realm = ReadShort();
-			level = ReadShort();
+			permission = ReadByte();
+			keepType = ReadByte();
+			targetLevel = ReadByte();
+			level = ReadByte();
 		}
 
 		/// <summary>

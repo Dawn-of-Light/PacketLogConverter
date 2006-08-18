@@ -2,7 +2,7 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0xD3, -1, ePacketDirection.ServerToClient, "Craft result ?")]
+	[LogPacket(0xD3, -1, ePacketDirection.ServerToClient, "Craft result")]
 	public class StoC_0xD3_CraftResult : Packet
 	{
 		protected ushort unk1;
@@ -19,11 +19,18 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
+		public enum craftResult: byte
+		{
+			unknown0 = 0,
+			unknown1 = 1,
+			fail = 2,
+			success = 3,
+		};
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("unk1:0x{0:X4} result:0x{1:X4} unk2:0x{2:X8} unk3:0x{3:X8}", unk1, result, unk2, unk3);
+			str.AppendFormat("unk1:0x{0:X4} result:0x{1:X4}({4}) unk2:0x{2:X8} unk3:0x{3:X8}", unk1, result, unk2, unk3, (craftResult)result);
 
 			return str.ToString();
 		}

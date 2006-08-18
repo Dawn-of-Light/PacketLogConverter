@@ -29,7 +29,7 @@ namespace PacketLogConverter.LogActions
 			str.Append("\n\n\n");
 
 
-			str.Append("Another copy with first byte indexes (dec):");
+			str.Append("Another copy with first byte indexes (dec), Len:").Append(pak.Length.ToString("D"));
 			ArrayList bytes = new ArrayList();
 			pak.Position = 0;
 			while (pak.Position < pak.Length)

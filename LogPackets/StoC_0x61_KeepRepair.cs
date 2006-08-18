@@ -10,7 +10,7 @@ namespace PacketLogConverter.LogPackets
 		protected byte hp; // ?
 		protected byte level;
 		protected byte targetLevel;
-		protected byte keepType; // height
+		protected byte keepType;
 		protected string guild;
 		protected byte unk1;
 		// skip unknown (but where is WallID ? or it taked from CtoS 0x6F ?)
