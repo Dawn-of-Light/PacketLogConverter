@@ -542,7 +542,7 @@ namespace PacketLogConverter.LogFilters
 				{
 					// check selected property
 					object val = classProperty.property.GetValue(packet, null);
-					if (val != null && val is string && ((string)val).ToLower().IndexOf(value) != -1)
+					if (val != null && val is string && value != "" && ((string)val).ToLower().IndexOf(value) != -1)
 						return false;
 					if (val != null && val.ToString().ToLower() == value)
 						return false;
@@ -557,7 +557,7 @@ namespace PacketLogConverter.LogFilters
 						if (property.GetIndexParameters().GetLength(0) != 0) continue;
 
 						object val = property.GetValue(packet, null);
-						if (val != null && val is string && ((string)val).ToLower().IndexOf(value) != -1)
+						if (val != null && val is string && value != "" && ((string)val).ToLower().IndexOf(value) != -1)
 							return false;
 						if (val != null && val.ToString().ToLower() == value)
 							return false;

@@ -29,7 +29,9 @@ namespace PacketLogConverter.LogPackets
 					if ((expantions & 0x10) == 0x10)
 						str.Append(", NewTowns");
 					if ((expantions & 0x20) == 0x20)
-						str.Append(", Dark Rising?");
+						str.Append(", Dark Rising");
+					if ((expantions & 0x40) == 0x40)
+						str.Append(", Labyrinth");
 					string description = string.Format("\n\t{0}*{1}", (resolution >> 8) * 10, (resolution & 0xFF) * 10);
 					if ((options & 0x800) == 0x800)
 						description += " WindowMode";

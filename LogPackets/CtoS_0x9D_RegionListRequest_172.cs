@@ -47,16 +47,16 @@ namespace PacketLogConverter.LogPackets
 					else
 						description += " FullScreen";
 					if ((options & 0x100) == 0x100)
-						description += ", Use Atlantis Trees";
+						description += ", Use Atlantis Trees"; //TreeFlag
 					if ((options & 0x200) != 0x200)
-						description += ", Use Atlantis Terrain";
+						description += ", Use Atlantis Terrain"; // OldTerrainFlag
 					if ((options & 0x8000) != 0x8000)
-						description += ", Dynamic Shadow";
+						description += ", Dynamic Shadow"; // OldShadowFlag or Shadow ?
 					if ((options & 0x6400) == 0x4400)
-						description += ", Classic Water";
+						description += ", Classic Water";  // OldRiverFlag
 					else if ((options & 0x6400) == 0x2000)
-						description += ", Shrouded Isles Water";
-					else if ((options & 0x6400) == 0x4000)
+						description += ", Shrouded Isles Water"; // Water1
+					else if ((options & 0x6400) == 0x4000) // Water2
 						description += ", Reflective Water";
 					if ((options & 0x20) == 0x20)
 						description += ", Use Classic Name Font";

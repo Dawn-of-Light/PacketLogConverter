@@ -24,6 +24,9 @@ namespace PacketLogConverter.LogPackets
 			str.AppendFormat("sessionId:0x{0:X4} oid:0x{1:X4} model:0x{2:X4} zoneId:{3,-3} zoneLoc:({4,-5} {5,-5} {6,-5}) heading:0x{7:X4} eyeSize:0x{8:X4} lipSize:0x{9:X4} eyeColor:0x{10:X4} level:{11,-2} hairColor:0x{12:X4} faceType:0x{13:X4} moodType:0x{19:X4} flags:0x{14:X2} name:\"{15}\" guild:\"{16}\" lastName:\"{17}\" trailingZero:{18} unk1_174:{20} newTitle:\"{21}\"",
 				sessionId, oid, model, zoneId, zoneX, zoneY, zoneZ, heading, eyeSize, lipSize, eyeColor, level, hairColor, faceType, flags, name, guildName, lastName, trailingZero, moodType, unk1_174, realmMissionTitle);
 
+			if (flagsDescription && flags != 0)
+				str.AppendFormat("\n\trealm:{0}{1}{2}{3}{4}{5}", (flags >> 2) & 3, ((flags & 1) == 1) ? ", DEAD" : "", ((flags & 2) == 2) ? ", Underwater" : "", ((flags & 0x10) == 0x10) ? ", Stealth" : "", ((flags & 0x20) == 0x20) ? ", Wireframe" : "", ((flags & 0xC0) != 0) ? ", UNK:0x"+(flags & 0xC0).ToString("X2") : "");
+
 			return str.ToString();
 		}
 

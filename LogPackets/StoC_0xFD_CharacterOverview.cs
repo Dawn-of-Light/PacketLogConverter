@@ -104,7 +104,8 @@ namespace PacketLogConverter.LogPackets
 				charData.realm = ReadByte();
 				charData.temp = ReadByte();
 				charData.gender = (byte)((charData.temp >> 4) & 1);
-				charData.race = (byte)((charData.temp & 0x0F) | (charData.temp >> 5));
+				charData.race = (byte)((charData.temp & 0x0F) + ((charData.temp & 0x40) >> 2));
+				charData.siStartLocation = (byte)((charData.temp & 0x80) >> 7);
 				charData.model = ReadShortLowEndian();
 				charData.regionID = ReadByte();
 				charData.regionID2 = ReadByte();
@@ -160,6 +161,7 @@ namespace PacketLogConverter.LogPackets
 			public byte temp;
 			public byte gender;
 			public byte race;
+			public byte siStartLocation;
 			public ushort model;
 			public byte regionID;
 			public byte regionID2;

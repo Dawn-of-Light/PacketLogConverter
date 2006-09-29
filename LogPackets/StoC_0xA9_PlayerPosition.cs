@@ -70,8 +70,9 @@ namespace PacketLogConverter.LogPackets
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			str.AppendFormat("sessionId:0x{0:X4} status:0x{1:X2} speed:{2,-3} {3}:0x{4:X4}(0x{13:X2}) currentZone({5,-3}): ({6,-6} {7,-6} {8,-5}) flyFlags:0x{9:X2} speedZ:{10,-4} flags:0x{11:X2} health:{12,3}%",
-				sessionId, (status & 0x1FF ^ status) >> 8 ,status & 0x1FF, ((status & 0x1C00) == 0x1800) ? "mountId" : "heading", ((status & 0x1C00) == 0x1800) ? heading : heading & 0xFFF, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, (speed & 0x7FF ^ speed) >> 8, speed & 0x7FF, flag, health & 0x7F, ((status & 0x1C00) == 0x1800) ? 0 : (heading & 0xFFF ^ heading) >> 8);
+			bool isRaided = IsRaided;
+			str.AppendFormat("sessionId:0x{0:X4} status:0x{1:X2} speed:{2,-3} {3}:0x{4:X4}(0x{14:X2}) currentZone({5,-3}): ({6,-6} {7,-6} {8,-5}) flyFlags:0x{9:X2} {10}:{11,-4} flags:0x{12:X2} health:{13,3}%",
+				sessionId, (status & 0x1FF ^ status) >> 8 ,status & 0x1FF, isRaided ? "mountId" : "heading", isRaided ? heading : heading & 0xFFF, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, (speed & 0x7FF ^ speed) >> 8, (isRaided ? "bSlot " : "SpeedZ") ,speed & 0x7FF, flag, health & 0x7F, isRaided ? 0 : (heading & 0xFFF ^ heading) >> 8);
 			if (flagsDescription)
 			{
 				byte plrState = (byte)((status >> 10) & 7);

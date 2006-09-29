@@ -28,6 +28,7 @@ namespace PacketLogConverter.LogPackets
 			TrialsOfAtlantis = 3,
 			Catacombs = 4,
 			DarknessRising = 5,
+			Labyrinth = 6,
 		}
 		public override string GetPacketDataString(bool flagsDescription)
 		{

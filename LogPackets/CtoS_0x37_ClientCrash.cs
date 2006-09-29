@@ -44,6 +44,16 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
+		public enum eClientType : int
+		{
+			Classic = 1,
+//			ShroudedIsles = ?,
+			TrialsOfAtlantis = 2,
+			Catacombs = 3,
+			DarknessRising = 6,
+			Labyrinth = 7,
+		}
+
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
@@ -52,7 +62,7 @@ namespace PacketLogConverter.LogPackets
 				module, version, cs, eip, procType, region, uptime, options, options & 0x1, ((options & 0x02) == 0x02) ? ", SecondCopyDaoc" : "", options >> 2);
 			str.AppendFormat("\n\tstack:0x{0:X8} 0x{1:X8} 0x{2:X8} 0x{3:X8}", stack1, stack2, stack3, stack4);
 			if (flagsDescription)
-				str.AppendFormat("\n\tunk4:{0} clnType?:{1} procType?:{2} unk6:{3}", unk4, clnType, procType, unk6);
+				str.AppendFormat("\n\tunk4:{0} clnType?:{1}({4}) procType?:{2} unk6:{3}", unk4, clnType, procType, unk6, (eClientType)clnType);
 
 			return str.ToString();
 		}

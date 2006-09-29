@@ -20,8 +20,8 @@ namespace PacketLogConverter.LogPackets
 		protected ushort targetOID;
 		protected byte healthPercent;
 		protected byte flags;
-		protected byte currentZoneId;
-		protected byte targetZoneId;
+		protected ushort currentZoneId;
+		protected ushort targetZoneId;
 
 		public int Oid1 { get { return npcOID; } }
 		public int Oid2 { get { return targetOID; } }
@@ -42,8 +42,8 @@ namespace PacketLogConverter.LogPackets
 		public ushort TargetOid { get { return targetOID; } }
 		public byte HealthPercent { get { return healthPercent; } }
 		public byte Flags { get { return flags; } }
-		public byte CurrentZoneId { get { return currentZoneId; } }
-		public byte TargetZoneId { get { return targetZoneId; } }
+		public ushort CurrentZoneId { get { return currentZoneId; } }
+		public ushort TargetZoneId { get { return targetZoneId; } }
 
 		#endregion
 
@@ -59,10 +59,6 @@ namespace PacketLogConverter.LogPackets
 					flag += ",Ghost";
 				if ((flags & 0x02) == 0x02)
 					flag += ",Inventory";
-				if ((flags & 0x04) == 0x04)
-					flag += ",UNKx04";
-				if ((flags & 0x08) == 0x08)
-					flag += ",UNKx08";
 				if ((flags & 0x10) == 0x10)
 					flag += ",Peace";
 				if ((flags & 0x20) == 0x20)
@@ -98,8 +94,8 @@ namespace PacketLogConverter.LogPackets
 			targetOID = ReadShort();
 			healthPercent = ReadByte();
 			flags = ReadByte();
-			currentZoneId = ReadByte();
-			targetZoneId = ReadByte();
+			currentZoneId = (ushort)(ReadByte() | ((flags & 0x04) << 6));
+			targetZoneId = (ushort)(ReadByte() | ((flags & 0x08) << 5));
 		}
 
 		/// <summary>
