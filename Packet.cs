@@ -236,6 +236,19 @@ namespace PacketLogConverter
 			Seek(num, SeekOrigin.Current);
 		}
 
+		public string ReadString() 
+		{
+			byte[] buf = new byte[Length];
+			int i = 0;
+			while (i >= 0)
+			{
+				byte b = ReadByte();
+				if (b == 0) break;
+				buf[i++] = b;
+			}
+			return Marshal.ConvertToString(buf);
+		}
+
 		/// <summary>
 		/// Reads a null-terminated string from the stream
 		/// </summary>

@@ -44,6 +44,8 @@ namespace PacketLogConverter.LogActions
 			string loc = "UNKNOWN";
 			string state = "";
 			string charName = "UNKNOWN";
+			int playersInGroup = -1;
+			int indexInGroup = -1;
 
 			for (int i = 0; i < selectedIndex; i++)
 			{
@@ -65,7 +67,7 @@ namespace PacketLogConverter.LogActions
 					if ((pos.Flag & 0x01) == 0x01)
 						state += ",CtoS_0xA9_Flagx01";
 					if ((pos.Flag & 0x02) == 0x02)
-						state += ",Diving";
+						state += ",Underwater";
 					if ((pos.Flag & 0x04) == 0x04)
 						state += ",PetInView";
 					if ((pos.Flag & 0x08) == 0x08)
@@ -81,6 +83,21 @@ namespace PacketLogConverter.LogActions
 					if ((pos.Speed & 0x8000) == 0x8000)
 						state += ",FallDown";
 					loc = string.Format("({0,-3}): ({1,-6} {2,-6} {3,-5})", pos.CurrentZoneId, pos.CurrentZoneX, pos.CurrentZoneY, pos.CurrentZoneZ);
+				}
+				else if (pak is StoC_0x16_VariousUpdate)
+				{
+					StoC_0x16_VariousUpdate stat = (StoC_0x16_VariousUpdate)pak;
+					if (stat.SubCode == 6)
+					{
+						StoC_0x16_VariousUpdate.PlayerGroupUpdate subData = (StoC_0x16_VariousUpdate.PlayerGroupUpdate)stat.SubData;
+						playersInGroup = subData.count;
+						for (int j = 0; j < subData.count; j++)
+						{
+							StoC_0x16_VariousUpdate.GroupMember member = subData.groupMembers[j];
+							if (objectId >= 0 && objectId == member.oid)
+								indexInGroup = j;
+						}
+					}
 				}
 				else if (pak is CtoS_0x10_CharacterSelectRequest)
 				{
@@ -127,6 +144,8 @@ namespace PacketLogConverter.LogActions
 			str.AppendFormat(" object id: 0x{0}\n", ValueToString(objectId, "X4"));
 			str.AppendFormat(" char name: {0}\n", charName);
 			str.AppendFormat("\n");
+			if(playersInGroup > 0)
+				str.AppendFormat("        group: {0}[{1}]\n", ValueToString(indexInGroup), ValueToString(playersInGroup));
 			str.AppendFormat("        speed: {0,3}\n", ValueToString(speed));
 			str.AppendFormat("     maxSpeed: {0,3}%\n", ValueToString(maxspeed));
 			str.AppendFormat("       health: {0,3}%\n", ValueToString(healthPercent));

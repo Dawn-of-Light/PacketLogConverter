@@ -60,7 +60,7 @@ namespace PacketLogConverter.LogPackets
 				if ((flags & 0x02) == 0x02)
 					flag += ",Inventory";
 				if ((flags & 0x10) == 0x10)
-					flag += ",Peace";
+					flag += ",Underwater";
 				if ((flags & 0x20) == 0x20)
 					flag += ",Fly";
 				str.AppendFormat(" ({0})", flag);

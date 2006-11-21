@@ -3,31 +3,39 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x83, 173, ePacketDirection.ServerToClient, "Quest update v173")]
-	public class StoC_0x83_QuestUpdate_173 : StoC_0x83_QuestUpdate
+	public class StoC_0x83_QuestUpdate_173 : StoC_0x83_QuestUpdate_170
 	{
-		public override void Init()
+		protected override void InitQuestUpdate()
 		{
-			Position = 0;
-			index = ReadByte();
-			if (index == 0)
+			subData = new QuestUpdate_173();
+			subData.Init(this);
+		}
+
+		public class QuestUpdate_173 : QuestUpdate_170
+		{
+			public override void Init(StoC_0x83_QuestUpdate pak)
 			{
-				lenName = ReadShortLowEndian();
-				lenDesc = ReadByte();	
-			}
-			else
-			{
-				lenName = ReadByte();
-				lenDesc = ReadShortLowEndian();
-			}
-			if (lenName == 0 && lenDesc == 0)
-			{
-				name = "";
-				desc = "";
-			}
-			else
-			{
-				name = ReadString(lenName);
-				desc = ReadString(lenDesc);
+				index = pak.ReadByte();
+				if (index == 0)
+				{
+					lenName = pak.ReadShortLowEndian();
+					lenDesc = pak.ReadByte();
+				}
+				else
+				{
+					lenName = pak.ReadByte();
+					lenDesc = pak.ReadShortLowEndian();
+				}
+				if (lenName == 0 && lenDesc == 0)
+				{
+					name = "";
+					desc = "";
+				}
+				else
+				{
+					name = pak.ReadString(lenName);
+					desc = pak.ReadString(lenDesc);
+				}
 			}
 		}
 		/// <summary>

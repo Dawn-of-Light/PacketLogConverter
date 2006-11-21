@@ -23,7 +23,7 @@ namespace PacketLogConverter.LogReaders
 			PacketLog log = new PacketLog();
 			ArrayList badLines = new ArrayList();
 			byte[] data;
-			
+
 			using(StreamReader s = new StreamReader(stream, Encoding.ASCII))
 			{
 				while ((line = s.ReadLine()) != null)
@@ -35,7 +35,7 @@ namespace PacketLogConverter.LogReaders
 								(int)(stream.Length>>10));
 
 						if (line.Length < 1) continue;
-						
+
 //						if (line.IndexOf("DOL.GS.PacketHandler.GSUDPPacketOut") >= 0)
 						if (line.IndexOf("GSUDPPacketOut") >= 0)
 						{
@@ -93,7 +93,7 @@ namespace PacketLogConverter.LogReaders
 						{
 							continue;
 						}
-						
+
 						pak = PacketManager.ChangePacketClass(pak, currentVersion);
 						pak.AllowClassChange = false;
 						packets.Add(pak);
@@ -105,7 +105,7 @@ namespace PacketLogConverter.LogReaders
 					}
 				}
 			}
-			
+
 			if (badLines.Count > 0)
 			{
 				StringBuilder str = new StringBuilder("error parsing following lines (" + badLines.Count + "):\n\n");
@@ -121,7 +121,7 @@ namespace PacketLogConverter.LogReaders
 				}
 				Log.Info(str.ToString());
 			}
-			
+
 			return packets;
 		}
 
@@ -129,7 +129,7 @@ namespace PacketLogConverter.LogReaders
 		{
 			MemoryStream buf = new MemoryStream();
 			string line;
-			
+
 			while ((line = s.ReadLine()) != null)
 			{
 				int dataOffset = 6;
@@ -147,7 +147,7 @@ namespace PacketLogConverter.LogReaders
 					dataOffset += 3;
 				} while (byteInLine < 16);
 			}
-			
+
 			buf.Capacity = (int) buf.Length;
 			return buf.GetBuffer();
 		}

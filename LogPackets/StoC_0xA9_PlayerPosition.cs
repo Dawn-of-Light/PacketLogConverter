@@ -90,7 +90,7 @@ namespace PacketLogConverter.LogPackets
 				if ((flag & 0x02) == 0x02)
 					flags += ",Stealth";
 				if ((flag & 0x04) == 0x04)
-					flags += ",Diving";
+					flags += ",Underwater";
 				if ((flag & 0x08) == 0x08)
 					flags += ",GT";
 				if ((flag & 0x10) == 0x10)

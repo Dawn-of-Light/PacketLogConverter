@@ -13,7 +13,8 @@ namespace PacketLogConverter.LogPackets
 		protected ushort data4;
 		protected byte dialogType;
 		protected byte autoWrapText;
-		protected string message;
+		protected ASubData subData;
+
 
 		public int Oid1
 		{
@@ -46,22 +47,21 @@ namespace PacketLogConverter.LogPackets
 		public ushort Data4 { get { return data4; } }
 		public byte DialogType { get { return dialogType; } }
 		public byte AutoWrapText { get { return autoWrapText; } }
-		public string Message { get { return message; } }
+		public ASubData SubData { get { return subData; } }
 
 		#endregion
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-
-			string template = "dialogCode:0x{0:X4} data1:0x{1:X4} data2:0x{2:X4} data3:0x{3:X4} data4:0x{4:X4} dialogType:{5} autoWrapText:{6}\n\t\"{7}\"";
+			string template = "dialogCode:0x{0:X4} data1:0x{1:X4} data2:0x{2:X4} data3:0x{3:X4} data4:0x{4:X4} dialogType:{5} autoWrapText:{6}";
 
 			switch(dialogCode)
 			{
-				case 6: template = "CUSTOM DIALOG sessionId:0x{1:X4} customDialog?:0x{2:X4} data3:0x{3:X4} data4:0x{4:X4} dialogType:{5} autoWrapText:{6}\n\t\"{7}\""; break;
+				case 6: template = "CUSTOM DIALOG sessionId:0x{1:X4} customDialog?:0x{2:X4} data3:0x{3:X4} data4:0x{4:X4} dialogType:{5} autoWrapText:{6}"; break;
 			}
-
-			str.AppendFormat(template, dialogCode, data1, data2, data3, data4, dialogType, autoWrapText, message);
+			str.AppendFormat(template, dialogCode, data1, data2, data3, data4, dialogType, autoWrapText);
+			subData.MakeString(str, flagsDescription);
 
 			return str.ToString();
 		}
@@ -80,8 +80,63 @@ namespace PacketLogConverter.LogPackets
 			data4 = ReadShort();
 			dialogType = ReadByte();
 			autoWrapText = ReadByte();
-			message = ReadString(10000);
-//			zero = ReadByte();
+			InitSubcode(dialogCode);
+		}
+
+		protected void InitSubcode(ushort code)
+		{
+			switch (code)
+			{
+				case 0x21:
+				case 0x22: InitNewQuestUpdate(); break;
+				default: InitDialogUpdate(); break;
+			}
+			return;
+		}
+
+		/// <summary>
+		/// Base abstract class for all sub codes data
+		/// </summary>
+		public abstract class ASubData
+		{
+			abstract public void Init(StoC_0x81_ShowDialog pak);
+			abstract public void MakeString(StringBuilder str, bool flagsDescription);
+		}
+
+		protected virtual void InitDialogUpdate()
+		{
+			subData = new DialogUpdate();
+			subData.Init(this);
+		}
+
+		public class DialogUpdate : ASubData
+		{
+			public string message;
+			public override void Init(StoC_0x81_ShowDialog pak)
+			{
+				message = pak.ReadString();
+			}
+
+			public override void MakeString(StringBuilder str, bool flagsDescription)
+			{
+				str.AppendFormat("\n\t\"{0}\"", message);
+			}
+		}
+
+		protected virtual void InitNewQuestUpdate()
+		{
+			subData = new NewQuestUpdate();
+			subData.Init(this);
+		}
+
+		public class NewQuestUpdate: ASubData
+		{
+			public override void Init(StoC_0x81_ShowDialog pak)
+			{
+			}
+			public override void MakeString(StringBuilder str, bool flagsDescription)
+			{
+			}
 		}
 
 		/// <summary>

@@ -64,9 +64,9 @@ namespace PacketLogConverter.LogPackets
 				if ((status & 0x4000) == 0x4000)
 					flags += ",StrafeLeft";
 				if ((status & 0x2000) == 0x2000)
-					flags += "StrafeMove";
+					flags += "Move";
 				if ((flag & 0x02) == 0x02)
-					flags += ",Diving";
+					flags += ",Underwater";
 				if ((flag & 0x04) == 0x04)
 					flags += ",PetInView";
 				if ((flag & 0x08) == 0x08)

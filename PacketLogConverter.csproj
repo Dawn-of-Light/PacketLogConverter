@@ -421,6 +421,26 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "LogPackets\CtoS_0x40_UnknownPacket.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x41_UnknownPacket.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x42_UnknownPacket.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0x43_UnknownPacket.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "LogPackets\CtoS_0x48_WarmapShow.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -702,6 +722,11 @@
                 />
                 <File
                     RelPath = "LogPackets\CtoS_0xD8_DetailDisplayRequest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\CtoS_0xD8_DetailDisplayRequest_186.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -996,6 +1021,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "LogPackets\StoC_0x45_UnknownPacket.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x46_UnknownPacket.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "LogPackets\StoC_0x49_WarmapClaimedKeeps.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -1037,6 +1072,11 @@
                 />
                 <File
                     RelPath = "LogPackets\StoC_0x4E_ControlledHorse.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x59_UnknownPacket.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -1151,6 +1191,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "LogPackets\StoC_0x81_ShowDialog_186.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "LogPackets\StoC_0x83_QuestUpdate.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -1172,6 +1217,11 @@
                 />
                 <File
                     RelPath = "LogPackets\StoC_0x83_QuestUpdate_184.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0x83_QuestUpdate_186.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -1302,6 +1352,11 @@
                 />
                 <File
                     RelPath = "LogPackets\StoC_0xBC_CombatAnimation.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LogPackets\StoC_0xBC_CombatAnimation_186.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -2,16 +2,14 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0xD8, -1, ePacketDirection.ClientToServer, "Detail display request")]
-	public class CtoS_0xD8_DetailDisplayRequest : Packet
+	[LogPacket(0x43, -1, ePacketDirection.ClientToServer, "Unknown packet")]
+	public class CtoS_0x43_UnknownPacket: Packet
 	{
-		protected ushort objectType;
-		protected ushort objectId;
+		protected byte unk1;
 
 		#region public access properties
 
-		public ushort ObjectType { get { return objectType; } }
-		public ushort ObjectId { get { return objectId; } }
+		public byte Unk1 { get { return unk1 ; } }
 
 		#endregion
 
@@ -19,7 +17,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("objectType:0x{0:X4} objectId:{1:X4}", objectType, objectId);
+			str.AppendFormat("unk1:0x{0:X2}", unk1);
 
 			return str.ToString();
 		}
@@ -31,15 +29,14 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			objectType = ReadShort();
-			objectId = ReadShort();
+			unk1 = ReadByte();
 		}
 
 		/// <summary>
 		/// Constructs new instance with given capacity
 		/// </summary>
 		/// <param name="capacity"></param>
-		public CtoS_0xD8_DetailDisplayRequest(int capacity) : base(capacity)
+		public CtoS_0x43_UnknownPacket(int capacity) : base(capacity)
 		{
 		}
 	}

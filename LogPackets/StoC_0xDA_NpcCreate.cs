@@ -65,6 +65,8 @@ namespace PacketLogConverter.LogPackets
 					flag += ",Peace";
 				if ((flags & 0x20) == 0x20)
 					flag += ",Fly";
+				if ((model & 0x8000) == 0x8000)
+					flag += ",Underwater";
 				str.AppendFormat(" ({0})", flag);
 			}
 			return str.ToString();

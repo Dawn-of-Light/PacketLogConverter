@@ -29,8 +29,19 @@ namespace PacketLogConverter.LogPackets
 			str.AppendFormat("dBslot:{0,-2} flagOption:{1}", slot, flag);
 			if (flag > 0)
 			{
-				str.AppendFormat(" resolutions:0x{0:X4} options:0x{1:X4} figureVersion:0x{2:X8}{3:X2} memory:{4,2}({9,-2}) unk1:0x{5:X6} skin:0x{6:X2} race:{7,-2} regionExpantions:0x{8:X2}",
-					resolution, options, figureVersion, figureVersion1, unk1 >> 24, unk1 & 0xFFFFFF, skin, race > 18 ? 18 - race : race, regionExpantions, (unk1 >> 24) * 64);
+				int optionsBIT = options;
+				optionsBIT = optionsBIT & (0xFFFF ^ 0x0020); // Font name
+				optionsBIT = optionsBIT & (0xFFFF ^ 0x0040); // Font size
+				optionsBIT = optionsBIT & (0xFFFF ^ 0x0100); // Atlantis TreeFlag
+				optionsBIT = optionsBIT & (0xFFFF ^ 0x0200); // OldTerrainFlag
+				optionsBIT = optionsBIT & (0xFFFF ^ 0x0400); // Water Options
+				optionsBIT = optionsBIT & (0xFFFF ^ 0x0800); // WindowMode
+				optionsBIT = optionsBIT & (0xFFFF ^ 0x1000); // SecondDaocCopy
+				optionsBIT = optionsBIT & (0xFFFF ^ 0x2000); // Water Options
+				optionsBIT = optionsBIT & (0xFFFF ^ 0x4000); // Water Options
+				optionsBIT = optionsBIT & (0xFFFF ^ 0x8000); // Dynamic Shadow
+				str.AppendFormat(" resolutions:0x{0:X4} options:0x{1:X4}(0x{10:X4}) figureVersion:0x{2:X8}{3:X2} memory:{4,2}({9,-2}) unk1:0x{5:X6} skin:0x{6:X2} race:{7,-2} regionExpantions:0x{8:X2}",
+					resolution, options, figureVersion, figureVersion1, unk1 >> 24, unk1 & 0xFFFFFF, skin, race > 18 ? 18 - race : race, regionExpantions, (unk1 >> 24) * 64, optionsBIT);
 				if (flagsDescription)
 				{
 					str.Append("\n\tExpantions:");

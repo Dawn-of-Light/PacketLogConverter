@@ -2,16 +2,14 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0xD8, -1, ePacketDirection.ClientToServer, "Detail display request")]
-	public class CtoS_0xD8_DetailDisplayRequest : Packet
+	[LogPacket(0xD8, 186, ePacketDirection.ClientToServer, "Detail display request 186")]
+	public class CtoS_0xD8_DetailDisplayRequest_186 : CtoS_0xD8_DetailDisplayRequest
 	{
-		protected ushort objectType;
-		protected ushort objectId;
+		protected uint unk1;
 
 		#region public access properties
 
-		public ushort ObjectType { get { return objectType; } }
-		public ushort ObjectId { get { return objectId; } }
+		public uint Unk1 { get { return unk1; } }
 
 		#endregion
 
@@ -19,7 +17,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("objectType:0x{0:X4} objectId:{1:X4}", objectType, objectId);
+			str.AppendFormat("objectType:0x{0:X4} objectId:{1:X4} unk1:{2:X8}", objectType, objectId, unk1);
 
 			return str.ToString();
 		}
@@ -32,6 +30,7 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			objectType = ReadShort();
+			unk1 = ReadInt();
 			objectId = ReadShort();
 		}
 
@@ -39,7 +38,7 @@ namespace PacketLogConverter.LogPackets
 		/// Constructs new instance with given capacity
 		/// </summary>
 		/// <param name="capacity"></param>
-		public CtoS_0xD8_DetailDisplayRequest(int capacity) : base(capacity)
+		public CtoS_0xD8_DetailDisplayRequest_186(int capacity) : base(capacity)
 		{
 		}
 	}

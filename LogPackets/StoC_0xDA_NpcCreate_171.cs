@@ -39,6 +39,8 @@ namespace PacketLogConverter.LogPackets
 					flag += ",Peace";
 				if ((flags & 0x20) == 0x20)
 					flag += ",Fly";
+				if ((model & 0x8000) == 0x8000)
+					flag += ",Underwater";
 				if ((flag2 & 0x01) == 0x01)
 					flag += ",-DOR";
 				if ((flag2 & 0x02) == 0x02)
