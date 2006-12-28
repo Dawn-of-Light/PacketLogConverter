@@ -15,6 +15,7 @@ namespace PacketLogConverter
 	{
 		private const int MIN_UPDATE_INTERVAL = 100; // update every 100ms or more
 
+		private string m_message;
 		private object m_state;
 		private Thread m_thread;
 		private uint m_lastUpdate;
@@ -48,8 +49,19 @@ namespace PacketLogConverter
 
 		public void SetDescription(string str)
 		{
-			m_progressForm.DescriptionLabel.Text = str;
-//			m_progressForm.Invoke(new StringParamCallback(ChangeDescription), new object[] {str});
+//			m_progressForm.DescriptionLabel.Text = str;
+			lock (this)
+			{
+				if (!m_progressForm.IsHandleCreated)
+				{
+					// Message will be set when dialog is shown
+					m_message = str;
+				}
+				else
+				{
+					m_progressForm.Invoke(new StringParamCallback(ChangeDescription), new object[] { str });
+				}
+			}
 		}
 
 		private void ChangeDescription(string str)
@@ -110,11 +122,23 @@ namespace PacketLogConverter
 		private void WorkStartCallback()
 		{
 //			m_parentForm.Enabled = false;
+			lock (this)
+			{
+				m_progressForm.CreateControl();
+				
+				// Set message if needed; throws exception if done before dialog is visible
+				if (null != m_message)
+				{
+					m_progressForm.DescriptionLabel.Text = m_message;
+					m_message = null;
+				}
+			}
 			m_progressForm.ShowDialog(m_parentForm);
 		}
 
 		private void WorkEndCallback()
 		{
+			m_message = null;
 			m_lastUpdate = uint.MinValue;
 			int max = m_progressForm.ProgressBar.Maximum;
 			ProgressCallback(max, max);

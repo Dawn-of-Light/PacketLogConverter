@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
+using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -27,6 +28,7 @@ namespace PacketLogConverter.LogFilters
 		private System.Windows.Forms.CheckBox enableCheckBox;
 		private System.Windows.Forms.TextBox propertyValueTypeTextBox;
 		private System.Windows.Forms.Button modifyButton;
+		private CheckBox recursiveCheckBox;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -73,6 +75,7 @@ namespace PacketLogConverter.LogFilters
 			this.enableCheckBox = new System.Windows.Forms.CheckBox();
 			this.propertyValueTypeTextBox = new System.Windows.Forms.TextBox();
 			this.modifyButton = new System.Windows.Forms.Button();
+			this.recursiveCheckBox = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -159,7 +162,7 @@ namespace PacketLogConverter.LogFilters
 			this.addButton.Name = "addButton";
 			this.addButton.Size = new System.Drawing.Size(75, 23);
 			this.addButton.TabIndex = 7;
-			this.addButton.Text = "Add";
+			this.addButton.Text = "&Add";
 			this.addButton.Click += new System.EventHandler(this.addButton_Click);
 			// 
 			// removeButton
@@ -169,7 +172,7 @@ namespace PacketLogConverter.LogFilters
 			this.removeButton.Name = "removeButton";
 			this.removeButton.Size = new System.Drawing.Size(75, 23);
 			this.removeButton.TabIndex = 8;
-			this.removeButton.Text = "Remove";
+			this.removeButton.Text = "&Remove";
 			this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
 			// 
 			// clearButton
@@ -179,7 +182,7 @@ namespace PacketLogConverter.LogFilters
 			this.clearButton.Name = "clearButton";
 			this.clearButton.Size = new System.Drawing.Size(75, 23);
 			this.clearButton.TabIndex = 9;
-			this.clearButton.Text = "Clear";
+			this.clearButton.Text = "&Clear";
 			this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
 			// 
 			// acceptButton
@@ -190,7 +193,7 @@ namespace PacketLogConverter.LogFilters
 			this.acceptButton.Name = "acceptButton";
 			this.acceptButton.Size = new System.Drawing.Size(75, 23);
 			this.acceptButton.TabIndex = 10;
-			this.acceptButton.Text = "Accept";
+			this.acceptButton.Text = "&Accept";
 			// 
 			// enableCheckBox
 			// 
@@ -199,7 +202,7 @@ namespace PacketLogConverter.LogFilters
 			this.enableCheckBox.Name = "enableCheckBox";
 			this.enableCheckBox.Size = new System.Drawing.Size(64, 24);
 			this.enableCheckBox.TabIndex = 11;
-			this.enableCheckBox.Text = "Enable";
+			this.enableCheckBox.Text = "&Enable";
 			// 
 			// propertyValueTypeTextBox
 			// 
@@ -217,14 +220,25 @@ namespace PacketLogConverter.LogFilters
 			this.modifyButton.Name = "modifyButton";
 			this.modifyButton.Size = new System.Drawing.Size(75, 23);
 			this.modifyButton.TabIndex = 13;
-			this.modifyButton.Text = "Modify";
+			this.modifyButton.Text = "&Modify";
 			this.modifyButton.Click += new System.EventHandler(this.modifyButton_Click);
+			// 
+			// recursiveCheckBox
+			// 
+			this.recursiveCheckBox.AutoSize = true;
+			this.recursiveCheckBox.Location = new System.Drawing.Point(6, 240);
+			this.recursiveCheckBox.Name = "recursiveCheckBox";
+			this.recursiveCheckBox.Size = new System.Drawing.Size(74, 17);
+			this.recursiveCheckBox.TabIndex = 14;
+			this.recursiveCheckBox.Text = "Re&cursive";
+			this.recursiveCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// PacketPropertyValueFilterForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(554, 271);
 			this.ControlBox = false;
+			this.Controls.Add(this.recursiveCheckBox);
 			this.Controls.Add(this.modifyButton);
 			this.Controls.Add(this.propertyValueTypeTextBox);
 			this.Controls.Add(this.enableCheckBox);
@@ -359,10 +373,11 @@ namespace PacketLogConverter.LogFilters
 		{
 			string value = propertyValueTextBox.Text;
 			long integer;
+			bool recursive = recursiveCheckBox.Checked;
 			if (Util.ParseLong(value, out integer))
 				value = integer.ToString();
 
-			filtersListBox.Items.Add(new FilterListEntry((PacketClass)packetClassComboBox.SelectedItem, (ClassProperty)classPropertyComboBox.SelectedItem, value));
+			filtersListBox.Items.Add(new FilterListEntry((PacketClass)packetClassComboBox.SelectedItem, (ClassProperty)classPropertyComboBox.SelectedItem, value, recursive));
 			UpdateButtons();
 		}
 
@@ -384,7 +399,8 @@ namespace PacketLogConverter.LogFilters
 			int index = filtersListBox.SelectedIndex;
 			if (index < 0 || index >= filtersListBox.Items.Count)
 				return;
-			filtersListBox.Items.Insert(index, new FilterListEntry((PacketClass)packetClassComboBox.SelectedItem, (ClassProperty)classPropertyComboBox.SelectedItem, propertyValueTextBox.Text));
+			bool recursive = recursiveCheckBox.Checked;
+			filtersListBox.Items.Insert(index, new FilterListEntry((PacketClass)packetClassComboBox.SelectedItem, (ClassProperty)classPropertyComboBox.SelectedItem, propertyValueTextBox.Text, recursive));
 			filtersListBox.Items.RemoveAt(index+1);
 			filtersListBox.SelectedIndex = index;
 		}
@@ -426,6 +442,7 @@ namespace PacketLogConverter.LogFilters
 				packetClassComboBox.SelectedItem = entry.packetClass;
 				classPropertyComboBox.SelectedItem = entry.classProperty;
 				propertyValueTextBox.Text = entry.value;
+				recursiveCheckBox.Checked = entry.isRecursive;
 			}
 			UpdateButtons();
 		}
@@ -510,60 +527,160 @@ namespace PacketLogConverter.LogFilters
 			public readonly PacketClass packetClass;
 			public readonly ClassProperty classProperty;
 			public readonly string value;
+			public readonly bool isRecursive;
 			public static readonly ArrayList m_ignoredProperties = new ArrayList();
 
 			static FilterListEntry()
 			{
-				foreach (PropertyInfo property in typeof(Packet).GetProperties())
+				Type ignoredType = typeof(MemoryStream);
+				foreach (PropertyInfo property in ignoredType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
 				{
 					m_ignoredProperties.Add(property);
 				}
 			}
 
-			public FilterListEntry(PacketClass packetClass, ClassProperty classProperty, string value)
+			public FilterListEntry(PacketClass packetClass, ClassProperty classProperty, string value, bool isRecursive)
 			{
 				this.packetClass = packetClass;
 				this.classProperty = classProperty;
 				this.value = value.ToLower();
+				this.isRecursive = isRecursive;
 			}
 
 			public override string ToString()
 			{
-				return string.Format("{0} [{1}] == \"{2}\"", packetClass, classProperty, value);
+				string rec = (isRecursive ? " (rec)" : "");
+				return string.Format("{0} [{1}] == \"{2}\"{3}", packetClass, classProperty, value, rec);
 			}
 
 			public bool IsPacketIgnored(Packet packet)
 			{
-				if (packetClass.type != null && !packetClass.type.IsAssignableFrom(packet.GetType()))
+				bool isIgnored = true;
+				
+				// Filter by packet type
+				if (packetClass.type != null && packetClass.type.IsAssignableFrom(packet.GetType()))
 				{
-					return true;
+					isIgnored = false;
 				}
-				if (classProperty.property != null)
+				else if (classProperty.property != null)
 				{
-					// check selected property
+					// Filter by selected property
 					object val = classProperty.property.GetValue(packet, null);
-					if (val != null && val is string && value != "" && ((string)val).ToLower().IndexOf(value) != -1)
-						return false;
-					if (val != null && val.ToString().ToLower() == value)
-						return false;
+					isIgnored = IsValueIgnored(val, isRecursive, 2);
 				}
 				else
 				{
-					// check all properties
-					foreach (PropertyInfo property in packet.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
-					{
-						if (!property.CanRead) continue;
-//						if (m_ignoredProperties.Contains(property)) continue;
-						if (property.GetIndexParameters().GetLength(0) != 0) continue;
+					isIgnored = IsValueIgnored(packet, isRecursive, 3);
+				}
+				
+				return isIgnored;
+			}
 
-						object val = property.GetValue(packet, null);
-						if (val != null && val is string && value != "" && ((string)val).ToLower().IndexOf(value) != -1)
-							return false;
-						if (val != null && val.ToString().ToLower() == value)
-							return false;
+			private bool IsValueIgnored(object val, bool recursive, int depth)
+			{
+				// Limit depth
+				if (depth < 0)
+				{
+					return true;
+				}
+
+				bool isIgnored = true;
+				
+				if (val != null)
+				{
+					// Ignore certain types for better performance
+					Type valType = val.GetType();
+					if (valType == typeof(TimeSpan)
+					|| valType == typeof(LogPacketAttribute)
+					|| valType == typeof(String)
+					|| valType == typeof(ePacketProtocol)
+					|| valType == typeof(ePacketDirection)
+					|| typeof(Exception).IsAssignableFrom(valType))
+					{
+						isIgnored = true;
+					}
+					else if (valType.IsPublic || valType.IsNestedPublic)
+					{
+						if (recursive)
+						{
+							// Recursively check all properties of collection
+							if (!(val is string) && val is IEnumerable)
+							{
+								foreach (object o in (IEnumerable)val)
+								{
+									isIgnored = IsValueIgnored(o, recursive, depth - 1);
+
+									// Property is not ignored - break the loop
+									if (!isIgnored)
+									{
+										break;
+									}
+								}
+							}
+
+							// Check all object's properties/fields
+							else
+							{
+								// Check all properties
+								foreach (PropertyInfo property in valType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+								{
+									if (!property.CanRead) continue;
+									// Ignore MemoryStream properties because they throw exceptions
+//									if (m_ignoredProperties.Contains(property)) continue;
+									if (property.DeclaringType.Equals(typeof(MemoryStream))) continue;
+									if (property.DeclaringType.Equals(typeof(Stream))) continue;
+									if (property.DeclaringType.Equals(typeof(Type))) continue;
+									if (property.DeclaringType.Equals(typeof(Object))) continue;
+									if (property.GetIndexParameters().GetLength(0) != 0) continue;
+
+									object objPropVal = property.GetValue(val, null);
+									isIgnored = IsValueIgnored(objPropVal, recursive, depth - 1);
+
+									// Property is not ignored - break the loop
+									if (!isIgnored)
+									{
+										break;
+									}
+								}
+
+								// Check all fields
+								if (isIgnored)
+								{
+									foreach (FieldInfo field in valType.GetFields(BindingFlags.Instance | BindingFlags.Public))
+									{
+										if (!field.IsPublic) continue;
+
+										object objPropVal = field.GetValue(val);
+										isIgnored = IsValueIgnored(objPropVal, recursive, depth - 1);
+
+										// Field is not ignored - break the loop
+										if (!isIgnored)
+										{
+											break;
+										}
+									}
+								}
+							}
+						}
+
+						// Compare strings
+						if (isIgnored)
+						{
+							if (val is string && value != "" && ((string)val).ToLower().IndexOf(value) != -1)
+							{
+								// Filter string is a substring of packet property
+								isIgnored = false;
+							}
+							else if (val.ToString().ToLower().Equals(value))
+							{
+								// Packet property string equals filter value
+								isIgnored = false;
+							}
+						}
 					}
 				}
-				return true;
+				
+				return isIgnored;
 			}
 		}
 		#endregion
