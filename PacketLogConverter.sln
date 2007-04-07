@@ -1,24 +1,22 @@
-Microsoft Visual Studio Solution File, Format Version 8.00
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacketLogConverter", "PacketLogConverter.csproj", "{8559DC92-0B16-424D-840D-09107BD1D98A}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
 EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8559DC92-0B16-424D-840D-09107BD1D98A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8559DC92-0B16-424D-840D-09107BD1D98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8559DC92-0B16-424D-840D-09107BD1D98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8559DC92-0B16-424D-840D-09107BD1D98A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
 		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
-	EndGlobalSection
-	GlobalSection(SolutionConfiguration) = preSolution
-		Debug = Debug
-		Release = Release
-	EndGlobalSection
-	GlobalSection(ProjectConfiguration) = postSolution
-		{8559DC92-0B16-424D-840D-09107BD1D98A}.Debug.ActiveCfg = Debug|.NET
-		{8559DC92-0B16-424D-840D-09107BD1D98A}.Debug.Build.0 = Debug|.NET
-		{8559DC92-0B16-424D-840D-09107BD1D98A}.Release.ActiveCfg = Release|.NET
-		{8559DC92-0B16-424D-840D-09107BD1D98A}.Release.Build.0 = Release|.NET
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-	EndGlobalSection
-	GlobalSection(ExtensibilityAddIns) = postSolution
 	EndGlobalSection
 EndGlobal

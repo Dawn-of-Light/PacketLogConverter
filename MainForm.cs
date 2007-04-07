@@ -1000,6 +1000,7 @@ namespace PacketLogConverter
 				{
 					try
 					{
+						// Disable log text updates if log is too long
 						if (m_currentLog != null && m_currentLog.Count > 100000)
 						{
 							logDataDisableUpdatesCheckBox.Checked = true;
@@ -1007,7 +1008,7 @@ namespace PacketLogConverter
 						OpenData data = new OpenData();
 						data.Files = openAnotherLogDialog.FileNames;
 						data.Reader = (ILogReader) m_logReaders[openAnotherLogDialog.FilterIndex - 1];
-						CurrentLog = null;
+//						CurrentLog = null;
 						m_progress.SetDescription("Reading file(s)...");
 						m_progress.WorkFinishedCallback = new StateObjectCallback(OpenFileFinishedCallback);
 						m_progress.Start(new WorkCallback(OpenFilesWorkCallback), data);
