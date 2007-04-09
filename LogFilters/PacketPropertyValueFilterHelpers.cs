@@ -358,22 +358,25 @@ namespace PacketLogConverter.LogFilters
 							}
 							
 							// Check every element of collection
-							if (!(data is string) && data.GetType().IsArray)
+							if (data != null)
 							{
-								foreach (object o in (IEnumerable) data)
+								if (!(data is string) && data.GetType().IsArray)
 								{
-									isIgnored = IsValueIgnored(o, path, depth - 1);
-									if (!isIgnored)
+									foreach (object o in (IEnumerable)data)
 									{
-										break;
+										isIgnored = IsValueIgnored(o, path, depth - 1);
+										if (!isIgnored)
+										{
+											break;
+										}
 									}
 								}
-							}
-							else
-							{
-								// Check read value
-								fieldValue = data;
-								isIgnored = IsValueIgnored(fieldValue, path, depth - 1);
+								else
+								{
+									// Check read value
+									fieldValue = data;
+									isIgnored = IsValueIgnored(fieldValue, path, depth - 1);
+								}
 							}
 						}
 						else
