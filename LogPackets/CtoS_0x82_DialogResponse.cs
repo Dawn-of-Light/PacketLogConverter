@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x82, -1, ePacketDirection.ClientToServer, "Dialog response")]
-	public class CtoS_0x82_DialogResponse : Packet, IOidPacket
+	public class CtoS_0x82_DialogResponse : Packet, IObjectIdPacket
 	{
 		protected ushort data1;
 		protected ushort data2;
@@ -12,9 +13,15 @@ namespace PacketLogConverter.LogPackets
 		protected byte messageType;
 		protected byte response;
 
-		// TODO when resopnse type is parsed
-		public int Oid1 { get { return int.MinValue; } }
-		public int Oid2 { get { return int.MinValue; } }
+		// TODO: When resopnse type is parsed
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] {  }; }
+		}
 
 		#region public access properties
 

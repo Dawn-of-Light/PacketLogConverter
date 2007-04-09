@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xD9, -1, ePacketDirection.ServerToClient, "Item/door create")]
-	public class StoC_0xD9_ItemDoorCreate : Packet, IOidPacket
+	public class StoC_0xD9_ItemDoorCreate : Packet, IObjectIdPacket
 	{
 		protected ushort oid;
 		protected ushort emblem;
@@ -19,8 +19,14 @@ namespace PacketLogConverter.LogPackets
 		protected byte extraBytes;
 		protected uint internalId;
 
-		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { oid }; }
+		}
 
 		#region public access properties
 

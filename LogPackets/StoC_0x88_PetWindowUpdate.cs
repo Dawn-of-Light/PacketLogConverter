@@ -5,9 +5,9 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x88, -1, ePacketDirection.ServerToClient, "Pet window update ")]
-	public class StoC_0x88_PetWindowUpdate : Packet, IOidPacket
+	public class StoC_0x88_PetWindowUpdate : Packet, IObjectIdPacket
 	{
-		protected int petId;
+		protected ushort petId;
 		protected int unused1;
 		protected byte windowAction;
 		protected byte aggroLevel;
@@ -15,12 +15,18 @@ namespace PacketLogConverter.LogPackets
 		protected byte unused2;
 		protected ushort[] petEffects;
 
-		public int Oid1 { get { return petId; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { petId }; }
+		}
 
 		#region public access properties
 
-		public int PetId { get { return petId; } }
+		public ushort PetId { get { return petId; } }
 		public int Unused1 { get { return unused1; } }
 		public byte WindowAction { get { return windowAction; } }
 		public byte AggroLevel { get { return aggroLevel; } }

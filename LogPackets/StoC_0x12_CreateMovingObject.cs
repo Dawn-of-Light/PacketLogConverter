@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x12, -1, ePacketDirection.ServerToClient, "Create moving object")]
-	public class StoC_0x12_CreateMovingObject : Packet, IOidPacket
+	public class StoC_0x12_CreateMovingObject : Packet, IObjectIdPacket
 	{
 		protected ushort objectOid;
 		protected ushort unk1;
@@ -20,8 +20,14 @@ namespace PacketLogConverter.LogPackets
 		protected string name;
 		protected byte unk5; // Trailing 0 ?
 
-		public int Oid1 { get { return objectOid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { objectOid }; }
+		}
 
 		#region public access properties
 

@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xEE, -1, ePacketDirection.ServerToClient, "NPC change properties")]
-	public class StoC_0xEE_NpcChangeProperties : Packet, IOidPacket
+	public class StoC_0xEE_NpcChangeProperties : Packet, IObjectIdPacket
 	{
 		protected ushort npcOid;
 		protected byte unk1;
@@ -13,8 +13,14 @@ namespace PacketLogConverter.LogPackets
 		protected string lastName;
 		protected byte trailingByte;
 
-		public int Oid1 { get { return npcOid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { npcOid }; }
+		}
 
 		#region public access properties
 

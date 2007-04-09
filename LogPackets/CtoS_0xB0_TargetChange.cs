@@ -1,15 +1,22 @@
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xB0, -1, ePacketDirection.ClientToServer, "Target change")]
-	public class CtoS_0xB0_TargetChange : Packet, IOidPacket
+	public class CtoS_0xB0_TargetChange : Packet, IObjectIdPacket
 	{
 		protected ushort oid;
 		protected ushort flags;
 
-		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { oid }; }
+		}
 
 		#region public access properties
 

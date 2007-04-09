@@ -1,18 +1,25 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xB5, -1, ePacketDirection.ClientToServer, "Pick up object")]
-	public class CtoS_0xB5_PickupObject: Packet, IOidPacket
+	public class CtoS_0xB5_PickupObject: Packet, IObjectIdPacket
 	{
 		protected uint playerX;
 		protected uint playerY;
 		protected ushort sessionId;
 		protected ushort unk1;
 
-		public int Oid1 { get { return sessionId; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { sessionId }; }
+		}
 
 		#region public access properties
 

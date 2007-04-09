@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x4E, -1, ePacketDirection.ServerToClient, "Controlled Horse")]
-	public class StoC_0x4E_ControlledHorse: Packet, IOidPacket
+	public class StoC_0x4E_ControlledHorse: Packet, IObjectIdPacket
 	{
 		protected ushort oid;
 		protected byte horseId;
@@ -16,8 +16,14 @@ namespace PacketLogConverter.LogPackets
 		protected byte horseArmor;
 		protected string horseName;
 
-		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { oid }; }
+		}
 
 		#region public access properties
 

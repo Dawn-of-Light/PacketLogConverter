@@ -4,14 +4,20 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xF9, -1, ePacketDirection.ServerToClient, "Emote animation")]
-	public class StoC_0xF9_EmoteAnimation : Packet, IOidPacket
+	public class StoC_0xF9_EmoteAnimation : Packet, IObjectIdPacket
 	{
 		protected ushort oid;
 		protected byte emote;
 		protected byte unk1;
 
-		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { oid }; }
+		}
 
 		#region public access properties
 

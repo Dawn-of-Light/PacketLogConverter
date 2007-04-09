@@ -4,19 +4,25 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xD2, -1, ePacketDirection.ServerToClient, "House update")]
-	public class StoC_0xD2_HouseUpdate : Packet, IOidPacket
+	public class StoC_0xD2_HouseUpdate : Packet, IObjectIdPacket
 	{
-		protected int houseOid;
+		protected ushort houseOid;
 		protected int count;
 		protected int code;
 		protected Item[] m_items;
 
-		public int Oid1 { get { return houseOid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { houseOid }; }
+		}
 
 		#region public access properties
 
-		public int Oid { get { return houseOid; } }
+		public ushort HouseOid { get { return houseOid; } }
 		public int Count { get { return count; } }
 		public int UpdateCode { get { return code; } }
 		public Item[] Items { get { return m_items; } }

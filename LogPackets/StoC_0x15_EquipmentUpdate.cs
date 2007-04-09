@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x15, -1, ePacketDirection.ServerToClient, "Equipment update")]
-	public class StoC_0x15_EquipmentUpdate : Packet, IOidPacket
+	public class StoC_0x15_EquipmentUpdate : Packet, IObjectIdPacket
 	{
 		protected ushort oid;
 		protected byte hoodUp;
@@ -12,8 +12,14 @@ namespace PacketLogConverter.LogPackets
 		protected byte count;
 		protected Item[] items;
 
-		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { oid }; }
+		}
 
 		#region pulic access properties
 

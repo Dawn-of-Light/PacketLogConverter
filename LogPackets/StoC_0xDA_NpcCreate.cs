@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xDA, -1, ePacketDirection.ServerToClient, "Npc create")]
-	public class StoC_0xDA_NpcCreate : Packet, IOidPacket
+	public class StoC_0xDA_NpcCreate : Packet, IObjectIdPacket
 	{
 		protected ushort oid;
 		protected short speed;
@@ -21,8 +21,14 @@ namespace PacketLogConverter.LogPackets
 		protected string guildName;
 		protected byte unk1;
 
-		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { oid }; }
+		}
 
 		#region public access properties
 

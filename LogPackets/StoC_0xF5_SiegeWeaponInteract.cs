@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xF5, -1, ePacketDirection.ServerToClient, "Siege weapon interact")]
-	public class StoC_0xF5_SiegeWeaponInteract: Packet, IOidPacket
+	public class StoC_0xF5_SiegeWeaponInteract: Packet, IObjectIdPacket
 	{
 		protected ushort unk1;
 		protected ushort unk2;
@@ -19,8 +19,14 @@ namespace PacketLogConverter.LogPackets
 		protected string name;
 		protected Item[] m_items;
 
-		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { oid }; }
+		}
 
 		#region public access properties
 

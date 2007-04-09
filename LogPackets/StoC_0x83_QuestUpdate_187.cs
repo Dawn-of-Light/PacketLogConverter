@@ -3,33 +3,16 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0x83, 186, ePacketDirection.ServerToClient, "Quest update v186")]
-	public class StoC_0x83_QuestUpdate_186 : StoC_0x83_QuestUpdate_184
+	[LogPacket(0x83, 187, ePacketDirection.ServerToClient, "Quest update v187")]
+	public class StoC_0x83_QuestUpdate_187 : StoC_0x83_QuestUpdate_186
 	{
-
-		public override void Init()
-		{
-			Position = 0;
-			byte index = ReadByte();
-			subCode = 0;
-			if (index > 0)
-			{
-				Skip(4);
-				byte level = ReadByte();
-				if (level > 0)
-					subCode = 1;
-			}
-			Position = 0;
-			InitSubcode(subCode);
-		}
-
 		protected override void InitQuestUpdate()
 		{
-			subData = new QuestUpdate_186();
+			subData = new QuestUpdate_187();
 			subData.Init(this);
 		}
 
-		public class QuestUpdate_186 : QuestUpdate_184
+		public class QuestUpdate_187 : QuestUpdate_186
 		{
 			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
@@ -43,23 +26,12 @@ namespace PacketLogConverter.LogPackets
 
 		protected override void InitNewQuestUpdate()
 		{
-			subData = new NewQuestUpdate_186();
+			subData = new NewQuestUpdate_187();
 			subData.Init(this);
 		}
 
-		public class NewQuestUpdate_186 : NewQuestUpdate
+		public class NewQuestUpdate_187 : NewQuestUpdate_186
 		{
-			public byte index;
-			public ushort lenName;
-			public ushort lenDesc;
-			public byte level = 0;
-			public byte goalsCount = 0;
-			public string name;
-			public string desc;
-			public string[] goals;
-			public QuestGoalInfo[] goalInfo;
-			public Item[] rewards;
-
 			public override void Init(StoC_0x83_QuestUpdate pak)
 			{
 				index = pak.ReadByte();
@@ -93,6 +65,7 @@ namespace PacketLogConverter.LogPackets
 					questGoalInfo.XOff = pak.ReadShortLowEndian();
 					questGoalInfo.YOff = pak.ReadShortLowEndian();
 					goalInfo[i] = questGoalInfo;
+					questGoalInfo.unk_187 = pak.ReadByte();
 
 					Item item = new Item();
 
@@ -146,8 +119,8 @@ namespace PacketLogConverter.LogPackets
 					str.AppendFormat("\n\t[{0}]: \"{1}\"", i, goals[i]);
 
 					QuestGoalInfo questGoalInfo = goalInfo[i];
-					str.AppendFormat("\n\tinfo: type:0x{0:X4} unk1:0x{1:X4}",
-						questGoalInfo.type, questGoalInfo.unk1);
+					str.AppendFormat("\n\tinfo: type:0x{0:X4} unk1:0x{1:X4} unk_187:{2}",
+						questGoalInfo.type, questGoalInfo.unk1, questGoalInfo.unk_187);
 					str.AppendFormat("\n\tzoneId2:{0,-3} @X2:{1,-5} @Y2:{2,-5} radius?:{3}",
  						questGoalInfo.zoneId2, questGoalInfo.XOff2, questGoalInfo.YOff2, questGoalInfo.unk2);
 					str.AppendFormat("\n\tzoneId1:{0,-3} @X1:{1,-5} @Y1:{2}",
@@ -166,54 +139,12 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 		}
-
-		public class Item
-		{
-			public byte slot;
-			public byte level;
-			public byte value1;
-			public byte value2;
-			public byte hand;
-			public byte temp;
-			public byte damageType;
-			public byte objectType;
-			public ushort weight;
-			public byte condition;
-			public byte durability;
-			public byte quality;
-			public byte bonus;
-			public ushort model;
-			public ushort color;
-			public byte effect;
-			public byte flag;
-			public string name;
-			public byte extension; // new in 1.72
-			public ushort effectIcon; // new 1.82
-			public string effectName; // new 1.82
-			public ushort effectIcon2; // new 1.82
-			public string effectName2; // new 1.82
-		}
-
-		public class QuestGoalInfo
-		{
-			public ushort zoneId2;
-			public ushort XOff2;
-			public ushort YOff2;
-			public ushort unk2;
-			public ushort type;
-			public ushort unk1;
-			public ushort zoneId;
-			public ushort XOff;
-			public ushort YOff;
-			public byte unk_187;//goals finished flag ?
-		}
-
 		/// <summary>
 		/// <summary>
 		/// Constructs new instance with given capacity
 		/// </summary>
 		/// <param name="capacity"></param>
-		public StoC_0x83_QuestUpdate_186(int capacity) : base(capacity)
+		public StoC_0x83_QuestUpdate_187(int capacity) : base(capacity)
 		{
 		}
 	}

@@ -162,6 +162,9 @@
     <Compile Include="LogFilters\PacketPropertyValueFilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="LogFilters\PacketPropertyValueFilterHelpers.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LogPacketAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -201,6 +204,7 @@
     <Compile Include="LogPackets\CtoS_0x10_CharacterSelectRequest_174.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\CtoS_0x10_CharacterSelectRequest_175.cs" />
     <Compile Include="LogPackets\CtoS_0x11_PlayerMarketSearch.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -273,6 +277,7 @@
     <Compile Include="LogPackets\CtoS_0x7C_PlayerTrainRequest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\CtoS_0x7C_PlayerTrainRequest_178.cs" />
     <Compile Include="LogPackets\CtoS_0x7D_UseSpellList.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -339,6 +344,7 @@
     <Compile Include="LogPackets\CtoS_0xA7_LoginRequest_178.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\CtoS_0xA7_LoginRequest_183.cs" />
     <Compile Include="LogPackets\CtoS_0xA9_PlayerPosition.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -708,6 +714,7 @@
     <Compile Include="LogPackets\StoC_0x83_QuestUpdate_186.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x83_QuestUpdate_187.cs" />
     <Compile Include="LogPackets\StoC_0x86_FindGroupMemberUpdate.cs">
       <SubType>Code</SubType>
     </Compile>

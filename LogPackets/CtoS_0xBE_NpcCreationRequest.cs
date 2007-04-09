@@ -1,16 +1,23 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xBE, -1, ePacketDirection.ClientToServer, "Npc creation request")]
-	public class CtoS_0xBE_NpcCreationRequest : Packet, IOidPacket
+	public class CtoS_0xBE_NpcCreationRequest : Packet, IObjectIdPacket
 	{
 		protected ushort npcOid;
 		protected ushort unk1;
 
-		public int Oid1 { get { return npcOid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { npcOid }; }
+		}
 
 		#region public access properties
 

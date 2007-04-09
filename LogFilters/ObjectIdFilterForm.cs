@@ -110,7 +110,7 @@ namespace PacketLogConverter.LogFilters
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(216, 48);
 			this.label3.TabIndex = 8;
-			this.label3.Text = "Filter for all packets that implement IOidPacket interface. Packet is allowed if " +
+			this.label3.Text = "Filter for all packets that implement IObjectIdPacket interface. Packet is allowed if " +
 				"either oid1 or oid2 is in the list.";
 			// 
 			// includeMessagesCheckBox
@@ -232,23 +232,43 @@ namespace PacketLogConverter.LogFilters
 
 		public bool IsPacketIgnored(Packet packet)
 		{
+			bool bRet = true;
+			
+			// Check whether message packets should be included
 			if (includeMessagesCheckBox.Checked)
 			{
 				if (packet is StoC_0xAF_Message || packet is StoC_0x4D_SpellMessage_174)
-						return false;
+				{
+					bRet = false;
+				}
 			}
 
-			IOidPacket pak = packet as IOidPacket;
-			if (pak == null)
-				return true;
-
-			for (int i = 0; i < allowedOidListBox.Items.Count; i++)
+			if (bRet)
 			{
-				ListBoxOid boxOid = (ListBoxOid)allowedOidListBox.Items[i];
-				if (pak.Oid1 == boxOid.oid || pak.Oid2 == boxOid.oid)
-					return false;
+				IObjectIdPacket pak = packet as IObjectIdPacket;
+				if (pak == null)
+				{
+					bRet = true;
+				}
+				else
+				{
+					// Check all entered OIDs
+					foreach (ListBoxOid boxOid in allowedOidListBox.Items)
+					{
+						// ...in packet's list of OIDs
+						foreach (ushort id in pak.ObjectIds)
+						{
+							if (id == boxOid.oid)
+							{
+								bRet = false;
+								break;
+							}
+						}
+					}
+				}
 			}
-			return true;
+			
+			return bRet;
 		}
 
 		public bool IsFilterActive

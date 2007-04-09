@@ -4,15 +4,21 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xDB, -1, ePacketDirection.ServerToClient, "Model change")]
-	public class StoC_0xDB_ModelChange : Packet, IOidPacket
+	public class StoC_0xDB_ModelChange : Packet, IObjectIdPacket
 	{
 		protected ushort oid;
 		protected ushort newModel;
 		protected ushort unk1;
 		protected ushort unk2;
 
-		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { oid }; }
+		}
 
 		#region public access properties
 

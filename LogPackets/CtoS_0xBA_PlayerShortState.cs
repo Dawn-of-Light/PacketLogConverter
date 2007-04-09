@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xBA, -1, ePacketDirection.ClientToServer, "Player Short State")]
-	public class CtoS_0xBA_PlayerShortState : Packet, IOidPacket
+	public class CtoS_0xBA_PlayerShortState : Packet, IObjectIdPacket
 	{
 		protected ushort sessionId;
 		protected ushort heading;
@@ -25,8 +26,14 @@ namespace PacketLogConverter.LogPackets
 			Climb = 7,
 		}
 
-		public int Oid1 { get { return sessionId; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { sessionId }; }
+		}
 
 		#region public access properties
 

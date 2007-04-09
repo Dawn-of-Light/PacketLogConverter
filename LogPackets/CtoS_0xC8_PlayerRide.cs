@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xC8, -1, ePacketDirection.ClientToServer, "Player ride")]
-	public class CtoS_0xC8_PlayerRide: Packet, IOidPacket
+	public class CtoS_0xC8_PlayerRide: Packet, IObjectIdPacket
 	{
 		protected ushort riderOid;
 		protected ushort mountOid;
@@ -12,8 +13,14 @@ namespace PacketLogConverter.LogPackets
 		protected byte slot;
 		protected ushort unk1;
 
-		public int Oid1 { get { return riderOid; } }
-		public int Oid2 { get { return mountOid; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { riderOid, mountOid }; }
+		}
 
 		#region public access properties
 

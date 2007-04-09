@@ -1,17 +1,24 @@
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x0E, -1, ePacketDirection.ClientToServer, "House decoration change angle")]
-	public class CtoS_0x0E_HouseDecorationChangeAngle: Packet, IOidPacket
+	public class CtoS_0x0E_HouseDecorationChangeAngle: Packet, IObjectIdPacket
 	{
 		protected ushort index;
 		protected ushort houseOid;
 		protected ushort rotateAngle;
 		protected ushort unk1;
 
-		public int Oid1 { get { return houseOid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { houseOid }; }
+		}
 
 		#region public access properties
 

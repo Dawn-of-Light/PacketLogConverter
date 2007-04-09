@@ -1,14 +1,20 @@
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x8D, -1, ePacketDirection.ServerToClient, "Player model change (wireframe)")]
-	public class StoC_0x8D_PlayerWireframe: Packet, IOidPacket
+	public class StoC_0x8D_PlayerWireframe: Packet, IObjectIdPacket
 	{
 		protected ushort oid;
 		protected byte flag;
 		protected byte unk1;
 
-		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { oid }; }
+		}
 
 		#region public access properties
 

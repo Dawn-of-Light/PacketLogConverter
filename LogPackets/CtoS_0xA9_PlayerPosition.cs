@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xA9, -1, ePacketDirection.ClientToServer, "Player position update")]
-	public class CtoS_0xA9_PlayerPosition : Packet, IOidPacket
+	public class CtoS_0xA9_PlayerPosition : Packet, IObjectIdPacket
 	{
 		protected ushort sessionId;
 		protected ushort status;
@@ -17,8 +18,14 @@ namespace PacketLogConverter.LogPackets
 		protected byte flag;
 		protected byte health;
 
-		public int Oid1 { get { return sessionId; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { sessionId }; }
+		}
 
 		#region public access properties
 

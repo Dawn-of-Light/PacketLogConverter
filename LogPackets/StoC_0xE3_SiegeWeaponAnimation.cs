@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xE3, -1, ePacketDirection.ServerToClient, "Siege Weapon Animation")]
-	public class StoC_0xE3_SiegeWeaponAnimation : Packet, IOidPacket
+	public class StoC_0xE3_SiegeWeaponAnimation : Packet, IObjectIdPacket
 	{
 		protected ushort unk1;
 		protected ushort oid;
@@ -20,8 +21,14 @@ namespace PacketLogConverter.LogPackets
 		protected byte unk4;
 		protected ushort unk5;
 
-		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return targetOid; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { oid, targetOid }; }
+		}
 
 		#region public access properties
 

@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x1B, -1, ePacketDirection.ServerToClient, "Spell effect animation")]
-	public class StoC_0x1B_SpellEffectAnimation : Packet, IOidPacket
+	public class StoC_0x1B_SpellEffectAnimation : Packet, IObjectIdPacket
 	{
 		protected ushort casterOid;
 		protected ushort spellId;
@@ -14,8 +14,14 @@ namespace PacketLogConverter.LogPackets
 		protected byte success;
 		protected ushort unk1;
 
-		public int Oid1 { get { return casterOid; } }
-		public int Oid2 { get { return targetOid; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { casterOid, targetOid }; }
+		}
 
 		#region public access properties
 

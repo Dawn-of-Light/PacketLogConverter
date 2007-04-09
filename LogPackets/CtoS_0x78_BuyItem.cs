@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x78, -1, ePacketDirection.ClientToServer, "Buy from merchant")]
-	public class CtoS_0x78_BuyItem: Packet, IOidPacket
+	public class CtoS_0x78_BuyItem: Packet, IObjectIdPacket
 	{
 		protected uint playerX;
 		protected uint playerY;
@@ -14,8 +15,14 @@ namespace PacketLogConverter.LogPackets
 		protected byte windowType; // currency ? =0(gold), 2(DF/seals, catacombs/aurulite)
 		protected ushort unk1;
 
-		public int Oid1 { get { return sessionId; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { sessionId }; }
+		}
 
 		#region public access properties
 

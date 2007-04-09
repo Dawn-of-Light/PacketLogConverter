@@ -1,7 +1,7 @@
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x04, -1, ePacketDirection.ServerToClient, "Character Jump")]
-	public class StoC_0x04_CharacterJump : Packet, IOidPacket
+	public class StoC_0x04_CharacterJump : Packet, IObjectIdPacket
 	{
 		private uint x;
 		private uint y;
@@ -10,8 +10,14 @@ namespace PacketLogConverter.LogPackets
 		private ushort heading;
 		private ushort house;
 
-		public int Oid1 { get { return playerOid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { playerOid }; }
+		}
 
 		#region public access properties
 

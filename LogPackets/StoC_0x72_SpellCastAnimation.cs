@@ -4,15 +4,21 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x72, -1, ePacketDirection.ServerToClient, "Spell cast animation  ")]
-	public class StoC_0x72_SpellCastAnimation : Packet, IOidPacket
+	public class StoC_0x72_SpellCastAnimation : Packet, IObjectIdPacket
 	{
 		protected ushort casterOid;
 		protected ushort spellId;
 		protected ushort castingTime;
 		protected ushort unk1;
 
-		public int Oid1 { get { return casterOid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { casterOid }; }
+		}
 
 		#region public access properties
 

@@ -4,15 +4,21 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xD0, -1, ePacketDirection.ServerToClient, "Check LOS")]
-	public class StoC_0xD0_CheckLos: Packet, IOidPacket
+	public class StoC_0xD0_CheckLos: Packet, IObjectIdPacket
 	{
 		protected ushort oid;
 		protected ushort targetOid;
 		protected ushort unk1;
 		protected ushort unk2;
 
-		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return targetOid; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { oid, targetOid }; }
+		}
 
 		#region public access properties
 

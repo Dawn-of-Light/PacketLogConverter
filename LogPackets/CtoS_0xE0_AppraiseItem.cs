@@ -1,18 +1,25 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xE0, -1, ePacketDirection.ClientToServer, "Appraise item")]
-	public class CtoS_0xE0_AppraiseItem: Packet, IOidPacket
+	public class CtoS_0xE0_AppraiseItem: Packet, IObjectIdPacket
 	{
 		protected uint playerX;
 		protected uint playerY;
 		protected ushort sessionId;
 		protected ushort itemId;
 
-		public int Oid1 { get { return sessionId; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { sessionId }; }
+		}
 
 		#region public access properties
 

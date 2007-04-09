@@ -1,18 +1,25 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x7A, -1, ePacketDirection.ClientToServer, "Object interact request")]
-	public class CtoS_0x7A_ObjectInteractRequest : Packet, IOidPacket
+	public class CtoS_0x7A_ObjectInteractRequest : Packet, IObjectIdPacket
 	{
 		protected uint playerX;
 		protected uint playerY;
 		protected ushort sessionId;
 		protected ushort objectOid;
 
-		public int Oid1 { get { return objectOid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { objectOid }; }
+		}
 
 		#region public access properties
 

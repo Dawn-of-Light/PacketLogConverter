@@ -1,16 +1,23 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xD5, -1, ePacketDirection.ClientToServer, "Player creation request")]
-	public class CtoS_0xD5_PlayerCreationRequest : Packet, IOidPacket
+	public class CtoS_0xD5_PlayerCreationRequest : Packet, IObjectIdPacket
 	{
 		protected ushort sessionId;
 		protected ushort unk1;
 
-		public int Oid1 { get { return sessionId; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { sessionId }; }
+		}
 
 		#region public access properties
 

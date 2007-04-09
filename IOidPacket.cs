@@ -1,11 +1,16 @@
+using System.Collections.Generic;
+
 namespace PacketLogConverter
 {
 	/// <summary>
-	/// Packet with OID data
+	/// Packet with Object ID data.
 	/// </summary>
-	public interface IOidPacket
+	public interface IObjectIdPacket
 	{
-		int Oid1 { get; }
-		int Oid2 { get; }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		ushort[] ObjectIds { get; }
 	}
 }

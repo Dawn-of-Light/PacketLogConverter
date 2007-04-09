@@ -1,16 +1,23 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x01, -1, ePacketDirection.ClientToServer, "House modified")]
-	public class CtoS_0x01_HouseModified: Packet, IOidPacket
+	public class CtoS_0x01_HouseModified: Packet, IObjectIdPacket
 	{
 		protected ushort sessionId;
 		protected short[] objects;
 
-		public int Oid1 { get { return sessionId; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { sessionId }; }
+		}
 
 		#region public access properties
 

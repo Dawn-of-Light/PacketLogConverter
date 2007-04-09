@@ -1,14 +1,20 @@
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xF6, -1, ePacketDirection.ServerToClient, "Change target")]
-	public class StoC_0xF6_ChangeTarget : Packet, IOidPacket
+	public class StoC_0xF6_ChangeTarget : Packet, IObjectIdPacket
 	{
 		protected ushort oid;
 		protected byte type;
 		protected byte unk1;
 
-		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { oid }; }
+		}
 
 		#region public access properties
 

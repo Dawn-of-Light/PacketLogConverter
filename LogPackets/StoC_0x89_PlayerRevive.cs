@@ -4,13 +4,19 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x89, -1, ePacketDirection.ServerToClient, "Player revive")]
-	public class StoC_0x89_PlayerRevive : Packet, IOidPacket
+	public class StoC_0x89_PlayerRevive : Packet, IObjectIdPacket
 	{
 		protected ushort oid;
 		protected ushort unk1;
 
-		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { oid }; }
+		}
 
 		#region public access properties
 

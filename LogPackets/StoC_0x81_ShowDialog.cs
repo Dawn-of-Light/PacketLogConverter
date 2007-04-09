@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x81, -1, ePacketDirection.ServerToClient, "Show dialog")]
-	public class StoC_0x81_ShowDialog : Packet, IOidPacket
+	public class StoC_0x81_ShowDialog : Packet, IObjectIdPacket
 	{
 		protected ushort dialogCode;
 		protected ushort data1;
@@ -15,27 +15,13 @@ namespace PacketLogConverter.LogPackets
 		protected byte autoWrapText;
 		protected ASubData subData;
 
-
-		public int Oid1
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
 		{
-			get
-			{
-				switch (dialogType)
-				{
-					default: return ushort.MinValue;
-				}
-			}
-		}
-
-		public int Oid2
-		{
-			get
-			{
-				switch (dialogType)
-				{
-					default: return ushort.MinValue;
-				}
-			}
+			get { return new ushort[] {  }; }
 		}
 
 		#region public access properties

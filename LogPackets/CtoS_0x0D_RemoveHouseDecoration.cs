@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x0D, -1, ePacketDirection.ClientToServer, "Remove house decoration")]
-	public class CtoS_0x0D_RemoveHouseDecoration: Packet, IOidPacket
+	public class CtoS_0x0D_RemoveHouseDecoration: Packet, IObjectIdPacket
 	{
 		protected ushort index;
 		protected ushort houseOid;
@@ -12,8 +13,14 @@ namespace PacketLogConverter.LogPackets
 		protected byte unk1;
 		protected ushort unk2;
 
-		public int Oid1 { get { return houseOid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { houseOid }; }
+		}
 
 		#region public access properties
 

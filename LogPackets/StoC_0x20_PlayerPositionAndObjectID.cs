@@ -1,7 +1,7 @@
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x20, -1, ePacketDirection.ServerToClient, "Set player position and OID")]
-	public class StoC_0x20_PlayerPositionAndObjectID : Packet, IOidPacket
+	public class StoC_0x20_PlayerPositionAndObjectID : Packet, IObjectIdPacket
 	{
 		protected ushort playerOid;
 		protected ushort z;
@@ -11,8 +11,14 @@ namespace PacketLogConverter.LogPackets
 		protected byte flags;
 		protected byte unk1;
 
-		public int Oid1 { get { return playerOid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { playerOid }; }
+		}
 
 		#region public access properties
 

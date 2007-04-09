@@ -3,15 +3,21 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xDE, -1, ePacketDirection.ServerToClient, "Set object guild id")]
-	public class StoC_0xDE_SetObjectGuildId : Packet, IOidPacket
+	public class StoC_0xDE_SetObjectGuildId : Packet, IObjectIdPacket
 	{
 		protected ushort oid;
 		protected ushort guildId;
 		protected ushort unk1;
 		protected ushort unk2;
 
-		public int Oid1 { get { return oid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { oid }; }
+		}
 
 		#region public access properties
 

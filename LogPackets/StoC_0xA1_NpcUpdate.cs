@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xA1, -1, ePacketDirection.ServerToClient, "NPC Update")]
-	public class StoC_0xA1_NpcUpdate : Packet, IOidPacket
+	public class StoC_0xA1_NpcUpdate : Packet, IObjectIdPacket
 	{
 		protected ushort temp;
 		protected short speed;
@@ -23,8 +23,14 @@ namespace PacketLogConverter.LogPackets
 		protected ushort currentZoneId;
 		protected ushort targetZoneId;
 
-		public int Oid1 { get { return npcOID; } }
-		public int Oid2 { get { return targetOID; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { npcOID, targetOID }; }
+		}
 
 		#region public access properties
 

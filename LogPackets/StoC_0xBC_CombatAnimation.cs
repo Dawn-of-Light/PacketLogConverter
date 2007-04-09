@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xBC, -1, ePacketDirection.ServerToClient, "Combat animation")]
-	public class StoC_0xBC_CombatAnimation : Packet, IOidPacket
+	public class StoC_0xBC_CombatAnimation : Packet, IObjectIdPacket
 	{
 		protected ushort attackerOid;
 		protected ushort defenderOid;
@@ -16,8 +16,14 @@ namespace PacketLogConverter.LogPackets
 		protected byte targetHealthPercent;
 		protected ushort styleId;
 
-		public int Oid1 { get { return attackerOid; } }
-		public int Oid2 { get { return defenderOid; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { attackerOid, defenderOid }; }
+		}
 
 		#region public access properties
 

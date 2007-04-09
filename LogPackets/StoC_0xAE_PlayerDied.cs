@@ -4,15 +4,21 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xAE, -1, ePacketDirection.ServerToClient, "Player died")]
-	public class StoC_0xAE_PlayerDied : Packet, IOidPacket
+	public class StoC_0xAE_PlayerDied : Packet, IObjectIdPacket
 	{
 		protected ushort killedOid;
 		protected ushort killerOid;
 		protected ushort unk1;
 		protected ushort unk2;
 
-		public int Oid1 { get { return killerOid; } }
-		public int Oid2 { get { return killedOid; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { killedOid, killedOid }; }
+		}
 
 		#region public access properties
 

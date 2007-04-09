@@ -3,14 +3,20 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xEF, -1, ePacketDirection.ServerToClient, "Play Music")]
-	public class StoC_0xEF_PlayMusic : Packet, IOidPacket
+	public class StoC_0xEF_PlayMusic : Packet, IObjectIdPacket
 	{
 		protected ushort playerOid;
 		protected byte type;
 		protected byte soundId;
 
-		public int Oid1 { get { return playerOid; } }
-		public int Oid2 { get { return int.MinValue; } }
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { playerOid }; }
+		}
 
 		#region public access properties
 
