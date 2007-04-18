@@ -317,10 +317,16 @@ namespace PacketLogConverter.LogFilters
 
 			private bool IsValueIgnored(object fieldValue, List<MemberInfo> path, int depth)
 			{
-				// Limit depth
-				if (depth < 0)
+				// Limit depth, but allow to check elements of value-type arrays
+				if (depth < 0 && (!fieldValue.GetType().IsValueType || fieldValue.GetType().IsArray))
 				{
 					return true;
+				}
+				
+				// No path if last element
+				if (depth < 0)
+				{
+					path = null;
 				}
 
 				bool isIgnored = true;
@@ -335,106 +341,116 @@ namespace PacketLogConverter.LogFilters
 					}
 					else if (valType.IsPublic || valType.IsNestedPublic)
 					{
-						if (path != null)
+						// depth < 0 if last path element is an array
+						if (depth >= 0)
 						{
-							// Make sure that depth is same as path length
-							if (depth >= path.Count)
+							if (path != null)
 							{
-								depth = path.Count - 1;
-							}
-							
-							// Get data from property or field
-							MemberInfo node = path[path.Count - 1 - depth];
-							object data = null;
-							if (node is PropertyInfo)
-							{
-								PropertyInfo propInfo = (PropertyInfo) node;
-								data = propInfo.GetValue(fieldValue, null);
-							}
-							else if (node is FieldInfo)
-							{
-								FieldInfo fieldInfo = (FieldInfo) node;
-								data = fieldInfo.GetValue(fieldValue);
-							}
-							
-							// Check every element of collection
-							if (data != null)
-							{
-								if (!(data is string) && data.GetType().IsArray)
+								// Make sure that depth is same as path length
+								if (depth >= path.Count)
 								{
-									foreach (object o in (IEnumerable)data)
+									depth = path.Count - 1;
+								}
+
+								// Get data from property or field
+								MemberInfo node = path[path.Count - 1 - depth];
+								object data = null;
+								if (node is PropertyInfo)
+								{
+									PropertyInfo propInfo = (PropertyInfo)node;
+									data = propInfo.GetValue(fieldValue, null);
+								}
+								else if (node is FieldInfo)
+								{
+									FieldInfo fieldInfo = (FieldInfo)node;
+									data = fieldInfo.GetValue(fieldValue);
+								}
+
+								// Check every element of collection
+								if (data != null)
+								{
+									if (!(data is string) && data.GetType().IsArray)
+									{
+										foreach (object o in (IEnumerable)data)
+										{
+											isIgnored = IsValueIgnored(o, path, depth - 1);
+											if (!isIgnored)
+											{
+												break;
+											}
+										}
+										
+										// Don't check .ToString() of arrays - it makes no sense
+										if (depth == 0)
+										{
+											depth = -1;
+										}
+									}
+									else
+									{
+										// Check read value
+										fieldValue = data;
+										isIgnored = IsValueIgnored(fieldValue, path, depth - 1);
+									}
+								}
+							}
+							else
+							{
+								// Recursively check all properties of collection
+								if (!(fieldValue is string) && fieldValue is IEnumerable)
+								{
+									foreach (object o in (IEnumerable)fieldValue)
 									{
 										isIgnored = IsValueIgnored(o, path, depth - 1);
+
+										// Property is not ignored - break the loop
 										if (!isIgnored)
 										{
 											break;
 										}
 									}
 								}
+
+									// Check all object's properties/fields
 								else
 								{
-									// Check read value
-									fieldValue = data;
-									isIgnored = IsValueIgnored(fieldValue, path, depth - 1);
-								}
-							}
-						}
-						else
-						{
-							// Recursively check all properties of collection
-							if (!(fieldValue is string) && fieldValue is IEnumerable)
-							{
-								foreach (object o in (IEnumerable)fieldValue)
-								{
-									isIgnored = IsValueIgnored(o, path, depth - 1);
-
-									// Property is not ignored - break the loop
-									if (!isIgnored)
+									// Check all properties
+									foreach (PropertyInfo property in valType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
 									{
-										break;
-									}
-								}
-							}
+										if (!property.CanRead) continue;
+										// Ignore MemoryStream properties because they throw exceptions
+										//									if (m_ignoredProperties.Contains(property)) continue;
+										if (property.DeclaringType.Equals(typeof(MemoryStream))) continue;
+										if (property.DeclaringType.Equals(typeof(Stream))) continue;
+										if (property.DeclaringType.Equals(typeof(Type))) continue;
+										if (property.DeclaringType.Equals(typeof(Object))) continue;
+										if (property.GetIndexParameters().GetLength(0) != 0) continue;
 
-							// Check all object's properties/fields
-							else
-							{
-								// Check all properties
-								foreach (PropertyInfo property in valType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
-								{
-									if (!property.CanRead) continue;
-									// Ignore MemoryStream properties because they throw exceptions
-//									if (m_ignoredProperties.Contains(property)) continue;
-									if (property.DeclaringType.Equals(typeof(MemoryStream))) continue;
-									if (property.DeclaringType.Equals(typeof(Stream))) continue;
-									if (property.DeclaringType.Equals(typeof(Type))) continue;
-									if (property.DeclaringType.Equals(typeof(Object))) continue;
-									if (property.GetIndexParameters().GetLength(0) != 0) continue;
-
-									object objPropVal = property.GetValue(fieldValue, null);
-									isIgnored = IsValueIgnored(objPropVal, path, depth - 1);
-
-									// Property is not ignored - break the loop
-									if (!isIgnored)
-									{
-										break;
-									}
-								}
-
-								// Check all fields
-								if (isIgnored)
-								{
-									foreach (FieldInfo field in valType.GetFields(BindingFlags.Instance | BindingFlags.Public))
-									{
-										if (!field.IsPublic) continue;
-
-										object objPropVal = field.GetValue(fieldValue);
+										object objPropVal = property.GetValue(fieldValue, null);
 										isIgnored = IsValueIgnored(objPropVal, path, depth - 1);
 
-										// Field is not ignored - break the loop
+										// Property is not ignored - break the loop
 										if (!isIgnored)
 										{
 											break;
+										}
+									}
+
+									// Check all fields
+									if (isIgnored)
+									{
+										foreach (FieldInfo field in valType.GetFields(BindingFlags.Instance | BindingFlags.Public))
+										{
+											if (!field.IsPublic) continue;
+
+											object objPropVal = field.GetValue(fieldValue);
+											isIgnored = IsValueIgnored(objPropVal, path, depth - 1);
+
+											// Field is not ignored - break the loop
+											if (!isIgnored)
+											{
+												break;
+											}
 										}
 									}
 								}

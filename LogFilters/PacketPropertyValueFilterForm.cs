@@ -416,6 +416,7 @@ namespace PacketLogConverter.LogFilters
 
 		private void addButton_Click(object sender, System.EventArgs e)
 		{
+			// Convert string to integer
 			string value = propertyValueTextBox.Text;
 			long integer;
 			if (Util.ParseLong(value, out integer))
@@ -455,13 +456,22 @@ namespace PacketLogConverter.LogFilters
 			int index = filtersListBox.SelectedIndex;
 			if (index < 0 || index >= filtersListBox.Items.Count)
 				return;
-			ClassMemberPath selectedPath = (ClassMemberPath) classPropertyComboBox.SelectedItem;
+
+			// Convert string to integer
+			string value = propertyValueTextBox.Text;
+			long integer;
+			if (Util.ParseLong(value, out integer))
+			{
+				value = integer.ToString();
+			}
+
+			ClassMemberPath selectedPath = (ClassMemberPath)classPropertyComboBox.SelectedItem;
 			filtersListBox.Items.Insert(
 				index,
 				new FilterListEntry(
 					(PacketClass)packetClassComboBox.SelectedItem,
 					selectedPath,
-					propertyValueTextBox.Text,
+					value,
 					selectedPath.isRecursive,
 					relationsList.Text,
 					Condition.Text));
