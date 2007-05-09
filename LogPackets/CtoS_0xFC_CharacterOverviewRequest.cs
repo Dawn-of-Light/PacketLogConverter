@@ -6,6 +6,7 @@ namespace PacketLogConverter.LogPackets
 	public class CtoS_0xFC_CharacterOverviewRequest : Packet
 	{
 		protected string clientAccountName;
+		protected uint unk1;
 
 		#region public access properties
 
@@ -15,7 +16,7 @@ namespace PacketLogConverter.LogPackets
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
-			return "clientAccountName:\"" + clientAccountName + '"';
+			return (flagsDescription ? string.Format("unk1:0x{0:X8} ", unk1) : "") + "clientAccountName:\"" + clientAccountName + '"';
 		}
 
 		/// <summary>
@@ -25,7 +26,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			clientAccountName = ReadString(24);
+			clientAccountName = ReadString(20);
+			unk1 = ReadIntLowEndian();
 		}
 
 		/// <summary>

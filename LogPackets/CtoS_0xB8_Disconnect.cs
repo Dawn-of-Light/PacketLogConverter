@@ -13,11 +13,17 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
+		public enum eFlagType: byte
+		{
+			QTD = 0,
+			NormalQuit= 1,
+		}
+
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("Code:{0}", flag);
+			str.AppendFormat("Code:{0}{1}", flag, flagsDescription ? "(" + (eFlagType)flag + ")" : "");
 
 			return str.ToString();
 		}

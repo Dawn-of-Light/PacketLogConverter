@@ -10,6 +10,9 @@ namespace PacketLogConverter.LogPackets
 		protected byte instance;
 
 		#region public access properties
+		public int Flag0x04 {get {return ((flags & 0x04) == 0x04 ? 1 : 0); } }
+		public int Flag0x08 {get {return ((flags & 0x08) == 0x08 ? 1 : 0); } }
+		public int LVLFlag0x80 {get {return ((level & 0x80) == 0x80 ? 1 : 0); } }
 		public byte Flag2 {get {return flag2; } }
 		public ushort Unk1_171 { get { return unk1_171; } }
 		public byte Instance {get {return instance; } }
@@ -23,7 +26,7 @@ namespace PacketLogConverter.LogPackets
 			StringBuilder str = new StringBuilder();
 
 			str.AppendFormat("oid:0x{0:X4} speed:{1,-4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} speedZ:{6, -4} model:0x{7:X4} size:{8,-3} level:{9,-3} flags:0x{10:X2} maxStick:{11,-3} flag2:0x{12:X2} unk1_171:0x{13:X4} instance:0x{14:X2} name:\"{15}\" guild:\"{16}\" unk1:{17}",
-			                 oid, speed, heading, x, y, z, speedZ, model, size, level, flags, maxStick, flag2, unk1_171, instance, name, guildName, unk1);
+			                 oid, speed, heading, x, y, z, speedZ, model, size, level & 0x7F, flags, maxStick, flag2, unk1_171, instance, name, guildName, unk1);
 			if (flagsDescription)
 			{
 				string flag = string.Format("realm:{0}",(flags >> 6) & 3);
@@ -32,9 +35,9 @@ namespace PacketLogConverter.LogPackets
 				if ((flags & 0x02) == 0x02)
 					flag += ",Inventory";
 				if ((flags & 0x04) == 0x04)
-					flag += ",UNKx04";
+					flag += ",UNK_0x04";
 				if ((flags & 0x08) == 0x08)
-					flag += ",UNKx08";
+					flag += ",LongRangeVisible"; // ~5550
 				if ((flags & 0x10) == 0x10)
 					flag += ",Peace";
 				if ((flags & 0x20) == 0x20)
@@ -49,6 +52,16 @@ namespace PacketLogConverter.LogPackets
 					flag += ",Stealth";
 				if ((flag2 & 0x08) == 0x08)
 					flag += ",Quest";
+				if ((flag2 & 0x10) == 0x10)
+					flag += ",F2_UNK_0x10";//waiting Finish new Quest ?
+				if ((flag2 & 0x20) == 0x20)
+					flag += ",F2_UNK_0x20";//mb see Underwater creature from water outside ?
+				if ((flag2 & 0x40) == 0x40)
+					flag += ",F2_UNK_0x40";
+				if ((flag2 & 0x80) == 0x80)
+					flag += ",F2_UNK_0x80";
+				if ((level & 0x80) == 0x80)
+					flag += ",LVL_UNK_0x80";
 				str.AppendFormat(" ({0})", flag);
 			}
 

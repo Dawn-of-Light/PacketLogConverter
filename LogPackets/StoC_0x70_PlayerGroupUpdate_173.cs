@@ -14,7 +14,7 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			ArrayList groupUpdates = new ArrayList(8);
-			byte playerIndex = ReadByte();
+			playerIndex = ReadByte();
 			while (playerIndex != 0)
 			{
 				switch (playerIndex & 0xF0)

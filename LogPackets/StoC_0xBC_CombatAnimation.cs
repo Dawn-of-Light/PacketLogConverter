@@ -39,12 +39,26 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
+		public enum eResult: byte
+		{
+			miss = 0,
+			parry = 1,
+			block = 2,
+			evade = 3,
+			fumble = 4,
+			hitUnstyled = 0x0A,
+			hitStyled = 0x0B,
+			hitMagic = 0x14
+		}
+
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("attackerOid:0x{0:X4} defenderOid:0x{1:X4} attackerWeaponModel:0x{2:X4} defenderWeaponModel:0x{3:X4} styleId:{4:X4} stance:0x{5:X2} result:0x{6:X2} targetHealth:{7,3}%",
+			str.AppendFormat("attackerOid:0x{0:X4} defenderOid:0x{1:X4} attackerWeaponModel:0x{2:X4} defenderWeaponModel:0x{3:X4} styleId:0x{4:X4} stance:0x{5:X2} result:0x{6:X2} targetHealth:{7,3}%",
 				attackerOid, defenderOid, weaponId, defenseWeapon, styleId, stance, result, targetHealthPercent);
+			if(flagsDescription)
+				str.AppendFormat(" ({0})", (eResult)(result & 0x7F));
 
 			return str.ToString();
 		}

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -28,7 +27,10 @@ namespace PacketLogConverter.LogPackets
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
-			return "oid:0x" + npcOid.ToString("X4");
+			string str = "oid:0x" + npcOid.ToString("X4");
+			if(flagsDescription)
+				str += string.Format(" unk1:0x{0:X4}", unk1);
+			return str;
 		}
 
 		/// <summary>

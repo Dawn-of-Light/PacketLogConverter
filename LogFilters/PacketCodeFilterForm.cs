@@ -71,6 +71,8 @@ namespace PacketLogConverter.LogFilters
 			templateComboBox.Items.Add(new TextMessagePacketsTemplate());
 			templateComboBox.Items.Add(new RegionChangePacketsTemplate());
 			templateComboBox.Items.Add(new PetPacketsTemplate());
+			templateComboBox.Items.Add(new BoatsPacketsTemplate());
+			templateComboBox.Items.Add(new UnknownPacketsTemplate());
 			templateComboBox.SelectedIndex = 0;
 
 			this.stocCheckedListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.resetTemplate_Event);
@@ -101,12 +103,11 @@ namespace PacketLogConverter.LogFilters
 				ctos.SetItemChecked(0x64, true);
 				ctos.SetItemChecked(0x66, true);
 				ctos.SetItemChecked(0x6F, true);
+				stoc.SetItemChecked(0x49, true);
 				stoc.SetItemChecked(0x61, true);
 				stoc.SetItemChecked(0x62, true);
 				stoc.SetItemChecked(0x63, true);
-				stoc.SetItemChecked(0x64, true);
 				stoc.SetItemChecked(0x65, true);
-				stoc.SetItemChecked(0x66, true);
 				stoc.SetItemChecked(0x67, true);
 				stoc.SetItemChecked(0x69, true);
 				stoc.SetItemChecked(0x6C, true);
@@ -189,6 +190,24 @@ namespace PacketLogConverter.LogFilters
 			}
 		}
 
+		private class BoatsPacketsTemplate : FilterTemplate
+		{
+			public override void ActivateTemplate(CheckedListBox stoc, CheckedListBox ctos)
+			{
+				base.ActivateTemplate(stoc, ctos);
+				ctos.SetItemChecked(0xC8, true);
+				ctos.SetItemChecked(0xE4, true);
+				stoc.SetItemChecked(0x12, true);
+				stoc.SetItemChecked(0xC8, true);
+				stoc.SetItemChecked(0xE5, true);
+			}
+
+			public override string ToString()
+			{
+				return "Boats packets";
+			}
+		}
+
 		private class TextMessagePacketsTemplate : FilterTemplate
 		{
 			public override void ActivateTemplate(CheckedListBox stoc, CheckedListBox ctos)
@@ -217,6 +236,30 @@ namespace PacketLogConverter.LogFilters
 			public override string ToString()
 			{
 				return "Pet packets";
+			}
+		}
+
+		private class UnknownPacketsTemplate: FilterTemplate
+		{
+			public override void ActivateTemplate(CheckedListBox stoc, CheckedListBox ctos)
+			{
+				base.ActivateTemplate(stoc, ctos);
+				ctos.SetItemChecked(0x1D, true);
+				ctos.SetItemChecked(0x40, true);
+				ctos.SetItemChecked(0x41, true);
+				ctos.SetItemChecked(0x42, true);
+				ctos.SetItemChecked(0x43, true);
+				ctos.SetItemChecked(0xB9, true);
+				stoc.SetItemChecked(0x24, true);
+				stoc.SetItemChecked(0x45, true);
+				stoc.SetItemChecked(0x46, true);
+				stoc.SetItemChecked(0x59, true);
+				stoc.SetItemChecked(0x5C, true);
+			}
+
+			public override string ToString()
+			{
+				return "Unknown packets";
 			}
 		}
 

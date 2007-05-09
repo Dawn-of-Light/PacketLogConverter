@@ -17,7 +17,7 @@ namespace PacketLogConverter.LogPackets
 		/// <value>The object ids.</value>
 		public ushort[] ObjectIds
 		{
-			get { return new ushort[] { killedOid, killedOid }; }
+			get { return new ushort[] { killerOid, killedOid }; }
 		}
 
 		#region public access properties

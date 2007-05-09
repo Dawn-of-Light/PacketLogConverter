@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x6D, -1, ePacketDirection.ServerToClient, "Keep/Tower component update")]
-	public class StoC_0x6D_KeepComponentUpdate : Packet
+	public class StoC_0x6D_KeepComponentUpdate : Packet, IObjectIdPacket
 	{
 		private ushort keepId;
 		private ushort componentId;
@@ -11,6 +11,15 @@ namespace PacketLogConverter.LogPackets
 		private byte health;
 		private byte status;
 		private byte flags;
+
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { keepId }; }
+		}
 
 		#region public access properties
 

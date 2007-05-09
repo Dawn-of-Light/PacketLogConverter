@@ -20,6 +20,8 @@ namespace PacketLogConverter.LogPackets
 			StringBuilder str = new StringBuilder();
 
 			str.AppendFormat("currentTime:0x{0:X8} dayIncrement:{1}", currentTime, dayIncrement);
+			if (flagsDescription)
+				str.AppendFormat(" (dif:0x{0:X8} {1}", currentTime / dayIncrement, currentTime / dayIncrement);
 
 			return str.ToString();
 		}

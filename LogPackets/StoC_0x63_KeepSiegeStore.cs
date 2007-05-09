@@ -4,7 +4,7 @@ using System.Collections;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x63, -1, ePacketDirection.ServerToClient, "hookpoint siege store")]
-	public class StoC_0x63_KeepSiegeStore : Packet
+	public class StoC_0x63_KeepSiegeStore : Packet, IObjectIdPacket
 	{
 		protected ushort keepId;
 		protected ushort componentId;
@@ -16,6 +16,15 @@ namespace PacketLogConverter.LogPackets
 		protected byte unk1; // windowType ?
 		protected byte unk2; // page ?
 		protected MerchantItem[] items;
+
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { keepId }; }
+		}
 
 		#region public access properties
 

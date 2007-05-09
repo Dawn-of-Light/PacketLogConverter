@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x64, -1, ePacketDirection.ClientToServer, "Keep/Tower buy hook point")]
-	public class CtoS_0x64_KeepBuyHookPoint: Packet
+	public class CtoS_0x64_KeepBuyHookPoint: Packet, IObjectIdPacket
 	{
 		protected ushort keepId;
 		protected ushort componentId;
@@ -13,6 +13,15 @@ namespace PacketLogConverter.LogPackets
 		protected byte unk1;
 		protected byte unk2;
 		protected byte unk3;
+
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { keepId }; }
+		}
 
 		#region public access properties
 

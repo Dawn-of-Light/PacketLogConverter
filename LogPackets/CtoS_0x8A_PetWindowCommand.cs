@@ -25,6 +25,8 @@ namespace PacketLogConverter.LogPackets
 
 			StringBuilder str = new StringBuilder();
 
+			if (flagsDescription)
+				str.AppendFormat("aggroState:{0} walkState:{1} command:{2} unk1:{3} ", aggroState, walkState, command, unk1);
 			int baseLen = str.Length;
 			switch (aggroState)
 			{

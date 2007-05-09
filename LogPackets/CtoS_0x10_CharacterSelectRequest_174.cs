@@ -6,6 +6,8 @@ namespace PacketLogConverter.LogPackets
 	public class CtoS_0x10_CharacterSelectRequest_174 : CtoS_0x10_CharacterSelectRequest
 	{
 		protected byte serverId;
+		protected ushort unks0;
+		protected byte unks1;
 
 		#region public access properties
 
@@ -15,7 +17,8 @@ namespace PacketLogConverter.LogPackets
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
-			return "serverId:0x" + serverId.ToString("X2") + " " + base.GetPacketDataString(flagsDescription);
+			string temp = flagsDescription ? " 0x" + unks0.ToString("X4") + unks1.ToString("X2") : "";
+			return "serverId:0x" + serverId.ToString("X2") + temp + " " + base.GetPacketDataString(flagsDescription);
 		}
 
 		/// <summary>
@@ -28,9 +31,19 @@ namespace PacketLogConverter.LogPackets
 			sessionId = ReadShort();
 			unk1 = ReadShort();
 			serverId = ReadByte();
-			charName = ReadString(31);
-			loginName = ReadString(48); // skip unknown
-			unk2 = ReadInt();
+			charName = ReadString(24);
+			unks0 = ReadShort();
+			unks1 = ReadByte();
+			unk0 = ReadIntLowEndian();
+			loginName = ReadString(20);
+			u1 = ReadIntLowEndian();
+			u2 = ReadIntLowEndian();
+			u3 = ReadIntLowEndian();
+			u4 = ReadIntLowEndian();
+			u5 = ReadIntLowEndian();
+			u6 = ReadIntLowEndian();
+			u7 = ReadIntLowEndian();
+			unk2 = ReadIntLowEndian();
 			port = ReadShort();
 			unk3 = ReadShort();
 		}

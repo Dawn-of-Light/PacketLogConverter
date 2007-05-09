@@ -113,7 +113,7 @@ namespace PacketLogConverter.LogPackets
 				return str.ToString();
 			}
 		}
-		
+
 		public struct AbilityData
 		{
 			public ushort index, unk1;
@@ -137,7 +137,7 @@ namespace PacketLogConverter.LogPackets
 				spells[i].lineIndex = ReadByte();
 				spells[i].spellIndex = ReadByte();
 			}
-			
+
 			return data;
 		}
 

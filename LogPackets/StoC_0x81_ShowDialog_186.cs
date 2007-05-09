@@ -7,6 +7,7 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x81, 186, ePacketDirection.ServerToClient, "Show dialog v186")]
 	public class StoC_0x81_ShowDialog_186 : StoC_0x81_ShowDialog
 	{
+		public NewQuestUpdate_186 InNewQuestUpdate		{ get { return subData as NewQuestUpdate_186; } }
 		protected override void InitNewQuestUpdate()
 		{
 			subData = new NewQuestUpdate_186();
@@ -19,14 +20,21 @@ namespace PacketLogConverter.LogPackets
 			public string questDesc;
 			public ushort dialogLen;
 			public string message;
-			public ushort unk1;
+			public ushort questID;
 			public byte goalsCount;
 			public string[] goals;
 			public byte questLevel;
-			public ushort questExp;
-			public ushort questType;
+			public byte rewardGold;
+			public byte rewardExp;
+			public ushort itemsRewardType;
 			public byte rewardsCount;
 			public Item[] rewards;
+
+			public enum eItemsRewardType: byte
+			{
+				Basic = 0,
+				Optional = 1,
+			}
 
 			public override void Init(StoC_0x81_ShowDialog pak)
 			{
@@ -34,7 +42,7 @@ namespace PacketLogConverter.LogPackets
 				questDesc = pak.ReadPascalString();
 				dialogLen = pak.ReadShort();
 				message = pak.ReadString(dialogLen);
-				unk1 = pak.ReadShort();
+				questID = pak.ReadShort();
 				goalsCount = pak.ReadByte();
 				goals = new string[goalsCount];
 				for (int i = 0; i < goalsCount; i++)
@@ -48,9 +56,10 @@ namespace PacketLogConverter.LogPackets
 #endif
 				}
 				questLevel = pak.ReadByte();
-				questExp = pak.ReadShort();
-				questType = pak.ReadShort();
-				if (questType > 1)
+				rewardGold = pak.ReadByte();
+				rewardExp = pak.ReadByte();
+				itemsRewardType = pak.ReadShort();
+				if (itemsRewardType > 1)
 					pak.Position -=2;
 				rewardsCount = pak.ReadByte();
 				rewards = new Item[rewardsCount];
@@ -89,20 +98,20 @@ namespace PacketLogConverter.LogPackets
 					item.name = pak.ReadPascalString();
 					rewards[i] = item;
 				}
-				if (questType > 1)
-					questType = pak.ReadShort();
+				if (itemsRewardType > 1)
+					itemsRewardType = pak.ReadShort();
 			}
 
 			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("\n\tQuestName: \"{0}\"\n\tQuestDesc: \"{1}\"", questName, questDesc);
 				str.AppendFormat("\n\tlen:{0} message:\"{1}\"", dialogLen, message);
-				str.AppendFormat("\n\tunk1:0x{0:X4} goalsCount:{1}", unk1, goalsCount);
+				str.AppendFormat("\n\tquestID:0x{0:X4} goalsCount:{1}", questID, goalsCount);
 				for (int i = 0; i < goalsCount; i++)
 				{
 					str.AppendFormat("\n\t[{0}]: \"{1}\"", i, goals[i]);
 				}
-				str.AppendFormat("\n\tlevel:{0} questExp:0x{1:X4} questType:0x{2:X4} rewardsCount:{3}", questLevel, questExp, questType, rewardsCount);
+				str.AppendFormat("\n\trewardLevel:{0} gold:{1}% Exp:{2:00.0}% itemsRewardType:0x{3:X4}({5}) itemsRewardCount:{4}", questLevel, rewardGold, rewardExp, itemsRewardType, rewardsCount, (eItemsRewardType)itemsRewardType);
 				for (int i = 0; i < rewardsCount; i++)
 				{
 

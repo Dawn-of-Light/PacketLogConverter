@@ -64,9 +64,9 @@ namespace PacketLogConverter.LogPackets
 				if ((flags & 0x02) == 0x02)
 					flag += ",Inventory";
 				if ((flags & 0x04) == 0x04)
-					flag += ",UNKx04";
+					flag += ",UNK_0x04";
 				if ((flags & 0x08) == 0x08)
-					flag += ",UNKx08";
+					flag += ",LongRangeVisible"; // ~5550
 				if ((flags & 0x10) == 0x10)
 					flag += ",Peace";
 				if ((flags & 0x20) == 0x20)

@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x67, -1, ePacketDirection.ServerToClient, "Keep/Tower update")]
-	public class StoC_0x67_KeepUpdate : Packet
+	public class StoC_0x67_KeepUpdate : Packet, IObjectIdPacket
 	{
 		protected ushort keepId;
 		protected byte realm;
@@ -11,6 +11,21 @@ namespace PacketLogConverter.LogPackets
 		protected byte count;
 		protected byte[] components;
 		protected byte unk1;
+
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { keepId }; }
+		}
+
+		public enum eAction: byte
+		{
+			Update = 0,
+			Capture = 6,
+		}
 
 		#region public access properties
 
@@ -40,7 +55,9 @@ namespace PacketLogConverter.LogPackets
 				}
 				str.Append(")");
 			}
-			str.AppendFormat(" unk1:0x{0:X2}", unk1);
+			str.AppendFormat(" unk1:{0:X2}", unk1);
+//			if (flagsDescription)
+//				str.AppendFormat("({0})", (eAction)unk1);
 			return str.ToString();
 		}
 

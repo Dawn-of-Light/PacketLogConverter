@@ -2,19 +2,18 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0x46, -1, ePacketDirection.ServerToClient, "Unknown packet")]
+	[LogPacket(0x46, -1, ePacketDirection.ServerToClient, "Warmap mino relic update?")]
 	public class StoC_0x46_UnknownPacket: Packet
 	{
-		protected uint unk1;
-		protected uint unk2;
-		protected uint unk3;
-		protected uint unk4;
-		protected uint unk5;
+		protected uint id;
+		protected uint regionId;
+		protected uint x;
+		protected uint y;
+		protected uint z;
 
 		#region public access properties
 
-		public uint Unk1 { get { return unk1 ; } }
-		public uint Unk2 { get { return unk2 ; } }
+		public uint Id { get { return id; } }
 
 		#endregion
 
@@ -22,7 +21,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("unk:0x{0:X8} {1:X8} {2:X8} {3:X8} {4:X8}", unk1, unk2, unk3, unk4, unk5);
+			str.AppendFormat("id:{0,-2} regionId:{1,-3} x:{2,-6} y:{3,-6} z:{4,-5}", id, regionId, x, y, z);
 
 			return str.ToString();
 		}
@@ -34,11 +33,11 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			unk1 = ReadIntLowEndian();
-			unk2 = ReadIntLowEndian();
-			unk3 = ReadIntLowEndian();
-			unk4 = ReadIntLowEndian();
-			unk5 = ReadIntLowEndian();
+			id = ReadIntLowEndian();
+			regionId = ReadIntLowEndian();
+			x = ReadIntLowEndian();
+			y = ReadIntLowEndian();
+			z = ReadIntLowEndian();
 		}
 
 		/// <summary>

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -18,7 +17,7 @@ namespace PacketLogConverter.LogPackets
 		/// <value>The object ids.</value>
 		public ushort[] ObjectIds
 		{
-			get { return new ushort[] { objectOid }; }
+			get { return new ushort[] { objectOid, sessionId }; }
 		}
 
 		#region public access properties

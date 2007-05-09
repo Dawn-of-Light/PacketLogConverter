@@ -10,6 +10,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder(16 + m_slotsCount*32);
 			str.AppendFormat("slots:{0} bits:0x{1:X2} visibleSlots:0x{2:X2} preAction:0x{3:X2}", SlotsCount, Bits, VisibleSlots, PreAction);
+			if (flagsDescription)
+				str.AppendFormat("({0})", (ePreActionType)PreAction);
 
 			for (int i = 0; i < m_slotsCount; i++)
 			{
@@ -79,8 +81,19 @@ namespace PacketLogConverter.LogPackets
 					}
 					item.effect = ReadByte();
 					item.name = ReadPascalString();
+					m_items[i] = item;
 				}
-				m_items[i] = item;
+				else
+				{
+					m_items[i] = item;
+					for (int j = (i + 1); j < m_slotsCount; j++)//Test
+					{
+						Item itm = new Item();
+						itm.slot = (byte)(item.slot + j);
+						m_items[j] = itm;
+						i = j;
+					}
+				}
 			}
 		}
 

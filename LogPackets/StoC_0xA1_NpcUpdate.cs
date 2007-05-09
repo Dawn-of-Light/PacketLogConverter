@@ -56,15 +56,16 @@ namespace PacketLogConverter.LogPackets
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			str.AppendFormat("oid:0x{0:X4} speed:{1,-4} speedZ:{2,-3} heading:0x{3:X4} currentZone({4,-3}): ({5,-6} {6,-6} {7,-5}) walkToZone({8,-3}): ({9,-6} {10,-6} {11,-5}) health:{12,3}% targetOID:0x{13:X4} flags:0x{14:X2}",
+			str.AppendFormat("oid:0x{0:X4} speed:{1,-4} speedZ:{2,-4} heading:0x{3:X4} currentZone({4,-3}): ({5,-6} {6,-6} {7,-5}) walkToZone({8,-3}): ({9,-6} {10,-6} {11,-5}) health:{12,3}% targetOID:0x{13:X4} flags:0x{14:X2}",
 			                 npcOID, speed, speedZ, heading, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, targetZoneId, targetZoneX, targetZoneY, targetZoneZ, healthPercent, targetOID, flags);
 			if (flagsDescription)
 			{
 				string flag = string.Format("realm:{0}",(flags >> 6) & 3);
 				if ((flags & 0x01) == 0x01)
-					flag += ",Ghost";
+					flag += ",-DOR";
 				if ((flags & 0x02) == 0x02)
-					flag += ",Inventory";
+					flag += ",-NON";
+				// 0x04 - zone bit 0x100 , 0x08 - targetZone bit 0x100
 				if ((flags & 0x10) == 0x10)
 					flag += ",Underwater";
 				if ((flags & 0x20) == 0x20)
@@ -86,10 +87,10 @@ namespace PacketLogConverter.LogPackets
 			if ((temp & 0x800) == 0x800)
 				speed = (short)-speed;
 			heading = ReadShort();
-			heading = (ushort)(heading & 0xFFF);
 			speedZ = (short)(((temp & 0x7000) >> 8) | (heading >> 12));
 			if ((temp & 0x8000) == 0x8000)
 				speedZ = (short)-speedZ;
+			heading = (ushort)(heading & 0xFFF);
 			currentZoneX = ReadShort();
 			targetZoneX = ReadShort();
 			currentZoneY = ReadShort();

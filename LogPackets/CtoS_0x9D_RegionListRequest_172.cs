@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -16,9 +17,19 @@ namespace PacketLogConverter.LogPackets
 		protected byte regionExpantions;
 		protected byte zero;
 
+		public enum eRegionExpantions: byte
+		{
+			FoundationsHousing = 0x01,
+			NewFrontiers = 0x02,
+//			ShroudedIsles = 0x08, ?
+//			TrialOfAtlantis = 0x10, ?
+//			DarknessRising = 0x20 or Catacombs = 0x20 ?
+		}
+
 		#region public access properties
 
 		public byte Slot { get { return slot; } }
+		public virtual sbyte RaceID { get { return (sbyte)(race > 18 ? 18 - race : race); } }
 
 		#endregion
 
@@ -40,18 +51,34 @@ namespace PacketLogConverter.LogPackets
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x2000); // Water Options
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x4000); // Water Options
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x8000); // Dynamic Shadow
-				str.AppendFormat(" resolutions:0x{0:X4} options:0x{1:X4}(0x{10:X4}) figureVersion:0x{2:X8}{3:X2} memory:{4,2}({9,-2}) unk1:0x{5:X6} skin:0x{6:X2} race:{7,-2} regionExpantions:0x{8:X2}",
-					resolution, options, figureVersion, figureVersion1, unk1 >> 24, unk1 & 0xFFFFFF, skin, race > 18 ? 18 - race : race, regionExpantions, (unk1 >> 24) * 64, optionsBIT);
+				str.AppendFormat(" resolutions:0x{0:X4} options:0x{1:X4}(0x{10:X4}) figureVersion:0x{2:X8}{3:X2} memory:{4,2}({9,-2}) unk1:0x{5:X6} skin:0x{6:X2} race:0x{7:X2}({10, -2}) regionExpantions:0x{8:X2}",
+					resolution, options, figureVersion, figureVersion1, unk1 >> 24, unk1 & 0xFFFFFF, skin, race, regionExpantions, (unk1 >> 24) * 64, optionsBIT, RaceID);
 				if (flagsDescription)
 				{
 					str.Append("\n\tExpantions:");
+					byte uRegionregionExpantions = regionExpantions;
+					if (regionExpantions > 0)
+					{
+						byte i = 0;
+						foreach(eRegionExpantions eReg in Enum.GetValues(typeof(eRegionExpantions)))
+						{
+							if ((regionExpantions & (byte)eReg) == (byte)eReg)
+							{
+								uRegionregionExpantions ^= (byte)eReg;
+								if (i++ == 0)
+									str.Append(" ");
+								else
+									str.Append(", ");
+								str.Append(eReg.ToString());
+							}
+						}
+					}
+					if (uRegionregionExpantions > 0)
+						str.AppendFormat("\n\tUnknown (regionExpantions:0x{0:X2})", uRegionregionExpantions);
+
 //					str.Append(", Shrouded Isles");
 //					str.Append(", Trials of Atlantis");
 //					str.Append(", Catacombs");
-					if ((regionExpantions & 0x01) == 0x01)
-						str.Append(", Foundations(Housing)");
-					if ((regionExpantions & 0x02) == 0x02)
-						str.Append(", NewFrontiers");
 					string description = string.Format("\n\t{0}*{1}", (resolution >> 8) * 10, (resolution & 0xFF) * 10);
 					if ((options & 0x800) == 0x800)
 						description += " WindowMode";

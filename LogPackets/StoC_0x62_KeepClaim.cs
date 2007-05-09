@@ -3,13 +3,22 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x62, -1, ePacketDirection.ServerToClient, "Keep/Tower claim")]
-	public class StoC_0x62_KeepClaim : Packet
+	public class StoC_0x62_KeepClaim : Packet, IObjectIdPacket
 	{
 		protected ushort keepId;
 		protected byte permission;
 		protected byte keepType;
 		protected byte targetLevel;
 		protected byte level;
+
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { keepId }; }
+		}
 
 		#region public access properties
 

@@ -77,6 +77,7 @@ namespace PacketLogConverter.LogPackets
 			Bind = 0x2c,
 			SpellGoBoom = 0x2d,
 			Knock = 0x2e,
+			Smile = 0x2f,
 			Rider_LookFar = 0x31,
 			Rider_Stench = 0x32,
 			Rider_Halt = 0x33,
@@ -96,7 +97,10 @@ namespace PacketLogConverter.LogPackets
 			Rofl = 0x41,
 			Mememe = 0x42,
 			Horse_whistle = 0x43,
-			Kowtow = 0x44
+			Kowtow = 0x44,
+			PlayerPrepare = 0x45,
+			PlayerPickup = 0x46,
+			PlayerListen = 0x47
 		};
 
 		#endregion

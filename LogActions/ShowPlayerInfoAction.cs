@@ -33,6 +33,7 @@ namespace PacketLogConverter.LogActions
 		{
 			int sessionId = -1;
 			int objectId = -1;
+			int petId = -1;
 			int healthPercent = -1;
 			int endurancePercent = -1;
 			int manaPercent = -1;
@@ -41,11 +42,22 @@ namespace PacketLogConverter.LogActions
 			int maxspeed = -1;
 			int clientTargetOid = -1;
 			int serverTargetOid = -1;
+			int regionXOffset = 0;
+			int regionYOffset = 0;
+			int glocX = -1;
+			int glocY = -1;
+			int glocRegion = -1;
 			string loc = "UNKNOWN";
+			string gloc = "UNKNOWN";
 			string state = "";
 			string charName = "UNKNOWN";
 			int playersInGroup = -1;
 			int indexInGroup = -1;
+			int mountId = -1;
+			int mountSlot = -1;
+			int level = -1;
+			string className = "UNKNOWN";
+			bool flagAwait0xA9 = false;
 
 			for (int i = 0; i < selectedIndex; i++)
 			{
@@ -83,11 +95,28 @@ namespace PacketLogConverter.LogActions
 					if ((pos.Speed & 0x8000) == 0x8000)
 						state += ",FallDown";
 					loc = string.Format("({0,-3}): ({1,-6} {2,-6} {3,-5})", pos.CurrentZoneId, pos.CurrentZoneX, pos.CurrentZoneY, pos.CurrentZoneZ);
+					if (flagAwait0xA9)
+					{
+						if (glocX != -1 && glocY != -1)
+						{
+							regionXOffset = glocX - pos.CurrentZoneX;
+							regionYOffset = glocY - pos.CurrentZoneY;
+//							PacketLogConverter.LogWriters.Logger.Say(string.Format("glocX:{0} glocY:{1} regXOffset:{2} regYOffset:{3} @X:{4} @Y:{5}", glocX, glocY, regionXOffset, regionYOffset, pos.CurrentZoneX, pos.CurrentZoneY));
+						}
+						flagAwait0xA9 = false;
+					}
+					gloc = string.Format("({0,-3}): ({1,-6} {2,-6} {3,-5})", glocRegion, regionXOffset + pos.CurrentZoneX, regionYOffset + pos.CurrentZoneY, pos.CurrentZoneZ);
 				}
 				else if (pak is StoC_0x16_VariousUpdate)
 				{
 					StoC_0x16_VariousUpdate stat = (StoC_0x16_VariousUpdate)pak;
-					if (stat.SubCode == 6)
+					if (stat.SubCode == 3)
+					{
+						StoC_0x16_VariousUpdate.PlayerUpdate subData = (StoC_0x16_VariousUpdate.PlayerUpdate)stat.SubData;
+						level = subData.playerLevel;
+						className = subData.className;
+					}
+					else if (stat.SubCode == 6)
 					{
 						StoC_0x16_VariousUpdate.PlayerGroupUpdate subData = (StoC_0x16_VariousUpdate.PlayerGroupUpdate)stat.SubData;
 						playersInGroup = subData.count;
@@ -136,14 +165,45 @@ namespace PacketLogConverter.LogActions
 				{
 					StoC_0x20_PlayerPositionAndObjectID posAndOid = (StoC_0x20_PlayerPositionAndObjectID)pak;
 					objectId = posAndOid.PlayerOid;
+					glocX = (int)posAndOid.X;
+					glocY = (int)posAndOid.Y;
+					if ((pak as StoC_0x20_PlayerPositionAndObjectID_171) != null)
+						glocRegion = (pak as StoC_0x20_PlayerPositionAndObjectID_171).Region;
+					flagAwait0xA9 = true;
+				}
+				else if (pak is StoC_0x88_PetWindowUpdate)
+				{
+					StoC_0x88_PetWindowUpdate pet = (StoC_0x88_PetWindowUpdate)pak;
+					petId = pet.PetId;
+				}
+				else if (pak is StoC_0xC8_PlayerRide)
+				{
+					StoC_0xC8_PlayerRide ride = (StoC_0xC8_PlayerRide)pak;
+					if (objectId >= 0 && objectId == ride.RiderOid)
+					{
+						if (ride.Flag == 0)
+						{
+							mountId = -1;
+							mountSlot = -1;
+						}
+						else
+						{
+							mountId = ride.MountOid;
+							mountSlot = ride.Slot;
+						}
+					}
 				}
 			}
 
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("session id: 0x{0}\n", ValueToString(sessionId, "X4"));
 			str.AppendFormat(" object id: 0x{0}\n", ValueToString(objectId, "X4"));
+			str.AppendFormat("    pet id: 0x{0}\n", ValueToString(petId, "X4"));
 			str.AppendFormat(" char name: {0}\n", charName);
+			str.AppendFormat("     level: {0} {1}\n", ValueToString(level), className);
 			str.AppendFormat("\n");
+			if(mountId > 0)
+				str.AppendFormat("     mount id: 0x{0} (slot:{1})\n", ValueToString(mountId, "X4"), ValueToString(mountSlot));
 			if(playersInGroup > 0)
 				str.AppendFormat("        group: {0}[{1}]\n", ValueToString(indexInGroup), ValueToString(playersInGroup));
 			str.AppendFormat("        speed: {0,3}\n", ValueToString(speed));
@@ -155,12 +215,13 @@ namespace PacketLogConverter.LogActions
 			str.AppendFormat(" clientTarget: 0x{0}\n", ValueToString(clientTargetOid, "X4"));
 			str.AppendFormat("  checkTarget: 0x{0}\n", ValueToString(serverTargetOid, "X4"));
 			str.AppendFormat(" current zone: {0}\n", loc);
+			str.AppendFormat("  calced gloc: {0}\n", gloc);
 			str.AppendFormat("        flags: {0}\n", state);
 
 			InfoWindowForm infoWindow = new InfoWindowForm();
 			infoWindow.Text = "Player info (right click to close)";
 			infoWindow.Width = 500;
-			infoWindow.Height = 265;
+			infoWindow.Height = 320;
 			infoWindow.InfoRichTextBox.Text = str.ToString();
 			infoWindow.StartWindowThread();
 

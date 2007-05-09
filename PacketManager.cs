@@ -38,11 +38,11 @@ namespace PacketLogConverter
 		public static Packet ChangePacketClass(Packet pak, int newVersion)
 		{
 			LogPacketData packetData = GetPacketData(newVersion, pak.Code, pak.Direction);
-            if (packetData != null && pak.GetType().Equals(packetData.Type))
-            {
+			if (packetData != null && pak.GetType().Equals(packetData.Type))
+			{
 				pak.Attribute = packetData.Attribute;
 				return pak;
-            }
+			}
 
 			Packet newPacket = CreatePacket(packetData, (int)pak.Length);
 			newPacket.CopyFrom(pak);

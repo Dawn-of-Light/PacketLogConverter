@@ -5,13 +5,17 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x9D, 183, ePacketDirection.ClientToServer, "Region list request v183")]
 	public class CtoS_0x9D_RegionListRequest_183 : CtoS_0x9D_RegionListRequest_180
 	{
-		protected byte procType;
+		protected byte osType;
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			string str = base.GetPacketDataString(flagsDescription);
 			if (flag > 0)
-				str += " ProcessorType:" + procType.ToString("D");
+			{
+				str += " OS:" + osType.ToString("D");
+				if(flagsDescription)
+					str += "(" + (eOSType)osType + ")";
+			}
 			return str;
 		}
 
@@ -38,9 +42,17 @@ namespace PacketLogConverter.LogPackets
 				expantions = ReadByte();
 				VedioVendorId1 = ReadIntLowEndian();
 				VedioVendorId2 = ReadIntLowEndian();
-				procType = ReadByte();
+				osType = ReadByte();
 				zero = ReadByte();
 			}
+		}
+
+		public enum eOSType : int
+		{
+			WIN95 = 1,
+			WIN98 = 2,
+			WIN2000 = 6,
+			WINXP = 7,
 		}
 
 		/// <summary>

@@ -17,6 +17,7 @@ namespace PacketLogConverter.LogPackets
 		#region public access properties
 
 		public short RegionId { get { return regionId; } }
+		public ushort Model { get { return model; } }
 		public byte Slot { get { return slot; } }
 
 		#endregion

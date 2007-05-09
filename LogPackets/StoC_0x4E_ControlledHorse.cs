@@ -45,7 +45,7 @@ namespace PacketLogConverter.LogPackets
 			str.AppendFormat("oid:0x{0:X4} horseId:{1,-2} horseBoot:{2,-2} BootColor:0x{3:X4} horseSaddle:{4,-2} SaddleColor:0x{5:X2}",
 				oid, horseId, horseBoot, horseBootColor, horseSaddle, horseSaddleColor);
 			if (oid == 0 && horseId != 0)
-				str.AppendFormat(" slots:{0} armor:{1} name:\"{2}\"", horseSlots, horseArmor, horseName);
+				str.AppendFormat(" slots:{0} weight:{1} name:\"{2}\"", horseSlots, horseArmor, horseName);
 			return str.ToString();
 		}
 

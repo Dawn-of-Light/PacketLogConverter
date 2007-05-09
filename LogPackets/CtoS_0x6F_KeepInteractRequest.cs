@@ -3,12 +3,21 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x6F, -1, ePacketDirection.ClientToServer, "Keep/Tower interact")]
-	public class CtoS_0x6F_KeepInteractRequest : Packet
+	public class CtoS_0x6F_KeepInteractRequest : Packet, IObjectIdPacket
 	{
 		protected ushort keepId;
 		protected ushort componentId;
 		protected ushort request;
 		protected ushort hpIndex;
+
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { keepId }; }
+		}
 
 		#region public access properties
 

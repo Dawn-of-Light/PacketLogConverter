@@ -57,6 +57,7 @@ namespace PacketLogConverter.LogPackets
 			switch (code)
 			{
 				case 3: InitHexEffectsUpdate(); break;
+				case 4: InitUndergoundRaceFlyUpdate(); break;// on high speed look like flyed
 				case 5: InitColorNameUpdate(); break;
 				case 6: InitMobStealthEffectUpdate(); break; // Work only on Mob
 				case 7: InitQuestEffectUpdate(); break;
@@ -64,6 +65,9 @@ namespace PacketLogConverter.LogPackets
 				case 9: InitFreeLevelUpdate(); break; // Self effect
 				case 11: InitTitleUpdate(); break; // Work only on others players
 				case 12: InitBannerUpdate(); break; // Work only on players
+				case 13: InitMinoRelicBeginUpdate(); break; // Work only on players
+				case 14: InitMinoRelicTimerUpdate(); break; // Work only on players
+				case 15: InitMinoRelicSetTimerUpdate(); break; // Work only on players
 				default: InitDefaultUpdate(); break;
 			}
 			return;
@@ -127,6 +131,29 @@ namespace PacketLogConverter.LogPackets
 			{
 				str.AppendFormat("(HexEffects) effect1:0x{0:X2} effect2:{1:X2} effect3:{2:X2} effect4:{3:X2} effect5:{4:X2}",
 					effect1, effect2, effect3, effect4, effect5);
+			}
+		}
+
+		protected virtual void InitUndergoundRaceFlyUpdate()
+		{
+			subData = new UndergoundRaceFlyUpdate();
+			subData.Init(this);
+		}
+
+		public class UndergoundRaceFlyUpdate: ASubData
+		{
+			public byte flag; // unused
+			public uint unk1; // unused
+
+			public override void Init(StoC_0x4C_VisualEffect pak)
+			{
+				flag = pak.ReadByte();
+				unk1 = pak.ReadInt();
+			}
+
+			public override void MakeString(StringBuilder str)
+			{
+				str.AppendFormat("(Vampiire) flag:{0} unk1:{1}", flag, unk1);
 			}
 		}
 
@@ -357,6 +384,76 @@ namespace PacketLogConverter.LogPackets
 					flag, (flag == 1 ? "Disable" : "Enable"), unk1, emblem);
 //				if (flagsDescription && emblem != 0)
 //				  str.AppendFormat(" (guildLogo:{0,-3} pattern:{1} primaryColor:{2,-2} secondaryColor:{3})", (unk1 << 7) | (emblem >> 9), (emblem >> 7) & 2, (emblem >> 3) & 0x0F, emblem & 7);
+			}
+		}
+
+		protected virtual void InitMinoRelicBeginUpdate()
+		{
+			subData = new MinoRelicBeginUpdate();
+			subData.Init(this);
+		}
+
+		public class MinoRelicBeginUpdate: ASubData
+		{
+			public byte flag;
+			public uint effect;
+
+			public override void Init(StoC_0x4C_VisualEffect pak)
+			{
+				flag = pak.ReadByte();
+				effect = pak.ReadInt();
+			}
+
+			public override void MakeString(StringBuilder str)
+			{
+				str.AppendFormat("(MinoRelic) flag:{0}({1}) effect:0x{2:X8}",
+					flag, (flag == 1 ? "Disable" : "Enable"), effect);
+			}
+		}
+
+		protected virtual void InitMinoRelicSetTimerUpdate()
+		{
+			subData = new MinoRelicSetTimerUpdate();
+			subData.Init(this);
+		}
+
+		public class MinoRelicSetTimerUpdate: ASubData
+		{
+			public byte flag; // unused
+			public uint timer;
+
+			public override void Init(StoC_0x4C_VisualEffect pak)
+			{
+				flag = pak.ReadByte();
+				timer = pak.ReadInt();
+			}
+
+			public override void MakeString(StringBuilder str)
+			{
+				str.AppendFormat("(MinoRelicTimerSet) flag:{0} timer:{1}", flag, timer);
+			}
+		}
+
+		protected virtual void InitMinoRelicTimerUpdate()
+		{
+			subData = new MinoRelicTimerUpdate();
+			subData.Init(this);
+		}
+
+		public class MinoRelicTimerUpdate: ASubData
+		{
+			public byte flag; // unused
+			public uint timer;
+
+			public override void Init(StoC_0x4C_VisualEffect pak)
+			{
+				flag = pak.ReadByte();
+				timer = pak.ReadInt();
+			}
+
+			public override void MakeString(StringBuilder str)
+			{
+				str.AppendFormat("(MinoRelicTimer) flag:{0} timer:{1}", flag, timer);
 			}
 		}
 

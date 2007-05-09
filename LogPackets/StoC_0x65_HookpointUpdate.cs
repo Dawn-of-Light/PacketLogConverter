@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x65, -1, ePacketDirection.ServerToClient, "Hookpoint update")]
-	public class StoC_0x65_HookpointUpdate : Packet
+	public class StoC_0x65_HookpointUpdate : Packet, IObjectIdPacket
 	{
 		/*0x02 bytes = keep ID
 0x02 bytes = component ID
@@ -20,6 +20,15 @@ if hook point count > 1
 		protected byte unk1;
 		protected byte[] hookpoint;
 
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { keepId }; }
+		}
+
 		#region public access properties
 
 		public ushort KeepId { get { return keepId; } }
@@ -34,7 +43,7 @@ if hook point count > 1
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("keepId:0x{0:X4} componentId:{1} HookPointCount:{2} unk1:0x{3:X2}",
+			str.AppendFormat("keepId:0x{0:X4} componentId:{1} HookPointCount:{2} selectedHookPointIndex:0x{3:X2}",
 				keepId, componentId, hookPointCount, unk1);
 			string type;
 			if (hookPointCount != 0)

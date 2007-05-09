@@ -19,7 +19,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("objectType:0x{0:X4} objectId:{1:X4}", objectType, objectId);
+			str.AppendFormat("objectType:0x{0:X4} objectId:0x{1:X4}", objectType, objectId);
 
 			return str.ToString();
 		}

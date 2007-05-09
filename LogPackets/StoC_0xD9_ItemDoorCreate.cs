@@ -82,6 +82,12 @@ namespace PacketLogConverter.LogPackets
 					}
 				}
 			}
+			if (flagsDescription)
+			{
+				int guildLogo = emblem >> 9;
+				if (guildLogo != 0)
+					str.AppendFormat(" guildLogo:{0,-3} pattern:{1} primaryColor:{2,-2} secondaryColor:{3}", guildLogo, (emblem >> 7) & 2, (emblem >> 3) & 0x0F, emblem & 7);
+			}
 
 			return str.ToString();
 		}

@@ -2,24 +2,34 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0x59, -1, ePacketDirection.ServerToClient, "Unknown packet")]
+	[LogPacket(0x59, -1, ePacketDirection.ServerToClient, "Mino relic realm")]
 	public class StoC_0x59_UnknownPacket: Packet
 	{
-		protected uint unk1;
-		protected uint unk2;
+		protected uint id;
+		protected uint type;
 
 		#region public access properties
 
-		public uint Unk1 { get { return unk1 ; } }
-		public uint Unk2 { get { return unk2 ; } }
+		public uint ID { get { return id; } }
+		public uint Type { get { return type; } }
 
 		#endregion
+
+		public enum eRelicType: byte
+		{
+			None = 0,
+			Yellow = 1,
+			Green = 2,
+			Red = 3,
+		}
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("unk:0x{0:X8} {1:X8}", unk1, unk2);
+			str.AppendFormat("id:{0} type:{1}", id, type);
+			if (flagsDescription)
+				str.AppendFormat("({0})", (eRelicType)type);
 
 			return str.ToString();
 		}
@@ -31,8 +41,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			unk1 = ReadIntLowEndian();
-			unk2 = ReadIntLowEndian();
+			id = ReadIntLowEndian();
+			type = ReadIntLowEndian();
 		}
 
 		/// <summary>

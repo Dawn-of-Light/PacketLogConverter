@@ -34,7 +34,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("count:{0} points:{1} type:{2}({4}) unk1:{3}", count, points, subCode, unk1, ((eSubType)subCode).ToString());
+			str.AppendFormat("{5}:{0} points:{1} type:{2}({4}) unk1:{3}", count, points, subCode, unk1, ((eSubType)subCode).ToString(), subCode == 2 ? "IdLine" : "count");
 			if (subData == null)
 				str.AppendFormat(" UNKNOWN SUBCODE");
 			else

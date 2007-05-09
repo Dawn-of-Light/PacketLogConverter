@@ -8,10 +8,18 @@ namespace PacketLogConverter.LogPackets
 		protected ushort sessionId;
 		protected ushort unk1;
 		protected string charName;
+		protected uint unk0;
 		protected string loginName;
 		protected uint unk2;
 		protected ushort port; // socket ?
 		protected ushort unk3;
+		protected uint u1;
+		protected uint u2;
+		protected uint u3;
+		protected uint u4;
+		protected uint u5;
+		protected uint u6;
+		protected uint u7;
 
 		#region public access properties
 
@@ -29,8 +37,9 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("charName:\"{0}\" sessionId:0x{1:X4} unk1:0x{2:X4} socket:{3} login:\"{4}\" unk2:0x{5:X8} unk3:0x{6:X4}",
-				charName, sessionId, unk1, port, loginName, unk2, unk3);
+			string flags = (flagsDescription ? string.Format("{0:X8} {1:X8} {2:X8} {3:X8} {4:X8} {5:X8} {6:X8} ", u1, u2, u3, u4, u5, u6, u7) : "");
+			str.AppendFormat("{7}sessionId:0x{1:X4} unk1:0x{2:X4} socket:{3} unk0:0x{8:X8} unk2:0x{5:X8} unk3:0x{6:X4} login:\"{4}\" charName:\"{0}\"",
+				charName, sessionId, unk1, port, loginName, unk2, unk3, flags, unk0);
 
 			return str.ToString();
 		}
@@ -44,9 +53,17 @@ namespace PacketLogConverter.LogPackets
 
 			sessionId = ReadShort();
 			unk1 = ReadShort();
-			charName = ReadString(28);
-			loginName = ReadString(48); // skip unknown
-			unk2 = ReadInt();
+			charName = ReadString(24);
+			unk0 = ReadIntLowEndian();
+			loginName = ReadString(20);
+			u1 = ReadIntLowEndian();
+			u2 = ReadIntLowEndian();
+			u3 = ReadIntLowEndian();
+			u4 = ReadIntLowEndian();
+			u5 = ReadIntLowEndian();
+			u6 = ReadIntLowEndian();
+			u7 = ReadIntLowEndian();
+			unk2 = ReadIntLowEndian();
 			port = ReadShort();
 			unk3 = ReadShort();
 

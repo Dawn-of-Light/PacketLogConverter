@@ -20,6 +20,31 @@ namespace PacketLogConverter.LogPackets
 
 			str.AppendFormat("oid:0x{0:X4} emblem:0x{1:X4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} model:0x{6:X4} health:{7,3}% flags:0x{8:X2}(realm:{12}) extraBytes:{9} unk1_171:0x{10:X8} name:\"{11}\"",
 				oid, emblem, heading, x, y, z, model, hp, flags, extraBytes, unk1_171, name, (flags & 0x30)>>4);
+			if (flagsDescription)
+			{
+				string flag = "";
+				if ((flags & 0x01) == 0x01)
+					flag += ",Underwater";// not let drop on ground ?
+				if ((flags & 0x02) == 0x02)
+					flag += ",UNK_0x02";
+				if ((flags & 0x04) == 0x04)
+					flag += ",Loot";
+				if ((flags & 0x08) == 0x08)
+					flag += ",StaticItem";//or Longrange ?
+				if ((flags & 0x40) == 0x40)
+					flag += ",UNK_0x40";
+				if ((flags & 0x80) == 0x80)
+					flag += ",UNK_0x80";
+				uint flag_171 = unk1_171 >> 24;
+				if ((flag_171 & 0x01) == 0x01)
+					flag += ",-DOR";
+				if ((flag_171 & 0x02) == 0x02)
+					flag += ",Guild176Emblem";
+				if ((flag_171 & 0xFC) > 0)
+					flag += ",UNKNOWN_171";
+				if(flag != "")
+					str.AppendFormat(" ({0})", flag);
+			}
 			if (extraBytes == 4)
 			{
 				str.AppendFormat(" doorId:0x{0:X4}", internalId);
@@ -51,9 +76,12 @@ namespace PacketLogConverter.LogPackets
 					}
 				}
 			}
-			if (flagsDescription && emblem != 0)
-			  str.AppendFormat(" guildLogo:{0,-3} pattern:{1} primaryColor:{2,-2} secondaryColor:{3}", (((unk1_171 & 0x2000000) >> 25) << 7) | (emblem >> 9), (emblem >> 7) & 2, (emblem >> 3) & 0x0F, emblem & 7);
-
+			if (flagsDescription)
+			{
+				uint guildLogo = (((unk1_171 & 0x2000000) >> 25) << 7) + (uint)(emblem >> 9);
+				if (guildLogo != 0)
+					str.AppendFormat(" guildLogo:{0,-3} pattern:{1} primaryColor:{2,-2} secondaryColor:{3}", guildLogo, (emblem >> 7) & 2, (emblem >> 3) & 0x0F, emblem & 7);
+			}
 			return str.ToString();
 		}
 

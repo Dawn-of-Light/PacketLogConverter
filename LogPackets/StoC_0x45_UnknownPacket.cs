@@ -2,14 +2,14 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0x45, -1, ePacketDirection.ServerToClient, "Unknown packet")]
+	[LogPacket(0x45, -1, ePacketDirection.ServerToClient, "Warmap mino relic hide?")]
 	public class StoC_0x45_UnknownPacket: Packet
 	{
-		protected uint unk1;
+		protected uint id;
 
 		#region public access properties
 
-		public uint Unk1 { get { return unk1 ; } }
+		public uint Id { get { return id; } }
 
 		#endregion
 
@@ -17,7 +17,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("unk:0x{0:X8}", unk1);
+			str.AppendFormat("id:{0}", id);
 
 			return str.ToString();
 		}
@@ -29,7 +29,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			unk1 = ReadIntLowEndian();
+			id = ReadIntLowEndian();
 		}
 
 		/// <summary>

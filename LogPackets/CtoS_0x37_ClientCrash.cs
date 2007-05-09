@@ -14,7 +14,7 @@ namespace PacketLogConverter.LogPackets
 		protected byte options;
 		protected byte unk4;
 		protected byte clnType;
-		protected byte procType;
+		protected byte osType;
 		protected byte unk6;
 		protected ushort region;
 		protected uint uptime;
@@ -33,7 +33,7 @@ namespace PacketLogConverter.LogPackets
 		public byte Options { get { return options; } }
 		public byte Unk4 { get { return unk4; } }
 		public byte ClnType { get { return clnType; } }
-		public byte ProcType { get { return procType; } }
+		public byte OS { get { return osType; } }
 		public byte Unk6 { get { return unk6; } }
 		public ushort Region { get { return region; } }
 		public uint Uptime { get { return uptime; } }
@@ -54,15 +54,23 @@ namespace PacketLogConverter.LogPackets
 			Labyrinth = 7,
 		}
 
+		public enum eOSType : int
+		{
+			WIN95 = 1,
+			WIN98 = 2,
+			WIN2000 = 6,
+			WINXP = 7,
+		}
+
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("module:{0} version:{1} CS=0x{2:X4} EIP=0x{3:X8} processorType:{4} region:{5,-3} uptime:{6}s codeError:0x{7:X2}(windowMode:{8}{9} error:{10})",
-				module, version, cs, eip, procType, region, uptime, options, options & 0x1, ((options & 0x02) == 0x02) ? ", SecondCopyDaoc" : "", options >> 2);
+			str.AppendFormat("module:{0} version:{1} CS=0x{2:X4} EIP=0x{3:X8} OS:{4} region:{5,-3} uptime:{6}s codeError:0x{7:X2}(windowMode:{8}{9} error:{10})",
+				module, version, cs, eip, osType, region, uptime, options, options & 0x1, ((options & 0x02) == 0x02) ? ", SecondCopyDaoc" : "", options >> 2);
 			str.AppendFormat("\n\tstack:0x{0:X8} 0x{1:X8} 0x{2:X8} 0x{3:X8}", stack1, stack2, stack3, stack4);
 			if (flagsDescription)
-				str.AppendFormat("\n\tunk4:{0} clnType:{1}({4}) procType?:{2} unk6:{3}", unk4, clnType, procType, unk6, (eClientType)clnType);
+				str.AppendFormat("\n\tunk4:{0} clnType:{1}({4}) OS:{2}({5}) unk6:{3}", unk4, clnType, osType, unk6, (eClientType)clnType, (eOSType)osType);
 
 			return str.ToString();
 		}
@@ -84,7 +92,7 @@ namespace PacketLogConverter.LogPackets
 			Skip(16);
 			unk4 = ReadByte();
 			clnType = ReadByte();
-			procType = ReadByte();
+			osType = ReadByte();
 			unk6 = ReadByte();
 			region = ReadShort();
 			Skip(2);

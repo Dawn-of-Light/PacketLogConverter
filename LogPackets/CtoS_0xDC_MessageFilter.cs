@@ -6,7 +6,7 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0xDC, -1, ePacketDirection.ClientToServer, "System message filter")]
 	public class CtoS_0xDC_MessageFilter: Packet
 	{
-		public byte[] filter;
+		protected byte[] filter;
 
 		public enum filterName: byte
 		{

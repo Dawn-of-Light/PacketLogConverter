@@ -24,7 +24,7 @@ namespace PacketLogConverter.LogPackets
 		/// <value>The object ids.</value>
 		public ushort[] ObjectIds
 		{
-			get { return new ushort[] { uid }; }
+			get { return new ushort[] { uid, keepId }; }
 		}
 
 		#region public access properties

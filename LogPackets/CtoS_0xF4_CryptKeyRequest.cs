@@ -21,7 +21,7 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public enum eClientType : int
+		public enum eClientType : byte
 		{
 			Classic = 1,
 			ShroudedIsles = 2,

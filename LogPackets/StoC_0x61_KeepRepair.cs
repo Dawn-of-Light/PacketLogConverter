@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x61, -1, ePacketDirection.ServerToClient, "Keep/Tower shortinfo")]
-	public class StoC_0x61_KeepRepair : Packet
+	public class StoC_0x61_KeepRepair : Packet, IObjectIdPacket
 	{
 		protected ushort keepId;
 		protected byte realm;
@@ -14,6 +14,15 @@ namespace PacketLogConverter.LogPackets
 		protected string guild;
 		protected byte unk1;
 		// skip unknown (but where is WallID ? or it taked from CtoS 0x6F ?)
+
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return new ushort[] { keepId }; }
+		}
 
 		#region public access properties
 

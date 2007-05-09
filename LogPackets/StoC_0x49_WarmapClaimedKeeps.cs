@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x49, -1, ePacketDirection.ServerToClient, "Show warmap")]
-	public class StoC_0x49_WarmapShow : Packet
+	public class StoC_0x49_WarmapShow : Packet, IObjectIdPacket
 	{
 		protected ushort templeBitMask;
 		protected byte countKeep;
@@ -17,6 +17,16 @@ namespace PacketLogConverter.LogPackets
 		protected byte r6;
 		protected Keep[] m_keeps;
 
+
+		protected ushort[] m_oids;
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get { return m_oids; }
+		}
 		#region public access properties
 
 		public int TempleBitMask { get { return templeBitMask; } }
@@ -40,7 +50,7 @@ namespace PacketLogConverter.LogPackets
 				templeBitMask, r1, r2, r3, r4, r5, r6);
 			str.AppendFormat(" keeps:{0} towers:{1,-2}", countKeep, countTower);
 
-			for (int i = 0; i < countKeep+countTower; i++)
+			for (int i = 0; i < countKeep + countTower; i++)
 			{
 				Keep keep = Keeps[i];
 				int keepRealmMap = keep.id >> 6;
@@ -75,6 +85,7 @@ namespace PacketLogConverter.LogPackets
 			r6 = ReadByte();
 			m_keeps = new Keep[countKeep + countTower];
 
+			ArrayList arr = new ArrayList(countKeep + countTower);
 			for (int i = 0; i < (countKeep + countTower); i++)
 			{
 				Keep keep = new Keep();
@@ -84,7 +95,12 @@ namespace PacketLogConverter.LogPackets
 				keep.guild = ReadPascalString();
 
 				m_keeps[i] = keep;
+				int keepRealmMap = keep.id >> 6;
+				int keepIndexOnMap = (keep.id >> 3) & 0x7;
+				int keepTower = keep.id & 7;
+				arr.Add((ushort)((keepRealmMap*25) + 25+ keepIndexOnMap + (keepTower << 8)));
 			}
+			m_oids = (ushort[])arr.ToArray(typeof (ushort));
 		}
 
 		public struct Keep

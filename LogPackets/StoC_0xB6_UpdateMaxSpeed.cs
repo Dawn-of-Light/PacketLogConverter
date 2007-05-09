@@ -7,13 +7,13 @@ namespace PacketLogConverter.LogPackets
 	{
 		protected ushort maxSpeedPercent;
 		protected byte turningEnabled;
-		protected byte unk1;
+		protected byte waterMaxSpeedPercent;
 
 		#region public access properties
 
 		public ushort MaxSpeedPercent { get { return maxSpeedPercent; } }
 		public byte TurningEnabled { get { return turningEnabled; } }
-		public byte Unk1 { get { return unk1; } }
+		public byte WaterMaxSpeedPercent { get { return waterMaxSpeedPercent; } }
 
 		#endregion
 
@@ -21,7 +21,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("{0,3}% turning:{1} unk1:{2}", maxSpeedPercent, turningEnabled, unk1);
+			str.AppendFormat("{0,3}% turning:{1} waterSpeed:{2}", maxSpeedPercent, turningEnabled, waterMaxSpeedPercent);
 
 			return str.ToString();
 		}
@@ -35,7 +35,7 @@ namespace PacketLogConverter.LogPackets
 
 			maxSpeedPercent = ReadShort();
 			turningEnabled = ReadByte();
-			unk1 = ReadByte();
+			waterMaxSpeedPercent = ReadByte();
 		}
 
 		/// <summary>

@@ -7,8 +7,16 @@ namespace PacketLogConverter.LogPackets
 		public byte subCode;
 		protected ASubData subData;
 
+		#region public access properties
 		public byte SubCode { get { return subCode; } }
 		public ASubData SubData { get { return subData; } }
+		#endregion
+
+		#region Filter Helpers
+		
+		public QuestUpdate		InQuestUpdate			{ get { return subData as QuestUpdate ; } }
+		
+		#endregion
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{

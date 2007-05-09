@@ -38,6 +38,9 @@ namespace PacketLogConverter.LogPackets
 				case 1:
 					actionType = "putAmmo";
 					break;
+				case 2:
+					actionType = "arm";
+					break;
 				case 3:
 					actionType = "aim";
 					break;
@@ -56,11 +59,17 @@ namespace PacketLogConverter.LogPackets
 				case 8:
 					actionType = "release";
 					break;
+				case 9:
+					actionType = "stop";
+					break;
+				case 10:
+					actionType = "swing";
+					break;
 				default:
 					actionType = "unknown";
 					break;
 			}
-			str.AppendFormat("unk1:0x{0:X4} action:{1}({2}) ammo?:{3} unk2:0x{4:X4} unk3:0x{5:X4} unk4:0x{6:X4} unk5:0x{7:X4} unk6:0x{8:X4} unk7:0x{9:X4}",
+			str.AppendFormat("unk1:0x{0:X4} action:{1}({2}) ammo?:{3, -2} unk2:0x{4:X4} unk3:0x{5:X4} unk4:0x{6:X4} unk5:0x{7:X4} unk6:0x{8:X4} unk7:0x{9:X4}",
 				unk1, action, actionType, ammo, unk2, unk3, unk4, unk5, unk6, unk7);
 
 			return str.ToString();

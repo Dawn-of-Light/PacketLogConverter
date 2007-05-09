@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -60,8 +59,6 @@ namespace PacketLogConverter.LogPackets
 					status += ",UNKx01";
 				if ((flags & 0x02) == 0x02)
 					status += ",Stealth";
-				if ((flags & 0x40) == 0x40)
-					status += ",UNKx40";
 				if ((flags & 0x04) == 0x04)
 					status += ",PetInView";
 				if ((flags & 0x08) == 0x08)
@@ -70,6 +67,8 @@ namespace PacketLogConverter.LogPackets
 					status += ",CheckTargetInView";
 				if ((flags & 0x20) == 0x20)
 					status += ",TargetInView";
+				if ((flags & 0x40) == 0x40)
+					status += ",UNKx40";
 				if ((flags & 0x80) == 0x80)
 					status += ",Torch";
 				if ((health & 0x80) == 0x80)

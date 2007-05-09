@@ -5,17 +5,17 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x4F, -1, ePacketDirection.ClientToServer, "Quest remove request")]
 	public class CtoS_0x4F_QuestRemoveRequest: Packet
 	{
-		protected ushort questIndex;
+		protected ushort responce;
+		protected ushort questSlot;// quest index in 0x83 as -1 (becouse first quest slot = 1 (0 slot = task))
 		protected ushort unk1;
 		protected ushort unk2;
-		protected ushort unk3;
 
 		#region public access properties
 
-		public ushort QuestIndex { get { return questIndex; } }
+		public ushort Responce { get { return responce; } }
+		public ushort QuestSlot { get { return questSlot; } }
 		public ushort Unk1 { get { return unk1; } }
 		public ushort Unk2 { get { return unk2; } }
-		public ushort Unk3 { get { return unk3; } }
 
 		#endregion
 
@@ -23,8 +23,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("questIndex:{0} unk1:0x{1:X4} unk2:{2:X4} unk3:0x{3:X4}",
-				questIndex, unk1, unk2, unk3);
+			str.AppendFormat("responce?:{0} questSlot:{1,-2} unk1:0x{2:X4} unk2:0x{3:X4}",
+				responce ,questSlot, unk1, unk2);
 
 			return str.ToString();
 		}
@@ -36,10 +36,10 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			questIndex = ReadShort();
+			responce = ReadShort();
+			questSlot = ReadShort();
 			unk1 = ReadShort();
 			unk2 = ReadShort();
-			unk3 = ReadShort();
 
 		}
 

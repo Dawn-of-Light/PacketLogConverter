@@ -63,6 +63,7 @@ namespace PacketLogConverter.LogPackets
 				case 9: pattern="You don't have enough power to cast that!";break;
 				case 10: pattern="You must wait {0} seconds to cast a spell!";break;
 				case 11: pattern="You have too many pets in the area!";break;
+				case 12: pattern="You gain an additional {0} for adventuring in this area!";break;
 				default:break;
 			}
 			if (flag!=0) pattern=string.Format(pattern,message);

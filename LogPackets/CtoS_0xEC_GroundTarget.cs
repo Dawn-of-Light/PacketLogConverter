@@ -8,18 +8,18 @@ namespace PacketLogConverter.LogPackets
 		protected uint x;
 		protected uint y;
 		protected uint z; // or short ukn + short z ?
-		protected ushort len;
 		protected byte flag;
-		protected byte unk1;
+		protected ushort unk1;
+		protected byte unk2;
 
 		#region public access properties
 
 		public uint X { get { return x; } }
 		public uint Y { get { return y; } }
 		public uint Z { get { return z; } }
-		public ushort Len { get { return len; } }
 		public byte Flag { get { return flag; } }
-		public byte Unk1 { get { return unk1; } }
+		public ushort Unk1 { get { return unk1; } }
+		public byte Unk2 { get { return unk2; } }
 
 		#endregion
 
@@ -27,8 +27,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("x:{0,-6} y:{1,-6} z:{2,6} length:{3,-4} flag:0x{4:X2} unk1:{5}",
-				x, y, z, len, flag, unk1);
+			str.AppendFormat("x:{0,-6} y:{1,-6} z:{2,6} flag:0x{3:X2} unk1:0x{4:X4} unk2:0x{5:X2}",
+				x, y, z, flag, unk1, unk2);
 
 			return str.ToString();
 		}
@@ -43,9 +43,9 @@ namespace PacketLogConverter.LogPackets
 			x = ReadInt();
 			y = ReadInt();
 			z = ReadInt();
-			len = ReadShort();
 			flag = ReadByte();
-			unk1 = ReadByte();
+			unk1 = ReadShort();
+			unk2 = ReadByte();
 		}
 
 		/// <summary>

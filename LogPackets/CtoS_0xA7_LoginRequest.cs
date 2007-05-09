@@ -18,7 +18,7 @@ namespace PacketLogConverter.LogPackets
 		protected uint unk2;
 		protected uint unk3;
 		protected uint AunkB;
-		protected uint Aunk1;
+		protected uint Aunk1;//client signature or CRC
 		protected uint Aunk2;
 		protected uint Aunk3;
 		protected uint Aunk4;

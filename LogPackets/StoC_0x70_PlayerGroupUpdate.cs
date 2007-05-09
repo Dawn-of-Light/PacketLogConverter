@@ -8,7 +8,7 @@ namespace PacketLogConverter.LogPackets
 	public class StoC_0x70_PlayerGroupUpdate : Packet
 	{
 		protected object[] updates;
-		protected byte playerIndex; 
+		protected byte playerIndex;
 
 		#region public access properties
 
@@ -50,7 +50,7 @@ namespace PacketLogConverter.LogPackets
 				}
 				playerIndex = ReadByte();
 			}
-			
+
 			updates = (object[])groupUpdates.ToArray(typeof (object));
 		}
 
@@ -122,7 +122,7 @@ namespace PacketLogConverter.LogPackets
 				return str.ToString();
 			}
 		}
-		
+
 		public struct BuffData
 		{
 			public byte type;

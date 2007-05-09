@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -27,6 +26,12 @@ namespace PacketLogConverter.LogPackets
 			get { return new ushort[] { objectOid }; }
 		}
 
+		public enum eType: byte
+		{
+			SwitchToSeat = 1,
+			ShipStore = 2,
+		}
+
 		#region public access properties
 
 		public ushort ObjectOid { get { return objectOid; } }
@@ -40,8 +45,8 @@ namespace PacketLogConverter.LogPackets
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			str.AppendFormat("unk1:0x{0:X4} objectOid:0x{1:X4} unk2:0x{2:X4} slot:{3,-2} flag:{4} currency:{5} unk3:0x{6:X2} unk4:0x{7:X4} type:{8} unk5:0x{9:X2} unk6:0x{10:X4}",
-				unk1, objectOid, unk2, slot, flag, currency, unk3, unk4, type, unk5, unk6);
+			str.AppendFormat("unk1:0x{0:X4} objectOid:0x{1:X4} unk2:0x{2:X4} slot:{3,-2} flag:{4} currency:{5} unk3:0x{6:X2} unk4:0x{7:X4} type:{8}{11} unk5:0x{9:X2} unk6:0x{10:X4}",
+				unk1, objectOid, unk2, slot, flag, currency, unk3, unk4, type, unk5, unk6, flagsDescription ? "(" + (eType)type + ")" : "");
 
 			return str.ToString();
 		}

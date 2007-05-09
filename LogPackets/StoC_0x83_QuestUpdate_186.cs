@@ -7,6 +7,8 @@ namespace PacketLogConverter.LogPackets
 	public class StoC_0x83_QuestUpdate_186 : StoC_0x83_QuestUpdate_184
 	{
 
+		public NewQuestUpdate_186 InNewQuestUpdate		{ get { return subData as NewQuestUpdate_186; } }
+	
 		public override void Init()
 		{
 			Position = 0;

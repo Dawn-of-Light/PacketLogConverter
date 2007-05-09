@@ -7,12 +7,14 @@ namespace PacketLogConverter.LogPackets
 	{
 		protected byte moodType;
 		protected byte unk1_174;
+		protected string prefixName;
 		protected string realmMissionTitle;
 
 		#region public access properties
 
 		public byte MoodType { get { return moodType; } }
 		public byte Unk1_174 { get { return unk1_174; } }
+		public string PrefixName { get { return prefixName; } }
 		public string RealmMissionTitle { get { return realmMissionTitle; } }
 
 		#endregion
@@ -21,12 +23,15 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("sessionId:0x{0:X4} oid:0x{1:X4} model:0x{2:X4} zoneId:{3,-3} zoneLoc:({4,-5} {5,-5} {6,-5}) heading:0x{7:X4} eyeSize:0x{8:X4} lipSize:0x{9:X4} eyeColor:0x{10:X4} level:{11,-2} hairColor:0x{12:X4} faceType:0x{13:X4} moodType:0x{19:X4} flags:0x{14:X2} name:\"{15}\" guild:\"{16}\" lastName:\"{17}\" trailingZero:{18} unk1_174:{20} newTitle:\"{21}\"",
-				sessionId, oid, model, zoneId, zoneX, zoneY, zoneZ, heading, eyeSize, lipSize, eyeColor, level, hairColor, faceType, flags, name, guildName, lastName, trailingZero, moodType, unk1_174, realmMissionTitle);
+			str.AppendFormat("sessionId:0x{0:X4} oid:0x{1:X4} model:0x{2:X4} zoneId:{3,-3} zoneLoc:({4,-5} {5,-5} {6,-5}) heading:0x{7:X4} eyeSize:0x{8:X4} lipSize:0x{9:X4} eyeColor:0x{10:X4} level:{11,-2} hairColor:0x{12:X4} faceType:0x{13:X4} moodType:0x{19:X4} flags:0x{14:X2} name:\"{15}\" guild:\"{16}\" lastName:\"{17}\" prefixName:\"{18}\" unk1_174:{20} newTitle:\"{21}\"",
+				sessionId, oid, model, zoneId, zoneX, zoneY, zoneZ, heading, eyeSize, lipSize, eyeColor, level, hairColor, faceType, flags, name, guildName, lastName, prefixName, moodType, unk1_174, realmMissionTitle);
 
 			if (flagsDescription && flags != 0)
-				str.AppendFormat("\n\trealm:{0}{1}{2}{3}{4}{5}", (flags >> 2) & 3, ((flags & 1) == 1) ? ", DEAD" : "", ((flags & 2) == 2) ? ", Underwater" : "", ((flags & 0x10) == 0x10) ? ", Stealth" : "", ((flags & 0x20) == 0x20) ? ", Wireframe" : "", ((flags & 0xC0) != 0) ? ", UNK:0x"+(flags & 0xC0).ToString("X2") : "");
-
+			{
+				str.AppendFormat("\n\trealm:{0}", (flags >> 2) & 3);
+				str.AppendFormat(" face:{0} playerSize:{1} model:0x{2:X4}", model >> 13, (model >> 11) & 3, model & 0x7FF);
+				str.AppendFormat("{0}{1}{2}{3}{4}", ((flags & 1) == 1) ? ", DEAD" : "", ((flags & 2) == 2) ? ", Underwater" : "", ((flags & 0x10) == 0x10) ? ", Stealth" : "", ((flags & 0x20) == 0x20) ? ", Wireframe" : "", ((flags & 0x40) == 0x40) ? ", Vampiire" : "", ((flags & 0x80) != 0) ? ", UNK:0x"+(flags & 0x80).ToString("X2") : "");
+			}
 			return str.ToString();
 		}
 
@@ -58,7 +63,7 @@ namespace PacketLogConverter.LogPackets
 			name = ReadPascalString();
 			guildName = ReadPascalString();
 			lastName = ReadPascalString();
-			trailingZero = ReadByte();
+			prefixName = ReadPascalString();
 			realmMissionTitle = ReadPascalString();
 		}
 
