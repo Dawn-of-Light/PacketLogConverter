@@ -27,14 +27,16 @@ namespace PacketLogConverter.LogPackets
 				string speed = (flagSpeedData & 0x1FF).ToString();
 				if ((flagSpeedData & 0x200) == 0x200)
 					speed = "-" + speed;
+				if ((flagSpeedData & 0x400) == 0x400)
+					speed += ",UNKx0400";
 				if ((flagSpeedData & 0x800) == 0x800)
 					speed += ",PetInView";
 				if ((flagSpeedData & 0x1000) == 0x1000)
 					speed += ",GTinView";
-				if ((flagSpeedData & 0x4000) == 0x4000)
-					speed += ",Strafe";// Swim under water
 				if ((flagSpeedData & 0x2000) == 0x2000)
 					speed += ",CheckTargetInView";
+				if ((flagSpeedData & 0x4000) == 0x4000)
+					speed += ",Strafe";// Swim under water
 				if ((flagSpeedData & 0x8000) == 0x8000)
 					speed += ",TargetInView";
 				str.AppendFormat(" (speed:{0})", speed);

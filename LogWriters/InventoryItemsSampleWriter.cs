@@ -23,7 +23,9 @@ namespace PacketLogConverter.LogWriters
 
 					foreach (StoC_0x02_InventoryUpdate.Item item in invUpdate.Items)
 					{
-						s.WriteLine("level={0,-2} model={1,-5} name={2}", item.level, item.model, item.name);
+						if (item.name != null && item.name != "")
+							s.WriteLine("level={0,-2} value1:{1,-3} value2:{2,-3} damageType:{3} objectType:{4,-2} weight:{5,-3} model={6,-5} color:{7,-3} effect:{8,-3} name={9}",
+								item.level, item.value1, item.value2, item.damageType, item.objectType, item.weight, item.model, item.color, item.effect, item.name);
 					}
 				}
 			}

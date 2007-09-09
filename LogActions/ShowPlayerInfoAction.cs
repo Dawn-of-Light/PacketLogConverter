@@ -56,10 +56,25 @@ namespace PacketLogConverter.LogActions
 			int mountId = -1;
 			int mountSlot = -1;
 			int level = -1;
+			int mana = -1;
+			int manaMax = -1;
+			int health = -1;
+			int healthMax = -1;
+			int conc = -1;
+			int concMax = -1;
 			string className = "UNKNOWN";
+			string raceName = "";
+			int realm_level = -1;
+			string realm_title = "";
+			int champ_level = -1;
+			string champ_title = "";
+			int ml_level = -1;
+			int houseLot = -1;
+			string ml_title = "";
+
 			bool flagAwait0xA9 = false;
 
-			for (int i = 0; i < selectedIndex; i++)
+			for (int i = 0; i <= selectedIndex; i++)
 			{
 				Packet pak = log[i];
 				if (pak is CtoS_0xA9_PlayerPosition)
@@ -115,6 +130,18 @@ namespace PacketLogConverter.LogActions
 						StoC_0x16_VariousUpdate.PlayerUpdate subData = (StoC_0x16_VariousUpdate.PlayerUpdate)stat.SubData;
 						level = subData.playerLevel;
 						className = subData.className;
+						raceName = subData.raceName;
+						healthMax = (ushort)(((subData.maxHealthHigh & 0xFF) << 8) | (subData.maxHealthLow & 0xFF));
+						realm_level = subData.realmLevel;
+						realm_title = subData.realmTitle;
+						ml_level = subData.mlLevel;
+						ml_title = subData.mlTitle;
+						houseLot = subData.personalHouse;
+						if (subData is StoC_0x16_VariousUpdate_179.PlayerUpdate_179)
+						{
+							champ_level = (subData as StoC_0x16_VariousUpdate_179.PlayerUpdate_179).championLevel;
+							champ_title = (subData as StoC_0x16_VariousUpdate_179.PlayerUpdate_179).championTitle;
+						}
 					}
 					else if (stat.SubCode == 6)
 					{
@@ -155,6 +182,15 @@ namespace PacketLogConverter.LogActions
 					endurancePercent = status.EndurancePercent;
 					manaPercent = status.ManaPercent;
 					concentrationPercent = status.ConcentrationPercent;
+					if (pak is StoC_0xAD_StatusUpdate_190)
+					{
+						health = (pak as StoC_0xAD_StatusUpdate_190).Health;
+						healthMax = (pak as StoC_0xAD_StatusUpdate_190).MaxHealth;
+						mana = (pak as StoC_0xAD_StatusUpdate_190).Power;
+						manaMax = (pak as StoC_0xAD_StatusUpdate_190).MaxPower;
+						conc = (pak as StoC_0xAD_StatusUpdate_190).Concentration;
+						concMax = (pak as StoC_0xAD_StatusUpdate_190).MaxConcentration;
+					}
 				}
 				else if (pak is StoC_0x28_SetSessionId)
 				{
@@ -169,6 +205,14 @@ namespace PacketLogConverter.LogActions
 					glocY = (int)posAndOid.Y;
 					if ((pak as StoC_0x20_PlayerPositionAndObjectID_171) != null)
 						glocRegion = (pak as StoC_0x20_PlayerPositionAndObjectID_171).Region;
+					flagAwait0xA9 = true;
+				}
+				else if (pak is StoC_0x04_CharacterJump)
+				{
+					StoC_0x04_CharacterJump plrJump = (StoC_0x04_CharacterJump)pak;
+					objectId = plrJump.PlayerOid;
+					glocX = (int)plrJump.X;
+					glocY = (int)plrJump.Y;
 					flagAwait0xA9 = true;
 				}
 				else if (pak is StoC_0x88_PetWindowUpdate)
@@ -193,6 +237,15 @@ namespace PacketLogConverter.LogActions
 						}
 					}
 				}
+				else if (pak is StoC_0xFB_CharStatsUpdate_175)
+				{
+					if ((pak as StoC_0xFB_CharStatsUpdate_175).Flag != 0xFF)
+						healthMax = (pak as StoC_0xFB_CharStatsUpdate_175).MaxHealth;
+				}
+				else if (pak is StoC_0xFB_CharStatsUpdate)
+				{
+					healthMax = (pak as StoC_0xFB_CharStatsUpdate).MaxHealth;
+				}
 			}
 
 			StringBuilder str = new StringBuilder();
@@ -200,18 +253,40 @@ namespace PacketLogConverter.LogActions
 			str.AppendFormat(" object id: 0x{0}\n", ValueToString(objectId, "X4"));
 			str.AppendFormat("    pet id: 0x{0}\n", ValueToString(petId, "X4"));
 			str.AppendFormat(" char name: {0}\n", charName);
-			str.AppendFormat("     level: {0} {1}\n", ValueToString(level), className);
+			str.AppendFormat("     level: {0} {1}{2}\n", ValueToString(level), className, (raceName != "" ? " (" + raceName + ")" : ""));
+			if (realm_level > 0)
+				str.AppendFormat("RealmLevel: {0} \"{1}\"\n", ValueToString(realm_level), realm_title);
+			if (ml_level > 0)
+				str.AppendFormat("  ML level: {0} \"{1}\"\n", ValueToString(ml_level), ml_title);
+			if (champ_level > 0)
+				str.AppendFormat("ChampLevel: {0} \"{1}\"\n", ValueToString(champ_level), champ_title);
 			str.AppendFormat("\n");
+			if(houseLot > 0)
+				str.AppendFormat("     houseLot: 0x{0}\n", ValueToString(houseLot, "X4"));
 			if(mountId > 0)
 				str.AppendFormat("     mount id: 0x{0} (slot:{1})\n", ValueToString(mountId, "X4"), ValueToString(mountSlot));
 			if(playersInGroup > 0)
 				str.AppendFormat("        group: {0}[{1}]\n", ValueToString(indexInGroup), ValueToString(playersInGroup));
 			str.AppendFormat("        speed: {0,3}\n", ValueToString(speed));
 			str.AppendFormat("     maxSpeed: {0,3}%\n", ValueToString(maxspeed));
-			str.AppendFormat("       health: {0,3}%\n", ValueToString(healthPercent));
-			str.AppendFormat("         mana: {0,3}%\n", ValueToString(manaPercent));
+			str.AppendFormat("       health: {0,3}%", ValueToString(healthPercent));
+			if (health != -1)
+				str.AppendFormat(" ({0}/{1})\n", health, healthMax);
+			else if (healthMax != -1)
+				str.AppendFormat(" (maxHealth:{0})\n", healthMax);
+			else
+				str.Append('\n');
+			str.AppendFormat("         mana: {0,3}%", ValueToString(manaPercent));
+			if (mana != -1)
+				str.AppendFormat(" ({0}/{1})\n", mana, manaMax);
+			else
+				str.Append('\n');
 			str.AppendFormat("    endurance: {0,3}%\n", ValueToString(endurancePercent));
-			str.AppendFormat("concentration: {0,3}%\n", ValueToString(concentrationPercent));
+			str.AppendFormat("concentration: {0,3}%", ValueToString(concentrationPercent));
+			if (conc != -1)
+				str.AppendFormat(" ({0}/{1})\n", conc, concMax);
+			else
+				str.Append('\n');
 			str.AppendFormat(" clientTarget: 0x{0}\n", ValueToString(clientTargetOid, "X4"));
 			str.AppendFormat("  checkTarget: 0x{0}\n", ValueToString(serverTargetOid, "X4"));
 			str.AppendFormat(" current zone: {0}\n", loc);
@@ -221,7 +296,7 @@ namespace PacketLogConverter.LogActions
 			InfoWindowForm infoWindow = new InfoWindowForm();
 			infoWindow.Text = "Player info (right click to close)";
 			infoWindow.Width = 500;
-			infoWindow.Height = 320;
+			infoWindow.Height = 350;
 			infoWindow.InfoRichTextBox.Text = str.ToString();
 			infoWindow.StartWindowThread();
 

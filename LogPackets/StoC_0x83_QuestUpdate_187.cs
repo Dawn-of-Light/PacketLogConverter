@@ -44,7 +44,7 @@ namespace PacketLogConverter.LogPackets
 				desc = pak.ReadString(lenDesc);
 				goals = new string[goalsCount];
 				goalInfo = new QuestGoalInfo[goalsCount];
-				rewards = new Item[goalsCount];
+				rewards = new StoC_0x02_InventoryUpdate.Item[goalsCount];
 				for (int i = 0; i < goalsCount; i++)
 				{
 					ushort goalDescLen = pak.ReadShortLowEndian();
@@ -65,9 +65,9 @@ namespace PacketLogConverter.LogPackets
 					questGoalInfo.XOff = pak.ReadShortLowEndian();
 					questGoalInfo.YOff = pak.ReadShortLowEndian();
 					goalInfo[i] = questGoalInfo;
-					questGoalInfo.unk_187 = pak.ReadByte();
+					questGoalInfo.flagGoalFinished = pak.ReadByte();
 
-					Item item = new Item();
+					StoC_0x02_InventoryUpdate.Item item = new StoC_0x02_InventoryUpdate.Item();
 
 					item.slot = pak.ReadByte();
 					if (item.slot > 0)
@@ -119,17 +119,19 @@ namespace PacketLogConverter.LogPackets
 					str.AppendFormat("\n\t[{0}]: \"{1}\"", i, goals[i]);
 
 					QuestGoalInfo questGoalInfo = goalInfo[i];
-					str.AppendFormat("\n\tinfo: type:0x{0:X4} unk1:0x{1:X4} unk_187:{2}",
-						questGoalInfo.type, questGoalInfo.unk1, questGoalInfo.unk_187);
+					str.AppendFormat("\n\tinfo: type:0x{0:X4} unk1:0x{1:X4} goalFinished:{2}",
+						questGoalInfo.type, questGoalInfo.unk1, questGoalInfo.flagGoalFinished);
 					str.AppendFormat("\n\tzoneId2:{0,-3} @X2:{1,-5} @Y2:{2,-5} radius?:{3}",
  						questGoalInfo.zoneId2, questGoalInfo.XOff2, questGoalInfo.YOff2, questGoalInfo.unk2);
 					str.AppendFormat("\n\tzoneId1:{0,-3} @X1:{1,-5} @Y1:{2}",
  						questGoalInfo.zoneId, questGoalInfo.XOff, questGoalInfo.YOff);
 
-					Item item = rewards[i];
+					StoC_0x02_InventoryUpdate.Item item = rewards[i];
 
 					str.AppendFormat("\n\tslot:{0,-2} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} \"{17}\"",
 						item.slot, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name);
+					if (flagsDescription && item.name != null && item.name != "")
+						str.AppendFormat(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
 					if ((item.flag & 0x08) == 0x08)
 						str.AppendFormat("\n\t\teffectIcon:0x{0:X4}  effectName:\"{1}\"",
 						item.effectIcon, item.effectName);

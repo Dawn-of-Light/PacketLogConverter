@@ -45,6 +45,97 @@ namespace PacketLogConverter
 		}
 
 		/// <summary>
+		/// Converts 8 bytes to an long value
+		/// in high to low order
+		/// </summary>
+		/// <param name="val">the bytes</param>
+		/// <returns>the long value</returns>
+		public static long ConvertToInt64(byte[] val)
+		{
+			return ConvertToInt64(val, 0);
+		}
+
+		/// <summary>
+		/// Converts 8 bytes to an long value
+		/// in high to low order
+		/// </summary>
+		/// <param name="val">the bytes</param>
+		/// <param name="startIndex">where to read the values from</param>
+		/// <returns>the long value</returns>
+		public static long ConvertToInt64(byte[] val, int startIndex)
+		{
+			return ConvertToInt64(val[startIndex], val[startIndex+1], val[startIndex+2], val[startIndex+3], val[startIndex+4], val[startIndex+5], val[startIndex+6], val[startIndex+7]);
+		}
+
+		/// <summary>
+		/// Converts 8 bytes to an long value
+		/// in high to low order
+		/// </summary>
+		/// <param name="v1">the first bytes</param>
+		/// <param name="v2">the second bytes</param>
+		/// <param name="v3">the third bytes</param>
+		/// <param name="v4">the fourth bytes</param>
+		/// <returns>the long value</returns>
+		public static long ConvertToInt64(byte v1, byte v2, byte v3, byte v4, byte v5, byte v6, byte v7, byte v8)
+		{
+			long result = v1;
+			result = result << 8 | v2;
+			result = result << 8 | v3;
+			result = result << 8 | v4;
+			result = result << 8 | v5;
+			result = result << 8 | v6;
+			result = result << 8 | v7;
+			result = result << 8 | v8;
+			return result;
+//			return (long)((v1 << 56) | (v2 << 48) | (v3 << 40) | (v4 << 32) | (v5 << 24) | (v6 << 16) | (v7 << 8) | v8);
+		}
+
+		/// <summary>
+		/// Converts 8 bytes to an unsigned long value
+		/// in high to low order
+		/// </summary>
+		/// <param name="val">the bytes</param>
+		/// <returns>the long value</returns>
+		public static ulong ConvertToUInt64(byte[] val)
+		{
+			return ConvertToUInt64(val, 0);
+		}
+
+		/// <summary>
+		/// Converts 8 bytes to an unsigned long value
+		/// in high to low order
+		/// </summary>
+		/// <param name="val">the bytes</param>
+		/// <param name="startIndex">where to read the values from</param>
+		/// <returns>the long value</returns>
+		public static ulong ConvertToUInt64(byte[] val, int startIndex)
+		{
+			return ConvertToUInt64(val[startIndex], val[startIndex+1], val[startIndex+2], val[startIndex+3], val[startIndex+4], val[startIndex+5], val[startIndex+6], val[startIndex+7]);
+		}
+
+		/// <summary>
+		/// Converts 8 bytes to an unsigned long value
+		/// in high to low order
+		/// </summary>
+		/// <param name="v1">the first bytes</param>
+		/// <param name="v2">the second bytes</param>
+		/// <param name="v3">the third bytes</param>
+		/// <param name="v4">the fourth bytes</param>
+		/// <returns>the long value</returns>
+		public static ulong ConvertToUInt64(byte v1, byte v2, byte v3, byte v4, byte v5, byte v6, byte v7, byte v8)
+		{
+			long result = v1;
+			result = result << 8 | v2;
+			result = result << 8 | v3;
+			result = result << 8 | v4;
+			result = result << 8 | v5;
+			result = result << 8 | v6;
+			result = result << 8 | v7;
+			result = result << 8 | v8;
+			return (ulong)result;
+//			return (ulong)((v1 << 56) | (v2 << 48) | (v3 << 40) | (v4 << 32) | (v5 << 24) | (v6 << 16) | (v7 << 8) | v8);
+		}
+		/// <summary>
 		/// Converts 4 bytes to an integer value
 		/// in high to low order
 		/// </summary>

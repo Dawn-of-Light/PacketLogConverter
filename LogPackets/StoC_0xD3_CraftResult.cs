@@ -25,6 +25,7 @@ namespace PacketLogConverter.LogPackets
 			unknown1 = 1,
 			fail = 2,
 			success = 3,
+			masterpiece = 4,
 		};
 		public override string GetPacketDataString(bool flagsDescription)
 		{

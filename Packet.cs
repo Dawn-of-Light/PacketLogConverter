@@ -127,7 +127,7 @@ namespace PacketLogConverter
 			}
 		}
 
-		#region stream read helpers
+		#region Stream read helpers
 
 		public new byte ReadByte()
 		{
@@ -145,8 +145,6 @@ namespace PacketLogConverter
 		{
 			byte v1 = ReadByte();
 			byte v2 = ReadByte();
-//			if (v1 < 0 || v2 < 0)
-//				throw new Exception("ReadShort(): tried to read more data than contained in the packet (pos="+Position+", len="+Length+")");
 			return Marshal.ConvertToUInt16(v1, v2);
 		}
 
@@ -158,8 +156,6 @@ namespace PacketLogConverter
 		{
 			byte v1 = ReadByte();
 			byte v2 = ReadByte();
-//			if (v1 < 0 || v2 < 0)
-//				throw new Exception("ReadShortLowEndian(): tried to read more data than contained in the packet (pos="+Position+", len="+Length+")");
 			return Marshal.ConvertToUInt16(v2, v1);
 		}
 
@@ -173,8 +169,6 @@ namespace PacketLogConverter
 			byte v2 = ReadByte();
 			byte v3 = ReadByte();
 			byte v4 = ReadByte();
-//			if (v1 == -1 || v2 == -1 || v3 == -1 || v4 == -1)
-//				throw new Exception("ReadInt(): tried to read more data than contained in the packet (pos="+Position+", len="+Length+")");
 			return Marshal.ConvertToUInt32(v1, v2, v3, v4);
 		}
 
@@ -188,9 +182,41 @@ namespace PacketLogConverter
 			byte v2 = ReadByte();
 			byte v3 = ReadByte();
 			byte v4 = ReadByte();
-//			if (v1 == -1 || v2 == -1 || v3 == -1 || v4 == -1)
-//				throw new Exception("ReadIntLowEndian(): tried to read more data than contained in the packet (pos="+Position+", len="+Length+")");
 			return Marshal.ConvertToUInt32(v4, v3, v2, v1);
+		}
+
+		/// <summary>
+		/// Reads in 8 bytes and converts it from network to host byte order
+		/// </summary>
+		/// <returns>A 8 byte value</returns>
+		public ulong ReadLong()
+		{
+			byte v1 = ReadByte();
+			byte v2 = ReadByte();
+			byte v3 = ReadByte();
+			byte v4 = ReadByte();
+			byte v5 = ReadByte();
+			byte v6 = ReadByte();
+			byte v7 = ReadByte();
+			byte v8 = ReadByte();
+			return Marshal.ConvertToUInt64(v1, v2, v3, v4, v5, v6, v7, v8);
+		}
+
+		/// <summary>
+		/// Reads in 8 bytes value in network byte order
+		/// </summary>
+		/// <returns>A 8 byte value</returns>
+		public ulong ReadLongLowEndian()
+		{
+			byte v1 = ReadByte();
+			byte v2 = ReadByte();
+			byte v3 = ReadByte();
+			byte v4 = ReadByte();
+			byte v5 = ReadByte();
+			byte v6 = ReadByte();
+			byte v7 = ReadByte();
+			byte v8 = ReadByte();
+			return Marshal.ConvertToUInt64(v8, v7, v6, v5, v4, v3, v2, v1);
 		}
 
 		/// <summary>
@@ -213,12 +239,20 @@ namespace PacketLogConverter
 			return Util.GetFloat(data);
 		}
 
+		/// <summary>
+		/// Reads the time span.
+		/// </summary>
+		/// <returns>Timespan</returns>
 		public TimeSpan ReadTimeSpan()
 		{
 			uint data = ReadInt();
 			return Util.GetTimeSpan(data);
 		}
 
+		/// <summary>
+		/// Reads the time span low endian.
+		/// </summary>
+		/// <returns>Timespan</returns>
 		public TimeSpan ReadTimeSpanLowEndian()
 		{
 			uint data = ReadIntLowEndian();
@@ -236,15 +270,18 @@ namespace PacketLogConverter
 			Seek(num, SeekOrigin.Current);
 		}
 
+		/// <summary>
+		/// Reads the zero-terminated string.
+		/// </summary>
+		/// <returns>Read string</returns>
 		public string ReadString() 
 		{
 			byte[] buf = new byte[Length];
-			int i = 0;
-			while (i >= 0)
+			for (int i = 0; i >= 0; i++)
 			{
 				byte b = ReadByte();
 				if (b == 0) break;
-				buf[i++] = b;
+				buf[i] = b;
 			}
 			return Marshal.ConvertToString(buf);
 		}

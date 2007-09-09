@@ -24,7 +24,7 @@ namespace PacketLogConverter.LogPackets
 		protected byte tradeCode;
 		protected byte repair;
 		protected byte combine;
-		protected RecieveItem[] items;
+		protected StoC_0x02_InventoryUpdate.Item[] items;
 		protected string tradeDescription;
 
 		#region public access properties
@@ -47,7 +47,7 @@ namespace PacketLogConverter.LogPackets
 		public byte TradeCode { get { return tradeCode; } }
 		public byte Repair { get { return repair; } }
 		public byte Combine { get { return combine; } }
-		public RecieveItem[] Items { get { return items; } }
+		public StoC_0x02_InventoryUpdate.Item[] Items { get { return items; } }
 		public string TradeDescription { get { return tradeDescription; } }
 
 		#endregion
@@ -82,17 +82,19 @@ namespace PacketLogConverter.LogPackets
 
 			for (int i = 0; i < itemCount; i++)
 			{
-				WriteItemInfo(i, str);
+				WriteItemInfo(i, str, flagsDescription);
 			}
 
 			return str.ToString();
 		}
 
-		protected virtual void WriteItemInfo(int i, StringBuilder str)
+		protected virtual void WriteItemInfo(int i, StringBuilder str, bool flagsDescription)
 		{
-			RecieveItem item = items[i];
-			str.AppendFormat("\n\tslot:{0,-2} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} \"{15}\"",
-				item.slot, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.name);
+			StoC_0x02_InventoryUpdate.Item item = items[i];
+			str.AppendFormat("\n\tslot:{0,-2} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} \"{16}\"",
+				item.slot, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.name);
+			if (flagsDescription && item.name != null && item.name != "")
+				str.AppendFormat(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
 		}
 
 		/// <summary>
@@ -123,7 +125,7 @@ namespace PacketLogConverter.LogPackets
 			tradeCode = ReadByte();
 			repair = ReadByte();
 			combine = ReadByte();
-			items = new RecieveItem[itemCount];
+			items = new StoC_0x02_InventoryUpdate.Item[itemCount];
 
 			for (int i = 0; i < itemCount; i++)
 			{
@@ -135,7 +137,7 @@ namespace PacketLogConverter.LogPackets
 
 		protected virtual void ReadItem(int index)
 		{
-			RecieveItem item = new RecieveItem();
+			StoC_0x02_InventoryUpdate.Item item = new StoC_0x02_InventoryUpdate.Item();
 
 			item.slot = ReadByte();
 			item.level = ReadByte();
@@ -154,36 +156,11 @@ namespace PacketLogConverter.LogPackets
 			item.bonus = ReadByte();
 			item.model = ReadShort();
 			item.color = ReadShort();
-			item.effect = ReadShort();
+			item.flag = ReadByte();
+			item.effect = ReadByte();
 			item.name = ReadPascalString();
 
 			items[index] = item;
-		}
-
-		public struct RecieveItem
-		{
-			public byte slot;
-			public byte level;
-			public byte value1;
-			public byte value2;
-			public byte hand;
-			public byte damageType;
-			public byte objectType;
-			public ushort weight;
-			public byte condition;
-			public byte durability;
-			public byte quality;
-			public byte bonus;
-			public ushort model;
-			public byte extension; // new in 1.72
-			public ushort color;
-			public ushort effect;
-			public byte flag;
-			public string name;
-			public ushort effectIcon; // new 1.82
-			public string effectName; // new 1.82
-			public ushort effectIcon2; // new 1.82
-			public string effectName2; // new 1.82
 		}
 
 		/// <summary>

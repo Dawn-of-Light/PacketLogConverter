@@ -39,19 +39,19 @@ namespace PacketLogConverter.LogPackets
 					actionType = "putAmmo";
 					break;
 				case 2:
-					actionType = "arm";
+					actionType = "arm    ";
 					break;
 				case 3:
-					actionType = "aim";
+					actionType = "aim    ";
 					break;
 				case 4:
-					actionType = "fire";
+					actionType = "fire   ";
 					break;
 				case 5:
-					actionType = "move";
+					actionType = "move   ";
 					break;
 				case 6:
-					actionType = "repair";
+					actionType = "repair ";
 					break;
 				case 7:
 					actionType = "salvage";
@@ -60,10 +60,10 @@ namespace PacketLogConverter.LogPackets
 					actionType = "release";
 					break;
 				case 9:
-					actionType = "stop";
+					actionType = "stop   ";
 					break;
 				case 10:
-					actionType = "swing";
+					actionType = "swing  ";
 					break;
 				default:
 					actionType = "unknown";

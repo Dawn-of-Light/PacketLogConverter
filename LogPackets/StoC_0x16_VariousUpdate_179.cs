@@ -13,8 +13,8 @@ namespace PacketLogConverter.LogPackets
 
 		public class PlayerUpdate_179 : PlayerUpdate_175
 		{
-			private byte championLevel;
-			private string championTitle;
+			public byte championLevel;
+			public string championTitle;
 
 			public override void Init(StoC_0x16_VariousUpdate pak)
 			{

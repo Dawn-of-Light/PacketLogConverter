@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Text;
 using PacketLogConverter.LogPackets;
+using PacketLogConverter.LogWriters;
 
 namespace PacketLogConverter.LogActions
 {
@@ -54,8 +55,8 @@ namespace PacketLogConverter.LogActions
 		public static Hashtable MakeCombatList(int selectedIndex, PacketLog log)
 		{
 			Hashtable plrInfo = new Hashtable();
-			PlayerInfo playerInfo = new PlayerInfo();
-			int playerOid = 0;
+			PlayerInfo playerInfo = null;// = new PlayerInfo();
+			int playerOid = -1;
 			string nameKey = "";
 			string statKey = "";
 			string plrName = "";
@@ -75,7 +76,7 @@ namespace PacketLogConverter.LogActions
 					if (stat.SubCode == 3)
 					{
 						StoC_0x16_VariousUpdate.PlayerUpdate subData = (StoC_0x16_VariousUpdate.PlayerUpdate)stat.SubData;
-						nameKey = "N:"+subData.playerName+"L:"+subData.playerLevel;
+						nameKey = "N:" + subData.playerName + "L:" + subData.playerLevel;
 						statKey = "";
 						plrName = subData.playerName;
 						plrLevel = subData.playerLevel;
@@ -84,29 +85,29 @@ namespace PacketLogConverter.LogActions
 					else if (stat.SubCode == 5)
 					{
 						StoC_0x16_VariousUpdate.PlayerStateUpdate subData = (StoC_0x16_VariousUpdate.PlayerStateUpdate)stat.SubData;
-						string key = string.Format("WD:{0}.{1}WS:{2}",subData.weaponDamageHigh, subData.weaponDamageLow, (subData.weaponSkillHigh << 8) + subData.weaponSkillLow);
-						if (nameKey != "" && statKey != "")
+						string key = string.Format("WD:{0}.{1}WS:{2}", subData.weaponDamageHigh, subData.weaponDamageLow, (subData.weaponSkillHigh << 8) + subData.weaponSkillLow);
+						if (nameKey != "")
 						{
-							plrInfo[nameKey+statKey] = playerInfo;
-						}
-						if(plrInfo.ContainsKey(nameKey+key))
-						{
-							playerInfo = (PlayerInfo)plrInfo[nameKey+key];
-						}
-						else
-						{
-							plrInfo.Add(nameKey+key, playerInfo);
-							playerInfo = new PlayerInfo();
-							playerInfo.name = plrName;
-							playerInfo.level = plrLevel;
-							playerInfo.className = plrClass;
-							playerInfo.weaponDamage = string.Format("{0,2}.{1,-3}", subData.weaponDamageHigh, subData.weaponDamageLow);
-							playerInfo.weaponSkill = (subData.weaponSkillHigh << 8) + subData.weaponSkillLow;
+							if(plrInfo.ContainsKey(nameKey + key))
+							{
+								playerInfo = (PlayerInfo)plrInfo[nameKey + key];
+							}
+							else
+							{
+								playerInfo = new PlayerInfo();
+								playerInfo.name = plrName;
+								playerInfo.level = plrLevel;
+								playerInfo.className = plrClass;
+								playerInfo.weaponDamage = string.Format("{0,2}.{1,-3}", subData.weaponDamageHigh, subData.weaponDamageLow);
+								playerInfo.weaponSkill = (subData.weaponSkillHigh << 8) + subData.weaponSkillLow;
+								plrInfo.Add(nameKey + key, playerInfo);
+							}
+							plrInfo[nameKey + key] = playerInfo;
 						}
 						statKey = key;
 					}
 				}
-				else if (pak is StoC_0xBC_CombatAnimation)
+				else if (pak is StoC_0xBC_CombatAnimation && (playerInfo != null))
 				{
 					StoC_0xBC_CombatAnimation combat = (StoC_0xBC_CombatAnimation)pak;
 					if (combat.Stance == 0 && combat.AttackerOid == playerOid && combat.DefenderOid != 0)
@@ -134,7 +135,7 @@ namespace PacketLogConverter.LogActions
 					}
 					else if (combat.AttackerOid != 0 && combat.DefenderOid == playerOid)
 					{
-						switch (combat.Result)
+						switch (combat.Result & 0x7F)
 						{
 							case 1:
 								playerInfo.parry++;
@@ -148,8 +149,6 @@ namespace PacketLogConverter.LogActions
 							case 0x0:
 							case 0xA:
 							case 0xB:
-							case 0x8A:
-							case 0x8B:
 								playerInfo.attacked++;
 								break;
 							default:
@@ -157,8 +156,23 @@ namespace PacketLogConverter.LogActions
 						}
 					}
 				}
+/*				else if (pak is StoC_0xAF_Message)
+				{
+					StoC_0xAF_Message msg = (StoC_0xAF_Message)pak;
+					switch (msg.Type)
+					{
+						case 0x10: // Your cast combat
+						case 0x11: // Your Melee combat
+						case 0x1B: // resist
+						case 0x1D: // X hits you
+						case 0x1E: // X miss you
+							break;
+						default:
+							break;
+					}
+				}*/
 			}
-			if ((nameKey + statKey) != "")
+			if (nameKey != "" && statKey != "")
 				plrInfo[nameKey + statKey] = playerInfo;
 			return plrInfo;
 		}

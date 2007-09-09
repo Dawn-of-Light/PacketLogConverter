@@ -47,12 +47,17 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("unk1:0x{0:X4} sessionId:0x{1:X4} font:0x{2:X2} unk2:0x{3:X4} unk3:0x{4:X4} unk4:0x{5:X4} type:{6} flag:{7} msg:\"{8}\" unk5:0x{9:X4} unk6:0x{10:X2}",
-			unk1, sessionId, font, unk2, unk3, unk4, type, flag, message, unk5, unk6);
+			str.AppendFormat("sessionId:0x{0:X4} font:0x{1:X2} type:{2,-2} flag:{3} msg:\"{4}\"",
+				sessionId, font, type, flag, message);
+			if (flagsDescription)
+			{
+				str.AppendFormat("\n\tunk1:0x{0:X4} unk2:0x{1:X4} unk3:0x{2:X4} unk4:0x{3:X4} unk5:0x{4:X4} unk6:0x{5:X2}",
+				unk1, unk2, unk3, unk4, unk5, unk6);
+			}
 			string pattern="UNKNOWN";
 			switch (type)
 			{
-				case 1: pattern="{0} cast spell";break;
+				case 1: pattern="{0} casts a spell";break;
 				case 2: pattern="You are already casting a spell! Your prepare this spell as followup!";break;
 				case 3: pattern="You can't see your target from here!";break;
 				case 4: pattern="That target is too far away!";break;

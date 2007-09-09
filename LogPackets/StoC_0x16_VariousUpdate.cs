@@ -248,7 +248,7 @@ namespace PacketLogConverter.LogPackets
 			public byte unk5;
 			public string crafterTitle;
 			public byte unk6;
-			public string maTitle;
+			public string mlTitle;
 
 			public override void Init(StoC_0x16_VariousUpdate pak)
 			{
@@ -284,13 +284,13 @@ namespace PacketLogConverter.LogPackets
 				unk5 = pak.ReadByte();
 				crafterTitle = pak.ReadPascalString();
 				unk6 = pak.ReadByte();
-				maTitle = pak.ReadPascalString();
+				mlTitle = pak.ReadPascalString();
 			}
 
 			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("\nPLAYER UPDATE:  count:{0} subtype:{1} level:{2} name:\"{3}\" health:{4} className:\"{5}\" profession:\"{6}\" title:\"{7}\" realmLevel:{8} realmTitle:\"{9}\" realmSpecPoints:{10} classBaseName:\"{11}\" guildName:\"{12}\" lastName:\"{13}\" raceName:\"{14}\" guildRank:\"{15}\" crafterGuild:\"{16}\" crafterTitle:\"{17}\" ML:\"{18}\"({19})",
-					count, subtype, playerLevel, playerName, health, className, profession, title, realmLevel, realmTitle, realmSpecPoints, classBaseName, guildName, lastName, raceName, guildRank, crafterGuild, crafterTitle, maTitle, mlLevel);
+					count, subtype, playerLevel, playerName, health, className, profession, title, realmLevel, realmTitle, realmSpecPoints, classBaseName, guildName, lastName, raceName, guildRank, crafterGuild, crafterTitle, mlTitle, mlLevel);
 				str.AppendFormat("\n\tpersonalHouse:{0} unk1:{1} unk2:{2} unk3:{3} unk4:{4} unk5:{5} unk6:{6}",
 					personalHouse, unk1, unk2, unk3, unk4, unk5, unk6);
 			}

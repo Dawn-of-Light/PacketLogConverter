@@ -88,11 +88,11 @@ namespace PacketLogConverter.LogReaders
 									}
 									continue;
 									
-									pak = PacketManager.CreatePacket(log.Version, code, dir, dataBytesCount);
+/*									pak = PacketManager.CreatePacket(log.Version, code, dir, dataBytesCount);
 									pak.Code = code;
 									pak.Direction = dir;
 									pak.Protocol = prot;
-									pak.Time = time;
+									pak.Time = time;*/
 								}
 							}
 							catch

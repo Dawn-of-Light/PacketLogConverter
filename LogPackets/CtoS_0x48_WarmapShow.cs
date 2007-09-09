@@ -17,11 +17,20 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
+		public enum eWindowFlag: byte
+		{
+			SetRealmPage = 0,
+			Update = 1,
+			Teleport = 2,
+//			WindowMove = 0x64,
+//			WindowClose = 0x65,
+		}
+
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("unk1:0x{0:X2} realm:{1} unk2:0x{2:X4}", unk1, realm, unk2);
+			str.AppendFormat("realm:{1} unk2:0x{2:X4} windowFlag:0x{0:X2}({3})", unk1, realm, unk2, (eWindowFlag)unk1);
 
 			return str.ToString();
 		}

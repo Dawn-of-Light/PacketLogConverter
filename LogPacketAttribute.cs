@@ -9,15 +9,15 @@ namespace PacketLogConverter
 	public class LogPacketAttribute : Attribute
 	{
 		private int m_packetCode;
-		private int m_version;
+		private float m_version;
 		private ePacketDirection m_direction;
 		private string m_description;
 
-		public LogPacketAttribute(int packetCode, int version, ePacketDirection direction) : this (packetCode,  version, direction, null)
+		public LogPacketAttribute(int packetCode, float version, ePacketDirection direction) : this (packetCode,  version, direction, null)
 		{
 		}
 
-		public LogPacketAttribute(int packetCode, int version, ePacketDirection direction, string packetDescription)
+		public LogPacketAttribute(int packetCode, float version, ePacketDirection direction, string packetDescription)
 		{
 			m_packetCode = packetCode;
 			m_version = version;
@@ -30,7 +30,7 @@ namespace PacketLogConverter
 			get { return m_packetCode; }
 		}
 
-		public int Version
+		public float Version
 		{
 			get { return m_version; }
 		}

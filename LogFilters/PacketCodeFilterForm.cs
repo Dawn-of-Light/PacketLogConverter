@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using PacketLogConverter.LogActions;
@@ -112,6 +113,7 @@ namespace PacketLogConverter.LogFilters
 				stoc.SetItemChecked(0x69, true);
 				stoc.SetItemChecked(0x6C, true);
 				stoc.SetItemChecked(0x6D, true);
+				stoc.SetItemChecked(0x6E, true);
 			}
 
 			public override string ToString()
@@ -545,6 +547,13 @@ namespace PacketLogConverter.LogFilters
 		
 		#region ILogFilter members
 
+		/// <summary>
+		/// Determines whether the packet should be ignored.
+		/// </summary>
+		/// <param name="packet">The packet.</param>
+		/// <returns>
+		/// 	<c>true</c> if packet should be ignored; otherwise, <c>false</c>.
+		/// </returns>
 		public bool IsPacketIgnored(Packet packet)
 		{
 			if (packet == null)
@@ -560,9 +569,9 @@ namespace PacketLogConverter.LogFilters
 		}
 
 		/// <summary>
-		/// Activates the filter
+		/// Activates the filter.
 		/// </summary>
-		/// <returns>True if filter has changed</returns>
+		/// <returns><code>true</code> if filter has changed.</returns>
 		public bool ActivateFilter()
 		{
 			// save all check boxes, all allowed by default
@@ -620,6 +629,12 @@ namespace PacketLogConverter.LogFilters
 			return true;
 		}
 
+		/// <summary>
+		/// Gets a value indicating whether this instance is active.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is active; otherwise, <c>false</c>.
+		/// </value>
 		public bool IsFilterActive
 		{
 			get
@@ -634,7 +649,27 @@ namespace PacketLogConverter.LogFilters
 				return false;
 			}
 		}
-		
+
+		/// <summary>
+		/// Serializes data of instance of this filter.
+		/// </summary>
+		/// <param name="data">The data.</param>
+		/// <returns><code>true</code> if filter is serialized, <code>false</code> otherwise.</returns>
+		public bool Serialize(MemoryStream data)
+		{
+			return false;
+		}
+
+		/// <summary>
+		/// Deserializes data of instance of this filter.
+		/// </summary>
+		/// <param name="data">The data.</param>
+		/// <returns><code>true</code> if filter is deserialized, <code>false</code> otherwise.</returns>
+		public bool Deserialize(MemoryStream data)
+		{
+			return false;
+		}
+
 		#endregion
 
 		private void allowAllbutton_Click(object sender, EventArgs e)

@@ -85,6 +85,7 @@ namespace PacketLogConverter.LogPackets
 			public ushort internalId;
 			public string name;
 			public byte immunity; // new in 1.73
+			public byte negative; // new in 1.90c
 		}
 
 		/// <summary>

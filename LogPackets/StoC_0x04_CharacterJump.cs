@@ -34,7 +34,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			// SendPlayerJump()
 
-			return string.Format("OID:0x{0:X4} x:{1,-6} y:{2,-6} z:{3,-5} heading:{4,-4} house:{5}", playerOid, x, y, z, heading, house);
+			return string.Format("OID:0x{0:X4} x:{1,-6} y:{2,-6} z:{3,-5} heading:0x{4:X4} house:{5}", playerOid, x, y, z, heading, house);
 		}
 
 		/// <summary>

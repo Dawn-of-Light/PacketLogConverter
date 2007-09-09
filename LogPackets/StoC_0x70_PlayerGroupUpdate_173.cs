@@ -6,6 +6,29 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x70, 173, ePacketDirection.ServerToClient, "Player group update v173")]
 	public class StoC_0x70_PlayerGroupUpdate_173: StoC_0x70_PlayerGroupUpdate_169
 	{
+		#region Filter Helpers
+
+		protected PlayerMapData[] playerMapData;
+		public PlayerMapData[] InPlayerMapData
+		{
+			get
+			{
+				if (playerMapData == null)
+				{
+					ArrayList list = new ArrayList();
+					foreach(object o in updates)
+					{
+						if (o is PlayerMapData)
+							list.Add(o as PlayerMapData);
+					}
+					playerMapData = (PlayerMapData[])list.ToArray(typeof (PlayerMapData));
+				}
+				return playerMapData;
+			}
+		}
+
+		#endregion
+
 		/// <summary>
 		/// Initializes the packet. All data parsing must be done here.
 		/// </summary>
@@ -37,7 +60,7 @@ namespace PacketLogConverter.LogPackets
 			PlayerMapData mapData = new PlayerMapData();
 
 			mapData.player = (byte)(playerIndex & 0x0F);
-			mapData.region = ReadShort();
+			mapData.zone = ReadShort();
 			mapData.x = ReadShort();
 			mapData.y = ReadShort();
 
@@ -47,11 +70,11 @@ namespace PacketLogConverter.LogPackets
 		public class PlayerMapData
 		{
 			public byte player;
-			public ushort x, y, region;
+			public ushort x, y, zone;
 
 			public override string ToString()
 			{
-				return string.Format("player{0}: region:{1,-3} x:{2,-5} y:{3,-5}", player, region, x, y);
+				return string.Format("player{0}: zone:{1,-3} x:{2,-5} y:{3,-5}", player, zone, x, y);
 			}
 		}
 

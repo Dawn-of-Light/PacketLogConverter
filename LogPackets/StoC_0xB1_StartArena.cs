@@ -5,23 +5,21 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0xB1, -1, ePacketDirection.ServerToClient, "Start Arena ")]
 	public class StoC_0xB1_StartArena: Packet
 	{
-		protected byte unk1;
+		protected byte regionIndex;
 		protected byte region;
 		protected string portFrom;
 		protected string portTo;
 		protected string serverIp;
-		protected ushort unk3; // cluster ?
-		protected ushort unk4; // cluster ?
+		protected string zoneInfo; // 184+ part string (zone + " " + XOffset)
 
 		#region public access properties
 
-		public byte Unk1 { get { return unk1; } }
+		public byte RegionIndex { get { return regionIndex; } }
 		public byte Region { get { return region; } }
 		public string PortFrom { get { return portFrom; } }
 		public string PortTo { get { return portTo; } }
 		public string ServerIP { get { return serverIp; } }
-		public ushort Unk3 { get { return unk3; } }
-		public ushort Unk4 { get { return unk4; } }
+		public string ZoneInfo{ get { return zoneInfo; } }
 
 		#endregion
 
@@ -30,8 +28,10 @@ namespace PacketLogConverter.LogPackets
 
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("unk1:0x{0:X2} region:{1,-3} serverIp:\"{2}\" portFrom:{3} portTo:{4} unk3:0x{5:X4} un4:0x{6:X4}",
-				 unk1, region, serverIp, portFrom, portTo, unk3, unk4);
+			str.AppendFormat("regionIndex:0x{0:X2} region:{1,-3} serverIp:\"{2}\" portFrom:{3} portTo:{4}",
+				 regionIndex, region, serverIp, portFrom, portTo);
+			if (flagsDescription)
+				str.AppendFormat(" zoneInfo:\"{0}\"", zoneInfo);
 
 			return str.ToString();
 		}
@@ -43,14 +43,16 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			unk1 = ReadByte();
+			regionIndex = ReadByte();
 			region = ReadByte();
 			Skip(20); // unknown, always = 0
 			portFrom = ReadString(5);
 			portTo = ReadString(5);
+			long curPosition = Position;
 			serverIp = ReadString(16);
-			unk3 = ReadShort();
-			unk4 = ReadShort();
+			Position = curPosition + serverIp.Length + 1;
+			zoneInfo = ReadString(20 - serverIp.Length);
+//			zoneInfo = ReadString(4);
 		}
 
 		/// <summary>

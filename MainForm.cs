@@ -23,10 +23,7 @@ namespace PacketLogConverter
 		private MenuItem menuOpenFile;
 		private MenuItem menuSaveFile;
 		private OpenFileDialog openLogDialog;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private Container components = null;
+		private IContainer components;
 
 		private Label label1;
 		private TextBox li_clientVersion;
@@ -70,6 +67,8 @@ namespace PacketLogConverter
 		private System.Windows.Forms.MenuItem menuExitApp;
 		private System.Windows.Forms.MenuItem mnuPacketFlags;
 		private System.Windows.Forms.MenuItem mnuPacketSequence;
+		private OpenFileDialog openFilterDialog;
+		private SaveFileDialog saveFilterDialog;
 		private Label label3;
 
 		public MainForm()
@@ -85,7 +84,7 @@ namespace PacketLogConverter
 		{
 			if( disposing )
 			{
-				if (components != null) 
+				if (components != null)
 				{
 					components.Dispose();
 				}
@@ -100,7 +99,8 @@ namespace PacketLogConverter
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.mainMenu1 = new System.Windows.Forms.MainMenu();
+			this.components = new System.ComponentModel.Container();
+			this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
 			this.menuOpenFile = new System.Windows.Forms.MenuItem();
 			this.menuOpenAnother = new System.Windows.Forms.MenuItem();
@@ -111,6 +111,8 @@ namespace PacketLogConverter
 			this.menuExitApp = new System.Windows.Forms.MenuItem();
 			this.menuItem2 = new System.Windows.Forms.MenuItem();
 			this.packetTimeDiffMenuItem = new System.Windows.Forms.MenuItem();
+			this.mnuPacketSequence = new System.Windows.Forms.MenuItem();
+			this.mnuPacketFlags = new System.Windows.Forms.MenuItem();
 			this.openLogDialog = new System.Windows.Forms.OpenFileDialog();
 			this.saveLogDialog = new System.Windows.Forms.SaveFileDialog();
 			this.mainFormTabs = new System.Windows.Forms.TabControl();
@@ -147,8 +149,8 @@ namespace PacketLogConverter
 			this.logDataFindTextBox = new System.Windows.Forms.TextBox();
 			this.logDataText = new System.Windows.Forms.RichTextBox();
 			this.openAnotherLogDialog = new System.Windows.Forms.OpenFileDialog();
-			this.mnuPacketFlags = new System.Windows.Forms.MenuItem();
-			this.mnuPacketSequence = new System.Windows.Forms.MenuItem();
+			this.openFilterDialog = new System.Windows.Forms.OpenFileDialog();
+			this.saveFilterDialog = new System.Windows.Forms.SaveFileDialog();
 			this.mainFormTabs.SuspendLayout();
 			this.instantParseTab.SuspendLayout();
 			this.instantResultGroupBox1.SuspendLayout();
@@ -160,20 +162,20 @@ namespace PacketLogConverter
 			// mainMenu1
 			// 
 			this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					  this.menuItem1,
-																					  this.menuItem2});
+            this.menuItem1,
+            this.menuItem2});
 			// 
 			// menuItem1
 			// 
 			this.menuItem1.Index = 0;
 			this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					  this.menuOpenFile,
-																					  this.menuOpenAnother,
-																					  this.menuSaveFile,
-																					  this.menuItem3,
-																					  this.menuRecentFiles,
-																					  this.menuItem5,
-																					  this.menuExitApp});
+            this.menuOpenFile,
+            this.menuOpenAnother,
+            this.menuSaveFile,
+            this.menuItem3,
+            this.menuRecentFiles,
+            this.menuItem5,
+            this.menuExitApp});
 			this.menuItem1.Text = "&File";
 			// 
 			// menuOpenFile
@@ -222,9 +224,9 @@ namespace PacketLogConverter
 			// 
 			this.menuItem2.Index = 1;
 			this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					  this.packetTimeDiffMenuItem,
-																					  this.mnuPacketSequence,
-																					  this.mnuPacketFlags});
+            this.packetTimeDiffMenuItem,
+            this.mnuPacketSequence,
+            this.mnuPacketFlags});
 			this.menuItem2.Text = "&View";
 			// 
 			// packetTimeDiffMenuItem
@@ -232,6 +234,18 @@ namespace PacketLogConverter
 			this.packetTimeDiffMenuItem.Index = 0;
 			this.packetTimeDiffMenuItem.Text = "Packet time difference";
 			this.packetTimeDiffMenuItem.Click += new System.EventHandler(this.packetTimeDiffMenuItem_Click);
+			// 
+			// mnuPacketSequence
+			// 
+			this.mnuPacketSequence.Index = 1;
+			this.mnuPacketSequence.Text = "Packet sequence ";
+			this.mnuPacketSequence.Click += new System.EventHandler(this.mnuPacketSequence_Click);
+			// 
+			// mnuPacketFlags
+			// 
+			this.mnuPacketFlags.Index = 2;
+			this.mnuPacketFlags.Text = "Packet flags";
+			this.mnuPacketFlags.Click += new System.EventHandler(this.mnuPacketFlags_Click);
 			// 
 			// openLogDialog
 			// 
@@ -265,9 +279,9 @@ namespace PacketLogConverter
 			// 
 			// instantResultGroupBox1
 			// 
-			this.instantResultGroupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
+			this.instantResultGroupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.instantResultGroupBox1.Controls.Add(this.instantParseOut);
 			this.instantResultGroupBox1.Location = new System.Drawing.Point(0, 176);
 			this.instantResultGroupBox1.Name = "instantResultGroupBox1";
@@ -278,10 +292,10 @@ namespace PacketLogConverter
 			// 
 			// instantParseOut
 			// 
-			this.instantParseOut.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.instantParseOut.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.instantParseOut.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.instantParseOut.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.instantParseOut.Location = new System.Drawing.Point(8, 16);
 			this.instantParseOut.Name = "instantParseOut";
 			this.instantParseOut.ReadOnly = true;
@@ -292,8 +306,8 @@ namespace PacketLogConverter
 			// 
 			// inputDataGroupBox
 			// 
-			this.inputDataGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
+			this.inputDataGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.inputDataGroupBox.Controls.Add(this.button1);
 			this.inputDataGroupBox.Controls.Add(this.instantParseInput);
 			this.inputDataGroupBox.Controls.Add(this.instantServerToClient);
@@ -321,16 +335,15 @@ namespace PacketLogConverter
 			// 
 			// instantParseInput
 			// 
-			this.instantParseInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.instantParseInput.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.instantParseInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.instantParseInput.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.instantParseInput.Location = new System.Drawing.Point(8, 48);
 			this.instantParseInput.Multiline = true;
 			this.instantParseInput.Name = "instantParseInput";
 			this.instantParseInput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
 			this.instantParseInput.Size = new System.Drawing.Size(568, 112);
 			this.instantParseInput.TabIndex = 7;
-			this.instantParseInput.Text = "";
 			this.instantParseInput.WordWrap = false;
 			this.instantParseInput.TextChanged += new System.EventHandler(this.InstantParseUpdateEvent);
 			// 
@@ -371,7 +384,6 @@ namespace PacketLogConverter
 			this.instantCode.Name = "instantCode";
 			this.instantCode.Size = new System.Drawing.Size(64, 20);
 			this.instantCode.TabIndex = 3;
-			this.instantCode.Text = "";
 			this.instantCode.TextChanged += new System.EventHandler(this.InstantParseUpdateEvent);
 			// 
 			// label5
@@ -391,7 +403,6 @@ namespace PacketLogConverter
 			this.instantVersion.Name = "instantVersion";
 			this.instantVersion.Size = new System.Drawing.Size(56, 20);
 			this.instantVersion.TabIndex = 1;
-			this.instantVersion.Text = "";
 			this.instantVersion.TextChanged += new System.EventHandler(this.InstantParseUpdateEvent);
 			// 
 			// label4
@@ -448,8 +459,8 @@ namespace PacketLogConverter
 			this.li_unknownPacketsCount.MaxLength = 10;
 			this.li_unknownPacketsCount.Name = "li_unknownPacketsCount";
 			this.li_unknownPacketsCount.ReadOnly = true;
+			this.li_unknownPacketsCount.Size = new System.Drawing.Size(100, 20);
 			this.li_unknownPacketsCount.TabIndex = 7;
-			this.li_unknownPacketsCount.Text = "";
 			// 
 			// label10
 			// 
@@ -464,6 +475,7 @@ namespace PacketLogConverter
 			// 
 			this.li_changesLabel.Location = new System.Drawing.Point(16, 13);
 			this.li_changesLabel.Name = "li_changesLabel";
+			this.li_changesLabel.Size = new System.Drawing.Size(100, 23);
 			this.li_changesLabel.TabIndex = 5;
 			this.li_changesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
@@ -500,8 +512,8 @@ namespace PacketLogConverter
 			this.li_clientVersion.Location = new System.Drawing.Point(120, 118);
 			this.li_clientVersion.MaxLength = 10;
 			this.li_clientVersion.Name = "li_clientVersion";
+			this.li_clientVersion.Size = new System.Drawing.Size(100, 20);
 			this.li_clientVersion.TabIndex = 1;
-			this.li_clientVersion.Text = "";
 			this.li_clientVersion.TextChanged += new System.EventHandler(this.li_changes_Event);
 			// 
 			// label1
@@ -528,8 +540,8 @@ namespace PacketLogConverter
 			this.li_packetsCount.MaxLength = 10;
 			this.li_packetsCount.Name = "li_packetsCount";
 			this.li_packetsCount.ReadOnly = true;
+			this.li_packetsCount.Size = new System.Drawing.Size(100, 20);
 			this.li_packetsCount.TabIndex = 1;
-			this.li_packetsCount.Text = "";
 			// 
 			// label8
 			// 
@@ -556,6 +568,7 @@ namespace PacketLogConverter
 			// 
 			this.logDataDisableUpdatesCheckBox.Location = new System.Drawing.Point(16, 8);
 			this.logDataDisableUpdatesCheckBox.Name = "logDataDisableUpdatesCheckBox";
+			this.logDataDisableUpdatesCheckBox.Size = new System.Drawing.Size(104, 24);
 			this.logDataDisableUpdatesCheckBox.TabIndex = 3;
 			this.logDataDisableUpdatesCheckBox.Text = "disable updates";
 			this.logDataDisableUpdatesCheckBox.CheckedChanged += new System.EventHandler(this.logDataDisableUpdatesCheckBox_CheckedChanged);
@@ -564,6 +577,7 @@ namespace PacketLogConverter
 			// 
 			this.logDataFindButton.Location = new System.Drawing.Point(8, 40);
 			this.logDataFindButton.Name = "logDataFindButton";
+			this.logDataFindButton.Size = new System.Drawing.Size(75, 23);
 			this.logDataFindButton.TabIndex = 2;
 			this.logDataFindButton.Text = "&Find";
 			this.logDataFindButton.Click += new System.EventHandler(this.logDataFindButton_Click);
@@ -574,17 +588,16 @@ namespace PacketLogConverter
 			this.logDataFindTextBox.Name = "logDataFindTextBox";
 			this.logDataFindTextBox.Size = new System.Drawing.Size(488, 20);
 			this.logDataFindTextBox.TabIndex = 1;
-			this.logDataFindTextBox.Text = "";
 			this.logDataFindTextBox.WordWrap = false;
 			this.logDataFindTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.logDataFindText_KeyPress);
 			// 
 			// logDataText
 			// 
-			this.logDataText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
+			this.logDataText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.logDataText.DetectUrls = false;
-			this.logDataText.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.logDataText.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.logDataText.Location = new System.Drawing.Point(0, 72);
 			this.logDataText.Name = "logDataText";
 			this.logDataText.ReadOnly = true;
@@ -598,17 +611,13 @@ namespace PacketLogConverter
 			// 
 			this.openAnotherLogDialog.Multiselect = true;
 			// 
-			// mnuPacketFlags
+			// openFilterDialog
 			// 
-			this.mnuPacketFlags.Index = 2;
-			this.mnuPacketFlags.Text = "Packet flags";
-			this.mnuPacketFlags.Click += new System.EventHandler(this.mnuPacketFlags_Click);
+			this.openFilterDialog.Filter = "Filters (*.flt)|*.flt";
 			// 
-			// mnuPacketFlags
+			// saveFilterDialog
 			// 
-			this.mnuPacketSequence.Index = 1;
-			this.mnuPacketSequence.Text = "Packet sequence ";
-			this.mnuPacketSequence.Click += new System.EventHandler(this.mnuPacketSequence_Click);
+			this.saveFilterDialog.Filter = "Filters (*.flt)|*.flt";
 			// 
 			// MainForm
 			// 
@@ -624,13 +633,16 @@ namespace PacketLogConverter
 			this.instantParseTab.ResumeLayout(false);
 			this.instantResultGroupBox1.ResumeLayout(false);
 			this.inputDataGroupBox.ResumeLayout(false);
+			this.inputDataGroupBox.PerformLayout();
 			this.logInfoTab.ResumeLayout(false);
+			this.logInfoTab.PerformLayout();
 			this.logDataTab.ResumeLayout(false);
+			this.logDataTab.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
 		#endregion
-		
+
 		private static MainForm m_formInstance;
 
 		/// <summary>
@@ -646,7 +658,7 @@ namespace PacketLogConverter
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
-		static void Main() 
+		static void Main()
 		{
 			try
 			{
@@ -671,21 +683,25 @@ namespace PacketLogConverter
 			else
 				Log.Error(e.ExceptionObject.ToString());
 		}
-		
+
 		#region Events
-		
+
 		public delegate void LogReaderDelegate(ILogReader reader);
-		
+
 		public event LogReaderDelegate FilesLoaded;
-		
+
 		#endregion
 
 		#region Misc
 
 		private readonly Progress m_progress;
-		
+
 		private PacketLog m_currentLog;
 
+		/// <summary>
+		/// Gets or sets the current log.
+		/// </summary>
+		/// <value>The current log.</value>
 		public PacketLog CurrentLog
 		{
 			get { return m_currentLog; }
@@ -706,18 +722,93 @@ namespace PacketLogConverter
 		private ArrayList m_logWriters = new ArrayList();
 		private ArrayList m_logFilters = new ArrayList();
 		private ArrayList m_logActions = new ArrayList();
+		private SortedList m_filterMenuItemsByPriority = new SortedList();
+		private SortedList m_actionMenuItemsByPriority = new SortedList();
 
+		/// <summary>
+		/// Handles the Load event of the MainForm control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
 		private void MainForm_Load(object sender, EventArgs e)
 		{
+			// Create temp data storage
 			SortedList readers = new SortedList();
 			SortedList writers = new SortedList();
 			SortedList filters = new SortedList();
 			SortedList actions = new SortedList();
 			Hashtable readerFilterStrings = new Hashtable();
 			Hashtable writerFilterStrings = new Hashtable();
-			Hashtable filterMenuItems = new Hashtable();
-			Hashtable actionMenuItems = new Hashtable();
+			m_filterMenuItemsByPriority.Clear();
+			m_actionMenuItemsByPriority.Clear();
 
+			// Find handlers
+			FindAllHandlers(m_actionMenuItemsByPriority, actions, m_filterMenuItemsByPriority, filters, readerFilterStrings, readers, writerFilterStrings, writers);
+
+			
+			//
+			// Initialize UI with found handlers
+			//
+			
+			string openFilter = "";
+			foreach (DictionaryEntry entry in readers)
+			{
+				int position = (int)entry.Key;
+				ILogReader reader = (ILogReader)entry.Value;
+				if (openFilter.Length > 0)
+					openFilter += "|";
+				openFilter += (string)readerFilterStrings[position];
+				m_logReaders.Add(reader);
+			}
+			openLogDialog.Filter = openFilter;
+			openAnotherLogDialog.Filter = openFilter;
+
+			string saveFilter = "";
+			foreach (DictionaryEntry entry in writers)
+			{
+				int position = (int)entry.Key;
+				ILogWriter writer = (ILogWriter)entry.Value;
+				if (saveFilter.Length > 0)
+					saveFilter += "|";
+				saveFilter += (string)writerFilterStrings[position];
+				m_logWriters.Add(writer);
+			}
+			saveLogDialog.Filter = saveFilter;
+
+			// Filters menu
+			if (filters.Count > 0)
+			{
+				CreateMenuFilters(m_filterMenuItemsByPriority, filters);
+				
+				// Add event handlers
+				FilterManager.FilterAddedEvent		+= new FilterAction(OnFilterAdded);
+				FilterManager.FilterRemovedEvent	+= new FilterAction(OnFilterRemoved);
+			}
+
+			// Actions menu
+			if (actions.Count > 0)
+			{
+				CreateMenuActions(m_actionMenuItemsByPriority, actions);
+			}
+
+			// Updates
+			UpdateRecentFilesMenu();
+			UpdateCaption();
+		}
+
+		/// <summary>
+		/// Finds all handlers.
+		/// </summary>
+		/// <param name="actionMenuItems">The action menu items.</param>
+		/// <param name="actions">The action names.</param>
+		/// <param name="filterMenuItems">The filter menu items.</param>
+		/// <param name="filters">The filter names.</param>
+		/// <param name="readerFilterStrings">The reader filter strings.</param>
+		/// <param name="readers">The reader names.</param>
+		/// <param name="writerFilterStrings">The writer filter strings.</param>
+		/// <param name="writers">The writer names.</param>
+		private void FindAllHandlers(IDictionary actionMenuItems, SortedList actions, IDictionary filterMenuItems, SortedList filters, Hashtable readerFilterStrings, SortedList readers, Hashtable writerFilterStrings, SortedList writers)
+		{
 			foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
 			{
 				foreach (Type type in asm.GetTypes())
@@ -767,7 +858,7 @@ namespace PacketLogConverter
 								int position = -attr.Priority;
 								while (filters.ContainsKey(position))
 									++position;
-                                filters.Add(position, Activator.CreateInstance(type));
+								filters.Add(position, Activator.CreateInstance(type));
 								filterMenuItems.Add(position, filterMenuItem);
 							}
 						}
@@ -796,77 +887,102 @@ namespace PacketLogConverter
 					}
 				}
 			}
-
-			string openFilter = "";
-			foreach (DictionaryEntry entry in readers)
-			{
-				int position = (int)entry.Key;
-				ILogReader reader = (ILogReader)entry.Value;
-				if (openFilter.Length > 0)
-					openFilter += "|";
-				openFilter += (string)readerFilterStrings[position];
-				m_logReaders.Add(reader);
-			}
-			openLogDialog.Filter = openFilter;
-			openAnotherLogDialog.Filter = openFilter;
-
-			string saveFilter = "";
-			foreach (DictionaryEntry entry in writers)
-			{
-				int position = (int)entry.Key;
-				ILogWriter writer = (ILogWriter)entry.Value;
-				if (saveFilter.Length > 0)
-					saveFilter += "|";
-				saveFilter += (string)writerFilterStrings[position];
-				m_logWriters.Add(writer);
-			}
-			saveLogDialog.Filter = saveFilter;
-
-
-			if (filters.Count > 0)
-			{
-				ArrayList menu = new ArrayList();
-				
-				m_combineFiltersMenuItem = new MenuItem("Combine filters", new EventHandler(FilterClick_Event));
-				m_combineFiltersMenuItem.Checked = FilterManager.CombineFilters;
-				menu.Add(m_combineFiltersMenuItem);
-				
-				m_invertCheckMenuItem = new MenuItem("Invert check", new EventHandler(FilterClick_Event));
-				m_invertCheckMenuItem.Checked = false;
-				menu.Add(m_invertCheckMenuItem);
-				
-				menu.Add(new MenuItem("-"));
-
-				foreach (DictionaryEntry entry in filters)
-				{
-					int position = (int)entry.Key;
-					ILogFilter filter = (ILogFilter)entry.Value;
-					menu.Add(filterMenuItems[position]);
-					m_logFilters.Add(filter);
-				}
-
-				mainMenu1.MenuItems.Add("F&ilters", (MenuItem[])menu.ToArray(typeof (MenuItem)));
-			}
-
-			if (actions.Count > 0)
-			{
-				ArrayList actionsMenu = new ArrayList();
-				foreach (DictionaryEntry entry in actions)
-				{
-					int position = (int)entry.Key;
-					ILogAction action = (ILogAction)entry.Value;
-					actionsMenu.Add(actionMenuItems[position]);
-					m_logActions.Add(action);
-				}
-				m_logActionsMenu = new ContextMenu((MenuItem[])actionsMenu.ToArray(typeof (MenuItem)));
-				logDataText.MouseDown += new System.Windows.Forms.MouseEventHandler(logDataText_MouseClickEvent);
-			}
-			
-			UpdateRecentFilesMenu();
-
-			UpdateCaption();
 		}
 
+		/// <summary>
+		/// Creates the actions menu.
+		/// </summary>
+		/// <param name="actionMenuItems">The action menu items.</param>
+		/// <param name="actions">The actions.</param>
+		private void CreateMenuActions(IDictionary actionMenuItems, SortedList actions)
+		{
+			ArrayList actionsMenu = new ArrayList();
+			foreach (DictionaryEntry entry in actions)
+			{
+				int position = (int)entry.Key;
+				ILogAction action = (ILogAction)entry.Value;
+				actionsMenu.Add(actionMenuItems[position]);
+				m_logActions.Add(action);
+			}
+			m_logActionsMenu = new ContextMenu((MenuItem[])actionsMenu.ToArray(typeof (MenuItem)));
+			logDataText.MouseDown += new System.Windows.Forms.MouseEventHandler(logDataText_MouseClickEvent);
+		}
+
+		/// <summary>
+		/// Creates the filters menu.
+		/// </summary>
+		/// <param name="filterMenuItems">The filter menu items.</param>
+		/// <param name="filters">The filters.</param>
+		private void CreateMenuFilters(IDictionary filterMenuItems, SortedList filters)
+		{
+			ArrayList menu = new ArrayList();
+
+			// "Load filters" option
+			m_filterMenuFiltersLoad = new MenuItem("&Load filters...");
+			m_filterMenuFiltersLoad.Click += delegate(object sender, EventArgs e)
+     				{
+						if (DialogResult.OK == openFilterDialog.ShowDialog(this))
+						{
+							FilterManager.LoadFilters(openFilterDialog.FileName, m_logFilters);
+							UpdateLogDataTab();
+						}
+     				};
+			menu.Add(m_filterMenuFiltersLoad);
+			
+			// "Save filters" option
+			m_filterMenuFiltersSave = new MenuItem("&Save filters...");
+			m_filterMenuFiltersSave.Click += delegate(object sender, EventArgs e)
+                 	{
+						// "Save" menu item
+						if (DialogResult.OK == saveFilterDialog.ShowDialog(this))
+						{
+							FilterManager.SaveFilters(saveFilterDialog.FileName);
+						}
+					};
+			menu.Add(m_filterMenuFiltersSave);
+			
+			menu.Add(new MenuItem("-"));
+
+			// "Combine" option
+			m_filterMenuCombineFilters = new MenuItem("Combine filters", new EventHandler(FilterClick_Event));
+			m_filterMenuCombineFilters.Checked = FilterManager.CombineFilters;
+			FilterManager.CombineFiltersChangedEvent += delegate(bool newValue)
+				   	{
+				   		m_filterMenuCombineFilters.Checked = newValue;
+						UpdateLogDataTab();
+				   	};
+			menu.Add(m_filterMenuCombineFilters);
+
+			// "Invert" option
+			m_filterMenuInvertCheck = new MenuItem("Invert check", new EventHandler(FilterClick_Event));
+			m_filterMenuInvertCheck.Checked = false;
+			FilterManager.InvertCheckChangedEvent += delegate(bool newValue)
+				   	{
+				   		m_filterMenuInvertCheck.Checked = newValue;
+						UpdateLogDataTab();
+					};
+			menu.Add(m_filterMenuInvertCheck);
+
+			menu.Add(new MenuItem("-"));
+			
+			// Save count of static elements for proper index calculation
+			m_filterMenuStaticElementsCount = menu.Count;
+
+			// Add dynamically loaded handlers in proper order
+			foreach (DictionaryEntry entry in filters)
+			{
+				int position = (int)entry.Key;
+				ILogFilter filter = (ILogFilter)entry.Value;
+				menu.Add(filterMenuItems[position]);
+				m_logFilters.Add(filter);
+			}
+
+			mainMenu1.MenuItems.Add("F&ilters", (MenuItem[])menu.ToArray(typeof (MenuItem)));
+		}
+
+		/// <summary>
+		/// Updates the caption.
+		/// </summary>
 		private void UpdateCaption()
 		{
 			string caption = "packet log converter v" + Assembly.GetExecutingAssembly().GetName().Version;
@@ -907,7 +1023,7 @@ namespace PacketLogConverter
 				}
 			}
 		}
-		
+
 		private class OpenData
 		{
 			public string[] Files;
@@ -953,22 +1069,23 @@ namespace PacketLogConverter
 				log = new PacketLog();
 
 			log.IgnoreVersionChanges = false;
-			int val = -1;
-			Util.ParseInt(li_clientVersion.Text, out val);
-			log.Version = val;
+			float version;
+			Util.ParseFloat(li_clientVersion.Text, out version, -1);
+
+			log.Version = version;
 
 			if (li_ignoreVersionChanges.Checked)
 			{
 				log.IgnoreVersionChanges = true;
 			}
-			
+
 			LoadFiles(data.Reader, log, data.Files, progress);
 			m_currentLog = log;
 
 			m_progress.SetDescription("Initializing log and packets...");
 			CurrentLog.Init(3, progress);
 		}
-		
+
 		private void OpenFileFinishedCallback(object state)
 		{
 			if (m_currentLog != null && m_currentLog.Count > 100000)
@@ -984,7 +1101,7 @@ namespace PacketLogConverter
 			CurrentLog = m_currentLog;
 			li_clientVersion.Text = CurrentLog.Version.ToString();
 			logDataText.Focus();
-			
+
 			OpenData data = (OpenData) state;
 			LogReaderDelegate e = FilesLoaded;
 			if (e != null && data != null)
@@ -1029,6 +1146,11 @@ namespace PacketLogConverter
 
 		#endregion
 
+		/// <summary>
+		/// Handles the Click event of the menuSaveFile control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
 		private void menuSaveFile_Click(object sender, EventArgs e)
 		{
 			if (CurrentLog == null)
@@ -1043,6 +1165,11 @@ namespace PacketLogConverter
 				Log.Info("No log writers found.");
 		}
 
+		/// <summary>
+		/// Handles the FileOk event of the saveLogDialog control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="T:System.ComponentModel.CancelEventArgs"/> instance containing the event data.</param>
 		private void saveLogDialog_FileOk(object sender, CancelEventArgs e)
 		{
 			try
@@ -1056,6 +1183,11 @@ namespace PacketLogConverter
 			}
 		}
 
+		/// <summary>
+		/// Saves the file proc.
+		/// </summary>
+		/// <param name="callback">The callback.</param>
+		/// <param name="state">The state.</param>
 		private void SaveFileProc(ProgressCallback callback, object state)
 		{
 			ILogWriter writer = (ILogWriter)m_logWriters[saveLogDialog.FilterIndex-1];
@@ -1063,9 +1195,14 @@ namespace PacketLogConverter
 			{
 				writer.WriteLog(CurrentLog, stream, callback);
 			}
-			AddRecentFile(new FileInfo(saveLogDialog.FileName).FullName);
+//			AddRecentFile(new FileInfo(saveLogDialog.FileName).FullName);
 		}
 
+		/// <summary>
+		/// Handles the Click event of the menuExitApp control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
 		private void menuExitApp_Click(object sender, System.EventArgs e)
 		{
 			Application.Exit();
@@ -1074,7 +1211,7 @@ namespace PacketLogConverter
 		#endregion
 
 		#region Recent Files
-		
+
 		const string RegKeysPath = @"Software\DawnOfLight\PacketLogConverter\";
 
 		private void UpdateRecentFilesMenu()
@@ -1082,7 +1219,7 @@ namespace PacketLogConverter
 			ArrayList menu = new ArrayList();
 
 			RegistryKey key = Registry.CurrentUser.OpenSubKey(RegKeysPath);
-			
+
 			if (key != null)
 			{
 				using (key)
@@ -1108,7 +1245,7 @@ namespace PacketLogConverter
 			}
 
 			menuRecentFiles.MenuItems.Clear();
-			
+
 			if (menu.Count > 0)
 			{
 				menuRecentFiles.Enabled = true;
@@ -1119,11 +1256,11 @@ namespace PacketLogConverter
 				menuRecentFiles.Enabled = false;
 			}
 		}
-		
+
 		private void AddRecentFile(string fileName)
 		{
 			RegistryKey key = Registry.CurrentUser.CreateSubKey(RegKeysPath);
-			
+
 			if (key != null)
 			{
 				using (key)
@@ -1149,7 +1286,7 @@ namespace PacketLogConverter
 							break;
 					}
 				}
-				
+
 				UpdateRecentFilesMenu();
 			}
 		}
@@ -1158,9 +1295,9 @@ namespace PacketLogConverter
 		{
 //			if (m_logReaders.Count <= 0)
 //				return;
-			
+
 			MenuItem item = (MenuItem) sender;
-			
+
 			CurrentLog = null;
 			OpenData data = new OpenData();
 			data.Reader = new AutoDetectLogReader();
@@ -1198,8 +1335,10 @@ namespace PacketLogConverter
 				if (logDataText.TextLength > 0)
 					selectedPacketIndex = CurrentLog.GetPacketIndexByTextIndex(logDataText.SelectionStart);
 				int packetsCount = 0;
-				int packetsCountIn = 0;
-				int packetsCountOut = 0;
+				int packetsCountInTCP = 0;
+				int packetsCountOutTCP = 0;
+				int packetsCountInUDP = 0;
+				int packetsCountOutUDP = 0;
 				bool timeDiff = packetTimeDiffMenuItem.Checked;
 				bool showPacketSequence = mnuPacketSequence.Checked;
 				TimeSpan baseTime = new TimeSpan(0);
@@ -1214,13 +1353,22 @@ namespace PacketLogConverter
 						{
 							if (pak.Direction == ePacketDirection.ClientToServer)
 							{
-								packetsCountOut++;
-								pakIndex = packetsCountOut;
+								pakIndex = ++packetsCountOutTCP;
 							}
 							else
 							{
-								packetsCountIn++;
-								pakIndex = packetsCountIn;
+								pakIndex = ++packetsCountInTCP;
+							}
+						}
+						else if (pak.Protocol == ePacketProtocol.UDP)
+						{
+							if (pak.Direction == ePacketDirection.ClientToServer)
+							{
+								pakIndex = ++packetsCountOutUDP;
+							}
+							else
+							{
+								pakIndex = ++packetsCountInUDP;
 							}
 						}
 					}
@@ -1236,7 +1384,7 @@ namespace PacketLogConverter
 					{
 						text.AppendFormat("{0}:{1,-5} ", pak.Protocol, pakIndex);
 					}
-					
+
 					// main description
 					text.Append(pak.ToHumanReadableString(baseTime, mnuPacketFlags.Checked))
 						.Append('\n');
@@ -1250,7 +1398,7 @@ namespace PacketLogConverter
 				logDataText.SelectionIndent = 4;
 				logDataText.Text = text.ToString();
 				int restoreIndex = -1;
-				if (CurrentLog.Count > 0)
+				if (CurrentLog.Count > 0 && selectedPacketIndex >= 0)
 					restoreIndex = CurrentLog[selectedPacketIndex].LogTextIndex;
 				if (restoreIndex >= 0)
 					logDataText.SelectionStart = restoreIndex;
@@ -1338,7 +1486,7 @@ namespace PacketLogConverter
 			packetTimeDiffMenuItem.Checked = !packetTimeDiffMenuItem.Checked;
 			UpdateLogDataTab();
 		}
-		
+
 		private void mnuPacketFlags_Click(object sender, System.EventArgs e)
 		{
 			mnuPacketFlags.Checked = !mnuPacketFlags.Checked;
@@ -1382,32 +1530,26 @@ namespace PacketLogConverter
 			}
 
 			CurrentLog.IgnoreVersionChanges = false;
-			try
-			{
-				CurrentLog.Version = int.Parse(li_clientVersion.Text);
-			}
-			catch
-			{
-				CurrentLog.Version = -1;
-			}
+			float version;
+			Util.ParseFloat(li_clientVersion.Text, out version, -1);
+			CurrentLog.Version = version;
 			CurrentLog.IgnoreVersionChanges = li_ignoreVersionChanges.Checked;
 
-
-			try
-			{
-				m_progress.SetDescription("Reinitializing log and packets...");
-				m_progress.Start(new WorkCallback(InitLog), null);
-			}
-			finally
-			{
-				UpdateLogInfoTab();
-				UpdateLogDataTab();
-			}
+			// Reinitialize in another thread
+			m_progress.SetDescription("Reinitializing log and packets...");
+			m_progress.Start(new WorkCallback(InitLog), null);
 		}
 
 		private void InitLog(ProgressCallback callback, object state)
 		{
 			CurrentLog.Init(3, callback);
+
+			// Update log info
+			Invoke((MethodInvoker)delegate()
+			       	{
+			       		UpdateLogInfoTab();
+			       		UpdateLogDataTab();
+			       	});
 		}
 
 		private void li_changes_Event(object sender, EventArgs e)
@@ -1431,9 +1573,8 @@ namespace PacketLogConverter
 
 		private void UpdateInstantParseTab()
 		{
-			int ver;
-			if (!Util.ParseInt(instantVersion.Text, out ver))
-				ver = -1;
+			float ver;
+			Util.ParseFloat(instantVersion.Text, out ver, -1);
 
 			Packet pak = new Packet(0);
 			int code;
@@ -1472,7 +1613,7 @@ namespace PacketLogConverter
 						{
 							instantServerToClient.Checked = true;
 						}
-					} 
+					}
 					catch(Exception) {}
 				}
 				// failed to read daoc logger format
@@ -1560,36 +1701,54 @@ namespace PacketLogConverter
 
 		#region Filters
 
-		private MenuItem m_combineFiltersMenuItem;
-		private MenuItem m_invertCheckMenuItem;
+		private MenuItem m_filterMenuCombineFilters;
+		private MenuItem m_filterMenuInvertCheck;
+		private MenuItem m_filterMenuFiltersLoad;
+		private MenuItem m_filterMenuFiltersSave;
+		private int m_filterMenuStaticElementsCount;
 
+		/// <summary>
+		/// Handles the Event event of the Filter menu.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
 		private void FilterClick_Event(object sender, EventArgs e)
 		{
 			MenuItem menu = sender as MenuItem;
 			if (menu == null) return;
-			if (menu == m_combineFiltersMenuItem)
-			{
-				m_combineFiltersMenuItem.Checked = (FilterManager.CombineFilters = !FilterManager.CombineFilters);
-				UpdateLogDataTab();
-				return;
-			}
-			
-			if (menu == m_invertCheckMenuItem)
-			{
-				m_invertCheckMenuItem.Checked = (FilterManager.InvertCheck = !FilterManager.InvertCheck);
-				UpdateLogDataTab();
-				return;
-			}
-
-			int index = menu.Index - 3;
-			if (index >= m_logFilters.Count || index < 0)
-				return;
-
-			bool update = false;
-			int oldFilters = FilterManager.FiltersCount;
 
 			try
 			{
+				//
+				// Static elements handlers
+				//
+
+				// "Combine" menu item
+				if (menu == m_filterMenuCombineFilters)
+				{
+					FilterManager.CombineFilters = !FilterManager.CombineFilters;
+					return;
+				}
+
+				// "Invert" menu item
+				if (menu == m_filterMenuInvertCheck)
+				{
+					FilterManager.InvertCheck = !FilterManager.InvertCheck;
+					return;
+				}
+
+				
+				//
+				// Dynamic elements handlers
+				//
+				
+				int index = menu.Index - m_filterMenuStaticElementsCount;
+				if (index >= m_logFilters.Count || index < 0)
+					return;
+
+				bool update = false;
+				int oldFilters = FilterManager.FiltersCount;
+
 				ILogFilter filter = (ILogFilter)m_logFilters[index];
 				update |= filter.ActivateFilter(); // changes to the filter
 
@@ -1599,11 +1758,49 @@ namespace PacketLogConverter
 				{
 					UpdateLogDataTab();
 				}
-				menu.Checked = filter.IsFilterActive;
 			}
 			catch (Exception e1)
 			{
 				Log.Error("activating filter", e1);
+			}
+		}
+
+		/// <summary>
+		/// Called when filter is added to filter manager.
+		/// </summary>
+		/// <param name="filter">The filter.</param>
+		private void OnFilterAdded(ILogFilter filter)
+		{
+			ChangeFilterMenuCheckedState(filter, true);
+		}
+
+		/// <summary>
+		/// Called when filter is removed from filter manager.
+		/// </summary>
+		/// <param name="filter">The filter.</param>
+		private void OnFilterRemoved(ILogFilter filter)
+		{
+			ChangeFilterMenuCheckedState(filter, false);
+		}
+
+		/// <summary>
+		/// Changes the state of the filter menu checked.
+		/// </summary>
+		/// <param name="filter">The filter.</param>
+		/// <param name="newState">if set to <c>true</c> menu item is checked.</param>
+		private void ChangeFilterMenuCheckedState(ILogFilter filter, bool newState)
+		{
+			// Get index of filter
+			int index = m_logFilters.IndexOf(filter);
+
+			if (index >= m_logFilters.Count || index < 0)
+				return;
+
+			// Get menu item, make it checked
+			MenuItem menu = (MenuItem) m_filterMenuItemsByPriority.GetByIndex(index);
+			if (null != menu)
+			{
+				menu.Checked = newState;
 			}
 		}
 

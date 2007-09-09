@@ -20,6 +20,7 @@ namespace PacketLogConverter.LogPackets
 		protected byte level;
 		protected byte hairColor;
 		protected byte faceType;
+		protected byte hairStyle;
 		protected byte flags;
 		protected string name;
 		protected string guildName;
@@ -33,7 +34,7 @@ namespace PacketLogConverter.LogPackets
 		/// <value>The object ids.</value>
 		public ushort[] ObjectIds
 		{
-			get { return new ushort[] { oid }; }
+			get { return new ushort[] { oid, sessionId }; }
 		}
 
 		#region public access properties
@@ -52,6 +53,7 @@ namespace PacketLogConverter.LogPackets
 		public byte Level { get { return level; } }
 		public byte HairColor { get { return hairColor; } }
 		public byte FaceType { get { return faceType; } }
+		public byte HairStyle { get { return hairStyle; } }
 		public byte Flags { get { return flags; } }
 		public string Name { get { return name; } }
 		public string GuildName { get { return guildName; } }
@@ -65,8 +67,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("sessionId:0x{0:X4} oid:0x{1:X4} model:0x{2:X4} zoneId:{3,-3} zoneLoc:({4,-5} {5,-5} {6,-5}) heading:0x{7:X4} eyeSize:0x{8:X4} lipSize:0x{9:X4} eyeColor:0x{10:X4} level:{11,-2} hairColor:0x{12:X4} faceType:0x{13:X4} flags:0x{14:X2} name:\"{15}\" guild:\"{16}\" lastName:\"{17}\" unk1:\"{18}\" trailingZero:{19}",
-				sessionId, oid, model, zoneId, zoneX, zoneY, zoneZ, heading, eyeSize, lipSize, eyeColor, level, hairColor, faceType, flags, name, guildName, lastName, unk1, trailingZero);
+			str.AppendFormat("sessionId:0x{0:X4} oid:0x{1:X4} model:0x{2:X4} zoneId:{3,-3} zoneLoc:({4,-5} {5,-5} {6,-5}) heading:0x{7:X4} eyeSize:0x{8:X2} lipSize:0x{9:X2} eyeColor:0x{10:X2} level:{11,-2} hairColor:0x{12:X2} faceType:0x{13:X2} hairStyle:0x{14:X2} flags:0x{15:X2} name:\"{16}\" guild:\"{17}\" lastName:\"{18}\" unk1:\"{19}\" trailingZero:{20}",
+				sessionId, oid, model, zoneId, zoneX, zoneY, zoneZ, heading, eyeSize, lipSize, eyeColor, level, hairColor, faceType, hairStyle, flags, name, guildName, lastName, unk1, trailingZero);
 
 			if (flagsDescription && flags != 0)
 			{
@@ -99,7 +101,7 @@ namespace PacketLogConverter.LogPackets
 			level = ReadByte();
 			hairColor = ReadByte();
 			faceType = ReadByte();
-			hairColor = ReadByte();
+			hairStyle = ReadByte();
 			flags = ReadByte();
 			name = ReadPascalString();
 			guildName = ReadPascalString();

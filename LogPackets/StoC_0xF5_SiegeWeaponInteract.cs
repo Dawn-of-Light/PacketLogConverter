@@ -6,7 +6,8 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0xF5, -1, ePacketDirection.ServerToClient, "Siege weapon interact")]
 	public class StoC_0xF5_SiegeWeaponInteract: Packet, IObjectIdPacket
 	{
-		protected ushort unk1;
+		protected byte siegeMenu;
+		protected byte canMove;
 		protected ushort unk2;
 		protected byte timer; // in sec/10
 		protected byte ammoCount;
@@ -30,7 +31,8 @@ namespace PacketLogConverter.LogPackets
 
 		#region public access properties
 
-		public ushort Unk1 { get { return unk1; } }
+		public byte SiegeMenu { get { return siegeMenu; } }
+		public byte CanMove { get { return canMove ; } }
 		public ushort Unk2 { get { return unk2; } }
 		public byte Timer { get { return timer; } }
 		public byte AmmoCount { get { return ammoCount; } }
@@ -50,11 +52,16 @@ namespace PacketLogConverter.LogPackets
 			string actionType;
 			switch (action)
 			{
+				case 0:
+					actionType = "opening";
+					if (unk2 == 1)
+						actionType = "closing";
+					break;
 				case 1:
-					actionType = "aiming";
+					actionType = "aiming ";
 					break;
 				case 2:
-					actionType = "arming";
+					actionType = "arming ";
 					break;
 				case 3:
 					actionType = "loading";
@@ -63,8 +70,8 @@ namespace PacketLogConverter.LogPackets
 					actionType = "unknown";
 					break;
 			}
-			str.AppendFormat("unk1:0x{0:X4} unk2:0x{1:X4} timer:{2,-3} externalAmmoCount:{3} action:{4}({5}) currentAmmo?:0x{6:X2} effect:0x{7:X4} unk6:0x{8:X4} unk7:0x{9:X4} oid:0x{10:X4} name:\"{11}\"",
-				unk1, unk2, timer , ammoCount, action, actionType, unk4, effect, unk6, unk7, oid, name);
+			str.AppendFormat("menuButtons:0x{0:X2} canMove:0x{1} unk2:0x{2:X4} timer:{3,-3} externalAmmoCount:{4} action:{5}({6}) currentAmmo?:0x{7:X2} effect:0x{8:X4} unk6:0x{9:X4} unk7:0x{10:X4} oid:0x{11:X4} name:\"{12}\"",
+				siegeMenu, canMove, unk2, timer , ammoCount, action, actionType, unk4, effect, unk6, unk7, oid, name);
 
 			for (int i = 0; i < ammoCount; i++)
 			{
@@ -82,7 +89,8 @@ namespace PacketLogConverter.LogPackets
 		public override void Init()
 		{
 			Position = 0;
-			unk1 = ReadShort();
+			siegeMenu = ReadByte();
+			canMove = ReadByte();
 			unk2 = ReadShort();
 			timer = ReadByte();
 			ammoCount = ReadByte();

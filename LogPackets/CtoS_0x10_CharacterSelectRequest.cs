@@ -6,7 +6,8 @@ namespace PacketLogConverter.LogPackets
 	public class CtoS_0x10_CharacterSelectRequest : Packet
 	{
 		protected ushort sessionId;
-		protected ushort unk1;
+		protected byte regionIndex;
+		protected byte unk1;
 		protected string charName;
 		protected uint unk0;
 		protected string loginName;
@@ -24,7 +25,8 @@ namespace PacketLogConverter.LogPackets
 		#region public access properties
 
 		public ushort SessionId { get { return sessionId; } }
-		public ushort Unk1 { get { return unk1; } }
+		public byte RegionIndex { get { return regionIndex; } }
+		public byte Unk1 { get { return unk1; } }
 		public string CharName { get { return charName; } }
 		public string LoginName { get { return loginName; } }
 		public uint Unk2 { get { return unk2; } }
@@ -38,8 +40,8 @@ namespace PacketLogConverter.LogPackets
 			StringBuilder str = new StringBuilder();
 
 			string flags = (flagsDescription ? string.Format("{0:X8} {1:X8} {2:X8} {3:X8} {4:X8} {5:X8} {6:X8} ", u1, u2, u3, u4, u5, u6, u7) : "");
-			str.AppendFormat("{7}sessionId:0x{1:X4} unk1:0x{2:X4} socket:{3} unk0:0x{8:X8} unk2:0x{5:X8} unk3:0x{6:X4} login:\"{4}\" charName:\"{0}\"",
-				charName, sessionId, unk1, port, loginName, unk2, unk3, flags, unk0);
+			str.AppendFormat("{8}sessionId:0x{1:X4} regionIndex:0x{2:X2} unk1:0x{3:X2} socket:{4,-5} unk0:0x{9:X8} unk2:0x{6:X8} unk3:0x{7:X4} login:\"{5}\" charName:\"{0}\"",
+				charName, sessionId, regionIndex, unk1, port, loginName, unk2, unk3, flags, unk0);
 
 			return str.ToString();
 		}
@@ -52,7 +54,8 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			sessionId = ReadShort();
-			unk1 = ReadShort();
+			regionIndex = ReadByte();
+			unk1 = ReadByte();
 			charName = ReadString(24);
 			unk0 = ReadIntLowEndian();
 			loginName = ReadString(20);

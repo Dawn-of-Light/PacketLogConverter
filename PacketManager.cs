@@ -18,24 +18,24 @@ namespace PacketLogConverter
 		{
 			Init();
 		}
-		
+
 		public static LogPacketAttribute GetPacketTypeAttribute(Type t)
 		{
 			return (LogPacketAttribute) m_attributeByType[t];
 		}
 
-		public static Packet CreatePacket(int version, int code, ePacketDirection dir)
+		public static Packet CreatePacket(float version, int code, ePacketDirection dir)
 		{
 			return CreatePacket(version, code, dir, 0);
 		}
 
-		public static Packet CreatePacket(int version, int code, ePacketDirection dir, int capacity)
+		public static Packet CreatePacket(float version, int code, ePacketDirection dir, int capacity)
 		{
 			LogPacketData packetData = GetPacketData(version, code, dir);
 			return CreatePacket(packetData, capacity);
 		}
 
-		public static Packet ChangePacketClass(Packet pak, int newVersion)
+		public static Packet ChangePacketClass(Packet pak, float newVersion)
 		{
 			LogPacketData packetData = GetPacketData(newVersion, pak.Code, pak.Direction);
 			if (packetData != null && pak.GetType().Equals(packetData.Type))
@@ -53,7 +53,7 @@ namespace PacketLogConverter
 		{
 			if (packetData == null)
 				return new Packet(capacity);
-	
+
 			try
 			{
 				Packet pak = (Packet)packetData.CapacityConstructor.Invoke(new object[] {capacity});
@@ -66,17 +66,17 @@ namespace PacketLogConverter
 			}
 		}
 
-		private static LogPacketData GetPacketData(int version, int code, ePacketDirection dir)
+		private static LogPacketData GetPacketData(float version, int code, ePacketDirection dir)
 		{
 			SortedList typesByVersion =
 				dir == ePacketDirection.ClientToServer
 					? m_ctosConstrsByCode[code]
 					: m_stocConstrsByCode[code];
-	
+
 			LogPacketData packetData = null;
 			foreach (DictionaryEntry entry in typesByVersion)
 			{
-				int ver = (int)entry.Key;
+				float ver = (float)entry.Key;
 				if (ver > version)
 					break;
 				packetData = (LogPacketData)entry.Value;
@@ -105,7 +105,7 @@ namespace PacketLogConverter
 				: m_stocConstrsByCode[code].Count;
 		}
 
-		public static string GetPacketDescription(int version, int code, ePacketDirection dir)
+		public static string GetPacketDescription(float version, int code, ePacketDirection dir)
 		{
 			SortedList packets =
 				dir == ePacketDirection.ClientToServer
@@ -151,7 +151,7 @@ namespace PacketLogConverter
 									attr.Direction == ePacketDirection.ClientToServer
 										? m_ctosConstrsByCode[attr.Code]
 										: m_stocConstrsByCode[attr.Code];
-								
+
 								constrsByVersion.Add(attr.Version, new LogPacketData(constr, attr, type));
 								m_packetTypeByAttribute.Add(attr, type);
 								m_attributeByType[type] = attr;

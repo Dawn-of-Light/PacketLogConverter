@@ -56,6 +56,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			switch (code)
 			{
+				case 1: InitMobGhostEffectUpdate(); break; // Work only on Mob
 				case 3: InitHexEffectsUpdate(); break;
 				case 4: InitUndergoundRaceFlyUpdate(); break;// on high speed look like flyed
 				case 5: InitColorNameUpdate(); break;
@@ -101,6 +102,30 @@ namespace PacketLogConverter.LogPackets
 			public override void MakeString(StringBuilder str)
 			{
 				str.AppendFormat("(UNKNOWN) flag:{0} unk1:0x{1:X4} unk2:0x{2:X4}", flag, unk1, unk2);
+			}
+		}
+
+		protected virtual void InitMobGhostEffectUpdate()
+		{
+			subData = new MobGhostEffectUpdate();
+			subData.Init(this);
+		}
+
+		public class MobGhostEffectUpdate: ASubData
+		{
+			public byte flag;
+			public uint unk1; // unused
+
+			public override void Init(StoC_0x4C_VisualEffect pak)
+			{
+				flag = pak.ReadByte();
+				unk1 = pak.ReadInt();
+			}
+
+			public override void MakeString(StringBuilder str)
+			{
+				str.AppendFormat("(MobGhost?) flag:{0}({1}) unk1:{2}",
+					flag, (flag == 0 ? "Disable" : "Enable"), unk1);
 			}
 		}
 

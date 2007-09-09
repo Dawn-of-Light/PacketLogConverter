@@ -31,8 +31,9 @@ namespace PacketLogConverter.LogPackets
 					flag += ",Loot";
 				if ((flags & 0x08) == 0x08)
 					flag += ",StaticItem";//or Longrange ?
-				if ((flags & 0x40) == 0x40)
-					flag += ",UNK_0x40";
+				// flag 0x10, 0x20 hold realm
+				if ((flags & 0x40) == 0x40)// x = moving object oid, y = hookpoint
+					flag += ",OnShipHookPoint";
 				if ((flags & 0x80) == 0x80)
 					flag += ",UNK_0x80";
 				uint flag_171 = unk1_171 >> 24;
@@ -104,6 +105,8 @@ namespace PacketLogConverter.LogPackets
 			unk1_171 = ReadInt();
 			name = ReadPascalString();
 			extraBytes = ReadByte();
+			if ((flags & 0x40) == 0x40)
+				flagOnShipHookPoint = 1;
 
 			if (extraBytes == 4)
 				internalId = ReadInt();

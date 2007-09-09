@@ -73,7 +73,7 @@ namespace PacketLogConverter.LogPackets
 			int minor = ReadByte();
 			int build = ReadByte();
 			int version = major*100 + minor*10 + build;
-			log.Version = version;
+			log.Version = (float)version;
 		}
 
 		/// <summary>

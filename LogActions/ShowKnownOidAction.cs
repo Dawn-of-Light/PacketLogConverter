@@ -63,18 +63,6 @@ namespace PacketLogConverter.LogActions
 					if (currentZone == -1)
 						currentZone = player.ZoneId;
 				}
-				else if (pak is StoC_0xA9_PlayerPosition)
-				{
-					StoC_0xA9_PlayerPosition player = (StoC_0xA9_PlayerPosition)pak;
-					if (currentZone == -1)
-						currentZone = player.CurrentZoneId;
-				}
-				else if (pak is CtoS_0xA9_PlayerPosition)
-				{
-					CtoS_0xA9_PlayerPosition player = (CtoS_0xA9_PlayerPosition)pak;
-					if (currentZone == -1)
-						currentZone = player.CurrentZoneId;
-				}
 				else if (pak is StoC_0x12_CreateMovingObject)
 				{
 					StoC_0x12_CreateMovingObject obj = (StoC_0x12_CreateMovingObject)pak;

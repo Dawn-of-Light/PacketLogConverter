@@ -29,7 +29,8 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			sessionId = ReadShort();
-			unk1 = ReadShort();
+			regionIndex = ReadByte();
+			unk1 = ReadByte();
 			serverId = ReadByte();
 			charName = ReadString(24);
 			unks0 = ReadShort();

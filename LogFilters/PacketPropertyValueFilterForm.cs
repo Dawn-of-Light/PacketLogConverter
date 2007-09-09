@@ -294,6 +294,10 @@ namespace PacketLogConverter.LogFilters
 
 		#region ILogFilter Members
 
+		/// <summary>
+		/// Activates the filter.
+		/// </summary>
+		/// <returns><code>true</code> if filter has changed.</returns>
 		public bool ActivateFilter()
 		{
 			InitPacketsList();
@@ -322,6 +326,13 @@ namespace PacketLogConverter.LogFilters
 			return enableCheckBox.Checked != oldEnable || filtersListBox.Items.Count != oldFilterList.Count;
 		}
 
+		/// <summary>
+		/// Determines whether the packet should be ignored.
+		/// </summary>
+		/// <param name="packet">The packet.</param>
+		/// <returns>
+		/// 	<c>true</c> if packet should be ignored; otherwise, <c>false</c>.
+		/// </returns>
 		public bool IsPacketIgnored(Packet packet)
 		{
 			bool state;
@@ -346,9 +357,35 @@ namespace PacketLogConverter.LogFilters
 			return rc;
 		}
 
+		/// <summary>
+		/// Gets a value indicating whether this instance is active.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is active; otherwise, <c>false</c>.
+		/// </value>
 		public bool IsFilterActive
 		{
 			get { return enableCheckBox.Checked; }
+		}
+
+		/// <summary>
+		/// Serializes data of instance of this filter.
+		/// </summary>
+		/// <param name="data">The data.</param>
+		/// <returns><code>true</code> if filter is serialized, <code>false</code> otherwise.</returns>
+		public bool Serialize(MemoryStream data)
+		{
+			return false;
+		}
+
+		/// <summary>
+		/// Deserializes data of instance of this filter.
+		/// </summary>
+		/// <param name="data">The data.</param>
+		/// <returns><code>true</code> if filter is deserialized, <code>false</code> otherwise.</returns>
+		public bool Deserialize(MemoryStream data)
+		{
+			return false;
 		}
 
 		#endregion

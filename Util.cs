@@ -65,6 +65,26 @@ namespace PacketLogConverter
 		}
 
 		/// <summary>
+		/// Parse the string to int.
+		/// </summary>
+		/// <param name="str"></param>
+		/// <returns></returns>
+		public static bool ParseFloat(string str, out float outValue, float defaultVal)
+		{
+			bool ret = true;
+			try
+			{
+				outValue = float.Parse(str);
+			}
+			catch
+			{
+				outValue = defaultVal;
+				ret = false;
+			}
+			return ret;
+		}
+
+		/// <summary>
 		/// Converts a hex string to int value. Works only with uppercase letters.
 		/// </summary>
 		/// <param name="str">The string to parse</param>
@@ -77,10 +97,10 @@ namespace PacketLogConverter
 			result = 0;
 			int count = len;
 			int last = start + count - 1;
-			
+
 			if (str.Length <= last)
 				return false;
-			
+
 			int parsed = 0;
 			string s = str;
 			for (int i = 0; i < count; i++)
@@ -96,12 +116,12 @@ namespace PacketLogConverter
 				}
 				parsed += val << i * 4; // 4 bits for each char
 			}
-			
+
 			result = parsed;
-			
+
 			return true;
 		}
-		
+
 		public static bool ParseDecFast(string str, int start, int len, out int result)
 		{
 			result = 0;
@@ -118,7 +138,7 @@ namespace PacketLogConverter
 				parsed += val*order;
 				order *= 10;
 			}
-			
+
 			result = parsed;
 
 			return true;

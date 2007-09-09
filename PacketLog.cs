@@ -41,9 +41,9 @@ namespace PacketLogConverter
 			get { return m_packets.Count; }
 		}
 
-		private int m_version = -1;
+		private float m_version = -1;
 
-		public int Version
+		public float Version
 		{
 			get { return m_version; }
 			set

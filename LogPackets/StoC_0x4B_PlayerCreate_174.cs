@@ -23,8 +23,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("sessionId:0x{0:X4} oid:0x{1:X4} model:0x{2:X4} zoneId:{3,-3} zoneLoc:({4,-5} {5,-5} {6,-5}) heading:0x{7:X4} eyeSize:0x{8:X4} lipSize:0x{9:X4} eyeColor:0x{10:X4} level:{11,-2} hairColor:0x{12:X4} faceType:0x{13:X4} moodType:0x{19:X4} flags:0x{14:X2} name:\"{15}\" guild:\"{16}\" lastName:\"{17}\" prefixName:\"{18}\" unk1_174:{20} newTitle:\"{21}\"",
-				sessionId, oid, model, zoneId, zoneX, zoneY, zoneZ, heading, eyeSize, lipSize, eyeColor, level, hairColor, faceType, flags, name, guildName, lastName, prefixName, moodType, unk1_174, realmMissionTitle);
+			str.AppendFormat("sessionId:0x{0:X4} oid:0x{1:X4} model:0x{2:X4} zoneId:{3,-3} zoneLoc:({4,-5} {5,-5} {6,-5}) heading:0x{7:X4} eyeSize:0x{8:X2} lipSize:0x{9:X2} eyeColor:0x{10:X2} level:{11,-2} hairColor:0x{12:X2} faceType:0x{13:X2} moodType:0x{20:X2} hairStyle:0x{14:X2} flags:0x{15:X2} name:\"{16}\" guild:\"{17}\" lastName:\"{18}\" prefixName:\"{19}\" unk1_174:{21} newTitle:\"{22}\"",
+				sessionId, oid, model, zoneId, zoneX, zoneY, zoneZ, heading, eyeSize, lipSize, eyeColor, level, hairColor, faceType, hairStyle, flags, name, guildName, lastName, prefixName, moodType, unk1_174, realmMissionTitle);
 
 			if (flagsDescription && flags != 0)
 			{
@@ -57,7 +57,7 @@ namespace PacketLogConverter.LogPackets
 			level = ReadByte();
 			hairColor = ReadByte();
 			faceType = ReadByte();
-			hairColor = ReadByte();
+			hairStyle = ReadByte();
 			flags = ReadByte();
 			unk1_174 = ReadByte();
 			name = ReadPascalString();

@@ -16,7 +16,7 @@ namespace PacketLogConverter.LogReaders
 		{
 			ArrayList packets = new ArrayList();
 
-			int currentVersion = -1;
+			float currentVersion = -1;
 			int counter = 0;
 			string line = null;
 			Packet pak = null;

@@ -18,6 +18,48 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
+		#region Filter Helpers
+
+		protected PlayerStatusData[] playerStatusData;
+		public PlayerStatusData[] InPlayerStatusData
+		{
+			get
+			{
+				if (playerStatusData == null)
+				{
+					ArrayList list = new ArrayList();
+					foreach(object o in updates)
+					{
+						if (o is PlayerStatusData)
+							list.Add(o as PlayerStatusData);
+					}
+					playerStatusData = (PlayerStatusData[])list.ToArray(typeof (PlayerStatusData));
+				}
+				return playerStatusData;
+			}
+		}
+
+		protected PlayerBuffsData[] playerBuffsData;
+		public PlayerBuffsData[] InPlayerBuffsData
+		{
+			get
+			{
+				if (playerBuffsData == null)
+				{
+					ArrayList list = new ArrayList();
+					foreach(object o in updates)
+					{
+						if (o is PlayerBuffsData)
+							list.Add(o as PlayerBuffsData);
+					}
+					playerBuffsData = (PlayerBuffsData[])list.ToArray(typeof (PlayerBuffsData));
+				}
+				return playerBuffsData;
+			}
+		}
+
+		#endregion
+
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();

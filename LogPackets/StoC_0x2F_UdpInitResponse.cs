@@ -5,19 +5,21 @@ namespace PacketLogConverter.LogPackets
 	public class StoC_0x2F_UdpInitResponse: Packet
 	{
 		protected string ip;
-		protected ushort unk1;
+		protected uint port;
+		protected uint unk1;
 
 		#region public access properties
 
 		public string IP { get { return ip; } }
-		public ushort Unk1 { get { return unk1; } }
+		public uint Port { get { return port; } }
+		public uint Unk1 { get { return unk1; } }
 
 		#endregion
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			str.AppendFormat("regionIP:\"{0}\" PortFrom:{1}", ip, unk1);
+			str.AppendFormat("regionIP:\"{0}\" PortFrom:{1} unk1:0x{2:X8}", ip, port, unk1);
 			return str.ToString();
 		}
 
@@ -27,8 +29,9 @@ namespace PacketLogConverter.LogPackets
 		public override void Init()
 		{
 			Position = 0;
-			ip = ReadString(22);
-			unk1 = ReadShort();
+			ip = ReadString(16);
+			unk1 = ReadInt();
+			port = ReadInt();
 		}
 
 		/// <summary>

@@ -43,6 +43,7 @@ namespace PacketLogConverter.LogPackets
 		public ushort CurrentZoneId { get { return currentZoneId; } }
 		public byte Unk1 { get { return unk1; } }
 		public ushort Heading { get { return heading; } }
+		public byte InnerCounter { get { return (byte)(heading >> 12); } }
 		public ushort Speed { get { return speed; } }
 		public byte Flag { get { return flag; } }
 		public byte Health { get { return health; } }
@@ -75,8 +76,11 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 			bool isRaided = IsRaided;
-			str.AppendFormat("sessionId:0x{0:X4} status:0x{1:X2} speed:{2,-3} {3}:0x{4:X4}(0x{14:X2}) currentZone({5,-3}): ({6,-6} {7,-6} {8,-5}) flyFlags:0x{9:X2} {10}:{11,-4} flags:0x{12:X2} health:{13,3}%",
-				sessionId, (status & 0x1FF ^ status) >> 8 ,status & 0x1FF, isRaided ? "mountId" : "heading", isRaided ? heading : heading & 0xFFF, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, (speed & 0x7FF ^ speed) >> 8, (isRaided ? "bSlot " : "SpeedZ") ,speed & 0x7FF, flag, health & 0x7F, isRaided ? 0 : (heading & 0xFFF ^ heading) >> 8);
+			int zSpeed = speed & 0xFFF;
+			if ((speed & 0x1000) == 0x1000)
+				zSpeed *= -1;
+			str.AppendFormat("sessionId:0x{0:X4} status:0x{1:X2} speed:{2,-3} {3}:0x{4:X4}(0x{14:X2}) currentZone({5,-3}): ({6,-6} {7,-6} {8,-5}) flyFlags:0x{9:X2} {10}:{11,-5} flags:0x{12:X2} health:{13,3}%",
+				sessionId, (status & 0x1FF ^ status) >> 8 ,status & 0x1FF, isRaided ? "mountId" : "heading", isRaided ? heading : heading & 0xFFF, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, (speed & 0x7FF ^ speed) >> 8, (isRaided ? "bSlot " : "SpeedZ") ,zSpeed, flag, health & 0x7F, isRaided ? 0 : (heading & 0xFFF ^ heading) >> 8);
 			if (flagsDescription)
 			{
 				byte plrState = (byte)((status >> 10) & 7);
@@ -109,6 +113,10 @@ namespace PacketLogConverter.LogPackets
 					flags += ",Combat";
 				if ((speed & 0x8000) == 0x8000)
 					flags += ",FallDown";
+				if ((speed & 0x4000) == 0x4000)
+					flags += ",speed_UNK_0x4000";
+				if ((speed & 0x2000) == 0x2000)
+					flags += ",speed_UNK_0x2000";
 				if (flags.Length > 0)
 					str.Append(" ("+flags+")");
 			}

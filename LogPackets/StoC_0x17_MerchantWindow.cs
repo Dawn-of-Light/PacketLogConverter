@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -26,14 +25,16 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("\n\tcount:{0,-2} windowType:{1} page:{2} unk1:{3}", itemCount, windowType, page, unk1);
+			str.AppendFormat("\n\tcount:{0,-2} windowType:{1}({4}) page:{2} unk1:{3}", itemCount, windowType, page, unk1, (eMerchantWindowType)windowType);
 
 			for (int i = 0; i < itemCount; i++)
 			{
 				MerchantItem item = items[i];
-				str.AppendFormat("\n\tindex:{0,-2} level:{1,-2} value1:{2,-3} spd_abs:{3,-3} hand:0x{4:X2} damageAndObjectType:0x{5:X2} canUse:{6} value2:0x{7:X4} price:{8,-8} model:0x{9:X4} name:\"{10}\"",
-				                 item.index, item.level, item.value1, item.spd_abs, item.hand, item.damageAndObjectType, item.canUse, item.value2, item.price, item.model, item.name);
-			}
+				str.AppendFormat("\n\tindex:{0,-2} level:{1,-2} value1:{2,-3} value2:{3,-3} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} canUse:{7} weight:{8,-4} price:{9,-8} model:0x{10:X4} name:\"{11}\"",
+					item.index, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.canUse, item.weight, item.price, item.model, item.name);
+				if (flagsDescription)
+					str.AppendFormat(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
+    		}
 
 			return str.ToString();
 		}
@@ -59,11 +60,20 @@ namespace PacketLogConverter.LogPackets
 				item.index = ReadByte();
 				item.level = ReadByte();
 				item.value1 = ReadByte();
-				item.spd_abs = ReadByte();
+				item.value2 = ReadByte();
 				item.hand = ReadByte(); // >>6 to get hand
 				item.damageAndObjectType = ReadByte();
+				if (windowType < (byte)eMerchantWindowType.HousingOutsideMenu)
+				{
+					item.damageType = (byte)(item.damageAndObjectType >> 6);
+					item.objectType = (byte)(item.damageAndObjectType & 0x3F);
+				}
+				else
+				{
+					item.objectType = item.damageAndObjectType;
+				}
 				item.canUse = ReadByte();
-				item.value2 = ReadShort();
+				item.weight = ReadShort();
 				item.price = ReadInt();
 				item.model = ReadShort();
 				item.name = ReadPascalString();
@@ -77,16 +87,32 @@ namespace PacketLogConverter.LogPackets
 			public byte index;
 			public byte level;
 			public byte value1;
-			public byte spd_abs;
+			public byte value2;
 			public byte hand;
-			public byte damageAndObjectType;
+			public byte damageAndObjectType; //original bytes
+			public byte damageType;
+			public byte objectType;
 			public byte canUse;
-			public ushort value2;
+			public ushort weight;
 			public uint price;
 			public ushort model;
 			public string name;
 		}
 
+		public enum eMerchantWindowType : byte
+		{
+			Normal = 0x00,
+			Bp = 0x01,
+			Count = 0x02,
+			HousingOutsideMenu = 0x04,
+			HousingMerchant = 0x05,
+			HousingInsideShop = 0x06,
+			HousingOutsideShop = 0x07,
+			HousingVault = 0x08,
+			HousingTools = 0x09,
+			HousingBindstone = 0x0A,
+			HousingInsideMenu = 0x0B,
+		}
 		/// <summary>
 		/// Constructs new instance with given capacity
 		/// </summary>

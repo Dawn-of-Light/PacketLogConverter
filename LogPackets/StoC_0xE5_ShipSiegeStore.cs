@@ -14,7 +14,7 @@ namespace PacketLogConverter.LogPackets
 		protected byte itemCount;
 		protected byte unk1; // windowType ?
 		protected byte unk2; // page ?
-		protected MerchantItem[] items;
+		protected StoC_0x17_MerchantWindow.MerchantItem[] items;
 
 		/// <summary>
 		/// Gets the object ids of the packet.
@@ -34,22 +34,23 @@ namespace PacketLogConverter.LogPackets
 		public byte Flag2 { get { return flag2; } }
 		public byte Flag3 { get { return flag3; } }
 		public byte ItemCount { get { return itemCount; } }
-		public MerchantItem[] Items { get { return items; } }
+		public StoC_0x17_MerchantWindow.MerchantItem[] Items { get { return items; } }
 
 		#endregion
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-
 			str.AppendFormat("objectOid:0x{0:X4} componentId:0x{1:X4} hookPointId:0x{2:X4} buyMoney:{3} buyBP:{4} buyGBP:{5} itemCount:{6} unk1:{7} unk2:{8}",
 				objectOid, componentId, hookPointId, flag1, flag2, flag3, itemCount, unk1, unk2);
 
 			for (int i = 0; i < itemCount; i++)
 			{
-				MerchantItem item = items[i];
-				str.AppendFormat("\n\tindex:{0,-2} level:{1,-2} value1:{2,-3} spd_abs:{3,-3} hand:0x{4:X2} damageAndObjectType:0x{5:X2} canUse:{6} value2:0x{7:X4} price:{8,-8} model:0x{9:X4} name:\"{10}\"",
-					item.index, item.level, item.value1, item.spd_abs, item.hand, item.damageAndObjectType, item.canUse, item.value2, item.price, item.model, item.name);
+				StoC_0x17_MerchantWindow.MerchantItem item = items[i];
+				str.AppendFormat("\n\tindex:{0,-2} level:{1,-2} value1:{2,-3} value2:{3,-3} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} canUse:{7} weight:{8,-4} price:{9,-8} model:0x{10:X4} name:\"{11}\"",
+					item.index, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.canUse, item.weight, item.price, item.model, item.name);
+				if (flagsDescription)
+					str.AppendFormat(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
 			}
 			return str.ToString();
 		}
@@ -67,41 +68,29 @@ namespace PacketLogConverter.LogPackets
 			unk1 = ReadByte();
 			unk2 = ReadByte();
 
-			items = new MerchantItem[itemCount];
+			items = new StoC_0x17_MerchantWindow.MerchantItem[itemCount];
 
 			for (int i = 0; i < itemCount; i++)
 			{
-				MerchantItem item = new MerchantItem();
+				StoC_0x17_MerchantWindow.MerchantItem item = new StoC_0x17_MerchantWindow.MerchantItem();
 
 				item.index = ReadByte();
 				item.level = ReadByte();
 				item.value1 = ReadByte();
-				item.spd_abs = ReadByte();
+				item.value2 = ReadByte();
 				item.hand = ReadByte(); // >>6 to get hand
 				item.damageAndObjectType = ReadByte();
+//				item.damageType = (byte)(item.damageAndObjectType >> 6);
+//				item.objectType = (byte)(item.damageAndObjectType & 0x3F);
+				item.objectType = item.damageAndObjectType; // ShipSiegeStore can't sold weapon
 				item.canUse = ReadByte();
-				item.value2 = ReadShort();
+				item.weight = ReadShort();
 				item.price = ReadInt();
 				item.model = ReadShort();
 				item.name = ReadPascalString();
 
 				items[i] = item;
 			}
-		}
-
-		public struct MerchantItem
-		{
-			public byte index;
-			public byte level;
-			public byte value1;
-			public byte spd_abs;
-			public byte hand;
-			public byte damageAndObjectType;
-			public byte canUse;
-			public ushort value2;
-			public uint price;
-			public ushort model;
-			public string name;
 		}
 
 		/// <summary>

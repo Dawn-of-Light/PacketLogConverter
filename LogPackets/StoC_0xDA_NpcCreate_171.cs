@@ -10,12 +10,14 @@ namespace PacketLogConverter.LogPackets
 		protected byte instance;
 
 		#region public access properties
-		public int Flag0x04 {get {return ((flags & 0x04) == 0x04 ? 1 : 0); } }
-		public int Flag0x08 {get {return ((flags & 0x08) == 0x08 ? 1 : 0); } }
-		public int LVLFlag0x80 {get {return ((level & 0x80) == 0x80 ? 1 : 0); } }
 		public byte Flag2 {get {return flag2; } }
 		public ushort Unk1_171 { get { return unk1_171; } }
 		public byte Instance {get {return instance; } }
+
+		public byte Statue {get {return (byte)((level & 0x80) == 0x80 ? 1 : 0); } }
+		public byte Flag0x04 {get {return (byte)((flags & 0x04) == 0x04 ? 1 : 0); } }
+		public byte LongRangeVisible {get {return (byte)((flags & 0x08) == 0x08 ? 1 : 0); } }
+		public byte HaveOwner {get {return (byte)((flag2 & 0x80) == 0x80 ? 1 : 0); } }
 
 		#endregion
 
@@ -59,9 +61,9 @@ namespace PacketLogConverter.LogPackets
 				if ((flag2 & 0x40) == 0x40)
 					flag += ",F2_UNK_0x40";
 				if ((flag2 & 0x80) == 0x80)
-					flag += ",F2_UNK_0x80";
+					flag += ",HaveOwner";
 				if ((level & 0x80) == 0x80)
-					flag += ",LVL_UNK_0x80";
+					flag += ",Statue"; // can't breath. Not in debug mode can't target and not see name. in debug mode see name, can name, see -DOR
 				str.AppendFormat(" ({0})", flag);
 			}
 

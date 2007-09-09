@@ -18,6 +18,7 @@ namespace PacketLogConverter.LogPackets
 		protected string name;
 		protected byte extraBytes;
 		protected uint internalId;
+		protected byte flagOnShipHookPoint;
 
 		/// <summary>
 		/// Gets the object ids of the packet.
@@ -25,7 +26,13 @@ namespace PacketLogConverter.LogPackets
 		/// <value>The object ids.</value>
 		public ushort[] ObjectIds
 		{
-			get { return new ushort[] { oid }; }
+			get
+			{
+				if (flagOnShipHookPoint == 1)
+					return new ushort[] { oid, (ushort)x };// x = moving object oid, y = hookpoint
+				else
+					return new ushort[] { oid };
+			}
 		}
 
 		#region public access properties
@@ -42,6 +49,7 @@ namespace PacketLogConverter.LogPackets
 		public string Name { get { return name; } }
 		public byte ExtraBytes { get { return extraBytes; } }
 		public uint InternalId { get { return internalId; } }
+		public byte FlagOnShipHookPoint { get { return flagOnShipHookPoint; } }
 
 		#endregion
 
@@ -51,6 +59,25 @@ namespace PacketLogConverter.LogPackets
 
 			str.AppendFormat("oid:0x{0:X4} emblem:0x{1:X4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} model:0x{6:X4} health:{7,3}% flags:0x{8:X2}(realm:{11}) extraBytes:{9} name:\"{10}\"",
 				oid, emblem, heading, x, y, z, model, hp, flags, extraBytes, name, (flags & 0x30)>>4);
+			if (flagsDescription)
+			{
+				string flag = "";
+				if ((flags & 0x01) == 0x01)
+					flag += ",Underwater";// not let drop on ground ?
+				if ((flags & 0x02) == 0x02)
+					flag += ",UNK_0x02";
+				if ((flags & 0x04) == 0x04)
+					flag += ",Loot";
+				if ((flags & 0x08) == 0x08)
+					flag += ",StaticItem";//or Longrange ?
+				// flag 0x10, 0x20 hold realm
+				if ((flags & 0x40) == 0x40)
+					flag += ",OnShipHookPoint";// x = moving object oid, y = hookpoint
+				if ((flags & 0x80) == 0x80)
+					flag += ",UNK_0x80";
+				if(flag != "")
+					str.AppendFormat(" ({0})", flag);
+			}
 			if (extraBytes == 4)
 			{
 				str.AppendFormat(" doorId:0x{0:X4}", internalId);
@@ -110,6 +137,8 @@ namespace PacketLogConverter.LogPackets
 			flags = ReadByte();
 			name = ReadPascalString();
 			extraBytes = ReadByte();
+			if ((flags & 0x40) == 0x40)
+				flagOnShipHookPoint = 1;
 
 			if (extraBytes == 4)
 				internalId = ReadInt();

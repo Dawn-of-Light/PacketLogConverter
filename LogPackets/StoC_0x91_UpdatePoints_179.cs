@@ -17,7 +17,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("realmPoints:{0,-8} levelPermill:{1:00.0}%  skillSpecPoints:{2,-4} bountyPoints:{3,-6} realmSpecPoints:{4,-3} champLevelPermill:{5:00.0}%",
+			str.AppendFormat("realmPoints:{0,-9} levelPermill:{1:000.0}%  skillSpecPoints:{2,-4} bountyPoints:{3,-6} realmSpecPoints:{4,-3} champLevelPermill:{5:000.0}%",
 				realmPoints, 0.1 * levelPermill, skillSpecPoints, bountyPoints, realmSpecPoints, 0.1 * champLevelPermill);
 
 			return str.ToString();

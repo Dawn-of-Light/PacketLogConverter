@@ -1,4 +1,9 @@
 ------------------------------------------------------------------------------
+Noret (9.Sep.2007):
+- Packet updates and small improvements from Tiv
+- Implemented framework for loading/saving of active filters
+- Log data is updated after version change and "apply"
+------------------------------------------------------------------------------
 Noret (7.May.2006):
 - Bugfixes
 ------------------------------------------------------------------------------

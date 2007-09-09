@@ -141,9 +141,12 @@
     <Compile Include="LogActions\ShowPlayerCombatAction.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogActions\ShowPlayerEffects.cs" />
     <Compile Include="LogActions\ShowPlayerInfoAction.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogActions\ShowPlayerWeapon.cs" />
+    <Compile Include="LogActions\ShowPrevSamePacket.cs" />
     <Compile Include="LogActions\ShowRawData.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -204,7 +207,7 @@
     <Compile Include="LogPackets\CtoS_0x10_CharacterSelectRequest_174.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LogPackets\CtoS_0x10_CharacterSelectRequest_175.cs" />
+    <Compile Include="LogPackets\CtoS_0x10_CharacterSelectRequest_190c.cs" />
     <Compile Include="LogPackets\CtoS_0x11_PlayerMarketSearch.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -326,6 +329,7 @@
     <Compile Include="LogPackets\CtoS_0x9D_RegionListRequest_183.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\CtoS_0x9D_RegionListRequest_188.cs" />
     <Compile Include="LogPackets\CtoS_0x9F_DisbandFromGroup.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -351,6 +355,8 @@
     <Compile Include="LogPackets\CtoS_0xA9_PlayerPosition_172.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\CtoS_0xA9_PlayerPosition_190c.cs" />
+    <Compile Include="LogPackets\CtoS_0xA9_PlayerPosition_190f.cs" />
     <Compile Include="LogPackets\CtoS_0xAC_PlayerResetCharacter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -366,9 +372,11 @@
     <Compile Include="LogPackets\CtoS_0xB8_Disconnect.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\CtoS_0xB9_UnknownPacket.cs" />
     <Compile Include="LogPackets\CtoS_0xBA_PlayerShortState.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\CtoS_0xBA_PlayerShortState_190c.cs" />
     <Compile Include="LogPackets\CtoS_0xBB_UseSkill.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -453,6 +461,7 @@
     <Compile Include="LogPackets\CtoS_0xF4_CryptKeyRequest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\CtoS_0xF4_CryptKeyRequest_186.cs" />
     <Compile Include="LogPackets\CtoS_0xF5_SiegeWeaponInteract.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -483,6 +492,7 @@
     <Compile Include="LogPackets\StoC_0x02_InventoryUpdate_182.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x02_InventoryUpdate_189.cs" />
     <Compile Include="LogPackets\StoC_0x03_HousePermissionList.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -495,6 +505,7 @@
     <Compile Include="LogPackets\StoC_0x08_HouseInsideUpdate.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x08_HouseInsideUpdate_189.cs" />
     <Compile Include="LogPackets\StoC_0x09_HouseDecorationUpdate.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -513,6 +524,7 @@
     <Compile Include="LogPackets\StoC_0x13_MLQuestUpdate.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x13_MLQuestUpdate_190.cs" />
     <Compile Include="LogPackets\StoC_0x15_EquipmentUpdate.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -522,6 +534,7 @@
     <Compile Include="LogPackets\StoC_0x15_EquipmentUpdate_176.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x15_EquipmentUpdate_189.cs" />
     <Compile Include="LogPackets\StoC_0x16_VariousUpdate.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -567,6 +580,8 @@
     <Compile Include="LogPackets\StoC_0x22_VersionAndCryptKey.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x22_VersionAndCryptKey_186.cs" />
+    <Compile Include="LogPackets\StoC_0x24_UnknownPacket.cs" />
     <Compile Include="LogPackets\StoC_0x28_SetSessionId.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -597,6 +612,7 @@
     <Compile Include="LogPackets\StoC_0x46_UnknownPacket.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x47_Earthquake.cs" />
     <Compile Include="LogPackets\StoC_0x49_WarmapClaimedKeeps.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -627,6 +643,8 @@
     <Compile Include="LogPackets\StoC_0x59_UnknownPacket.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x5C_XFireSupport.cs" />
+    <Compile Include="LogPackets\StoC_0x5F_UnknownPacket.cs" />
     <Compile Include="LogPackets\StoC_0x61_KeepRepair.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -657,6 +675,7 @@
     <Compile Include="LogPackets\StoC_0x6D_KeepComponentUpdate.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x6E_UnknownPacket.cs" />
     <Compile Include="LogPackets\StoC_0x70_PlayerGroupUpdate.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -690,6 +709,7 @@
     <Compile Include="LogPackets\StoC_0x7F_UpdateIcons_173.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x7F_UpdateIcons_190c.cs" />
     <Compile Include="LogPackets\StoC_0x81_ShowDialog.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -739,6 +759,7 @@
     <Compile Include="LogPackets\StoC_0x91_UpdatePoints_179.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x91_UpdatePoints_190.cs" />
     <Compile Include="LogPackets\StoC_0x92_SetWeather.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -763,9 +784,12 @@
     <Compile Include="LogPackets\StoC_0xA9_PlayerPosition_172.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0xA9_PlayerPosition_190c.cs" />
+    <Compile Include="LogPackets\StoC_0xA9_PlayerPosition_190f.cs" />
     <Compile Include="LogPackets\StoC_0xAD_StatusUpdate.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0xAD_StatusUpdate_190.cs" />
     <Compile Include="LogPackets\StoC_0xAE_PlayerDied.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -790,6 +814,7 @@
     <Compile Include="LogPackets\StoC_0xBA_PlayerShortState.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0xBA_PlayerShortState_190c.cs" />
     <Compile Include="LogPackets\StoC_0xBC_CombatAnimation.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -832,9 +857,11 @@
     <Compile Include="LogPackets\StoC_0xD1_HouseCreate.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0xD1_HouseCreate_189.cs" />
     <Compile Include="LogPackets\StoC_0xD2_HouseUpdate.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0xD2_HouseUpdate_189.cs" />
     <Compile Include="LogPackets\StoC_0xD3_CraftResult.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -928,6 +955,7 @@
     <Compile Include="LogPackets\StoC_0xFD_CharacterOverview_173.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0xFD_CharacterOverview_189.cs" />
     <Compile Include="LogPackets\StoC_0xFE_SetRealm.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -961,15 +989,23 @@
     <Compile Include="LogWriterAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogWriters\CombatStatisticWriter.cs" />
+    <Compile Include="LogWriters\CraftingWriter.cs" />
     <Compile Include="LogWriters\DaocLoggerV3BinaryLogWriter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogWriters\DaocLoggerV3TextLogWriter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogWriters\EmotionWriter.cs" />
     <Compile Include="LogWriters\InventoryItemsSampleWriter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogWriters\InventoryMerchantMarketWriter.cs" />
+    <Compile Include="LogWriters\keepcomponentxmlwriter.cs" />
+    <Compile Include="LogWriters\keepobjectxmlwriter.cs" />
+    <Compile Include="LogWriters\keepxmlwriter.cs" />
+    <Compile Include="LogWriters\Logger.cs" />
     <Compile Include="LogWriters\NpcUpdateUnkSpeedBitsWriter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -979,6 +1015,7 @@
     <Compile Include="LogWriters\ShortLogWriter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogWriters\SkillsWriter.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1006,23 +1043,32 @@
     <Compile Include="Util.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utils\FilterReader.cs" />
+    <Compile Include="Utils\FilterStreamBase.cs" />
+    <Compile Include="Utils\FilterWriter.cs" />
+    <Compile Include="Utils\StreamWrap.cs" />
     <EmbeddedResource Include="ErrorForm.resx">
       <DependentUpon>ErrorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogActions\InfoWindowForm.resx">
       <DependentUpon>InfoWindowForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LogFilters\ObjectIdFilterForm.resx">
       <DependentUpon>ObjectIdFilterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LogFilters\PacketCodeFilterForm.resx">
       <DependentUpon>PacketCodeFilterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LogFilters\PacketPropertyValueFilterForm.resx">
       <DependentUpon>PacketPropertyValueFilterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressForm.resx">
       <DependentUpon>ProgressForm.cs</DependentUpon>
@@ -1030,9 +1076,6 @@
     <EmbeddedResource Include="ReportForm.resx">
       <DependentUpon>ReportForm.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
