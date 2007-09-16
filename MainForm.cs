@@ -614,10 +614,12 @@ namespace PacketLogConverter
 			// openFilterDialog
 			// 
 			this.openFilterDialog.Filter = "Filters (*.flt)|*.flt";
+			this.openFilterDialog.RestoreDirectory = true;
 			// 
 			// saveFilterDialog
 			// 
 			this.saveFilterDialog.Filter = "Filters (*.flt)|*.flt";
+			this.saveFilterDialog.RestoreDirectory = true;
 			// 
 			// MainForm
 			// 
@@ -628,6 +630,7 @@ namespace PacketLogConverter
 			this.MinimumSize = new System.Drawing.Size(600, 400);
 			this.Name = "MainForm";
 			this.Text = "MainForm";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.mainFormTabs.ResumeLayout(false);
 			this.instantParseTab.ResumeLayout(false);
@@ -794,6 +797,20 @@ namespace PacketLogConverter
 			// Updates
 			UpdateRecentFilesMenu();
 			UpdateCaption();
+			
+			// Settings
+			LoadSettings();
+		}
+
+		/// <summary>
+		/// Handles the FormClosing event of the MainForm control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> instance containing the event data.</param>
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			// Settings
+			SaveSettings();
 		}
 
 		/// <summary>
@@ -923,6 +940,7 @@ namespace PacketLogConverter
      				{
 						if (DialogResult.OK == openFilterDialog.ShowDialog(this))
 						{
+							saveFilterDialog.FileName = openFilterDialog.FileName;
 							FilterManager.LoadFilters(openFilterDialog.FileName, m_logFilters);
 							UpdateLogDataTab();
 						}
@@ -936,6 +954,7 @@ namespace PacketLogConverter
 						// "Save" menu item
 						if (DialogResult.OK == saveFilterDialog.ShowDialog(this))
 						{
+							openFilterDialog.FileName = saveFilterDialog.FileName;
 							FilterManager.SaveFilters(saveFilterDialog.FileName);
 						}
 					};
@@ -1112,7 +1131,7 @@ namespace PacketLogConverter
 		{
 			if (m_logReaders.Count > 0)
 			{
-				openAnotherLogDialog.InitialDirectory = openLogDialog.InitialDirectory;
+				openAnotherLogDialog.FileName = openLogDialog.FileName;
 				if (openAnotherLogDialog.ShowDialog() == DialogResult.OK)
 				{
 					try
@@ -1210,9 +1229,11 @@ namespace PacketLogConverter
 
 		#endregion
 
-		#region Recent Files
+		#region Registry
 
 		const string RegKeysPath = @"Software\DawnOfLight\PacketLogConverter\";
+		const string FilterFolder = "FilterFolder";
+		const string LogsFolder = "LogsFolder";
 
 		private void UpdateRecentFilesMenu()
 		{
@@ -1288,6 +1309,94 @@ namespace PacketLogConverter
 				}
 
 				UpdateRecentFilesMenu();
+			}
+		}
+
+		/// <summary>
+		/// Saves the settings to registry.
+		/// </summary>
+		private void SaveSettings()
+		{
+			try
+			{
+				RegistryKey key = Registry.CurrentUser.CreateSubKey(RegKeysPath);
+
+				if (key != null)
+				{
+					using (key)
+					{
+						// Filter folder
+						SaveFileDialogFolder(key, FilterFolder, openFilterDialog);
+
+						// Logs folder
+						SaveFileDialogFolder(key, LogsFolder, openLogDialog);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.Message, e);
+			}
+		}
+
+		/// <summary>
+		/// Saves the file dialog folder.
+		/// </summary>
+		/// <param name="key">The key.</param>
+		/// <param name="regKeyName">Name of the reg key.</param>
+		/// <param name="dialog">The dialog.</param>
+		private void SaveFileDialogFolder(RegistryKey key, string regKeyName, FileDialog dialog)
+		{
+			string fileName = dialog.FileName;
+			if (fileName != null && fileName.Length > 0)
+			{
+				FileInfo fileInfo = new FileInfo(fileName);
+				key.SetValue(regKeyName, fileInfo.DirectoryName);
+			}
+		}
+
+		/// <summary>
+		/// Loads the settings from registry.
+		/// </summary>
+		private void LoadSettings()
+		{
+			try
+			{
+				RegistryKey key = Registry.CurrentUser.CreateSubKey(RegKeysPath);
+
+				if (key != null)
+				{
+					using (key)
+					{
+						// Filters folder
+						string filterFolder = key.GetValue(FilterFolder) as string;
+						LoadFolderDialog(filterFolder, openFilterDialog);
+						LoadFolderDialog(filterFolder, saveFilterDialog);
+						
+						// Logs folder
+						string logsFolder = key.GetValue(LogsFolder) as string;
+						LoadFolderDialog(logsFolder, openLogDialog);
+						LoadFolderDialog(logsFolder, saveLogDialog);
+						LoadFolderDialog(logsFolder, openAnotherLogDialog);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.Message, e);
+			}
+		}
+
+		/// <summary>
+		/// Loads the folder dialog.
+		/// </summary>
+		/// <param name="dialog">The dialog.</param>
+		/// <param name="folder">The folder.</param>
+		private void LoadFolderDialog(string folder, FileDialog dialog)
+		{
+			if (folder != null && folder.Length > 0)
+			{
+				dialog.InitialDirectory = folder;
 			}
 		}
 
@@ -1805,6 +1914,5 @@ namespace PacketLogConverter
 		}
 
 		#endregion
-
 	}
 }

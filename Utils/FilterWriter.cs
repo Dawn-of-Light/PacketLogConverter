@@ -74,7 +74,7 @@ namespace PacketLogConverter.Utils
 						m_Writer.Write(filter.GetType().FullName);
 
 						// Save filter data
-						byte[] data = filterData.GetBuffer();
+						byte[] data = filterData.ToArray();
 						m_Writer.Write(data.Length);
 						m_Writer.Write(data, 0, data.Length);
 					}

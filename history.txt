@@ -1,6 +1,7 @@
 ------------------------------------------------------------------------------
 Noret (16.Sep.2007):
 - Implemented serializers for "Packet code" (Tiv) and "Packet property value" (me) filters
+- Folders of Log and Filter dialogs are saved/loaded to registry
 ------------------------------------------------------------------------------
 Noret (9.Sep.2007):
 - Packet updates and small improvements from Tiv
