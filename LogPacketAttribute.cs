@@ -5,7 +5,7 @@ namespace PacketLogConverter
 	/// <summary>
 	/// Denotes a class as a packet
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false)]
+	[Serializable, AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 	public class LogPacketAttribute : Attribute
 	{
 		private int m_packetCode;
@@ -43,6 +43,44 @@ namespace PacketLogConverter
 		public string Description
 		{
 			get { return m_description; }
+		}
+
+		///<summary>
+		///Returns a value that indicates whether this instance is equal to a specified object.
+		///</summary>
+		///
+		///<returns>
+		///true if obj equals the type and value of this instance; otherwise, false.
+		///</returns>
+		///
+		///<param name="obj">An <see cref="T:System.Object"></see> to compare with this instance or null. </param><filterpriority>2</filterpriority>
+		public override bool Equals(object obj)
+		{
+			bool ret = false;
+			LogPacketAttribute attr = obj as LogPacketAttribute;
+			if (attr != null)
+			{
+				// Check all fields
+				ret = attr.m_direction == m_direction;
+				ret &= attr.m_packetCode == m_packetCode;
+				ret &= attr.m_version == m_version;
+			}
+
+			return ret;
+		}
+
+		///<summary>
+		///Returns the hash code for this instance.
+		///</summary>
+		///
+		///<returns>
+		///A 32-bit signed integer hash code.
+		///</returns>
+		///<filterpriority>2</filterpriority>
+		public override int GetHashCode()
+		{
+			int ret = (int) m_direction + m_packetCode + (int) m_version;
+			return ret;
 		}
 	}
 }

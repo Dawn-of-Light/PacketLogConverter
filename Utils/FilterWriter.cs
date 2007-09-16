@@ -60,13 +60,13 @@ namespace PacketLogConverter.Utils
 			// Write count of filters
 			m_Writer.Write(filters.Count);
 			
-			// Create temp space for filter data
-			Packet filterData = new Packet(0x100);
-			
 			foreach (ILogFilter filter in filters)
 			{
 				try
 				{
+					// Create temp space for filter data
+					MemoryStream filterData = new MemoryStream(0x100);
+
 					// Serialize filter data
 					if (filter.Serialize(filterData))
 					{
@@ -74,18 +74,15 @@ namespace PacketLogConverter.Utils
 						m_Writer.Write(filter.GetType().FullName);
 
 						// Save filter data
-						int size = (int)filterData.Length;
-						m_Writer.Write(size);
-						m_Writer.Write(filterData.GetBuffer(), 0, size);
+						byte[] data = filterData.GetBuffer();
+						m_Writer.Write(data.Length);
+						m_Writer.Write(data, 0, data.Length);
 					}
 				}
 				catch (Exception e)
 				{
 					Log.Error("Error writing filter '" + filter.GetType().FullName + "'", e);
 				}
-				
-				// Reset filter data
-				filterData.Position = 0;
 			}
 		}
 

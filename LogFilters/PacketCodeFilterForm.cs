@@ -657,7 +657,19 @@ namespace PacketLogConverter.LogFilters
 		/// <returns><code>true</code> if filter is serialized, <code>false</code> otherwise.</returns>
 		public bool Serialize(MemoryStream data)
 		{
-			return false;
+			// Serialize client-to-server packets
+			for (int i = 0; i < Packet.MAX_CODE; i++)
+			{
+				data.WriteByte((byte)(ctosCheckedListBox.GetItemChecked(i) ? 1 : 0));
+			}
+
+			// Serialize server-to-client packets
+			for (int i = 0; i < Packet.MAX_CODE; i++)
+			{
+				data.WriteByte((byte)(stocCheckedListBox.GetItemChecked(i) ? 1 : 0));
+			}
+			
+			return true;
 		}
 
 		/// <summary>
@@ -667,7 +679,25 @@ namespace PacketLogConverter.LogFilters
 		/// <returns><code>true</code> if filter is deserialized, <code>false</code> otherwise.</returns>
 		public bool Deserialize(MemoryStream data)
 		{
-			return false;
+			// Clear selected packets
+			SetListBox(stocCheckedListBox, false);
+			SetListBox(ctosCheckedListBox, false);
+
+			// Deserialize client-to-server packets
+			for (int i = 0; i < Packet.MAX_CODE; i++)
+			{
+				int active = data.ReadByte();
+				ctosCheckedListBox.SetItemChecked(i, (active == 1 ? true : false));
+			}
+
+			// Deserialize server-to-client packets
+			for (int i = 0; i < Packet.MAX_CODE; i++)
+			{
+				int active = data.ReadByte();
+				stocCheckedListBox.SetItemChecked(i, (active == 1 ? true : false));
+			}
+			
+			return true;
 		}
 
 		#endregion

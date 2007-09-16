@@ -1,4 +1,7 @@
 ------------------------------------------------------------------------------
+Noret (16.Sep.2007):
+- Implemented serializers for "Packet code" (Tiv) and "Packet property value" (me) filters
+------------------------------------------------------------------------------
 Noret (9.Sep.2007):
 - Packet updates and small improvements from Tiv
 - Implemented framework for loading/saving of active filters

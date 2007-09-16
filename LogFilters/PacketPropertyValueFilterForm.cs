@@ -5,9 +5,12 @@ using System.Collections;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Forms;
 using PacketLogConverter.LogWriters;
+using PacketLogConverter.Utils;
 
 namespace PacketLogConverter.LogFilters
 {
@@ -375,9 +378,32 @@ namespace PacketLogConverter.LogFilters
 		/// <returns><code>true</code> if filter is serialized, <code>false</code> otherwise.</returns>
 		public bool Serialize(MemoryStream data)
 		{
-			return false;
-		}
+			// Do not save empty filters
+			if (filtersListBox.Items.Count == 0)
+				return false;
+			
+			// Save all entries
+			using (BinaryWriter binWriter = new BinaryWriter(data))
+			{
+				// Enabled flag
+				binWriter.Write(enableCheckBox.Checked);
 
+				BinaryFormatter serializer = new BinaryFormatter();
+
+				// Count of entries
+				binWriter.Write(filtersListBox.Items.Count);
+				binWriter.Flush();
+				
+				// Content of entries
+				foreach (FilterListEntry entry in filtersListBox.Items)
+				{
+					// Seralize info about packet class
+					serializer.Serialize(data, entry);
+				}
+			}
+			return true;
+		}
+		
 		/// <summary>
 		/// Deserializes data of instance of this filter.
 		/// </summary>
@@ -385,7 +411,23 @@ namespace PacketLogConverter.LogFilters
 		/// <returns><code>true</code> if filter is deserialized, <code>false</code> otherwise.</returns>
 		public bool Deserialize(MemoryStream data)
 		{
-			return false;
+			// Clear current data
+			filtersListBox.Items.Clear();
+			
+			// Load all entries
+			using (BinaryReader binReader = new BinaryReader(data))
+			{
+				// Enabled flag
+				enableCheckBox.Checked = binReader.ReadBoolean();
+
+				BinaryFormatter serializer = new BinaryFormatter();
+				for (int i = binReader.ReadInt32(); i > 0; i--)
+				{
+					FilterListEntry entry = (FilterListEntry) serializer.Deserialize(data);
+					filtersListBox.Items.Add(entry);
+				}
+			}
+			return true;
 		}
 
 		#endregion

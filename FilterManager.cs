@@ -17,34 +17,59 @@ namespace PacketLogConverter
 		private static readonly ArrayList m_filters = new ArrayList();
 		private static bool m_combineFilters;
 		private static bool m_invertCheck;
+		private static bool m_loading;
 
 		public static event FilterAction FilterAddedEvent;
 		public static event FilterAction FilterRemovedEvent;
 		public static event StatusChange CombineFiltersChangedEvent;
 		public static event StatusChange InvertCheckChangedEvent;
 
+		/// <summary>
+		/// Determines whether the specified packet is ignored.
+		/// </summary>
+		/// <param name="pak">The packet.</param>
+		/// <returns>
+		/// 	<c>true</c> if the specified packet is ignored; otherwise, <c>false</c>.
+		/// </returns>
 		public static bool IsPacketIgnored(Packet pak)
 		{
-			if (CombineFilters) // allow if not ignored by at least on filter
+			bool ret = false;
+			
+			if (m_loading)
 			{
-				for (int i = 0; i < m_filters.Count; i++)
-				{
-					ILogFilter filter = (ILogFilter)m_filters[i];
-					if (filter.IsPacketIgnored(pak) == m_invertCheck) // not ignored = allow
-						return false;
-				}
-				return true;
+				ret = true;
 			}
 			else
 			{
-				for (int i = 0; i < m_filters.Count; i++)
+				if (CombineFilters) // allow if not ignored by at least on filter
 				{
-					ILogFilter filter = (ILogFilter)m_filters[i];
-					if (filter.IsPacketIgnored(pak) != m_invertCheck) // not ignored = allow
-						return true;
+					ret = true;
+					for (int i = 0; i < m_filters.Count; i++)
+					{
+						ILogFilter filter = (ILogFilter)m_filters[i];
+						if (filter.IsPacketIgnored(pak) == m_invertCheck) // not ignored = allow
+						{
+							ret = false;
+							break;
+						}
+					}
 				}
-				return false;
+				else
+				{
+					ret = false;
+					for (int i = 0; i < m_filters.Count; i++)
+					{
+						ILogFilter filter = (ILogFilter)m_filters[i];
+						if (filter.IsPacketIgnored(pak) != m_invertCheck) // not ignored = allow
+						{
+							ret = true;
+							break;
+						}
+					}
+				}
 			}
+			
+			return ret;
 		}
 
 		public static int FiltersCount
@@ -199,37 +224,46 @@ namespace PacketLogConverter
 		/// <param name="allFilters">Collection with all loaded filter instances.</param>
 		public static void LoadFilters(string path, ICollection allFilters)
 		{
-			// Deactivate all filters
-			foreach (ILogFilter filter in allFilters)
-			{
-				RemoveFilter(filter);
-			}
-		
-			// Load filters
-			List<ILogFilter> loadedFilters = null;
-			using (FilterReader reader = new FilterReader(path))
-			{
-				try
-				{
-					// Read file
-					reader.ProcessHeader();
-					loadedFilters = reader.ReadFilters(allFilters);
-					reader.ProcessEpilogue();
+			m_loading = true;
 
-					// Copy data
-					CombineFilters	= reader.CombineFilters;
-					InvertCheck		= reader.InvertCheck;
-				}
-				catch(Exception e)
+			try
+			{
+				// Deactivate all filters
+				foreach (ILogFilter filter in allFilters)
 				{
-					Log.Error("Loading filters", e);
+					RemoveFilter(filter);
+				}
+
+				// Load filters
+				List<ILogFilter> loadedFilters = null;
+				using (FilterReader reader = new FilterReader(path))
+				{
+					try
+					{
+						// Read file
+						reader.ProcessHeader();
+						loadedFilters = reader.ReadFilters(allFilters);
+						reader.ProcessEpilogue();
+
+						// Copy data
+						CombineFilters = reader.CombineFilters;
+						InvertCheck = reader.InvertCheck;
+					}
+					catch (Exception e)
+					{
+						Log.Error("Loading filters", e);
+					}
+				}
+
+				// Activate loaded filters
+				foreach (ILogFilter filter in loadedFilters)
+				{
+					AddFilter(filter);
 				}
 			}
-			
-			// Activate loaded filters
-			foreach (ILogFilter filter in loadedFilters)
+			finally
 			{
-				AddFilter(filter);
+				m_loading = false;
 			}
 		}
 
