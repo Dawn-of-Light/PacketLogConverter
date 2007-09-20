@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using PacketLogConverter.Utils;
 
 namespace PacketLogConverter
 {
 	public delegate void FilterAction(ILogFilter filter);
 	public delegate void StatusChange(bool newValue);
+	public delegate void LogAction(PacketLog log);
+	public delegate void PacketAction(Packet packet);
 
 	/// <summary>
 	/// Manages log filters
@@ -25,6 +28,28 @@ namespace PacketLogConverter
 		public static event StatusChange InvertCheckChangedEvent;
 
 		/// <summary>
+		/// Event is raised when log filtering is started.
+		/// </summary>
+		/// <remarks>
+		/// Calling thread is not guaranteed to be UI thread, but all three events are called from the same thread.
+		/// </remarks>
+		public static event LogAction FilteringStartedEvent;
+		/// <summary>
+		/// Event is raised when log filtering is stopped.
+		/// </summary>
+		/// <remarks>
+		/// Calling thread is not guaranteed to be UI thread, but all three events are called from the same thread.
+		/// </remarks>
+		public static event LogAction FilteringStoppedEvent;
+		/// <summary>
+		/// Event is raised when packet is being processed.
+		/// </summary>
+		/// <remarks>
+		/// Calling thread is not guaranteed to be UI thread, but all three events are called from the same thread.
+		/// </remarks>
+		public static event PacketAction FilteringPacketEvent;
+
+		/// <summary>
 		/// Determines whether the specified packet is ignored.
 		/// </summary>
 		/// <param name="pak">The packet.</param>
@@ -33,6 +58,9 @@ namespace PacketLogConverter
 		/// </returns>
 		public static bool IsPacketIgnored(Packet pak)
 		{
+			// Notify all listeners
+			RaiseFilteringPacketEvent(pak);
+			
 			bool ret = false;
 			
 			if (m_loading)
@@ -72,6 +100,28 @@ namespace PacketLogConverter
 			return ret;
 		}
 
+		/// <summary>
+		/// Raises the filtering packet event.
+		/// </summary>
+		/// <param name="pak">The pak.</param>
+		private static void RaiseFilteringPacketEvent(Packet pak)
+		{
+			try
+			{
+				PacketAction e = FilteringPacketEvent;
+				if (e != null)
+					e(pak);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.Message, e);
+			}
+		}
+
+		/// <summary>
+		/// Gets the filters count.
+		/// </summary>
+		/// <value>The filters count.</value>
 		public static int FiltersCount
 		{
 			get { return m_filters.Count; }
@@ -188,6 +238,10 @@ namespace PacketLogConverter
 
 		#region Save/Load
 		
+		/// <summary>
+		/// Saves the filters.
+		/// </summary>
+		/// <param name="path">The path.</param>
 		public static void SaveFilters(string path)
 		{
 			using (FilterWriter writer = new FilterWriter(path))
@@ -267,6 +321,52 @@ namespace PacketLogConverter
 			}
 		}
 
+		#endregion
+		
+		#region Filtering start/stop events
+
+		/// <summary>
+		/// Manager is notified that filtering is started.
+		/// </summary>
+		/// <param name="log">The log which is being filtered.</param>
+		public static void LogFilteringStarted(PacketLog log)
+		{
+			try
+			{
+				// To be safe
+				Thread.MemoryBarrier();
+
+				LogAction e = FilteringStartedEvent;
+				if (e != null)
+					e(log);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.Message, e);
+			}
+		}
+
+		/// <summary>
+		/// Manager is notified that filtering is stopped.
+		/// </summary>
+		/// <param name="log">The log which is being filtered.</param>
+		public static void LogFilteringStopped(PacketLog log)
+		{
+			try
+			{
+				LogAction e = FilteringStoppedEvent;
+				if (e != null)
+					e(log);
+
+				// To be safe
+				Thread.MemoryBarrier();
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.Message, e);
+			}
+		}
+		
 		#endregion
 	}
 }

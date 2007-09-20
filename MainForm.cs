@@ -1452,6 +1452,9 @@ namespace PacketLogConverter
 				bool showPacketSequence = mnuPacketSequence.Checked;
 				TimeSpan baseTime = new TimeSpan(0);
 
+				// Notify filter manager that log filtering starts
+				FilterManager.LogFilteringStarted(CurrentLog);
+
 				StringBuilder text = new StringBuilder();
 				foreach (Packet pak in CurrentLog)
 				{
@@ -1515,6 +1518,11 @@ namespace PacketLogConverter
 			catch (Exception e)
 			{
 				Log.Error("updating data tab", e);
+			}
+			finally
+			{
+				// Notify filter manager that filtering is finished
+				FilterManager.LogFilteringStopped(CurrentLog);
 			}
 		}
 

@@ -300,7 +300,7 @@ namespace PacketLogConverter.LogFilters
 		/// <summary>
 		/// Activates the filter.
 		/// </summary>
-		/// <returns><code>true</code> if filter has changed.</returns>
+		/// <returns><code>true</code> if filter has changed and log should be updated.</returns>
 		public bool ActivateFilter()
 		{
 			InitPacketsList();

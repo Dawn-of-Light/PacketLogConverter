@@ -1,4 +1,14 @@
 ------------------------------------------------------------------------------
+Noret (20.Sep.2007):
+- Added events for when filtering is started, stopped and when each packet is checked:
+  - FilterManager.FilteringStartedEvent
+  - FilterManager.FilteringStoppedEvent
+  - FilterManager.FilteringPacketEvent
+  Note: Calling thread is not guaranteed to be UI thread, but all three events are called from the same thread.
+- Two new filters from Tiv:
+  - Controlled pet dynamic OID packets - shows all packets which contain OID of controlled pet
+  - Self dynamic OID packets - shows all packets which contain OID of user who logged the packets
+------------------------------------------------------------------------------
 Noret (16.Sep.2007):
 - Implemented serializers for "Packet code" (Tiv) and "Packet property value" (me) filters
 - Folders of Log and Filter dialogs are saved/loaded to registry
