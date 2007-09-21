@@ -20,7 +20,7 @@ namespace PacketLogConverter.LogFilters
 			if (packet is StoC_0x88_PetWindowUpdate)
 			{
 				StoC_0x88_PetWindowUpdate petWindow = (StoC_0x88_PetWindowUpdate)packet;
-				m_oid = petWindow.PetId;
+				Oid = petWindow.PetId;
 			}
 		}
 	}

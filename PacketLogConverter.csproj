@@ -154,6 +154,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogFilters\AbstractDynamicOIDFilter.cs" />
+    <Compile Include="LogFilters\AbstractFilter.cs" />
     <Compile Include="LogFilters\DynamicControlledPetOIDPacketsFilter.cs" />
     <Compile Include="LogFilters\DynamicFilterHelper.cs" />
     <Compile Include="LogFilters\DynamicSelfOIDPacketsFilter.cs" />

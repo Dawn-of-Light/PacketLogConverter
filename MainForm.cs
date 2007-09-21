@@ -1209,12 +1209,22 @@ namespace PacketLogConverter
 		/// <param name="state">The state.</param>
 		private void SaveFileProc(ProgressCallback callback, object state)
 		{
-			ILogWriter writer = (ILogWriter)m_logWriters[saveLogDialog.FilterIndex-1];
-			using(FileStream stream = new FileStream(saveLogDialog.FileName, FileMode.Create))
+			// Notify filter manager
+			FilterManager.LogFilteringStarted(CurrentLog);
+
+			try
 			{
-				writer.WriteLog(CurrentLog, stream, callback);
+				ILogWriter writer = (ILogWriter)m_logWriters[saveLogDialog.FilterIndex - 1];
+				using (FileStream stream = new FileStream(saveLogDialog.FileName, FileMode.Create))
+				{
+					writer.WriteLog(CurrentLog, stream, callback);
+				}
 			}
-//			AddRecentFile(new FileInfo(saveLogDialog.FileName).FullName);
+			finally
+			{
+				// Notify filter manager
+				FilterManager.LogFilteringStopped(CurrentLog);
+			}
 		}
 
 		/// <summary>

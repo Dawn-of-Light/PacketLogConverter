@@ -1,4 +1,10 @@
 ------------------------------------------------------------------------------
+Noret (21.Sep.2007):
+- New filter events are fired also when log is saved
+- Right-clicks on InfoWindowForm (used in all log actions) should no longer "leak" into background windows
+- Dynamic filters add event handlers when loaded
+- Extracted common logic from KnownIncompletePacketsFilter and AbstractDynamicOIDFilter to AbstractFilter
+------------------------------------------------------------------------------
 Noret (20.Sep.2007):
 - Added events for when filtering is started, stopped and when each packet is checked:
   - FilterManager.FilteringStartedEvent

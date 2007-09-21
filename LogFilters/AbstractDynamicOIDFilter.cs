@@ -8,13 +8,12 @@ namespace PacketLogConverter.LogFilters
 	/// <summary>
 	/// Encapsulates common logic for all OID filters.
 	/// </summary>
-	public abstract class AbstractDynamicOIDFilter : ILogFilter
+	public abstract class AbstractDynamicOIDFilter : AbstractFilter
 	{
 		protected static readonly ushort ID_NOT_SET = 0;
 		
-		protected DynamicFilterHelper m_filterHelper;
-		protected ushort m_oid;
-		private bool m_active;
+		private DynamicFilterHelper m_filterHelper;
+		private ushort m_oid;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:AbstractDynamicOIDFilter"/> class.
@@ -26,6 +25,18 @@ namespace PacketLogConverter.LogFilters
 			m_filterHelper.Stop				= FilterManager_OnFilteringStoppedEvent;
 			m_filterHelper.ProcessPacket	= FilterManager_OnFilteringPacketEvent;
 		}
+
+		/// <summary>
+		/// Gets or sets the oid.
+		/// </summary>
+		/// <value>The oid.</value>
+		protected ushort Oid
+		{
+			get { return m_oid; }
+			set { m_oid = value; }
+		}
+
+		#region Filter event handlers
 
 		/// <summary>
 		/// Resets all variables when filtering starts.
@@ -50,24 +61,9 @@ namespace PacketLogConverter.LogFilters
 		/// <param name="packet">The packet.</param>
 		protected abstract void FilterManager_OnFilteringPacketEvent(Packet packet);
 
+		#endregion
+
 		#region ILogFilter Members
-
-		/// <summary>
-		/// Activates the filter.
-		/// </summary>
-		/// <returns><code>true</code> if filter has changed and log should be updated.</returns>
-		public virtual bool ActivateFilter()
-		{
-			m_active = !m_active;
-			if (IsFilterActive)
-				FilterManager.AddFilter(this);
-			else
-				FilterManager.RemoveFilter(this);
-
-			m_filterHelper.SetEventHandlers(m_active);
-
-			return true;
-		}
 
 		/// <summary>
 		/// Determines whether the packet should be ignored.
@@ -76,7 +72,7 @@ namespace PacketLogConverter.LogFilters
 		/// <returns>
 		/// 	<c>true</c> if packet should be ignored; otherwise, <c>false</c>.
 		/// </returns>
-		public virtual bool IsPacketIgnored(Packet packet)
+		public override bool IsPacketIgnored(Packet packet)
 		{
 			// No id is set
 			if (m_oid == ID_NOT_SET)
@@ -110,32 +106,13 @@ namespace PacketLogConverter.LogFilters
 		/// <value>
 		/// 	<c>true</c> if this instance is active; otherwise, <c>false</c>.
 		/// </value>
-		public virtual bool IsFilterActive
+		public override bool IsFilterActive
 		{
-			get { return m_active; }
-		}
-
-		/// <summary>
-		/// Serializes data of instance of this filter.
-		/// </summary>
-		/// <param name="data">The data.</param>
-		/// <returns><code>true</code> if filter is serialized, <code>false</code> otherwise.</returns>
-		public virtual bool Serialize(MemoryStream data)
-		{
-			data.WriteByte((byte)(m_active ? 1 : 0));
-			return true;
-		}
-
-		/// <summary>
-		/// Deserializes data of instance of this filter.
-		/// </summary>
-		/// <param name="data">The data.</param>
-		/// <returns><code>true</code> if filter is deserialized, <code>false</code> otherwise.</returns>
-		public virtual bool Deserialize(MemoryStream data)
-		{
-			int active = data.ReadByte();
-			m_active = 0 != active;
-			return true;
+			set
+			{
+				base.IsFilterActive = value;
+				m_filterHelper.SetEventHandlers(value);
+			}
 		}
 
 		#endregion

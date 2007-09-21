@@ -20,7 +20,7 @@ namespace PacketLogConverter.LogFilters
 			if (packet is StoC_0x20_PlayerPositionAndObjectID)
 			{
 				StoC_0x20_PlayerPositionAndObjectID posAndOid = (StoC_0x20_PlayerPositionAndObjectID)packet;
-				m_oid = posAndOid.PlayerOid;
+				Oid = posAndOid.PlayerOid;
 			}
 //			else if (packet is StoC_0x04_CharacterJump)
 //			{
