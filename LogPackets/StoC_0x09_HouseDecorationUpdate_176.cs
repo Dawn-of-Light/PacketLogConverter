@@ -19,7 +19,7 @@ namespace PacketLogConverter.LogPackets
 				if (furniture.flagRemove)
 					str.AppendFormat("\n\tindex:{0,2} remove", furniture.index);
 				else
-					str.AppendFormat("\n\tindex:{0,2} type:{1:X2} model:0x{2:X4} color:0x{3:X4} (x:{4,-5} y:{5,-5}) angle:{6,-3} size:{7,3}% surface:{8,-2} place:{9}({10})",
+					str.AppendFormat("\n\tindex:{0,2} type:{1:X2} model:0x{2:X4} color:0x{3:X4} (x:{4,-5} y:{5,-5}) angle:{6,-3} size:{7,3}% surface:{8,-3} place:{9}({10})",
 					furniture.index, furniture.type, furniture.model, furniture.color, furniture.x, furniture.y, furniture.angle, furniture.size, furniture.surface, furniture.place, (ePlaceType)furniture.place);
 			}
 
@@ -46,38 +46,18 @@ namespace PacketLogConverter.LogPackets
 				if ((Position + 1 )< Length)
 				{
 					furniture.type = ReadByte();
-					switch(furniture.type)
-					{
-						case 0:
-							furniture.model = ReadShort();
-							furniture.x = (short)ReadShort();
-							furniture.y = (short)ReadShort();
-							furniture.angle = ReadShort();
-							break;
-						case 8:
-							furniture.model = ReadShort();
-							furniture.x = (short)ReadShort();
-							furniture.y = (short)ReadShort();
-							furniture.angle = ReadShort();
-							furniture.size = ReadByte();
-							break;
-						case 2:
-						case 6:
-							furniture.model = ReadShort();
-							furniture.color = ReadShort();
-							furniture.x = (short)ReadShort();
-							furniture.y = (short)ReadShort();
-							furniture.angle = ReadShort();
-							break;
-						case 1:
-						default:
-							furniture.model = ReadShort();
-							furniture.color = ReadByte();
-							furniture.x = (short)ReadShort();
-							furniture.y = (short)ReadShort();
-							furniture.angle = ReadShort();
-							break;
-					}
+					furniture.model = ReadShort();
+					if ((furniture.type & 1) == 1)
+						furniture.color = ReadByte(); // color <= 0xFF
+					else if ((furniture.type & 6) == 2) // old emblem
+						furniture.color = ReadShort();
+					else if ((furniture.type & 6) == 6) // new emblem
+						furniture.color = ReadShort();
+					furniture.x = (short)ReadShort();
+					furniture.y = (short)ReadShort();
+					furniture.angle = ReadShort();
+					if ((furniture.type & 8) == 8) // size
+						furniture.size = ReadByte();
 					furniture.surface = ReadByte();
 					furniture.place = ReadByte();
 				}

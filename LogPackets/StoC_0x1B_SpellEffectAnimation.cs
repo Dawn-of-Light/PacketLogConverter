@@ -38,7 +38,7 @@ namespace PacketLogConverter.LogPackets
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			str.AppendFormat("casterOid:0x{0:X4} spellId:{1,-5} targetOid:0x{2:X4} boltTime:{3,-3} noSound:{4} success:0x{5:X2} unk1:0x{6:X4}",
+			str.AppendFormat("casterOid:0x{0:X4} spellId:0x{1:X4} targetOid:0x{2:X4} boltTime:{3,-3} noSound:{4} success:0x{5:X2} unk1:0x{6:X4}",
 				casterOid, spellId, targetOid, boltTime, noSound, success, unk1);
 			return str.ToString();
 		}

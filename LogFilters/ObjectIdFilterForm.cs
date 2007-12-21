@@ -38,7 +38,7 @@ namespace PacketLogConverter.LogFilters
 
 			// Cache entered OIDs
 			FilterManager.FilteringStartedEvent +=
-				delegate(PacketLog log)
+				delegate(IExecutionContext log)
 					{
 						if (IsFilterActive)
 						{
@@ -54,7 +54,7 @@ namespace PacketLogConverter.LogFilters
 
 			// Clear cached OIDs
 			FilterManager.FilteringStoppedEvent +=
-				delegate(PacketLog log)
+				delegate(IExecutionContext log)
 					{
 						m_selectedOidsCache = null;
 					};
@@ -270,9 +270,12 @@ namespace PacketLogConverter.LogFilters
 		public bool IsPacketIgnored(Packet packet)
 		{
 			// Check whether message packets should be included
-			if (packet is StoC_0xAF_Message || packet is StoC_0x4D_SpellMessage_174)
+			if (includeMessagesCheckBox.Checked)
 			{
-				return false;
+				if (packet is StoC_0xAF_Message || packet is StoC_0x4D_SpellMessage_174)
+				{
+					return false;
+				}
 			}
 
 			// Session Id

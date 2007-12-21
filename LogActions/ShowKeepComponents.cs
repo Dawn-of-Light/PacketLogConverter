@@ -13,8 +13,17 @@ namespace PacketLogConverter.LogActions
 	{
 		#region ILogAction Members
 
-		public bool Activate(PacketLog log, int selectedIndex)
+		/// <summary>
+		/// Activates a log action.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="selectedPacket">The selected packet.</param>
+		/// <returns><c>true</c> if log data tab should be updated.</returns>
+		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
 		{
+			PacketLog log = context.LogManager.Logs[selectedPacket.LogIndex];
+			int selectedIndex = selectedPacket.PacketIndex;
+
 			int currentRegion = 0;
 			int currentZone = 0;
 			Hashtable keepComponentsByOids = new Hashtable();

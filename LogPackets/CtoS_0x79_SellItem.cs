@@ -9,22 +9,22 @@ namespace PacketLogConverter.LogPackets
 		protected uint playerX;
 		protected uint playerY;
 		protected ushort sessionId;
-		protected ushort itemId;
+		protected ushort slot;
 
 		#region public access properties
 
 		public uint PlayerX { get { return playerX; } }
 		public uint PlayerY { get { return playerY; } }
 		public ushort SessionId { get { return sessionId; } }
-		public ushort ItemId { get { return itemId; } }
+		public ushort Slot { get { return slot; } }
 
 		#endregion
 
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			str.AppendFormat("sessionId:0x{0:X4} playerX:{1,-6} playerY:{2,-6} itemId:0x{3:X4}",
-				sessionId, playerX, playerY, itemId);
+			str.AppendFormat("sessionId:0x{0:X4} playerX:{1,-6} playerY:{2,-6} slot:{3}",
+				sessionId, playerX, playerY, slot);
 
 			return str.ToString();
 		}
@@ -39,7 +39,7 @@ namespace PacketLogConverter.LogPackets
 			playerX = ReadInt();
 			playerY = ReadInt();
 			sessionId = ReadShort();
-			itemId = ReadShort();
+			slot = ReadShort();
 		}
 
 		/// <summary>

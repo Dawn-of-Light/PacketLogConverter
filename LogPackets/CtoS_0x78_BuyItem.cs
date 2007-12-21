@@ -31,8 +31,10 @@ namespace PacketLogConverter.LogPackets
 			StringBuilder str = new StringBuilder();
 			int page = itemId / 30;
 			int slot = itemId - page * 30;
-			str.AppendFormat("sessionId:0x{0:X4} playerX:{1,-6} playerY:{2,-6} itemId:0x{3:X4} (page:{4} slot:{5,2}) quantity:{6,-3} windowType:{7, -2} unk1:{8:X4}",
+			str.AppendFormat("sessionId:0x{0:X4} playerX:{1,-6} playerY:{2,-6} itemId:0x{3:X4} (page:{4} slot:{5,2}) quantity:{6,-3} windowType:{7, -2} unk1:0x{8:X4}",
 				sessionId, playerX, playerY, itemId, page, slot, quantity, windowType, unk1);
+			if (flagsDescription)
+				str.AppendFormat("({0})", (StoC_0x17_MerchantWindow.eMerchantWindowType)windowType);
 
 			return str.ToString();
 		}

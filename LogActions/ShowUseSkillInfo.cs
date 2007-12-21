@@ -23,15 +23,33 @@ namespace PacketLogConverter.LogActions
 		public virtual bool Activate(PacketLog log, int selectedIndex)
 		{
 			Packet originalPak = log[selectedIndex];
-			if (!(originalPak is CtoS_0xBB_UseSkill) && !(originalPak is CtoS_0x7D_UseSpellList)) // activate condition
+			if (!(originalPak is CtoS_0xBB_UseSkill || originalPak is CtoS_0x7D_UseSpellList  || originalPak is CtoS_0xD8_DetailDisplayRequest)) // activate condition
 				return false;
-			StringBuilder str = new StringBuilder();
-			IList skillList = new ArrayList();
 			int spellIndex = -1;
+			int spellLineIndex = -1;
 			if (originalPak is CtoS_0xBB_UseSkill)
 				spellIndex = (originalPak as CtoS_0xBB_UseSkill).Index;
 			else if (originalPak is CtoS_0x7D_UseSpellList)
+			{
+				spellLineIndex = (originalPak as CtoS_0x7D_UseSpellList).SpellLineIndex;
 				spellIndex = (originalPak as CtoS_0x7D_UseSpellList).SpellLevel;
+			}
+			else if (originalPak is CtoS_0xD8_DetailDisplayRequest)
+			{
+				switch((originalPak as CtoS_0xD8_DetailDisplayRequest).ObjectType)
+				{
+					case 2:
+						spellLineIndex = (originalPak as CtoS_0xD8_DetailDisplayRequest).ObjectId / 100;
+						spellIndex = (originalPak as CtoS_0xD8_DetailDisplayRequest).ObjectId % 100;
+						break;
+					default:
+						return false;
+				}
+			}
+			else
+				return false;
+			StringBuilder str = new StringBuilder();
+			IList skillList = new ArrayList();
 			int additionStringCount = 0;
 			ushort spellIcon = 0xFFFF;
 			string spellName = "UNKNOWN";
@@ -49,7 +67,7 @@ namespace PacketLogConverter.LogActions
 						if (variousPak.SubCode == 1)
 						{
 							StoC_0x16_VariousUpdate.SkillsUpdate data = (variousPak.SubData as StoC_0x16_VariousUpdate.SkillsUpdate);
-							for (int j = data.count - 1; j >=0; j--)
+							for (int j = variousPak.SubCount - 1; j >=0; j--)
 							{
 								StoC_0x16_VariousUpdate.Skill skill = data.data[j];
 								if ((originalPak as CtoS_0xBB_UseSkill).Type == 0 && (int)skill.page == 0)
@@ -57,7 +75,7 @@ namespace PacketLogConverter.LogActions
 								else if ((originalPak as CtoS_0xBB_UseSkill).Type == 1 && (int)skill.page > 0)
 									skillList.Add(skill);
 							}
-							if (data.startIndex == 0)
+							if (variousPak.StartIndex == 0)
 							{
 								int index = skillList.Count;
 								foreach (StoC_0x16_VariousUpdate.Skill skill in skillList)
@@ -70,6 +88,7 @@ namespace PacketLogConverter.LogActions
 											skill.level, (int)skill.page, skill.page.ToString().ToLower(), skill.stlOpen, skill.bonus, skill.icon, skill.name);
 										spellIcon = skill.icon;
 										spellName = skill.name;
+										additionStringCount += 2;
 										searchInSpellEffects = skill.page == StoC_0x16_VariousUpdate.eSkillPage.RealmAbilities || skill.page == StoC_0x16_VariousUpdate.eSkillPage.Spells || skill.page == StoC_0x16_VariousUpdate.eSkillPage.Songs;
 										break;
 									}
@@ -78,29 +97,32 @@ namespace PacketLogConverter.LogActions
 							}
 						}
 					}
-					else if (originalPak is CtoS_0x7D_UseSpellList)
+					else if (spellLineIndex >= 0)
 					{
 						if (variousPak.SubCode == 2)
 						{
 							StoC_0x16_VariousUpdate.SpellsListUpdate data = (variousPak.SubData as StoC_0x16_VariousUpdate.SpellsListUpdate);
-							if (data.lineIndex == (originalPak as CtoS_0x7D_UseSpellList).SpellLineIndex)
+							if (variousPak.StartIndex == spellLineIndex)
 							{
-								for (int j = data.count - 1; j >=0; j--)
+								string spellLineName = "";
+								for (int j = 0; j < variousPak.SubCount; j++)
 								{
 									StoC_0x16_VariousUpdate.Spell spell = data.list[j];
 									if (spell.level == spellIndex)
 									{
-										str.AppendFormat("\nspell level:{0,-2} icon:0x{1:X4} name:\"{2}\"\n",
-											spell.level, spell.icon, spell.name);
+										str.AppendFormat("\nspellLineIndex:{0}(\"{4}\") spellLevel:{1,-2} icon:0x{2:X4} name:\"{3}\"\n",
+											spellLineIndex, spell.level, spell.icon, spell.name, spellLineName);
 										spellIcon = spell.icon;
 										spellName = spell.name;
 										searchInSpellEffects = true;
-										additionStringCount += 3;
+										additionStringCount += 2;
 										break;
 									}
+									else if (spell.level == 0)
+										spellLineName = spell.name;
 								}
 							}
-							if (data.subtype == 2 && data.lineIndex == 0) // not this spell found in spellList
+							if (variousPak.SubType == 2 && variousPak.StartIndex == 0) // not this spell found in spellList
 								break;
 						}
 					}
@@ -127,7 +149,7 @@ namespace PacketLogConverter.LogActions
 									str.Append(pak.ToHumanReadableString(zeroTimeSpan, true));
 									str.Append('\n');
 									spellIcon = effect.icon;
-									additionStringCount += (3 + effectsPak.EffectsCount);
+									additionStringCount += (2 + effectsPak.EffectsCount);
 									effectFound = true;
 									break;
 								}
@@ -162,6 +184,22 @@ namespace PacketLogConverter.LogActions
 				{
 					StoC_0x72_SpellCastAnimation animatePak = pak as StoC_0x72_SpellCastAnimation;
 					if (animatePak != null && animatePak.SpellId == icon)
+					{
+						str.Append('\n');
+						str.Append(pak.ToHumanReadableString(zeroTimeSpan, true));
+						str.Append('\n');
+						additionStringCount += 3;
+						break;
+					}
+				}
+			}
+			for (int i = selectedIndex; i < log.Count ; i++)
+			{
+				Packet pak = log[i];
+				if (pak is StoC_0x1B_SpellEffectAnimation)
+				{
+					StoC_0x1B_SpellEffectAnimation effectPak = pak as StoC_0x1B_SpellEffectAnimation;
+					if (effectPak != null && effectPak.SpellId == icon)
 					{
 						str.Append('\n');
 						str.Append(pak.ToHumanReadableString(zeroTimeSpan, true));

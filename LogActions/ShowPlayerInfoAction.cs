@@ -25,13 +25,16 @@ namespace PacketLogConverter.LogActions
 		}
 
 		/// <summary>
-		/// Activate log action
+		/// Activates a log action.
 		/// </summary>
-		/// <param name="log">The current log</param>
-		/// <param name="selectedIndex">The selected packet index</param>
-		/// <returns>True if log data tab should be updated</returns>
-		public virtual bool Activate(PacketLog log, int selectedIndex)
+		/// <param name="context">The context.</param>
+		/// <param name="selectedPacket">The selected packet.</param>
+		/// <returns><c>true</c> if log data tab should be updated.</returns>
+		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
 		{
+			PacketLog log = context.LogManager.Logs[selectedPacket.LogIndex];
+			int selectedIndex = selectedPacket.PacketIndex;
+
 			string serverName = "UNKNOWN";
 			int serverId = -1;
 			int serverColorHandling = -1;
@@ -161,8 +164,8 @@ namespace PacketLogConverter.LogActions
 					else if (stat.SubCode == 6)
 					{
 						StoC_0x16_VariousUpdate.PlayerGroupUpdate subData = (StoC_0x16_VariousUpdate.PlayerGroupUpdate)stat.SubData;
-						playersInGroup = subData.count;
-						for (int j = 0; j < subData.count; j++)
+						playersInGroup = stat.SubCount;
+						for (int j = 0; j < stat.SubCount; j++)
 						{
 							StoC_0x16_VariousUpdate.GroupMember member = subData.groupMembers[j];
 							if (objectId >= 0 && objectId == member.oid)

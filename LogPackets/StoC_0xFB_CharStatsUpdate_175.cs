@@ -116,9 +116,8 @@ namespace PacketLogConverter.LogPackets
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			if (flag==0)	str.Append("\n\t      stat |str|dex|con|qui|int|pie|emp|chr|");
-			else if (flag==0xFF)	str.Append("\n\t    resist |cru|sla|thr|hea|col|mat|bod|spi|ene");
-			else str.Append("UNKNOWN SUBCODE");
+			if (flag==0xFF)	str.Append("\n\t    resist |cru|sla|thr|hea|col|mat|bod|spi|ene");
+			else str.Append("\n\t      stat |str|dex|con|qui|int|pie|emp|chr|");
 
 			str.AppendFormat("\n\tbase       |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}|{8,-3}",
 				_str, _dex, _con, _qui, _int, _pie, _emp, _chr, unk1);
@@ -135,7 +134,7 @@ namespace PacketLogConverter.LogPackets
 			str.AppendFormat("\n\tra bonus   |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}|{8,-3}",
 				r_str, r_dex, r_con, r_qui, r_int, r_pie, r_emp, r_chr, r_unk1);
 
-			if (flag != 0xFF) str.AppendFormat("\n\tsubCode:{0} conLost:{1,-2} maxHealth:{2,-4} unk2:0x{3:X4}", flag, conLost, maxHealth, unk2);
+			if (flag != 0xFF) str.AppendFormat("\n\t{4}:{0} conLost:{1,-2} maxHealth:{2,-4} unk2:0x{3:X4}", flag, conLost, maxHealth, unk2, flag == 0 ? "subCode" : "vampBonus");
 			else str.AppendFormat("\n\tsubCode:{0} unk1:0x{1:X4} unk2:0x{2:X4} unk3:0x{3:X4}",  flag, conLost, maxHealth, unk2);
 
 			return str.ToString();

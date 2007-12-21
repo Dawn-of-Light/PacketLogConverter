@@ -6,13 +6,13 @@ namespace PacketLogConverter.LogPackets
 	public class CtoS_0x71_UseItem: Packet
 	{
 		protected ushort flagSpeedData;
-		protected byte index;
+		protected byte slot;
 		protected byte type;
 
 		#region public access properties
 
 		public ushort FlagSpeedData { get { return flagSpeedData; } }
-		public byte Index { get { return index; } }
+		public byte Slot { get { return slot; } }
 		public byte Type { get { return type; } }
 
 		#endregion
@@ -21,7 +21,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("flagSpeedData:0x{0:X4} index:{1} type:{2}", flagSpeedData, index, type);
+			str.AppendFormat("flagSpeedData:0x{0:X4} slot:{1} type:{2}", flagSpeedData, slot, type);
 			if (flagsDescription)
 			{
 				string speed = (flagSpeedData & 0x1FF).ToString();
@@ -51,7 +51,7 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			flagSpeedData = ReadShort();
-			index = ReadByte();
+			slot = ReadByte();
 			type = ReadByte();
 		}
 

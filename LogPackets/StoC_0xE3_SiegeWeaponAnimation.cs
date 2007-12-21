@@ -51,7 +51,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("unk1:0x{0:X4} oid:0x{1:X4} targetOid:0x{2:X4}(x:{3,-6} y:{4,-6} unk2:0x{5:X4} z:{6,-5}) unk3:{7:X4} spellId:{8,-5} timer:{9,-3} action:{10} unk4:0x{11:X2} unk5:0x{12:X4}",
+			str.AppendFormat("unk1:0x{0:X4} oid:0x{1:X4} targetOid:0x{2:X4}(x:{3,-6} y:{4,-6} unk2:0x{5:X4} z:{6,-5}) unk3:0x{7:X4} spellId:0x{8:X4} timer:{9,-3} action:{10} unk4:0x{11:X2} unk5:0x{12:X4}",
 			                 unk1, oid, targetOid, x, y, unk2, z, unk3, effect, timer, action, unk4, unk5);
 
 			return str.ToString();

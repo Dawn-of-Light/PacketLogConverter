@@ -7,7 +7,35 @@ namespace PacketLogConverter.LogPackets
 	public class StoC_0x16_VariousUpdate : Packet, IObjectIdPacket, IHouseIdPacket
 	{
 		protected byte subCode;
+		protected byte subCount;
+		protected byte subType;
+		protected byte startIndex;
 		protected ASubData subData;
+		// subtype 0 struct
+		// byte
+		// pascalString
+		//
+		// subtype 1 struct
+		// byte
+		// byte
+		// byte
+		// byte
+		// byte
+		// ushort
+		// pascalString
+		// pascalString
+		//
+		// subtype 2 struct
+		// byte
+		// ushort
+		// pascalString
+		//
+		// subtype 3 struct
+		// ushort
+		// byte
+		// uint
+		// pascalString
+		
 
 		/// <summary>
 		/// Gets the object ids of the packet.
@@ -36,6 +64,9 @@ namespace PacketLogConverter.LogPackets
 		#region public access properties
 
 		public byte SubCode { get { return subCode; } }
+		public byte SubCount{ get { return subCount; } }
+		public byte SubType { get { return subType; } }
+		public byte StartIndex { get { return startIndex; } }
 		public ASubData SubData { get { return subData; } }
 
 		#endregion
@@ -54,7 +85,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("subcode:0x{0:X2}", subCode);
+			str.AppendFormat("subcode:{0} count:{1} subType:{2} startIndex:{3}", subCode, subCount, subType, startIndex);
 			if (subData == null)
 				str.AppendFormat(" UNKNOWN SUBCODE");
 			else
@@ -71,6 +102,9 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			subCode = ReadByte();
+			subCount = ReadByte();
+			subType = ReadByte();
+			startIndex = ReadByte();
 			InitSubcode(subCode);
 		}
 
@@ -119,19 +153,13 @@ namespace PacketLogConverter.LogPackets
 
 		public class SkillsUpdate : ASubData
 		{
-			public byte count;
-			public byte subtype;
-			public byte startIndex;
 			public Skill[] data;
 
 			public override void Init(StoC_0x16_VariousUpdate pak)
 			{
-				count = pak.ReadByte();
-				subtype = pak.ReadByte();
-				startIndex = pak.ReadByte();
-				data = new Skill[count];
+				data = new Skill[pak.subCount];
 
-				for (int i = 0; i < count; i++)
+				for (int i = 0; i < pak.subCount; i++)
 				{
 					Skill sk = new Skill();
 
@@ -148,7 +176,7 @@ namespace PacketLogConverter.LogPackets
 
 			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				str.AppendFormat("\nSKILLS UPDATE:  count:{0,-2} subtype:{1} startIndex:{2}", count, subtype, startIndex);
+				str.AppendFormat("\nSKILLS UPDATE:");
 				int index = -1;
 				foreach (Skill skill in data)
 				{
@@ -187,20 +215,14 @@ namespace PacketLogConverter.LogPackets
 
 		public class SpellsListUpdate : ASubData
 		{
-			public byte count;
-			public byte subtype;
-			public byte lineIndex;
 			public Spell[] list;
 
 			public override void Init(StoC_0x16_VariousUpdate pak)
 			{
-				count = pak.ReadByte();
-				subtype = pak.ReadByte();
-				lineIndex = pak.ReadByte();
-				list = new Spell[count];
+				list = new Spell[pak.subCount];
 
 				// level 0 spell is LineName
-				for (int i = 0; i < count; i++)
+				for (int i = 0; i < pak.subCount; i++)
 				{
 					Spell spell = new Spell();
 
@@ -214,7 +236,7 @@ namespace PacketLogConverter.LogPackets
 
 			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				str.AppendFormat("\nSPELLS LIST UPDATE:  count:{0,-2} subtype:{1} lineIndex:{2,-2}", count, subtype, lineIndex);
+				str.AppendFormat("\nSPELLS LIST UPDATE:");
 				foreach (Spell spell in list)
 				{
 					str.AppendFormat("\n\tlevel:{0,-2} icon:0x{1:X4} name:\"{2}\"",
@@ -242,17 +264,13 @@ namespace PacketLogConverter.LogPackets
 
 		public class PlayerUpdate : ASubData
 		{
-			public byte count;
-			public byte subtype;
-			public byte unk1;
 			public byte playerLevel;
 			public string playerName;
 			public byte maxHealthHigh;
 			public string className;
 			public byte maxHealthLow;
-			public ushort health;
 			public string profession;
-			public byte unk2;
+			public byte unk1;
 			public string title;
 			public byte realmLevel;
 			public string realmTitle;
@@ -261,25 +279,22 @@ namespace PacketLogConverter.LogPackets
 			public byte personalHouseHight;
 			public string guildName;
 			public byte personalHouseLow;
-			public ushort personalHouse;
 			public string lastName;
 			public byte mlLevel;
 			public string raceName;
-			public byte unk3;
+			public byte unk2;
 			public string guildRank;
-			public byte unk4;
+			public byte unk3;
 			public string crafterGuild;
-			public byte unk5;
+			public byte unk4;
 			public string crafterTitle;
-			public byte unk6;
+			public byte unk5;
 			public string mlTitle;
+			public ushort health; // calculated value
+			public ushort personalHouse; // calculated value
 
 			public override void Init(StoC_0x16_VariousUpdate pak)
 			{
-				count = pak.ReadByte();
-				subtype = pak.ReadByte();
-				unk1 = pak.ReadByte();
-
 				playerLevel = pak.ReadByte();
 				playerName = pak.ReadPascalString();
 
@@ -288,7 +303,7 @@ namespace PacketLogConverter.LogPackets
 				maxHealthLow = pak.ReadByte();
 				health = (ushort)(((maxHealthHigh & 0xFF) << 8) | (maxHealthLow & 0xFF));
 				profession = pak.ReadPascalString();
-				unk2 = pak.ReadByte();
+				unk1 = pak.ReadByte();
 				title = pak.ReadPascalString();
 				realmLevel = pak.ReadByte();
 				realmTitle = pak.ReadPascalString();
@@ -301,22 +316,22 @@ namespace PacketLogConverter.LogPackets
 				lastName = pak.ReadPascalString();
 				mlLevel= pak.ReadByte();
 				raceName = pak.ReadPascalString();
-				unk3 = pak.ReadByte();
+				unk2 = pak.ReadByte();
 				guildRank = pak.ReadPascalString();
-				unk4 = pak.ReadByte();
+				unk3 = pak.ReadByte();
 				crafterGuild = pak.ReadPascalString();
-				unk5 = pak.ReadByte();
+				unk4 = pak.ReadByte();
 				crafterTitle = pak.ReadPascalString();
-				unk6 = pak.ReadByte();
+				unk5 = pak.ReadByte();
 				mlTitle = pak.ReadPascalString();
 			}
 
 			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				str.AppendFormat("\nPLAYER UPDATE:  count:{0} subtype:{1} level:{2} name:\"{3}\" health:{4} className:\"{5}\" profession:\"{6}\" title:\"{7}\" realmLevel:{8} realmTitle:\"{9}\" realmSpecPoints:{10} classBaseName:\"{11}\" guildName:\"{12}\" lastName:\"{13}\" raceName:\"{14}\" guildRank:\"{15}\" crafterGuild:\"{16}\" crafterTitle:\"{17}\" ML:\"{18}\"({19})",
-					count, subtype, playerLevel, playerName, health, className, profession, title, realmLevel, realmTitle, realmSpecPoints, classBaseName, guildName, lastName, raceName, guildRank, crafterGuild, crafterTitle, mlTitle, mlLevel);
-				str.AppendFormat("\n\tpersonalHouse:{0} unk1:{1} unk2:{2} unk3:{3} unk4:{4} unk5:{5} unk6:{6}",
-					personalHouse, unk1, unk2, unk3, unk4, unk5, unk6);
+				str.AppendFormat("\nPLAYER UPDATE:level:{0} name:\"{1}\" health:{2} className:\"{3}\" profession:\"{4}\" title:\"{5}\" realmLevel:{6} realmTitle:\"{7}\" realmSpecPoints:{8} classBaseName:\"{9}\" guildName:\"{10}\" lastName:\"{11}\" raceName:\"{12}\" guildRank:\"{13}\" crafterGuild:\"{14}\" crafterTitle:\"{15}\" ML:\"{16}\"({17})",
+					playerLevel, playerName, health, className, profession, title, realmLevel, realmTitle, realmSpecPoints, classBaseName, guildName, lastName, raceName, guildRank, crafterGuild, crafterTitle, mlTitle, mlLevel);
+				str.AppendFormat("\n\tpersonalHouse:{0} unk1:{1} unk2:{2} unk3:{3} unk4:{4} unk5:{5}",
+					personalHouse, unk1, unk2, unk3, unk4, unk5);
 			}
 		}
 
@@ -332,9 +347,6 @@ namespace PacketLogConverter.LogPackets
 
 		public class PlayerStateUpdate : ASubData
 		{
-			public byte count;
-			public byte unk1;
-			public byte unk2;
 			public byte weaponDamageHigh;
 			public byte weaponDamageLow;
 			public byte weaponSkillHigh;
@@ -345,9 +357,6 @@ namespace PacketLogConverter.LogPackets
 
 			public override void Init(StoC_0x16_VariousUpdate pak)
 			{
-				count = pak.ReadByte();
-				unk1 = pak.ReadByte();
-				unk2 = pak.ReadByte();
 				weaponDamageHigh = pak.ReadByte();
 				if (pak.ReadPascalString() != " ") throw new Exception("expected \" \", got something else.");
 				weaponDamageLow = pak.ReadByte();
@@ -361,8 +370,8 @@ namespace PacketLogConverter.LogPackets
 				effectiveAFLow = pak.ReadByte();
 				if (pak.ReadPascalString() != " ") throw new Exception("expected \" \", got something else.");
 
-				properties = new PlayerStateProperty[count-6];
-				for (byte i = 0; i < count-6; i++)
+				properties = new PlayerStateProperty[pak.SubCount - 6];
+				for (byte i = 0; i < pak.SubCount - 6; i++)
 				{
 					PlayerStateProperty prop = new PlayerStateProperty();
 
@@ -376,13 +385,12 @@ namespace PacketLogConverter.LogPackets
 
 			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				str.AppendFormat("\nPLAYER STATE UPDATE:  count:{0,-2} unk1:{1,-2} unk2:{2,-2}", count, unk1, unk2);
+				str.AppendFormat("\nPLAYER STATE UPDATE:");
 				str.AppendFormat("\n\tweapDam:{0,2}.{1,-3} weapSkill:{2,-4} effectiveAF:{3}",
 					weaponDamageHigh, weaponDamageLow, (weaponSkillHigh << 8) + weaponSkillLow, (effectiveAFHigh << 8) + effectiveAFLow);
 
-				for (int i = 0; i < count - 6; i++)
+				foreach (PlayerStateProperty prop in properties)
 				{
-					PlayerStateProperty prop = properties[i];
 					str.AppendFormat("\n\t[{0}] {1} \"{2}\"", prop.index, prop.value, prop.name);
 				}
 			}
@@ -407,20 +415,14 @@ namespace PacketLogConverter.LogPackets
 
 		public class PlayerGroupUpdate : ASubData
 		{
-			public byte count;
-			public byte unk1;
-			public byte unk2;
 			public GroupMember[] groupMembers;
 			public ushort[] m_oids; // oids list
 
 			public override void Init(StoC_0x16_VariousUpdate pak)
 			{
-				count = pak.ReadByte();
-				unk1 = pak.ReadByte();
-				unk2 = pak.ReadByte();
-				groupMembers = new GroupMember[count];
-				m_oids = new ushort[count];
-				for (int i = 0; i < count; i++)
+				groupMembers = new GroupMember[pak.SubCount];
+				m_oids = new ushort[pak.SubCount];
+				for (int i = 0; i < pak.SubCount; i++)
 				{
 					GroupMember member = new GroupMember();
 
@@ -438,11 +440,10 @@ namespace PacketLogConverter.LogPackets
 
 			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				str.AppendFormat("\nPLAYER GROUP UPDATE:  count:{0,-2} unk1:{1} unk2:{2}", count, unk1, unk2);
+				str.AppendFormat("\nPLAYER GROUP UPDATE:");
 
-				for (int i = 0; i < count; i++)
+				foreach (GroupMember member in groupMembers)
 				{
-					GroupMember member = groupMembers[i];
 					str.AppendFormat("\n\tlevel:{0,-2} health:{1,3}% mana:{2,3}% status:0x{3:X2}", member.level, member.health, member.mana, member.status);
 					str.AppendFormat(" oid:0x{0:X4} class:\"{2}\"\t name:\"{1}\" ", member.oid, member.name, member.classname);
 				}
@@ -473,19 +474,13 @@ namespace PacketLogConverter.LogPackets
 
 		public class CraftingSkillsUpdate : ASubData
 		{
-			public byte skillsCount;
-			public byte subtype;
-			public byte unk1;
 			public CraftingSkill[] skills;
 
 			public override void Init(StoC_0x16_VariousUpdate pak)
 			{
-				skillsCount = pak.ReadByte();
-				subtype = pak.ReadByte();
-				unk1 = pak.ReadByte();
-				skills = new CraftingSkill[skillsCount];
+				skills = new CraftingSkill[pak.SubCount];
 
-				for (int i = 0; i < skillsCount; ++i)
+				for (int i = 0; i < pak.SubCount; ++i)
 				{
 					CraftingSkill skill = new CraftingSkill();
 
@@ -500,11 +495,10 @@ namespace PacketLogConverter.LogPackets
 
 			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				str.AppendFormat("\nCRAFTING SKILLS UPDATE:  count:{0,-2} subtype:{1} unk1:{2}", skillsCount, subtype, unk1);
+				str.AppendFormat("\nCRAFTING SKILLS UPDATE:");
 
-				for (int i = 0; i < skillsCount; i++)
+				foreach (CraftingSkill skill in skills)
 				{
-					CraftingSkill skill = skills[i];
 					str.AppendFormat("\n\tpoints:{0,-4} icon:0x{1:X2} unk2:{2} name:\"{3}\"", skill.points, skill.icon, skill.unk2, skill.name);
 				}
 			}

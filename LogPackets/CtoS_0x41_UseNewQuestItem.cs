@@ -2,14 +2,16 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0x41, -1, ePacketDirection.ClientToServer, "Unknown packet")]
-	public class CtoS_0x41_UnknownPacket: Packet
+	[LogPacket(0x41, -1, ePacketDirection.ClientToServer, "Use NewQuest item")]
+	public class CtoS_0x41_UseNewQuestItem: Packet
 	{
-		protected ushort unk1;
+		protected byte questIndex;
+		protected byte goalIndex;
 
 		#region public access properties
 
-		public ushort Unk1 { get { return unk1 ; } }
+		public byte QuestIndex { get { return questIndex; } }
+		public byte GoalIndex { get { return goalIndex; } }
 
 		#endregion
 
@@ -17,7 +19,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("unk1:0x{0:X4}", unk1);
+			str.AppendFormat("questIndex:{0,-2} goal:{1}", questIndex, goalIndex);
 
 			return str.ToString();
 		}
@@ -29,14 +31,15 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			unk1 = ReadShortLowEndian();
+			questIndex = ReadByte();
+			goalIndex = ReadByte();
 		}
 
 		/// <summary>
 		/// Constructs new instance with given capacity
 		/// </summary>
 		/// <param name="capacity"></param>
-		public CtoS_0x41_UnknownPacket(int capacity) : base(capacity)
+		public CtoS_0x41_UseNewQuestItem(int capacity) : base(capacity)
 		{
 		}
 	}

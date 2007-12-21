@@ -2,7 +2,7 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0x46, -1, ePacketDirection.ServerToClient, "Warmap mino relic update?")]
+	[LogPacket(0x46, -1, ePacketDirection.ServerToClient, "mino relic update on map")]
 	public class StoC_0x46_UnknownPacket: Packet
 	{
 		protected uint id;

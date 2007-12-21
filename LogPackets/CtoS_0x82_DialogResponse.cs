@@ -83,8 +83,8 @@ namespace PacketLogConverter.LogPackets
 			Claim = 0x1A,
 			PurchaseBanner = 0x1E,
 			BuySingleRespec = 0x20,
-			NewQuestFinish = 0x21,
-			NewQuestSubscribe = 0x22,
+//			NewQuestFinish = 0x21,//Not exist
+//			NewQuestSubscribe = 0x22,//Not exist
 			HiberniaWarmap = 0x30,
 			AlbionWarmap= 0x31,
 			MidgardWarmap = 0x32,

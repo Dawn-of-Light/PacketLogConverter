@@ -11,7 +11,13 @@ namespace PacketLogConverter.LogWriters
 	[LogWriter("Crafting writer", "*.txt")]
 	public class CraftingWriter : ILogWriter
 	{
-		public void WriteLog(PacketLog log, Stream stream, ProgressCallback callback)
+		/// <summary>
+		/// Writes the log.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="stream">The stream.</param>
+		/// <param name="callback">The callback for UI updates.</param>
+		public void WriteLog(IExecutionContext context, Stream stream, ProgressCallback callback)
 		{
 			StoC_0x16_VariousUpdate.CraftingSkillsUpdate lastCraftingSkill = null;
 			StoC_0xF3_TimerWindow lastCraftBeginTimerPacket = null;
@@ -62,62 +68,67 @@ namespace PacketLogConverter.LogWriters
 			recpToSkill.Add(20301, 14);	// Woodworking
 			using (StreamWriter s = new StreamWriter(stream))
 			{
-				for (int i = 0; i < log.Count; i++)
+				foreach (PacketLog log in context.LogManager.Logs)
 				{
-					if (callback != null && (i & 0xFFF) == 0) // update progress every 4096th packet
-						callback(i, log.Count-1);
+					for (int i = 0; i < log.Count; i++)
+					{
+						if (callback != null && (i & 0xFFF) == 0) // update progress every 4096th packet
+							callback(i, log.Count - 1);
 
-					Packet pak = log[i];
-					if (pak is StoC_0x16_VariousUpdate)
-					{
-						StoC_0x16_VariousUpdate stat = pak as StoC_0x16_VariousUpdate;
-						if (stat.SubCode == 8)
+						Packet pak = log[i];
+						if (pak is StoC_0x16_VariousUpdate)
 						{
-							lastCraftingSkill = (StoC_0x16_VariousUpdate.CraftingSkillsUpdate)stat.SubData;
-						}
-					}
-					else if (pak is CtoS_0xED_CraftItem)
-					{
-						CtoS_0xED_CraftItem craft = pak as CtoS_0xED_CraftItem;
-						lastReceipId = craft.ReceptId;
-					}
-					else if (pak is StoC_0xF3_TimerWindow)
-					{
-						StoC_0xF3_TimerWindow timer = pak as StoC_0xF3_TimerWindow;
-						if (timer.Flag == 1 && timer.Message.StartsWith("Making: "))
-							lastCraftBeginTimerPacket = timer;
-						else if (timer.Flag == 0)
-							lastCloseTimerPacket = timer;
-					}
-					else if (pak is StoC_0xAF_Message)
-					{
-						StoC_0xAF_Message message = pak as StoC_0xAF_Message;
-						if (message.Text.StartsWith("You successfully make "))
-						{
-							byte craftSkill = (byte)FindSkill(recpToSkill, lastReceipId);
-//							StringBuilder str = new StringBuilder();
-//							lastCraftingSkill.MakeString(str, true);
-//							s.WriteLine(str);
-							bool found = false;
-							foreach(StoC_0x16_VariousUpdate.CraftingSkill cs in lastCraftingSkill.skills)
+							StoC_0x16_VariousUpdate stat = pak as StoC_0x16_VariousUpdate;
+							if (stat.SubCode == 8)
 							{
-								if (cs.icon == craftSkill)
-								{
-									s.WriteLine(string.Format("{0}, crafting skill:{1}({3}:{4}) receptId:{2} (time:{5}, pakDiffTime:{6})",
-										message.Text, craftSkill, lastReceipId, cs.name, cs.points, lastCraftBeginTimerPacket.Timer, lastCloseTimerPacket.Time - lastCraftBeginTimerPacket.Time));
-									found = true;
-									break;
-								}
+								lastCraftingSkill = (StoC_0x16_VariousUpdate.CraftingSkillsUpdate) stat.SubData;
 							}
-							if (!found)
-								s.WriteLine(string.Format("{0}, crafting skill:{1} receptId:{2}", message.Text, craftSkill, lastReceipId));
 						}
-						else if (message.Text.StartsWith("You gain skill in"))
+						else if (pak is CtoS_0xED_CraftItem)
 						{
-							s.WriteLine(message.Text);
+							CtoS_0xED_CraftItem craft = pak as CtoS_0xED_CraftItem;
+							lastReceipId = craft.ReceptId;
 						}
-					}
-				}
+						else if (pak is StoC_0xF3_TimerWindow)
+						{
+							StoC_0xF3_TimerWindow timer = pak as StoC_0xF3_TimerWindow;
+							if (timer.Flag == 1 && timer.Message.StartsWith("Making: "))
+								lastCraftBeginTimerPacket = timer;
+							else if (timer.Flag == 0)
+								lastCloseTimerPacket = timer;
+						}
+						else if (pak is StoC_0xAF_Message)
+						{
+							StoC_0xAF_Message message = pak as StoC_0xAF_Message;
+							if (message.Text.StartsWith("You successfully make "))
+							{
+								byte craftSkill = (byte) FindSkill(recpToSkill, lastReceipId);
+								//							StringBuilder str = new StringBuilder();
+								//							lastCraftingSkill.MakeString(str, true);
+								//							s.WriteLine(str);
+								bool found = false;
+								foreach (StoC_0x16_VariousUpdate.CraftingSkill cs in lastCraftingSkill.skills)
+								{
+									if (cs.icon == craftSkill)
+									{
+										s.WriteLine(string.Format("{0}, crafting skill:{1}({3}:{4}) receptId:{2} (time:{5}, pakDiffTime:{6})",
+										                          message.Text, craftSkill, lastReceipId, cs.name, cs.points,
+										                          lastCraftBeginTimerPacket.Timer,
+										                          lastCloseTimerPacket.Time - lastCraftBeginTimerPacket.Time));
+										found = true;
+										break;
+									}
+								}
+								if (!found)
+									s.WriteLine(string.Format("{0}, crafting skill:{1} receptId:{2}", message.Text, craftSkill, lastReceipId));
+							}
+							else if (message.Text.StartsWith("You gain skill in"))
+							{
+								s.WriteLine(message.Text);
+							}
+						}
+					} // for (log.packets)
+				} // foreach(context.logs)
 			}
 		}
 		public static int FindSkill(SortedList list, int recept_id)

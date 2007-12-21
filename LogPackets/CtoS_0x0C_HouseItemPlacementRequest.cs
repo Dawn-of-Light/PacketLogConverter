@@ -39,7 +39,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("slot:{0,-3} houseOid:0x{1:X4} surface:{2} place:{3}({4}) rotation:{5} (x:{6} y:{7})",
+			str.AppendFormat("slot:{0,-3} houseOid:0x{1:X4} surface:{2,-3} place:{3}({4}) rotation:{5} (x:{6} y:{7})",
 				slot, houseOid, surface, place, (ePlaceType)place, rotation, x, y);
 
 			return str.ToString();

@@ -53,7 +53,7 @@ namespace PacketLogConverter.LogFilters
 		/// Resets all variables when filtering starts.
 		/// </summary>
 		/// <param name="log">The log.</param>
-		protected virtual void FilterManager_OnFilteringStartedEvent(PacketLog log)
+		protected virtual void FilterManager_OnFilteringStartedEvent(IExecutionContext log)
 		{
 			m_oid = ID_NOT_SET;
 			m_sid = ID_NOT_SET;
@@ -63,7 +63,7 @@ namespace PacketLogConverter.LogFilters
 		/// Resets all variables when filtering stops.
 		/// </summary>
 		/// <param name="log">The log.</param>
-		protected virtual void FilterManager_OnFilteringStoppedEvent(PacketLog log)
+		protected virtual void FilterManager_OnFilteringStoppedEvent(IExecutionContext log)
 		{
 		}
 

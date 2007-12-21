@@ -11,19 +11,23 @@ namespace PacketLogConverter.LogActions
 	public class ShowPlayerWeaponAction : ILogAction
 	{
 		#region ILogAction Members
+
 		/// <summary>
-		/// Activate log action
+		/// Activates a log action.
 		/// </summary>
-		/// <param name="log">The current log</param>
-		/// <param name="selectedIndex">The selected packet index</param>
-		/// <returns>True if log data tab should be updated</returns>
-		public virtual bool Activate(PacketLog log, int selectedIndex)
+		/// <param name="context">The context.</param>
+		/// <param name="selectedPacket">The selected packet.</param>
+		/// <returns><c>true</c> if log data tab should be updated.</returns>
+		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
 		{
+			PacketLog log = context.LogManager.Logs[selectedPacket.LogIndex];
+			int selectedIndex = selectedPacket.PacketIndex;
+
 			int VisibleSlots = 0xFF;
 			int weaponSkill = -1;
 			double DPS = -1;
 			StoC_0x02_InventoryUpdate.Item[] weapons = new StoC_0x02_InventoryUpdate.Item[4];
-			StoC_0xFB_CharStatsUpdate_175 charStats = null;
+			Packet charStats = null;
 
 			for (int i = 0; i < selectedIndex; i++)
 			{
@@ -41,7 +45,11 @@ namespace PacketLogConverter.LogActions
 				else if (pak is StoC_0xFB_CharStatsUpdate_175)
 				{
 					if ((pak as StoC_0xFB_CharStatsUpdate_175).Flag != 0xFF)
-						charStats = pak as StoC_0xFB_CharStatsUpdate_175;
+						charStats = pak;
+				}
+				else if (pak is StoC_0xFB_CharStatsUpdate)
+				{
+					charStats = pak;
 				}
 				else if (pak is StoC_0x02_InventoryUpdate)
 				{
@@ -88,6 +96,8 @@ namespace PacketLogConverter.LogActions
 			str.AppendFormat("Visible slots = 0x{0:X2}", VisibleSlots);
 			str.AppendFormat("\n");
 			//((VisibleSlots & 0x0F) == 0)
+			string weaponName1 = "";
+			string weaponName2 = "";
 			for (int i = 0; i < 4; i++)
 			{
 				if ((i == (VisibleSlots & 0x0F)) || (i == ((VisibleSlots >> 4) & 0x0F)))
@@ -102,6 +112,32 @@ namespace PacketLogConverter.LogActions
 						str.AppendFormat("slot:{0,-2} level:{1,-2} dps:{2:0.00} spd:{3:0.00} damageType:{4} con:{5,-3} qual:{6,-3} bonus:{7,-2} model:0x{8:X4} \"{9}\"",
 						item.slot, item.level, 0.1 * item.value1, 0.1 * item.value2, item.damageType, item.condition, item.quality, item.bonus, item.model, item.name);
 					str.AppendFormat(" ({0})\n", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
+					if (weaponName1 == "")
+						weaponName1 = item.name;
+					else if (item.name != weaponName1)
+						weaponName2 = item.name;
+				}
+			}
+
+			for (int i = 0; i < log.Count; i++)
+			{
+				if (weaponName1 == "" && weaponName2 == "")
+					break;
+				Packet pak = log[i];
+				if (pak is StoC_0xC4_CustomTextWindow)
+				{
+					if (weaponName1 != "" && (pak as StoC_0xC4_CustomTextWindow).Caption == weaponName1)
+					{
+						str.Append('\n');
+						str.Append(pak.GetPacketDataString(true));
+						weaponName1 = "";
+					}
+					else if (weaponName2 != "" && (pak as StoC_0xC4_CustomTextWindow).Caption == weaponName2)
+					{
+						str.Append('\n');
+						str.Append(pak.GetPacketDataString(true));
+						weaponName2 = "";
+					}
 				}
 			}
 
@@ -109,9 +145,9 @@ namespace PacketLogConverter.LogActions
 			infoWindow.Text = "Player weapon info (right click to close)";
 			infoWindow.Width = 800;
 			if (charStats == null)
-				infoWindow.Height = 200;
-			else
 				infoWindow.Height = 300;
+			else
+				infoWindow.Height = 400;
 			infoWindow.InfoRichTextBox.Text = str.ToString();
 			infoWindow.StartWindowThread();
 

@@ -66,11 +66,14 @@ namespace PacketLogConverter.LogPackets
 				case 3:
 					actionType = "loading";
 					break;
+				case 5:
+					actionType = "helping";
+					break;
 				default:
 					actionType = "unknown";
 					break;
 			}
-			str.AppendFormat("menuButtons:0x{0:X2} canMove:0x{1} unk2:0x{2:X4} timer:{3,-3} externalAmmoCount:{4} action:{5}({6}) currentAmmo?:0x{7:X2} effect:0x{8:X4} unk6:0x{9:X4} unk7:0x{10:X4} oid:0x{11:X4} name:\"{12}\"",
+			str.AppendFormat("menuButtons:0x{0:X2} canMove:{1} unk2:0x{2:X4} timer:{3,-3} externalAmmoCount:{4} action:{5}({6}) currentAmmo?:0x{7:X2} effect:0x{8:X4} unk6:0x{9:X4} unk7:0x{10:X4} oid:0x{11:X4} name:\"{12}\"",
 				siegeMenu, canMove, unk2, timer , ammoCount, action, actionType, unk4, effect, unk6, unk7, oid, name);
 
 			for (int i = 0; i < ammoCount; i++)

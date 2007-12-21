@@ -10,9 +10,15 @@ namespace PacketLogConverter.LogActions
 	[LogAction("Show raw data", Priority=500)]
 	public class ShowRawData : ILogAction
 	{
-		public bool Activate(PacketLog log, int selectedIndex)
+		/// <summary>
+		/// Activates a log action.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="selectedPacket">The selected packet.</param>
+		/// <returns><c>true</c> if log data tab should be updated.</returns>
+		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
 		{
-			Packet pak = log[selectedIndex];
+			Packet pak = context.LogManager.GetPacket(selectedPacket);
 			StringBuilder str = new StringBuilder();
 
 			str.Append("Raw data, can be copy/pasted to CustomPacket.cs script to send  directly to the client.\n");

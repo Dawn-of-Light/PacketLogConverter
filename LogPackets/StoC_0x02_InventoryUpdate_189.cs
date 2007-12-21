@@ -82,7 +82,7 @@ namespace PacketLogConverter.LogPackets
 					item.model = ReadShort();
 					item.extension = ReadByte();
 					item.color = ReadShort();
-					item.flag = ReadByte();
+					item.flag = ReadByte(); // 0x02 - salvage, 0x04 - craft
 					if ((item.flag & 0x08) == 0x08)
 					{
 						item.effectIcon = ReadShort();

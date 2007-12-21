@@ -22,20 +22,11 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public enum ePlaceType: byte
-		{
-			gardenDecoration = 1,
-			wallDecoration = 2,
-			floorDecoration = 3,
-			exteriorDecoration = 4,
-			hookPoints = 5
-		}
-
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("index:0x{0:X4} houseOid:0x{1:X4} place:{2}({5}) unk1:0x{3:X2} unk2:0x{4:X4}",
-				index, houseOid, place, unk1, unk2, (ePlaceType)place);
+				index, houseOid, place, unk1, unk2, (CtoS_0x0C_HouseItemPlacementRequest.ePlaceType)place);
 
 			return str.ToString();
 		}

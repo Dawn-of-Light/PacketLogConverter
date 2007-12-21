@@ -15,13 +15,10 @@ namespace PacketLogConverter.LogPackets
 		{
 			public override void Init(StoC_0x16_VariousUpdate pak)
 			{
-				count = pak.ReadByte();
-				unk1 = pak.ReadByte();
-				unk2 = pak.ReadByte();
-				groupMembers = new GroupMember[count];
+				groupMembers = new GroupMember[pak.SubCount];
 
-				m_oids = new ushort[count];
-				for (int i = 0; i < count; i++)
+				m_oids = new ushort[pak.SubCount];
+				for (int i = 0; i < pak.SubCount; i++)
 				{
 					GroupMember member = new GroupMember();
 
@@ -41,11 +38,10 @@ namespace PacketLogConverter.LogPackets
 
 			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				str.AppendFormat("\nPLAYER GROUP UPDATE:  count:{0,-2} unk1:{1} unk2:{2}", count, unk1, unk2);
+				str.AppendFormat("\nPLAYER GROUP UPDATE:");
 
-				for (int i = 0; i < count; i++)
+				foreach (GroupMember member in groupMembers)
 				{
-					GroupMember member = groupMembers[i];
 					str.AppendFormat("\n\tlevel:{0,-2} health:{1,3}% mana:{2,3}% endurance:{3,3}% status:0x{4:X2}",
 						member.level, member.health, member.mana, member.endurance, member.status);
 					str.AppendFormat(" pid:0x{0:X4} class:\"{2}\"\t name:\"{1}\"", member.oid, member.name, member.classname);

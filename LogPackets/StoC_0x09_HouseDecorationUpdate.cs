@@ -40,7 +40,7 @@ namespace PacketLogConverter.LogPackets
 				if (furniture.flagRemove)
 					str.AppendFormat("\n\tindex:{0,2} remove", furniture.index);
 				else
-					str.AppendFormat("\n\tindex:{0,2} model:0x{1:X4} color:0x{2:X4} unk1:0x{3:X2}{4:X2} (x:{5,-5} y:{6,-5}) angle:{7,-3} size:{8,3}% surface:{9,-2} place:{10}({11})",
+					str.AppendFormat("\n\tindex:{0,2} model:0x{1:X4} color:0x{2:X4} unk1:0x{3:X2}{4:X2} (x:{5,-5} y:{6,-5}) angle:{7,-3} size:{8,3}% surface:{9,-3} place:{10}({11})",
 					furniture.index, furniture.model, furniture.color, furniture.type, furniture.unk1, furniture.x, furniture.y, furniture.angle, furniture.size, furniture.surface, furniture.place, (ePlaceType)furniture.place);
 			}
 

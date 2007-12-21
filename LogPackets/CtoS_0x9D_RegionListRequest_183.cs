@@ -36,7 +36,7 @@ namespace PacketLogConverter.LogPackets
 				figureVersion = ReadInt();
 				figureVersion1 = ReadByte();
 				skin = ReadByte();
-				race = ReadByte();
+				genderRace = ReadByte();
 				regionExpantions = ReadByte();
 				classId = ReadByte();
 				expantions = ReadByte();
@@ -44,6 +44,13 @@ namespace PacketLogConverter.LogPackets
 				VedioVendorId2 = ReadIntLowEndian();
 				osType = ReadByte();
 				zero = ReadByte();
+				gender = 0;
+				race = genderRace;
+				if (genderRace > 18)
+				{
+					race = (byte)(genderRace - 18);
+					gender = 1;
+				}
 			}
 		}
 
@@ -51,8 +58,12 @@ namespace PacketLogConverter.LogPackets
 		{
 			WIN95 = 1,
 			WIN98 = 2,
+			WindowsMe = 3,
+			NT351 = 4,
+			NT4 = 5,
 			WIN2000 = 6,
 			WINXP = 7,
+			WIN2003 = 8,
 		}
 
 		/// <summary>

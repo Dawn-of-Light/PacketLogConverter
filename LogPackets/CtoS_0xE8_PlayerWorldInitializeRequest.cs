@@ -6,7 +6,7 @@ namespace PacketLogConverter.LogPackets
 	public class CtoS_0xE8_PlayerWorldInializeRequest: Packet
 	{
 		protected ushort unk1;
-		protected ushort unk2;
+		protected ushort unk2; // releated with CtoS_0xD4.Unk5 ?
 
 		#region public access properties
 
@@ -18,7 +18,6 @@ namespace PacketLogConverter.LogPackets
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-
 			str.AppendFormat("unk1:0x{0:X4} unk2:0x{1:X4}", unk1, unk2);
 
 			return str.ToString();

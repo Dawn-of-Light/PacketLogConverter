@@ -101,7 +101,11 @@ namespace PacketLogConverter.LogPackets
 			Worship = 0x44,
 			PlayerPrepare = 0x45,
 			PlayerPickup = 0x46,
-			PlayerListen = 0x47
+			PlayerListen = 0x47,
+			BindOnEquip = 72,
+			AlbionBind = 73,
+			MidgardBind = 74,
+			HibernianBind = 75,
 		};
 
 		#endregion

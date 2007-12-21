@@ -63,7 +63,7 @@ namespace PacketLogConverter.LogPackets
 				item.value2 = ReadByte();
 				item.hand = ReadByte(); // >>6 to get hand
 				item.damageAndObjectType = ReadByte();
-				if (windowType < (byte)eMerchantWindowType.HousingOutsideMenu)
+				if (windowType < (byte)eMerchantWindowType.HouseStore)
 				{
 					item.damageType = (byte)(item.damageAndObjectType >> 6);
 					item.objectType = (byte)(item.damageAndObjectType & 0x3F);
@@ -102,17 +102,19 @@ namespace PacketLogConverter.LogPackets
 		public enum eMerchantWindowType : byte
 		{
 			Normal = 0x00,
-			Bp = 0x01,
+			BountyStore = 0x01,
 			Count = 0x02,
-			HousingLotShop = 0x03,
-			HousingOutsideMenu = 0x04,
-			HousingMerchant = 0x05,
-			HousingInsideShop = 0x06,
-			HousingOutsideShop = 0x07,
-			HousingVault = 0x08,
-			HousingTools = 0x09,
-			HousingBindstone = 0x0A,
+			HouseStore = 0x03,//lot store
+			HouseMaterialsStore = 0x04,//HousingOutsideMenu
+			HouseMerchantStore = 0x05,
+			HouseDecorationStore = 0x06,//HousingInsideShop
+			HouseGardenStore = 0x07,//HousingOutsideShop
+			HouseVaultStore = 0x08,
+			HouseToolsStore = 0x09,
+			HouseBindstoneStore = 0x0A,
 			HousingInsideMenu = 0x0B,
+			HouseBountyStore = 0x0C,
+			HouseGuildBountyStore = 0x0D,
 		}
 		/// <summary>
 		/// Constructs new instance with given capacity

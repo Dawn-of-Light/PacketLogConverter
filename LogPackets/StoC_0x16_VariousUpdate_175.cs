@@ -13,22 +13,22 @@ namespace PacketLogConverter.LogPackets
 
 		public class PlayerUpdate_175 : PlayerUpdate
 		{
-			private byte unk7_175;
-			private string newTitle;
+			public byte unk6;
+			public string newTitle;
 
 			public override void Init(StoC_0x16_VariousUpdate pak)
 			{
 				base.Init(pak);
 
 			// new in 1.75
-				unk7_175 = pak.ReadByte();
+				unk6 = pak.ReadByte();
 				newTitle = pak.ReadPascalString();
 			}
 
 			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				base.MakeString(str, flagsDescription);
-				str.AppendFormat("\n\tnew in 1.75: newTitle:\"{0}\" unk7_175:{1}", newTitle, unk7_175);
+				str.AppendFormat("\n\tnew in 1.75: newTitle:\"{0}\" unk6:{1}", newTitle, unk6);
 			}
 		}
 

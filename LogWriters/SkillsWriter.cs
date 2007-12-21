@@ -12,7 +12,13 @@ namespace PacketLogConverter.LogWriters
 	[LogWriter("Skill writer", "*.txt")]
 	public class SkillWriter : ILogWriter
 	{
-		public void WriteLog(PacketLog log, Stream stream, ProgressCallback callback)
+		/// <summary>
+		/// Writes the log.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="stream">The stream.</param>
+		/// <param name="callback">The callback for UI updates.</param>
+		public void WriteLog(IExecutionContext context, Stream stream, ProgressCallback callback)
 		{
 			int playerOid = -1;
 			byte playerLevel = 0;
@@ -21,40 +27,43 @@ namespace PacketLogConverter.LogWriters
 			
 			using (StreamWriter s = new StreamWriter(stream))
 			{
-				for (int i = 0; i < log.Count; i++)
+				foreach (PacketLog log in context.LogManager.Logs)
 				{
-					if (callback != null && (i & 0xFFF) == 0) // update progress every 4096th packet
-						callback(i, log.Count-1);
+					for (int i = 0; i < log.Count; i++)
+					{
+						if (callback != null && (i & 0xFFF) == 0) // update progress every 4096th packet
+							callback(i, log.Count - 1);
 
-					Packet pak = log[i];
-					if (pak is StoC_0x20_PlayerPositionAndObjectID)
-					{
-						StoC_0x20_PlayerPositionAndObjectID plr = (StoC_0x20_PlayerPositionAndObjectID)pak;
-						playerOid = plr.PlayerOid;
-#if SHOW_PACKETS
-						s.WriteLine("playerOid:0x{0:X4}", playerOid);
-#endif
-					}
-					else if (pak is StoC_0x16_VariousUpdate)
-					{
-						// name, level, class
-						StoC_0x16_VariousUpdate stat = (StoC_0x16_VariousUpdate)pak;
-						if (stat.SubCode == 3)
+						Packet pak = log[i];
+						if (pak is StoC_0x20_PlayerPositionAndObjectID)
 						{
-							StoC_0x16_VariousUpdate.PlayerUpdate subData = (StoC_0x16_VariousUpdate.PlayerUpdate)stat.SubData;
-							playerLevel = subData.playerLevel;
-							playerClassName = subData.className;
+							StoC_0x20_PlayerPositionAndObjectID plr = (StoC_0x20_PlayerPositionAndObjectID) pak;
+							playerOid = plr.PlayerOid;
 #if SHOW_PACKETS
-							s.WriteLine("{0, -16} 0x16:3 class:{1} level:{2}", pak.Time.ToString(), playerClassName, playerLevel);
+							s.WriteLine("playerOid:0x{0:X4}", playerOid);
 #endif
 						}
-					}
-					else if (pak is StoC_0xAF_Message)
-					{
-						StoC_0xAF_Message msg = (StoC_0xAF_Message)pak;
+						else if (pak is StoC_0x16_VariousUpdate)
+						{
+							// Name, level, class
+							StoC_0x16_VariousUpdate stat = (StoC_0x16_VariousUpdate) pak;
+							if (stat.SubCode == 3)
+							{
+								StoC_0x16_VariousUpdate.PlayerUpdate subData = (StoC_0x16_VariousUpdate.PlayerUpdate) stat.SubData;
+								playerLevel = subData.playerLevel;
+								playerClassName = subData.className;
 #if SHOW_PACKETS
-//						s.WriteLine("{0, -16} 0xAF 0x{1:X2} {2}", pak.Time.ToString(), msg.Type, msg.Text);
+								s.WriteLine("{0, -16} 0x16:3 class:{1} level:{2}", pak.Time.ToString(), playerClassName, playerLevel);
 #endif
+							}
+						}
+						else if (pak is StoC_0xAF_Message)
+						{
+							StoC_0xAF_Message msg = (StoC_0xAF_Message) pak;
+#if SHOW_PACKETS
+//							s.WriteLine("{0, -16} 0xAF 0x{1:X2} {2}", pak.Time.ToString(), msg.Type, msg.Text);
+#endif
+						}
 					}
 				}
 			}

@@ -9,7 +9,7 @@ namespace PacketLogConverter
 {
 	public delegate void FilterAction(ILogFilter filter);
 	public delegate void StatusChange(bool newValue);
-	public delegate void LogAction(PacketLog log);
+	public delegate void LogAction(IExecutionContext log);
 	public delegate void PacketAction(Packet packet);
 
 	/// <summary>
@@ -347,8 +347,8 @@ namespace PacketLogConverter
 		/// <summary>
 		/// Manager is notified that filtering is started.
 		/// </summary>
-		/// <param name="log">The log which is being filtered.</param>
-		public static void LogFilteringStarted(PacketLog log)
+		/// <param name="context">The context.</param>
+		public static void LogFilteringStarted(IExecutionContext context)
 		{
 			try
 			{
@@ -357,7 +357,7 @@ namespace PacketLogConverter
 
 				LogAction e = FilteringStartedEvent;
 				if (e != null)
-					e(log);
+					e(context);
 			}
 			catch (Exception e)
 			{
@@ -368,14 +368,14 @@ namespace PacketLogConverter
 		/// <summary>
 		/// Manager is notified that filtering is stopped.
 		/// </summary>
-		/// <param name="log">The log which is being filtered.</param>
-		public static void LogFilteringStopped(PacketLog log)
+		/// <param name="context">The context.</param>
+		public static void LogFilteringStopped(IExecutionContext context)
 		{
 			try
 			{
 				LogAction e = FilteringStoppedEvent;
 				if (e != null)
-					e(log);
+					e(context);
 
 				// To be safe
 				Thread.MemoryBarrier();

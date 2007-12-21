@@ -26,15 +26,11 @@ namespace PacketLogConverter.LogPackets
 			public byte questLevel;
 			public byte rewardGold;
 			public byte rewardExp;
-			public ushort itemsRewardType;
-			public byte rewardsCount;
-			public StoC_0x02_InventoryUpdate.Item[] rewards;
-
-			public enum eItemsRewardType: byte
-			{
-				Basic = 0,
-				Optional = 1,
-			}
+			public byte baseRewardsCount;
+			public byte optionalRewardsCount;
+			public byte optionalRewardsChoiceMax;
+			public StoC_0x02_InventoryUpdate.Item[] baseRewards;
+			public StoC_0x02_InventoryUpdate.Item[] optionalRewards;
 
 			public override void Init(StoC_0x81_ShowDialog pak)
 			{
@@ -58,12 +54,9 @@ namespace PacketLogConverter.LogPackets
 				questLevel = pak.ReadByte();
 				rewardGold = pak.ReadByte();
 				rewardExp = pak.ReadByte();
-				itemsRewardType = pak.ReadShort();
-				if (itemsRewardType > 1)
-					pak.Position -=2;
-				rewardsCount = pak.ReadByte();
-				rewards = new StoC_0x02_InventoryUpdate.Item[rewardsCount];
-				for (int i = 0; i < rewardsCount; i++)
+				baseRewardsCount = pak.ReadByte();
+				baseRewards = new StoC_0x02_InventoryUpdate.Item[baseRewardsCount];
+				for (int i = 0; i < baseRewardsCount; i++)
 				{
 					StoC_0x02_InventoryUpdate.Item item = new StoC_0x02_InventoryUpdate.Item();
 					item.level = pak.ReadByte();
@@ -96,10 +89,46 @@ namespace PacketLogConverter.LogPackets
 					}
 					item.effect = pak.ReadByte();
 					item.name = pak.ReadPascalString();
-					rewards[i] = item;
+					baseRewards[i] = item;
 				}
-				if (itemsRewardType > 1)
-					itemsRewardType = pak.ReadShort();
+				optionalRewardsChoiceMax = pak.ReadByte();
+				optionalRewardsCount = pak.ReadByte();
+				optionalRewards = new StoC_0x02_InventoryUpdate.Item[optionalRewardsCount];
+				for (int i = 0; i < optionalRewardsCount; i++)
+				{
+					StoC_0x02_InventoryUpdate.Item item = new StoC_0x02_InventoryUpdate.Item();
+					item.level = pak.ReadByte();
+
+					item.value1 = pak.ReadByte();
+					item.value2 = pak.ReadByte();
+
+					item.hand = pak.ReadByte();
+					byte temp = pak.ReadByte(); //WriteByte((byte) ((item.Type_Damage*64) + item.Object_Type));
+					item.damageType = (byte)(temp >> 6);
+					item.objectType = (byte)(temp & 0x3F);
+					item.weight = pak.ReadShort();
+					item.condition = pak.ReadByte();
+					item.durability = pak.ReadByte();
+					item.quality = pak.ReadByte();
+					item.bonus = pak.ReadByte();
+					item.model = pak.ReadShort();
+					item.extension = pak.ReadByte();
+					item.color = pak.ReadShort();
+					item.flag = pak.ReadByte();
+					if ((item.flag & 0x08) == 0x08)
+					{
+						item.effectIcon = pak.ReadShort();
+						item.effectName = pak.ReadPascalString();
+					}
+					if ((item.flag & 0x10) == 0x10)
+					{
+						item.effectIcon2 = pak.ReadShort();
+						item.effectName2 = pak.ReadPascalString();
+					}
+					item.effect = pak.ReadByte();
+					item.name = pak.ReadPascalString();
+					optionalRewards[i] = item;
+				}
 			}
 
 			public override void MakeString(StringBuilder str, bool flagsDescription)
@@ -111,11 +140,28 @@ namespace PacketLogConverter.LogPackets
 				{
 					str.AppendFormat("\n\t[{0}]: \"{1}\"", i, goals[i]);
 				}
-				str.AppendFormat("\n\trewardLevel:{0} gold:{1}% Exp:{2:00.0}% itemsRewardType:0x{3:X4}({5}) itemsRewardCount:{4}", questLevel, rewardGold, rewardExp, itemsRewardType, rewardsCount, (eItemsRewardType)itemsRewardType);
-				for (int i = 0; i < rewardsCount; i++)
+				str.AppendFormat("\n\trewardLevel:{0} gold:{1}% Exp:{2:00.0}% baseRewardsCount:{3}", questLevel, rewardGold, rewardExp, baseRewardsCount);
+				for (int i = 0; i < baseRewardsCount; i++)
 				{
 
-					StoC_0x02_InventoryUpdate.Item item = rewards[i];
+					StoC_0x02_InventoryUpdate.Item item = baseRewards[i];
+
+					str.AppendFormat("\n\t[{0}]: level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} \"{17}\"",
+						i, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name);
+					if (flagsDescription && item.name != null && item.name != "")
+						str.AppendFormat(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
+					if ((item.flag & 0x08) == 0x08)
+						str.AppendFormat("\n\t\teffectIcon:0x{0:X4}  effectName:\"{1}\"",
+						item.effectIcon, item.effectName);
+					if ((item.flag & 0x10) == 0x10)
+						str.AppendFormat("\n\t\teffectIcon2:0x{0:X4}  effectName2:\"{1}\"",
+						item.effectIcon2, item.effectName2);
+				}
+				str.AppendFormat("\n\toptionalRewardsChoiceMax:{0} optionalRewardsCount:{1}", optionalRewardsChoiceMax, optionalRewardsCount);
+				for (int i = 0; i < optionalRewardsCount; i++)
+				{
+
+					StoC_0x02_InventoryUpdate.Item item = optionalRewards[i];
 
 					str.AppendFormat("\n\t[{0}]: level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} \"{17}\"",
 						i, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name);

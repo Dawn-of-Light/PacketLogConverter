@@ -6,12 +6,12 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x15, 189, ePacketDirection.ServerToClient, "Equipment update v189")]
 	public class StoC_0x15_EquipmentUpdate_189 : StoC_0x15_EquipmentUpdate_176
 	{
-		protected byte unk1;
+		protected byte speed;
 		protected byte m_helmAndCloakVisibile;
 
 		#region pulic access properties
 
-		public byte Unk1 { get { return unk1; } }
+		public byte Speed { get { return speed; } }
 		public byte HelmAndCloakVisibile { get { return m_helmAndCloakVisibile; } }
 
 		#endregion
@@ -20,7 +20,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("oid:0x{0:X4} unk1:0x{4:X2} helmAndCloakVisibile:0x{5:X2} hoodUp:{1} visibleWeaponSlots:0x{2:X2} count:{3,-2}", oid, hoodUp, visibleWeaponSlots, count, unk1, m_helmAndCloakVisibile);
+			str.AppendFormat("oid:0x{0:X4} speed:{4,-3} helmAndCloakVisibile:0x{5:X2} hoodUp:{1} visibleWeaponSlots:0x{2:X2} count:{3,-2}", oid, hoodUp, visibleWeaponSlots, count, speed, m_helmAndCloakVisibile);
 			if (count > 0)
 				str.Append("  items:(");
 			for (int i = 0; i < count; i++)
@@ -46,7 +46,7 @@ namespace PacketLogConverter.LogPackets
 
 			oid = ReadShort();
 			visibleWeaponSlots = ReadByte();
-			unk1 = ReadByte();
+			speed = ReadByte();
 			m_helmAndCloakVisibile = ReadByte();
 			hoodUp = ReadByte();
 			count = ReadByte();

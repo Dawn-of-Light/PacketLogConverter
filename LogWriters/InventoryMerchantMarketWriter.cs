@@ -11,94 +11,104 @@ namespace PacketLogConverter.LogWriters
 	[LogWriter("Merchant/Market items writer", "*.txt")]
 	public class MerchantMarketItemsWriter : ILogWriter
 	{
-		public void WriteLog(PacketLog log, Stream stream, ProgressCallback callback)
+		/// <summary>
+		/// Writes the log.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="stream">The stream.</param>
+		/// <param name="callback">The callback for UI updates.</param>
+		public void WriteLog(IExecutionContext context, Stream stream, ProgressCallback callback)
 		{
 			Hashtable items = new Hashtable();
 			using (StreamWriter s = new StreamWriter(stream))
 			{
-				for (int i = 0; i < log.Count; i++)
+				foreach (PacketLog log in context.LogManager.Logs)
 				{
-					if (callback != null && (i & 0xFFF) == 0) // update progress every 4096th packet
-						callback(i, log.Count-1);
+					for (int i = 0; i < log.Count; i++)
+					{
+						if (callback != null && (i & 0xFFF) == 0) // update progress every 4096th packet
+							callback(i, log.Count - 1);
 
-					Packet pak = log[i];
-					if (pak is StoC_0x1F_MarketMerchant)
-					{
-						StoC_0x1F_MarketMerchant market = pak as StoC_0x1F_MarketMerchant;
-						for (int j = 0; j < market.ItemCount; j++)
+						Packet pak = log[i];
+						if (pak is StoC_0x1F_MarketMerchant)
 						{
-							StoC_0x1F_MarketMerchant.MerchantItem markeditem = market.Items[j];
-							markeditem.name = markeditem.name.Substring(6);
-							if (!items.Contains(markeditem.name))
+							StoC_0x1F_MarketMerchant market = pak as StoC_0x1F_MarketMerchant;
+							for (int j = 0; j < market.ItemCount; j++)
 							{
-								Item item = new Item();
-								item.level = markeditem.level;
-								item.value1 = markeditem.value1;
-								item.value2 = markeditem.value2;
-								item.hand = markeditem.hand;
-								item.damageAndObjectType = markeditem.damageAndObjectType;
-								item.weight = markeditem.weight;
-								item.condition = markeditem.condition;
-								item.durability = markeditem.durability;
-								item.quality = markeditem.quality;
-								item.bonus = markeditem.bonus;
-								item.model = markeditem.model;
-								item.color = markeditem.color;
-								item.effect = markeditem.effect;
-								item.name = markeditem.name;
-								items.Add(item.name, item);
+								StoC_0x1F_MarketMerchant.MerchantItem markeditem = market.Items[j];
+								markeditem.name = markeditem.name.Substring(6);
+								if (!items.Contains(markeditem.name))
+								{
+									Item item = new Item();
+									item.level = markeditem.level;
+									item.value1 = markeditem.value1;
+									item.value2 = markeditem.value2;
+									item.hand = markeditem.hand;
+									item.damageAndObjectType = markeditem.damageAndObjectType;
+									item.weight = markeditem.weight;
+									item.condition = markeditem.condition;
+									item.durability = markeditem.durability;
+									item.quality = markeditem.quality;
+									item.bonus = markeditem.bonus;
+									item.model = markeditem.model;
+									item.color = markeditem.color;
+									item.effect = markeditem.effect;
+									item.name = markeditem.name;
+									items.Add(item.name, item);
+								}
 							}
 						}
-					}
-					else if (pak is StoC_0x17_MerchantWindow)
-					{
-						StoC_0x17_MerchantWindow merchant = pak as StoC_0x17_MerchantWindow;
-						for (int j = 0; j < merchant.ItemCount; j++)
+						else if (pak is StoC_0x17_MerchantWindow)
 						{
-							StoC_0x17_MerchantWindow.MerchantItem merchantitem = merchant.Items[j];
-							if (!items.Contains(merchantitem.name))
+							StoC_0x17_MerchantWindow merchant = pak as StoC_0x17_MerchantWindow;
+							for (int j = 0; j < merchant.ItemCount; j++)
 							{
-								Item item = new Item();
-								item.level = merchantitem.level;
-								item.value1 = merchantitem.value1;
-								item.value2 = merchantitem.value2;
-								item.hand = merchantitem.hand;
-								item.damageAndObjectType = merchantitem.damageAndObjectType;
-								item.weight = merchantitem.weight;
-//								item.condition = merchantitem.condition;
-//								item.durability = merchantitem.durability;
-//								item.quality = merchantitem.quality;
-//								item.bonus = merchantitem.bonus;
-								item.model = merchantitem.model;
-//								item.color = merchantitem.color;
-//								item.effect = merchantitem.effect;
-								item.name = merchantitem.name;
-								items.Add(item.name, item);
+								StoC_0x17_MerchantWindow.MerchantItem merchantitem = merchant.Items[j];
+								if (!items.Contains(merchantitem.name))
+								{
+									Item item = new Item();
+									item.level = merchantitem.level;
+									item.value1 = merchantitem.value1;
+									item.value2 = merchantitem.value2;
+									item.hand = merchantitem.hand;
+									item.damageAndObjectType = merchantitem.damageAndObjectType;
+									item.weight = merchantitem.weight;
+									//								item.condition = merchantitem.condition;
+									//								item.durability = merchantitem.durability;
+									//								item.quality = merchantitem.quality;
+									//								item.bonus = merchantitem.bonus;
+									item.model = merchantitem.model;
+									//								item.color = merchantitem.color;
+									//								item.effect = merchantitem.effect;
+									item.name = merchantitem.name;
+									items.Add(item.name, item);
+								}
 							}
 						}
-					}
-					else if (pak is StoC_0xC4_CustomTextWindow)
-					{
-						StoC_0xC4_CustomTextWindow custom = pak as StoC_0xC4_CustomTextWindow;
-						string name = custom.Caption;
-						if (name[4] == ':')
-							name = name.Substring(6);
-						if (items.Contains(name))
+						else if (pak is StoC_0xC4_CustomTextWindow)
 						{
-							Item item = items[name] as Item;
-							StringBuilder str = new StringBuilder();
-							str.AppendFormat("\tcaption: \"{0}\"", name);
-							for (int j = 0; j < custom.Lines.Length; j++)
+							StoC_0xC4_CustomTextWindow custom = pak as StoC_0xC4_CustomTextWindow;
+							string name = custom.Caption;
+							if (name[4] == ':')
+								name = name.Substring(6);
+							if (items.Contains(name))
 							{
-								StoC_0xC4_CustomTextWindow.LineEntry line = custom.Lines[j];
-								str.AppendFormat("\n\t{0,2}: \"{1}\"", line.number, line.text);
+								Item item = items[name] as Item;
+								StringBuilder str = new StringBuilder();
+								str.AppendFormat("\tcaption: \"{0}\"", name);
+								for (int j = 0; j < custom.Lines.Length; j++)
+								{
+									StoC_0xC4_CustomTextWindow.LineEntry line = custom.Lines[j];
+									str.AppendFormat("\n\t{0,2}: \"{1}\"", line.number, line.text);
+								}
+								str.Append('\n');
+								item.description = str.ToString();
+								items[name] = item;
 							}
-							str.Append('\n');
-							item.description = str.ToString();
-							items[name] = item;
 						}
-					}
-				}
+					} // for (log.packets)
+				} // foreach (context.logs)
+
 				foreach (DictionaryEntry entry in items)
 				{
 					Item item = (Item)entry.Value;
@@ -122,6 +132,7 @@ namespace PacketLogConverter.LogWriters
 							item.name));
 					}
 				}
+
 				foreach (DictionaryEntry entry in items)
 				{
 					Item item = (Item)entry.Value;

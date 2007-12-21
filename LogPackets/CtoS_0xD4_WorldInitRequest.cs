@@ -11,7 +11,7 @@ namespace PacketLogConverter.LogPackets
 		protected ushort model;
 		protected byte slot;//alb:0-9, mid:10-19, hib:20-29
 		protected byte unk4;
-		protected uint unk5;
+		protected uint unk5; // releated with CtoS_0xE8.Unk2 ?
 		protected short regionId;
 
 		#region public access properties
@@ -26,6 +26,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("unk1:0x{0:X8} unk2:0x{1:X8} regionId:{2,-3} unk3:0x{3:X8} playerModel:0x{4:X4} unk4:0x{5:X2} dBslot:{6,-2} unk5:0x{7:X8}", unk1, unk2, regionId, unk3, model, unk4, slot, unk5);
+			if (flagsDescription)
+				str.AppendFormat("\n\t(model:0x{0:X4} face?:{1} size:{2})", model & 0x7FF, model >> 13, (model >> 11) & 3);
 
 			return str.ToString();
 		}

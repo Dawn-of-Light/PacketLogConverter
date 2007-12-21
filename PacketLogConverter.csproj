@@ -108,6 +108,7 @@
     <Compile Include="FilterManager.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IExecutionContext.cs" />
     <Compile Include="ILogAction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -150,6 +151,7 @@
     <Compile Include="LogActions\ShowRawData.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogActions\ShowSlotItemInfo.cs" />
     <Compile Include="LogFilterAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -173,6 +175,7 @@
     <Compile Include="LogFilters\PacketPropertyValueFilterHelpers.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="LogManager.cs" />
     <Compile Include="LogPacketAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -237,12 +240,8 @@
     <Compile Include="LogPackets\CtoS_0x37_ClientCrash.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LogPackets\CtoS_0x40_UnknownPacket.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogPackets\CtoS_0x41_UnknownPacket.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="LogPackets\CtoS_0x40_FinishNewQuestResponse.cs" />
+    <Compile Include="LogPackets\CtoS_0x41_UseNewQuestItem.cs" />
     <Compile Include="LogPackets\CtoS_0x42_UnknownPacket.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -485,6 +484,7 @@
     <Compile Include="LogPackets\CtoS_0xFF_CharacterCreate173.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\CtoS_0xFF_CharacterCreate189.cs" />
     <Compile Include="LogPackets\CtoS_0xXX_Template.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -614,9 +614,7 @@
     <Compile Include="LogPackets\StoC_0x45_UnknownPacket.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LogPackets\StoC_0x46_UnknownPacket.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="LogPackets\StoC_0x46_WarmapMinoRelicUpdate.cs" />
     <Compile Include="LogPackets\StoC_0x47_Earthquake.cs" />
     <Compile Include="LogPackets\StoC_0x49_WarmapClaimedKeeps.cs">
       <SubType>Code</SubType>
@@ -1030,6 +1028,7 @@
     <Compile Include="Packet.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PacketLocation.cs" />
     <Compile Include="PacketLog.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1054,6 +1053,7 @@
     <Compile Include="Utils\StreamWrap.cs" />
     <EmbeddedResource Include="ErrorForm.resx">
       <DependentUpon>ErrorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LogActions\InfoWindowForm.resx">
       <DependentUpon>InfoWindowForm.cs</DependentUpon>
@@ -1077,9 +1077,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressForm.resx">
       <DependentUpon>ProgressForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ReportForm.resx">
       <DependentUpon>ReportForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -13,11 +13,12 @@ namespace PacketLogConverter.LogPackets
 		protected uint eip;
 		protected uint options;
 		protected byte[] gsxm = new byte[16];
-		protected byte unk4;
+		protected byte clnRegionExpantions;
 		protected byte clnType;
 		protected byte osType;
-		protected byte unk6;
+		protected byte clnExpantions;
 		protected ushort region;
+		protected ushort unk1;
 		protected uint uptime;
 		protected uint stack1;
 		protected uint stack2;
@@ -32,11 +33,12 @@ namespace PacketLogConverter.LogPackets
 		public uint CS { get { return cs; } }
 		public uint EIP { get { return eip; } }
 		public uint Options { get { return options; } }
-		public byte Unk4 { get { return unk4; } }
+		public byte ClnRegionExpantions { get { return clnRegionExpantions; } }
 		public byte ClnType { get { return clnType; } }
 		public byte OS { get { return osType; } }
-		public byte Unk6 { get { return unk6; } }
+		public byte ClnExpantions { get { return clnExpantions; } }
 		public ushort Region { get { return region; } }
+		public ushort Unk1 { get { return unk1; } }
 		public uint Uptime { get { return uptime; } }
 		public uint Stack1 { get { return stack1; } }
 		public uint Stack2 { get { return stack1; } }
@@ -87,8 +89,12 @@ namespace PacketLogConverter.LogPackets
 		{
 			WIN95 = 1,
 			WIN98 = 2,
+			WindowsMe = 3,
+			NT351 = 4,
+			NT4 = 5,
 			WIN2000 = 6,
 			WINXP = 7,
+			WIN2003 = 8,
 		}
 
 		public override string GetPacketDataString(bool flagsDescription)
@@ -102,7 +108,7 @@ namespace PacketLogConverter.LogPackets
 			str.AppendFormat("\n\tstack:0x{0:X8} 0x{1:X8} 0x{2:X8} 0x{3:X8}", stack1, stack2, stack3, stack4);
 			if (flagsDescription)
 			{
-				str.AppendFormat("\n\tunk4:{0} clnType:{1}({4}) OS:{2}({5}) unk6:{3}", unk4, clnType, osType, unk6, (eClientType)clnType, (eOSType)osType);
+				str.AppendFormat("\n\tclnRegionExpantions:{0} clnType:{1}({4}) OS:{2}({5}) clnExpantions:{3}", clnRegionExpantions, clnType, osType, clnExpantions, (eClientType)clnType, (eOSType)osType);
 				str.AppendFormat("\n\t{0} caused {1} in module {2} at {3:X4}:{4:X8}.", "?", ((eErrorCode)errorCode).ToString().Replace("_", " "), module, cs, eip);
 				str.AppendFormat("\n\tGSXM:");
 				for(int i = 0; i < 16; i++)
@@ -126,12 +132,12 @@ namespace PacketLogConverter.LogPackets
 			options = ReadInt();
 			for(int i = 0; i < 16; i++)
 				gsxm[i] = ReadByte();
-			unk4 = ReadByte();
+			clnRegionExpantions = ReadByte();
 			clnType = ReadByte();
 			osType = ReadByte();
-			unk6 = ReadByte();
+			clnExpantions = ReadByte();
 			region = ReadShort();
-			Skip(2);
+			unk1 = ReadShort();
 			uptime = ReadInt();
 			stack1 = ReadIntLowEndian();
 			stack2 = ReadIntLowEndian();

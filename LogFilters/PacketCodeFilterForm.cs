@@ -247,16 +247,12 @@ namespace PacketLogConverter.LogFilters
 			{
 				base.ActivateTemplate(stoc, ctos);
 				ctos.SetItemChecked(0x1D, true);
-				ctos.SetItemChecked(0x40, true);
-				ctos.SetItemChecked(0x41, true);
 				ctos.SetItemChecked(0x42, true);
 				ctos.SetItemChecked(0x43, true);
 				ctos.SetItemChecked(0xB9, true);
 				stoc.SetItemChecked(0x24, true);
 				stoc.SetItemChecked(0x45, true);
-				stoc.SetItemChecked(0x46, true);
-				stoc.SetItemChecked(0x59, true);
-				stoc.SetItemChecked(0x5C, true);
+				stoc.SetItemChecked(0x47, true);
 			}
 
 			public override string ToString()

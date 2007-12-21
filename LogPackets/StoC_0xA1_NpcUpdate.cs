@@ -71,6 +71,17 @@ namespace PacketLogConverter.LogPackets
 				if ((flags & 0x20) == 0x20)
 					flag += ",Fly";
 				str.AppendFormat(" ({0})", flag);
+/* 				if (targetZoneX != 0 || targetZoneY !=0 || targetZoneZ !=0)
+				{
+					int diffZ = (targetZoneZ - currentZoneZ);
+					int diffX = (currentZoneX - targetZoneX);
+	                int diffY = (currentZoneY - targetZoneY);
+					int range = (int)Math.Sqrt(diffX*diffX + diffY*diffY);
+					double zSpeed = speed * diffZ / range;
+					if (speed == 0)
+						zSpeed = diffZ;
+					str.AppendFormat("\n\tcalced zSpeed:{0}({1}) diffX:{2} diffY:{3} diffZ:{4} range:{5} speed:{6}", (int)zSpeed/4, (int)zSpeed, diffX, diffY, diffZ, range, speed);
+				}*/
 			}
 			return str.ToString();
 		}

@@ -6,14 +6,14 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x08, 189, ePacketDirection.ServerToClient, "House inside update v189")]
 	public class StoC_0x08_HouseInsideUpdate_189 : StoC_0x08_HouseInsideUpdate
 	{
-		protected uint unk5;
-
+		protected ushort scheduled;
+		protected ushort unk5;
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 
 			str.Append(base.GetPacketDataString(flagsDescription));
-			str.AppendFormat(" unk5:0x{0:X8}", unk5);
+			str.AppendFormat(" unk5:0x{0:X4} scheduledHours:{1}", unk5, scheduled);
 
 			return str.ToString();
 		}
@@ -40,7 +40,8 @@ namespace PacketLogConverter.LogPackets
 			secondCarpet = ReadByte();
 			thirdCarpet = ReadByte();
 			fourthCarpet = ReadByte();
-			unk5 = ReadInt();
+			scheduled = ReadShortLowEndian();
+			unk5 = ReadShort();
 			unk4 = ReadByte();
 		}
 

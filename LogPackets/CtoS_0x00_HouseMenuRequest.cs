@@ -34,16 +34,16 @@ namespace PacketLogConverter.LogPackets
 					code_type = "outsideMenu";
 					break;
 				case 3:
-					code_type = "houseMerchantStore";
+					code_type = "HouseMerchantStore";
 					break;
 				case 4:
-					code_type = "houseVaultStore";
+					code_type = "HouseVaultStore";
 					break;
 				case 5:
-					code_type = "houseToolsStore";
+					code_type = "HouseToolsStore";
 					break;
 				case 6:
-					code_type = "houseBindstoneStore";
+					code_type = "HouseBindstoneStore";
 					break;
 				case 7:
 					code_type = "houseInfo";

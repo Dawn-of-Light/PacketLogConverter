@@ -7,13 +7,13 @@ namespace PacketLogConverter.LogPackets
 	{
 		protected ushort houseOid;
 		protected byte index;
-		protected byte unk1;
+		protected byte place;
 
 		#region public access properties
 
 		public ushort HouseId { get { return houseOid; } }
 		public byte Index { get { return index; } }
-		public byte Unk1 { get { return unk1; } }
+		public byte Place { get { return place; } }
 
 		#endregion
 
@@ -21,7 +21,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("houseOid:0x{0:X4} index:{1} unk1:0x{2:X2}", houseOid, index, unk1);
+			str.AppendFormat("houseOid:0x{0:X4} index:{1} place:{2}({3})", houseOid, index, place, (StoC_0x09_HouseDecorationUpdate.ePlaceType)place);
 
 			return str.ToString();
 		}
@@ -35,7 +35,7 @@ namespace PacketLogConverter.LogPackets
 
 			houseOid = ReadShort();
 			index = ReadByte();
-			unk1 = ReadByte();
+			place = ReadByte();
 		}
 
 		/// <summary>

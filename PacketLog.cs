@@ -9,6 +9,14 @@ namespace PacketLogConverter
 	/// </summary>
 	public class PacketLog : IEnumerable
 	{
+		private float m_version;
+
+		public float Version
+		{
+			get { return m_version; }
+			set { m_version = value; }
+		}
+
 		private string m_streamName = "";
 
 		public string StreamName
@@ -41,28 +49,6 @@ namespace PacketLogConverter
 			get { return m_packets.Count; }
 		}
 
-		private float m_version = -1;
-
-		public float Version
-		{
-			get { return m_version; }
-			set
-			{
-				if (IgnoreVersionChanges)
-					return;
-				if (m_version != value)
-					m_reinitRequired = true;
-				m_version = value;
-			}
-		}
-
-		private bool m_reinitRequired;
-
-		public bool ReinitRequired
-		{
-			get { return m_reinitRequired; }
-		}
-
 		private int m_unknownPacketsCount;
 
 		public int UnknownPacketsCount
@@ -70,18 +56,13 @@ namespace PacketLogConverter
 			get { return m_unknownPacketsCount; }
 		}
 
-		private bool m_ignoreVersionChanges;
-
-		public bool IgnoreVersionChanges
-		{
-			get { return m_ignoreVersionChanges; }
-			set { m_ignoreVersionChanges = value; }
-		}
-
 		/// <summary>
-		/// Loads the packet parsers based on current version
+		/// Loads the packet parsers based on current log version.
 		/// </summary>
-		public void Init(int maxRepeat, ProgressCallback callback)
+		/// <param name="manager">The log manager initializing logs.</param>
+		/// <param name="maxRepeat">The max repeat.</param>
+		/// <param name="callback">The callback for UI updates.</param>
+		public void Init(LogManager manager, int maxRepeat, ProgressCallback callback)
 		{
 			if (maxRepeat < 0)
 			{
@@ -89,7 +70,7 @@ namespace PacketLogConverter
 				return;
 			}
 
-			m_reinitRequired = false;
+			manager.ReinitRequired = false;
 
 			int workTotal = m_packets.Count;
 			int workDone = 0;
@@ -101,13 +82,15 @@ namespace PacketLogConverter
 
 				Packet packet = (Packet)m_packets[i];
 				if (packet.AllowClassChange)
-					packet = PacketManager.ChangePacketClass(packet, Version);
+					packet = PacketManager.ChangePacketClass(packet, manager.Version);
 				packet.InitLog(this);
+#warning HACK: Version is taken from last log; implement proper versioning
+				manager.Version = Version;
 				m_packets[i] = packet;
 
-				if (ReinitRequired)
+				if (manager.ReinitRequired)
 				{
-					Init(maxRepeat-1, callback);
+					Init(manager, maxRepeat - 1, callback);
 					return; // version changed by the packets, start again...
 				}
 			}

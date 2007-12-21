@@ -55,7 +55,7 @@ namespace PacketLogConverter.LogPackets
 			if (subData == null)
 				str.AppendFormat(" UNKNOWN SUBCODE");
 			else
-				subData.MakeString(str);
+				subData.MakeString(str, flagsDescription);
 
 			return str.ToString();
 		}
@@ -97,7 +97,7 @@ namespace PacketLogConverter.LogPackets
 		public abstract class ASubData
 		{
 			abstract public void Init(StoC_0x4C_VisualEffect pak);
-			abstract public void MakeString(StringBuilder str);
+			abstract public void MakeString(StringBuilder str, bool flagsDescription);
 		}
 
 		protected virtual void InitDefaultUpdate()
@@ -119,7 +119,7 @@ namespace PacketLogConverter.LogPackets
 				unk2 = pak.ReadShort();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("(UNKNOWN) flag:{0} unk1:0x{1:X4} unk2:0x{2:X4}", flag, unk1, unk2);
 			}
@@ -142,10 +142,12 @@ namespace PacketLogConverter.LogPackets
 				unk1 = pak.ReadInt();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				str.AppendFormat("(MobGhost?) flag:{0}({1}) unk1:{2}",
-					flag, (flag == 0 ? "Disable" : "Enable"), unk1);
+				str.AppendFormat("(MobGhost?) flag:{0}({1})",
+					flag, (flag == 0 ? "Disable" : "Enable"));
+				if (flagsDescription)
+					str.AppendFormat(" unk1:{0}", unk1);
 			}
 		}
 
@@ -172,7 +174,7 @@ namespace PacketLogConverter.LogPackets
 				effect5 = pak.ReadByte();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("(HexEffects) effect1:0x{0:X2} effect2:{1:X2} effect3:{2:X2} effect4:{3:X2} effect5:{4:X2}",
 					effect1, effect2, effect3, effect4, effect5);
@@ -196,9 +198,11 @@ namespace PacketLogConverter.LogPackets
 				unk1 = pak.ReadInt();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				str.AppendFormat("(Vampiire) flag:{0} unk1:{1}", flag, unk1);
+				str.AppendFormat("(Vampiire) flag:{0}", flag);
+				if (flagsDescription)
+					str.AppendFormat(" unk1:{0}", unk1);
 			}
 		}
 
@@ -219,10 +223,12 @@ namespace PacketLogConverter.LogPackets
 				unk1 = pak.ReadInt();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				str.AppendFormat("(ColorName) flag:{0}({1}) unk1:{2}",
-					flag, (flag == 1 ? "PvP" : "RvR"), unk1);
+				str.AppendFormat("(ColorName) flag:{0}({1})",
+					flag, (flag == 1 ? "PvP" : "RvR"));
+				if (flagsDescription)
+					str.AppendFormat(" unk1:{0}", unk1);
 			}
 		}
 
@@ -243,10 +249,12 @@ namespace PacketLogConverter.LogPackets
 				unk1 = pak.ReadInt();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				str.AppendFormat("(MobStealth) flag:{0}({1}) unk1:{2}",
-					flag, (flag == 0 ? "Disable" : "Enable"), unk1);
+				str.AppendFormat("(MobStealth) flag:{0}({1})",
+					flag, (flag == 0 ? "Disable" : "Enable"));
+				if (flagsDescription)
+					str.AppendFormat(" unk1:{0}", unk1);
 			}
 		}
 
@@ -267,10 +275,12 @@ namespace PacketLogConverter.LogPackets
 				unk1 = pak.ReadInt();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				str.AppendFormat("(QuestEffect) flag:{0}({1}) unk1:{2}",
-					flag, (flag == 0 ? "Disable" : "Enable"), unk1);
+				str.AppendFormat("(QuestEffect) flag:{0}({1})",
+					flag, (flag == 0 ? "Disable" : "Enable"));
+				if (flagsDescription)
+					str.AppendFormat(" unk1:{0}", unk1);
 			}
 		}
 
@@ -319,10 +329,12 @@ namespace PacketLogConverter.LogPackets
 				unk1 = pak.ReadInt();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
-				str.AppendFormat("(BlinkPanel) flag:{0}({1}) unk1:{2}",
-					flag, (ePanel)flag, unk1);
+				str.AppendFormat("(BlinkPanel) flag:{0}({1})",
+					flag, (ePanel)flag);
+				if (flagsDescription)
+					str.AppendFormat(" unk1:{0}", unk1);
 			}
 		}
 
@@ -345,7 +357,7 @@ namespace PacketLogConverter.LogPackets
 				time = (short)pak.ReadShort();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("(FreeLevel) flag:{0}", flag);
 				TimeSpan t = new TimeSpan(0, time-1, 0);
@@ -397,7 +409,7 @@ namespace PacketLogConverter.LogPackets
 					title = pak.ReadString(titleLength);
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("(Title) flag:{0}({1}) titleLength:{2} unk1:{3}{4}",
 					flag, (flag == 0 ? "Clear" : "Set"), titleLength, unk1, (flag == 0 ? "" : " title:\"" + title + '\"'));
@@ -423,7 +435,7 @@ namespace PacketLogConverter.LogPackets
 				emblem = pak.ReadShort();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("(Banner) flag:{0}({1}) newEmblem:0x{2:X4} guildEmblem:{3}",
 					flag, (flag == 1 ? "Disable" : "Enable"), unk1, emblem);
@@ -449,7 +461,7 @@ namespace PacketLogConverter.LogPackets
 				effect = pak.ReadInt();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("(MinoRelic) flag:{0}({1}) effect:0x{2:X8}",
 					flag, (flag == 1 ? "Disable" : "Enable"), effect);
@@ -473,7 +485,7 @@ namespace PacketLogConverter.LogPackets
 				timer = pak.ReadInt();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("(MinoRelicTimerSet) flag:{0} timer:{1}", flag, timer);
 			}
@@ -496,7 +508,7 @@ namespace PacketLogConverter.LogPackets
 				timer = pak.ReadInt();
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(StringBuilder str, bool flagsDescription)
 			{
 				str.AppendFormat("(MinoRelicTimer) flag:{0} timer:{1}", flag, timer);
 			}

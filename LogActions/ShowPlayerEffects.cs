@@ -11,14 +11,18 @@ namespace PacketLogConverter.LogActions
 	public class ShowPlayerEffectsAction : ILogAction
 	{
 		#region ILogAction Members
+
 		/// <summary>
-		/// Activate log action
+		/// Activates a log action.
 		/// </summary>
-		/// <param name="log">The current log</param>
-		/// <param name="selectedIndex">The selected packet index</param>
-		/// <returns>True if log data tab should be updated</returns>
-		public virtual bool Activate(PacketLog log, int selectedIndex)
+		/// <param name="context">The context.</param>
+		/// <param name="selectedPacket">The selected packet.</param>
+		/// <returns><c>true</c> if log data tab should be updated.</returns>
+		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
 		{
+			PacketLog log = context.LogManager.Logs[selectedPacket.LogIndex];
+			int selectedIndex = selectedPacket.PacketIndex;
+
 			StoC_0x7F_UpdateIcons.Effect[] effects = new StoC_0x7F_UpdateIcons.Effect[40];
 			for (int i = 0; i < selectedIndex; i++)
 			{
@@ -51,8 +55,7 @@ namespace PacketLogConverter.LogActions
 						str.Append("\n");
 						str.Append("\n");
 						str.Append(skills.GetPacketDataString(true));
-						StoC_0x16_VariousUpdate.SkillsUpdate data = (skills.SubData as StoC_0x16_VariousUpdate.SkillsUpdate);
-						if (data.startIndex == 0)
+						if (skills.StartIndex == 0)
 							break;
 					}
 				}

@@ -12,7 +12,14 @@ namespace PacketLogConverter.LogWriters
 	public class KeepObjectXmlWriter : ILogWriter
 	{
 		private Hashtable m_keeps = new Hashtable();
-		public void WriteLog(PacketLog log, Stream stream, ProgressCallback callback)
+
+		/// <summary>
+		/// Writes the log.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="stream">The stream.</param>
+		/// <param name="callback">The callback for UI updates.</param>
+		public void WriteLog(IExecutionContext context, Stream stream, ProgressCallback callback)
 		{
 			using (StreamWriter s = new StreamWriter(stream))
 			{
@@ -20,80 +27,83 @@ namespace PacketLogConverter.LogWriters
 				int ZoneXOffset = 0;
 				int ZoneYOffset = 0;
 				Hashtable m_obj = new Hashtable();
-				for (int i = 0; i < log.Count; i++)
+				foreach (PacketLog log in context.LogManager.Logs)
 				{
-					if (callback != null && (i & 0xFFF) == 0) // update progress every 4096th packet
-						callback(i, log.Count-1);
+					for (int i = 0; i < log.Count; i++)
+					{
+						if (callback != null && (i & 0xFFF) == 0) // update progress every 4096th packet
+							callback(i, log.Count - 1);
 
-					StoC_0x20_PlayerPositionAndObjectID_171 pak_reg20 = log[i] as StoC_0x20_PlayerPositionAndObjectID_171;
-					if (pak_reg20 != null)
-					{
-						region = pak_reg20.Region;
-						ZoneXOffset = pak_reg20.ZoneXOffset;
-						ZoneYOffset = pak_reg20.ZoneYOffset;
-//						m_obj.Clear();
-						m_keeps.Clear();
-						continue;
-					}
-					StoC_0xB7_RegionChange pak_regB7 = log[i] as StoC_0xB7_RegionChange;
-					if (pak_regB7 != null)
-					{
-						region = pak_regB7.RegionId;
-						ZoneXOffset = 0;
-						ZoneYOffset = 0;
-//						m_obj.Clear();
-						m_keeps.Clear();
-						continue;
-					}
-					if (region != 238) continue;
-					StoC_0x69_KeepOverview pak_keep = log[i] as StoC_0x69_KeepOverview;
-					if (pak_keep != null)
-					{
-						Keep keep = new Keep();
-						keep.KeepID = pak_keep.KeepId;
-						keep.X = (uint) (pak_keep.KeepX + ZoneXOffset * 0x2000);
-						keep.Y = (uint) (pak_keep.KeepY + ZoneYOffset * 0x2000);
-						keep.Heading = pak_keep.Heading;
-						keep.Realm = pak_keep.Realm;
-						keep.Level = pak_keep.Level;
-						m_keeps[keep.KeepID]=keep;
-						continue;
-					}
-					KeepGuard guard = new KeepGuard();
-					StoC_0xD9_ItemDoorCreate door = log[i] as StoC_0xD9_ItemDoorCreate;
-					string key = "";
-					if (door != null)
-					{
-						if (door.ExtraBytes == 4)
+						StoC_0x20_PlayerPositionAndObjectID_171 pak_reg20 = log[i] as StoC_0x20_PlayerPositionAndObjectID_171;
+						if (pak_reg20 != null)
 						{
-							guard.KeepGuard_ID = door.InternalId.ToString();
-							guard.Name = door.Name;
-							guard.EquipmentID = "";
-							guard.KeepID = 0;
-							guard.BaseLevel = 0;
-							guard.X = (uint)(door.X + ZoneXOffset * 0x2000);
-							guard.Y = (uint)(door.Y + ZoneYOffset * 0x2000);
-							guard.Z = door.Z;
-							guard.Heading = door.Heading;
-							guard.Realm = (door.Flags & 0x30) >> 4;
-							guard.Model = door.Model;
-							guard.ClassType = "DOL.GS.GameKeepDoor";
-							key = "REGION:"+region.ToString()+"-DOOR:"+guard.KeepGuard_ID;
+							region = pak_reg20.Region;
+							ZoneXOffset = pak_reg20.ZoneXOffset;
+							ZoneYOffset = pak_reg20.ZoneYOffset;
+							//						m_obj.Clear();
+							m_keeps.Clear();
+							continue;
+						}
+						StoC_0xB7_RegionChange pak_regB7 = log[i] as StoC_0xB7_RegionChange;
+						if (pak_regB7 != null)
+						{
+							region = pak_regB7.RegionId;
+							ZoneXOffset = 0;
+							ZoneYOffset = 0;
+							//						m_obj.Clear();
+							m_keeps.Clear();
+							continue;
+						}
+						if (region != 238) continue;
+						StoC_0x69_KeepOverview pak_keep = log[i] as StoC_0x69_KeepOverview;
+						if (pak_keep != null)
+						{
+							Keep keep = new Keep();
+							keep.KeepID = pak_keep.KeepId;
+							keep.X = (uint) (pak_keep.KeepX + ZoneXOffset*0x2000);
+							keep.Y = (uint) (pak_keep.KeepY + ZoneYOffset*0x2000);
+							keep.Heading = pak_keep.Heading;
+							keep.Realm = pak_keep.Realm;
+							keep.Level = pak_keep.Level;
+							m_keeps[keep.KeepID] = keep;
+							continue;
+						}
+						KeepGuard guard = new KeepGuard();
+						StoC_0xD9_ItemDoorCreate door = log[i] as StoC_0xD9_ItemDoorCreate;
+						string key = "";
+						if (door != null)
+						{
+							if (door.ExtraBytes == 4)
+							{
+								guard.KeepGuard_ID = door.InternalId.ToString();
+								guard.Name = door.Name;
+								guard.EquipmentID = "";
+								guard.KeepID = 0;
+								guard.BaseLevel = 0;
+								guard.X = (uint) (door.X + ZoneXOffset*0x2000);
+								guard.Y = (uint) (door.Y + ZoneYOffset*0x2000);
+								guard.Z = door.Z;
+								guard.Heading = door.Heading;
+								guard.Realm = (door.Flags & 0x30) >> 4;
+								guard.Model = door.Model;
+								guard.ClassType = "DOL.GS.GameKeepDoor";
+								key = "REGION:" + region.ToString() + "-DOOR:" + guard.KeepGuard_ID;
+							}
+							else
+								continue;
 						}
 						else
 							continue;
+						if (key == "") continue;
+						if (m_obj.ContainsKey(key)) continue;
+						Keep my_keep = getKeepCloseToSpot(guard.X, guard.Y, 2000);
+						if (my_keep != null)
+						{
+							guard.KeepID = my_keep.KeepID;
+							guard.BaseLevel = my_keep.Level;
+						}
+						m_obj[key] = guard;
 					}
-					else
-						continue;
-					if (key == "") continue;
-					if (m_obj.ContainsKey(key)) continue;
-					Keep my_keep = getKeepCloseToSpot(guard.X, guard.Y, 2000);
-					if (my_keep != null)
-					{
-						guard.KeepID = my_keep.KeepID;
-						guard.BaseLevel = my_keep.Level;
-					}
-					m_obj[key] = guard;
 				}
 				s.WriteLine("<KeepGuard>");
 				foreach (KeepGuard guard in m_obj.Values)

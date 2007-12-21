@@ -16,7 +16,7 @@ using PacketLogConverter.LogWriters;
 
 namespace PacketLogConverter
 {
-	public class MainForm : Form
+	public class MainForm : Form, IExecutionContext
 	{
 		private MainMenu mainMenu1;
 		private TabPage logInfoTab;
@@ -78,6 +78,8 @@ namespace PacketLogConverter
 		{
 			m_progress = new Progress(this);
 			InitializeComponent();
+
+			m_currentLogs.OnPacketLogsChanged += OnPacketLogsChanged;
 		}
 
 		/// <summary>
@@ -711,26 +713,28 @@ namespace PacketLogConverter
 
 		private readonly Progress m_progress;
 
-		private PacketLog m_currentLog;
+		private readonly LogManager m_currentLogs = new LogManager();
 
 		/// <summary>
 		/// Gets or sets the current log.
 		/// </summary>
 		/// <value>The current log.</value>
-		public PacketLog CurrentLog
+		public LogManager LogManager
 		{
-			get { return m_currentLog; }
-			set
-			{
-				PacketLog oldLog = m_currentLog;
-				m_currentLog = value;
-				UpdateLogDataTab();
-				UpdateLogInfoTab();
-				UpdateCaption();
-				menuSaveFile.Enabled = (value != null);
-				if (oldLog != null)
-					GC.Collect(GC.MaxGeneration);
-			}
+			get { return m_currentLogs; }
+		}
+
+		/// <summary>
+		/// Called when packet logs change - updates UI.
+		/// </summary>
+		/// <param name="logManager">The log manager.</param>
+		private void OnPacketLogsChanged(LogManager logManager)
+		{
+			UpdateLogDataTab();
+			UpdateLogInfoTab();
+			UpdateCaption();
+			menuSaveFile.Enabled = (m_currentLogs.Logs.Count > 0);
+			GC.Collect();
 		}
 
 		private ArrayList m_logReaders = new ArrayList();
@@ -956,7 +960,8 @@ namespace PacketLogConverter
 						{
 							saveFilterDialog.FileName = openFilterDialog.FileName;
 							FilterManager.LoadFilters(openFilterDialog.FileName, m_logFilters);
-							UpdateLogDataTab();
+							if (!FilterManager.IgnoreFilters)// try fix update filters while ignore filter is ON
+								UpdateLogDataTab();
 						}
      				};
 			menu.Add(m_filterMenuFiltersLoad);
@@ -982,7 +987,8 @@ namespace PacketLogConverter
 			FilterManager.CombineFiltersChangedEvent += delegate(bool newValue)
 				   	{
 				   		m_filterMenuCombineFilters.Checked = newValue;
-						UpdateLogDataTab();
+						if (!FilterManager.IgnoreFilters)// try fix update filters while ignore filter is ON
+							UpdateLogDataTab();
 				   	};
 			menu.Add(m_filterMenuCombineFilters);
 
@@ -992,7 +998,8 @@ namespace PacketLogConverter
 			FilterManager.InvertCheckChangedEvent += delegate(bool newValue)
 				   	{
 				   		m_filterMenuInvertCheck.Checked = newValue;
-						UpdateLogDataTab();
+						if (!FilterManager.IgnoreFilters)// try fix update filters while ignore filter is ON
+							UpdateLogDataTab();
 					};
 			menu.Add(m_filterMenuInvertCheck);
 
@@ -1032,36 +1039,51 @@ namespace PacketLogConverter
 		private void UpdateCaption()
 		{
 			string caption = "packet log converter v" + Assembly.GetExecutingAssembly().GetName().Version;
-			if (CurrentLog != null && CurrentLog.StreamName != null && CurrentLog.StreamName.Length > 0)
+			string streamNames = LogManager.GetStreamNames();
+			if (!string.IsNullOrEmpty(streamNames))
 			{
-				caption += ": " + CurrentLog.StreamName;
+				caption += ": " + streamNames;
 			}
 			Text = caption;
 		}
 
 		#region open files
 
-		private void LoadFiles(ILogReader reader, PacketLog log, string[] files, ProgressCallback progress)
+		private void LoadFiles(ILogReader reader, ICollection<PacketLog> logs, string[] files, ProgressCallback progress)
 		{
 			foreach (string fileName in files)
 			{
 				try
 				{
+					// Create new log for each file
+					PacketLog log = new PacketLog();
+
 					m_progress.SetDescription("Loading file: " + fileName + "...");
+
+					// Check if file exists
 					FileInfo fileInfo = new FileInfo(fileName);
 					if (!fileInfo.Exists)
 					{
 						Log.Info("File \"" + fileInfo.FullName + "\" doesn't exist, ignored.");
 						continue;
 					}
+
+					// Add all packets
 					using(FileStream stream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
 					{
 						log.AddRange(reader.ReadLog(new BufferedStream(stream, 64*1024), progress));
 					}
-					if (log.StreamName.Length > 0)
-						log.StreamName += "; ";
-					log.StreamName += fileInfo.Name;
+
+					// Initialize log
+#warning TODO: Unlink log poperties from log manager and make a list of all logs and their properties in log info tab
+					m_progress.SetDescription("Initializing log and packets...");
+					log.Init(LogManager, 3, progress);
+
+					// Set stream name
+					log.StreamName = fileInfo.FullName;
+
 					AddRecentFile(fileInfo.FullName);
+					logs.Add(log);
 				}
 				catch (Exception e)
 				{
@@ -1074,6 +1096,7 @@ namespace PacketLogConverter
 		{
 			public string[] Files;
 			public ILogReader Reader;
+			public IList<PacketLog> Logs;
 		}
 
 		private void menuOpenFile_Click(object sender, EventArgs e)
@@ -1091,7 +1114,7 @@ namespace PacketLogConverter
 					OpenData data = new OpenData();
 					data.Files = openLogDialog.FileNames;
 					data.Reader = (ILogReader) m_logReaders[openLogDialog.FilterIndex - 1];
-					CurrentLog = null;
+					LogManager.ClearLogs();
 					m_progress.SetDescription("Reading file(s)...");
 					m_progress.WorkFinishedCallback = new StateObjectCallback(OpenFileFinishedCallback);
 					m_progress.Start(new WorkCallback(OpenFilesWorkCallback), data);
@@ -1110,31 +1133,32 @@ namespace PacketLogConverter
 		private void OpenFilesWorkCallback(ProgressCallback progress, object state)
 		{
 			OpenData data = (OpenData) state;
-			PacketLog log = CurrentLog;
-			if (log == null)
-				log = new PacketLog();
+			data.Logs = new List<PacketLog>();
 
-			log.IgnoreVersionChanges = false;
+			LogManager.IgnoreVersionChanges = false;
 			float version;
 			Util.ParseFloat(li_clientVersion.Text, out version, -1);
 
-			log.Version = version;
+			LogManager.Version = version;
 
 			if (li_ignoreVersionChanges.Checked)
 			{
-				log.IgnoreVersionChanges = true;
+				LogManager.IgnoreVersionChanges = true;
 			}
 
-			LoadFiles(data.Reader, log, data.Files, progress);
-			m_currentLog = log;
-
-			m_progress.SetDescription("Initializing log and packets...");
-			CurrentLog.Init(3, progress);
+			LoadFiles(data.Reader, data.Logs, data.Files, progress);
 		}
 
 		private void OpenFileFinishedCallback(object state)
 		{
-			if (m_currentLog != null && m_currentLog.Count > 100000)
+			OpenData data = (OpenData)state;
+
+			// Count packets
+			LogManager tempManager = new LogManager();
+			tempManager.AddLogRange(LogManager.Logs);
+			tempManager.AddLogRange(data.Logs);
+
+			if (tempManager.CountPackets() > 100000)
 			{
 				logDataDisableUpdatesCheckBox.Checked = true;
 				mainFormTabs.SelectedTab = logInfoTab;
@@ -1144,13 +1168,16 @@ namespace PacketLogConverter
 				mainFormTabs.SelectedTab = logDataTab;
 			}
 			Refresh();
-			CurrentLog = m_currentLog;
-			li_clientVersion.Text = CurrentLog.Version.ToString();
+
+			// Add loadedlogs to current list
+			LogManager.AddLogRange(data.Logs);
+
+			// Update current version
+			li_clientVersion.Text = LogManager.Version.ToString();
 			logDataText.Focus();
 
-			OpenData data = (OpenData) state;
 			LogReaderDelegate e = FilesLoaded;
-			if (e != null && data != null)
+			if (e != null)
 				e(data.Reader);
 		}
 
@@ -1164,13 +1191,14 @@ namespace PacketLogConverter
 					try
 					{
 						// Disable log text updates if log is too long
-						if (m_currentLog != null && m_currentLog.Count > 100000)
+						if (LogManager.CountPackets() > 100000)
 						{
 							logDataDisableUpdatesCheckBox.Checked = true;
 						}
 						OpenData data = new OpenData();
 						data.Files = openAnotherLogDialog.FileNames;
 						data.Reader = (ILogReader) m_logReaders[openAnotherLogDialog.FilterIndex - 1];
+//						LogManager = null;
 						m_progress.SetDescription("Reading file(s)...");
 						m_progress.WorkFinishedCallback = new StateObjectCallback(OpenFileFinishedCallback);
 						m_progress.Start(new WorkCallback(OpenFilesWorkCallback), data);
@@ -1189,55 +1217,43 @@ namespace PacketLogConverter
 				Log.Info("No log readers found.");
 		}
 
-		/// <summary>
-		/// Gets the directory files.
-		/// </summary>
-		/// <param name="path">The path.</param>
-		/// <param name="filter">The filter.</param>
-		/// <param name="deep">if set to <c>true</c> recursively retrives files from all sub-directories.</param>
-		/// <returns>List with found file info</returns>
-		private static List<FileInfo> GetDirectoryFiles(DirectoryInfo path, string filter, bool deep)
+		private static ArrayList ParseDirectory(DirectoryInfo path, string filter, bool deep)
 		{
-			List<FileInfo> files = new List<FileInfo>();
+			ArrayList files = new ArrayList();
     		if (!path.Exists)
 				return files;
     		files.AddRange(path.GetFiles(filter));
 			if (deep)
 			{
 				foreach (DirectoryInfo subdir in path.GetDirectories())
-					files.AddRange(GetDirectoryFiles(subdir, filter, deep));
+					files.AddRange(ParseDirectory(subdir, filter, deep));
 			}
 			return files;
 		}
 
-		/// <summary>
-		/// Handles the Click event of the menuOpenFolder control.
-		/// </summary>
-		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
 		private void menuOpenFolder_Click(object sender, System.EventArgs e)
 		{
 			if (m_logReaders.Count > 0)
 			{
 				// Show the FolderBrowserDialog.
 				openFolderLogDialog.SelectedPath = openLogDialog.InitialDirectory;
-				if (openFolderLogDialog.ShowDialog() == DialogResult.OK)
+				if ( openFolderLogDialog.ShowDialog() == DialogResult.OK )
 				{
 					openLogDialog.InitialDirectory = openFolderLogDialog.SelectedPath;
 					// Start loads logs
-					List<FileInfo> filesInDir = GetDirectoryFiles(new DirectoryInfo(openFolderLogDialog.SelectedPath), "*.log", true);
+					ArrayList filesInDir = ParseDirectory(new DirectoryInfo(openFolderLogDialog.SelectedPath), "*.log", true);
 					if (filesInDir.Count > 0)
 					{
 						try
 						{
 							int i = 0;
 							OpenData data = new OpenData();
-//							data.Files = (string[])GetDirectoryFiles(new DirectoryInfo(openFolderLogDialog.SelectedPath), "*.log", true).ToArray(typeof(string));
+//							data.Files = (string[])ParseDirectory(new DirectoryInfo(openFolderLogDialog.SelectedPath), "*.log", true).ToArray(typeof(string));
 							data.Files = new string[filesInDir.Count];
 							foreach(FileInfo s in filesInDir)
 								data.Files[i++] = s.FullName;
 							data.Reader = (ILogReader) m_logReaders[openLogDialog.FilterIndex - 1];
-							CurrentLog = null;
+							LogManager.ClearLogs();
 							m_progress.SetDescription("Reading file(s)...");
 							m_progress.WorkFinishedCallback = new StateObjectCallback(OpenFileFinishedCallback);
 							m_progress.Start(new WorkCallback(OpenFilesWorkCallback), data);
@@ -1267,7 +1283,7 @@ namespace PacketLogConverter
 		/// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
 		private void menuSaveFile_Click(object sender, EventArgs e)
 		{
-			if (CurrentLog == null)
+			if (LogManager == null)
 			{
 				Log.Info("Nothing to save.");
 				return;
@@ -1305,20 +1321,20 @@ namespace PacketLogConverter
 		private void SaveFileProc(ProgressCallback callback, object state)
 		{
 			// Notify filter manager
-			FilterManager.LogFilteringStarted(CurrentLog);
+			FilterManager.LogFilteringStarted(this);
 
 			try
 			{
 				ILogWriter writer = (ILogWriter)m_logWriters[saveLogDialog.FilterIndex - 1];
 				using (FileStream stream = new FileStream(saveLogDialog.FileName, FileMode.Create))
 				{
-					writer.WriteLog(CurrentLog, stream, callback);
+					writer.WriteLog(this, stream, callback);
 				}
 			}
 			finally
 			{
 				// Notify filter manager
-				FilterManager.LogFilteringStopped(CurrentLog);
+				FilterManager.LogFilteringStopped(this);
 			}
 		}
 
@@ -1512,7 +1528,7 @@ namespace PacketLogConverter
 
 			MenuItem item = (MenuItem) sender;
 
-			CurrentLog = null;
+			LogManager.ClearLogs();
 			OpenData data = new OpenData();
 			data.Reader = new AutoDetectLogReader();
 			data.Files = new string[] { item.Text.Replace("&&", "&") };
@@ -1539,16 +1555,18 @@ namespace PacketLogConverter
 				if (logDataDisableUpdatesCheckBox.Checked)
 					return;
 
-				if (CurrentLog == null)
+				if (LogManager == null)
 				{
 					logDataText.Clear();
 					return;
 				}
 
 //				logDataText.Clear();
-				int selectedPacketIndex = 0;
+				PacketLocation selectedPacket = PacketLocation.UNKNOWN;
 				if (logDataText.TextLength > 0)
-					selectedPacketIndex = CurrentLog.GetPacketIndexByTextIndex(logDataText.SelectionStart);
+				{
+					selectedPacket = LogManager.GetPacketIndexByTextIndex(logDataText.SelectionStart);
+				}
 				int packetsCount = 0;
 				int packetsCountInTCP = 0;
 				int packetsCountOutTCP = 0;
@@ -1559,55 +1577,59 @@ namespace PacketLogConverter
 				TimeSpan baseTime = new TimeSpan(0);
 
 				// Notify filter manager that log filtering starts
-				FilterManager.LogFilteringStarted(CurrentLog);
+				FilterManager.LogFilteringStarted(this);
 
 				StringBuilder text = new StringBuilder();
-				foreach (Packet pak in CurrentLog)
+				IList<PacketLog> logs = LogManager.Logs;
+				foreach (PacketLog log in logs)
 				{
-					int pakIndex = 0;
-					if (showPacketSequence)
+					foreach (Packet pak in log)
 					{
-						if (pak.Protocol == ePacketProtocol.TCP)
+						int pakIndex = 0;
+						if (showPacketSequence)
 						{
-							if (pak.Direction == ePacketDirection.ClientToServer)
+							if (pak.Protocol == ePacketProtocol.TCP)
 							{
-								pakIndex = ++packetsCountOutTCP;
+								if (pak.Direction == ePacketDirection.ClientToServer)
+								{
+									pakIndex = ++packetsCountOutTCP;
+								}
+								else
+								{
+									pakIndex = ++packetsCountInTCP;
+								}
 							}
-							else
+							else if (pak.Protocol == ePacketProtocol.UDP)
 							{
-								pakIndex = ++packetsCountInTCP;
+								if (pak.Direction == ePacketDirection.ClientToServer)
+								{
+									pakIndex = ++packetsCountOutUDP;
+								}
+								else
+								{
+									pakIndex = ++packetsCountInUDP;
+								}
 							}
 						}
-						else if (pak.Protocol == ePacketProtocol.UDP)
+						if (FilterManager.IsPacketIgnored(pak))
 						{
-							if (pak.Direction == ePacketDirection.ClientToServer)
-							{
-								pakIndex = ++packetsCountOutUDP;
-							}
-							else
-							{
-								pakIndex = ++packetsCountInUDP;
-							}
+							pak.LogTextIndex = -1;
+							continue;
 						}
-					}
-					if (FilterManager.IsPacketIgnored(pak))
-					{
-						pak.LogTextIndex = -1;
-						continue;
-					}
-					pak.LogTextIndex = text.Length;
-					++packetsCount;
+						pak.LogTextIndex = text.Length;
+						++packetsCount;
 
-					if (showPacketSequence)
-					{
-						text.AppendFormat("{0}:{1,-5} ", pak.Protocol, pakIndex);
-					}
+						if (showPacketSequence)
+						{
+							text.AppendFormat("{0}:{1,-5} ", pak.Protocol, pakIndex);
+						}
 
-					// main description
-					text.Append(pak.ToHumanReadableString(baseTime, mnuPacketFlags.Checked));
-					text.Append('\n');
-					if (timeDiff)
-						baseTime = pak.Time;
+						// main description
+						text.Append(pak.ToHumanReadableString(baseTime, mnuPacketFlags.Checked));
+						text.Append('\n');
+						if (timeDiff)
+							baseTime = pak.Time;
+					}
 				}
 
 				newTabName = string.Format("{0} ({1}{2:N0} packets)", newTabName, (timeDiff ? "time diff, " : ""), packetsCount);
@@ -1615,11 +1637,18 @@ namespace PacketLogConverter
 
 				logDataText.SelectionIndent = 4;
 				logDataText.Text = text.ToString();
+
+				// Restore previously selected packet if it is visible
 				int restoreIndex = -1;
-				if (CurrentLog.Count > 0 && selectedPacketIndex >= 0)
-					restoreIndex = CurrentLog[selectedPacketIndex].LogTextIndex;
+				if (PacketLocation.UNKNOWN != selectedPacket && logs.Count > selectedPacket.LogIndex
+					&& logs[selectedPacket.LogIndex].Count > selectedPacket.PacketIndex)
+				{
+					restoreIndex = logs[selectedPacket.LogIndex][selectedPacket.PacketIndex].LogTextIndex;
+				}
 				if (restoreIndex >= 0)
+				{
 					logDataText.SelectionStart = restoreIndex;
+				}
 			}
 			catch (Exception e)
 			{
@@ -1628,7 +1657,7 @@ namespace PacketLogConverter
 			finally
 			{
 				// Notify filter manager that filtering is finished
-				FilterManager.LogFilteringStopped(CurrentLog);
+				FilterManager.LogFilteringStopped(this);
 			}
 		}
 
@@ -1670,7 +1699,7 @@ namespace PacketLogConverter
 			{
 				if (m_logActionsMenu == null)
 					return;
-				if (CurrentLog == null)
+				if (LogManager == null)
 					return;
 
 				Point clickPoint = new Point(e.X, e.Y);
@@ -1682,20 +1711,22 @@ namespace PacketLogConverter
 		private void LogActionClick_Event(object sender, EventArgs e)
 		{
 			logDataText.Invalidate();
-			if (CurrentLog == null)
+			if (LogManager == null)
 				return;
 			MenuItem menu = sender as MenuItem;
 			if (menu == null) return;
 			if (menu.Index > m_logActions.Count)
 				return;
-			int packetIndex = CurrentLog.GetPacketIndexByTextIndex(m_logDataClickIndex);
-			if (packetIndex < 0)
+
+			// Find log and packet indices
+			PacketLocation packetLocation = LogManager.GetPacketIndexByTextIndex(m_logDataClickIndex);
+			if (PacketLocation.UNKNOWN == packetLocation)
 				return;
 
 			try
 			{
 				ILogAction action = (ILogAction)m_logActions[menu.Index];
-				if (action.Activate(CurrentLog, packetIndex))
+				if (action.Activate(this, packetLocation))
 					UpdateLogDataTab();
 			}
 			catch (Exception e1)
@@ -1728,11 +1759,11 @@ namespace PacketLogConverter
 
 		private void UpdateLogInfoTab()
 		{
-			if (CurrentLog != null)
+			if (LogManager != null)
 			{
-				li_packetsCount.Text = CurrentLog.Count.ToString("N0");
-				li_unknownPacketsCount.Text = CurrentLog.UnknownPacketsCount.ToString("N0");
-				li_clientVersion.Text = CurrentLog.Version.ToString();
+				li_packetsCount.Text = LogManager.CountPackets().ToString("N0");
+				li_unknownPacketsCount.Text = LogManager.CountUnknownPackets().ToString("N0");
+				li_clientVersion.Text = LogManager.Version.ToString();
 				li_changesLabel.Text = "";
 			}
 			else
@@ -1746,17 +1777,17 @@ namespace PacketLogConverter
 
 		private void li_applyButton_Click(object sender, EventArgs e)
 		{
-			if (CurrentLog == null)
+			if (LogManager == null)
 			{
 				Log.Info("Nothing loaded.");
 				return;
 			}
 
-			CurrentLog.IgnoreVersionChanges = false;
+			LogManager.IgnoreVersionChanges = false;
 			float version;
 			Util.ParseFloat(li_clientVersion.Text, out version, -1);
-			CurrentLog.Version = version;
-			CurrentLog.IgnoreVersionChanges = li_ignoreVersionChanges.Checked;
+			LogManager.Version = version;
+			LogManager.IgnoreVersionChanges = li_ignoreVersionChanges.Checked;
 
 			// Reinitialize in another thread
 			m_progress.SetDescription("Reinitializing log and packets...");
@@ -1765,7 +1796,7 @@ namespace PacketLogConverter
 
 		private void InitLog(ProgressCallback callback, object state)
 		{
-			CurrentLog.Init(3, callback);
+			LogManager.InitLogs(3, callback);
 
 			// Update log info
 			Invoke((MethodInvoker)delegate()
@@ -1985,7 +2016,7 @@ namespace PacketLogConverter
 
 				update |= oldFilters != FilterManager.FiltersCount;
 
-				if (update)
+				if (update && !FilterManager.IgnoreFilters)// try fix update filters while ignore filter is ON
 				{
 					UpdateLogDataTab();
 				}

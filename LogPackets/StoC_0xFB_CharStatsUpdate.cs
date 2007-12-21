@@ -5,47 +5,45 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0xFB, -1, ePacketDirection.ServerToClient, "Char Stats Update")]
 	public class StoC_0xFB_CharStatsUpdate : Packet
 	{
-		protected ushort baseStr;
-		protected ushort baseDex;
-		protected ushort baseCon;
-		protected ushort baseQui;
-		protected ushort baseInt;
-		protected ushort basePie;
-		protected ushort baseEmp;
-		protected ushort baseChr;
-		protected ushort bonusStr;
-		protected ushort bonusDex;
-		protected ushort bonusCon;
-		protected ushort bonusQui;
-		protected ushort bonusInt;
-		protected ushort bonusPie;
-		protected ushort bonusEmp;
-		protected ushort bonusChr;
-		protected ushort maxHealth;
-		protected byte unk1;
-		protected byte unk2;
+		protected short baseStr;
+		protected short baseDex;
+		protected short baseCon;
+		protected short baseQui;
+		protected short baseInt;
+		protected short basePie;
+		protected short baseEmp;
+		protected short baseChr;
+		protected short bonusStr;
+		protected short bonusDex;
+		protected short bonusCon;
+		protected short bonusQui;
+		protected short bonusInt;
+		protected short bonusPie;
+		protected short bonusEmp;
+		protected short bonusChr;
+		protected short maxHealth;
+		protected ushort unk1;
 
 		#region public access properties
 
-		public ushort BaseStr { get { return baseStr; } }
-		public ushort BaseDex { get { return baseDex; } }
-		public ushort BaseCon { get { return baseCon; } }
-		public ushort BaseQui { get { return baseQui; } }
-		public ushort BaseInt { get { return baseInt; } }
-		public ushort BasePie { get { return basePie; } }
-		public ushort BaseEmp { get { return baseEmp; } }
-		public ushort BaseChr { get { return baseChr; } }
-		public ushort BonusStr { get { return bonusStr; } }
-		public ushort BonusDex { get { return bonusDex; } }
-		public ushort BonusCon { get { return bonusCon; } }
-		public ushort BonusQui { get { return bonusQui; } }
-		public ushort BonusInt { get { return bonusInt; } }
-		public ushort BonusPie { get { return bonusPie; } }
-		public ushort BonusEmp { get { return bonusEmp; } }
-		public ushort BonusChr { get { return bonusChr; } }
-		public ushort MaxHealth { get { return maxHealth; } }
-		public byte Unk1 { get { return unk1; } }
-		public byte Unk2 { get { return unk2; } }
+		public short BaseStr { get { return baseStr; } }
+		public short BaseDex { get { return baseDex; } }
+		public short BaseCon { get { return baseCon; } }
+		public short BaseQui { get { return baseQui; } }
+		public short BaseInt { get { return baseInt; } }
+		public short BasePie { get { return basePie; } }
+		public short BaseEmp { get { return baseEmp; } }
+		public short BaseChr { get { return baseChr; } }
+		public short BonusStr { get { return bonusStr; } }
+		public short BonusDex { get { return bonusDex; } }
+		public short BonusCon { get { return bonusCon; } }
+		public short BonusQui { get { return bonusQui; } }
+		public short BonusInt { get { return bonusInt; } }
+		public short BonusPie { get { return bonusPie; } }
+		public short BonusEmp { get { return bonusEmp; } }
+		public short BonusChr { get { return bonusChr; } }
+		public short MaxHealth { get { return maxHealth; } }
+		public ushort Unk1 { get { return unk1; } }
 
 		#endregion
 
@@ -53,9 +51,12 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("stat base - str:{0,-3} dex:{1,-3} con:{2,-3} qui:{3,-3} int:{4,-3} pie:{5,-3} emp:{6,-3} chr:{7,-3}", baseStr, baseDex, baseCon, baseQui, baseInt, basePie, baseEmp, baseChr);
-			str.AppendFormat("; stat mods - str:{0,-3} dex:{1,-3} con:{2,-3} qui:{3,-3} int:{4,-3} pie:{5,-3} emp:{6,-3} chr:{7,-3}", bonusStr, bonusDex, bonusCon, bonusQui, bonusInt, bonusPie, bonusEmp, bonusChr);
-			str.AppendFormat("; maxHealth:{0,-4} unk1:{1} unk2:{2}", maxHealth, unk1, unk2);
+			str.Append("\n\t      stat |str|dex|con|qui|int|pie|emp|chr|");
+			str.AppendFormat("\n\tbase       |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}",
+				baseStr, baseDex, baseCon, baseQui, baseInt, basePie, baseEmp, baseChr);
+			str.AppendFormat("\n\tbuf        |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}",
+				bonusStr, bonusDex, bonusCon, bonusQui, bonusInt, bonusPie, bonusEmp, bonusChr);
+			str.AppendFormat("\n\tmaxHealth:{0,-4} unk1:{1} (0x{2:X4})", maxHealth, unk1, unk1);
 
 			return str.ToString();
 		}
@@ -67,25 +68,24 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			baseStr = ReadShort();
-			baseDex = ReadShort();
-			baseCon = ReadShort();
-			baseQui = ReadShort();
-			baseInt = ReadShort();
-			basePie = ReadShort();
-			baseEmp = ReadShort();
-			baseChr = ReadShort();
-			bonusStr = ReadShort();
-			bonusDex = ReadShort();
-			bonusCon = ReadShort();
-			bonusQui = ReadShort();
-			bonusInt = ReadShort();
-			bonusPie = ReadShort();
-			bonusEmp = ReadShort();
-			bonusChr = ReadShort();
-			maxHealth = ReadShort();
-			unk1 = ReadByte();
-			unk2 = ReadByte();
+			baseStr = (short)ReadShort();
+			baseDex = (short)ReadShort();
+			baseCon = (short)ReadShort();
+			baseQui = (short)ReadShort();
+			baseInt = (short)ReadShort();
+			basePie = (short)ReadShort();
+			baseEmp = (short)ReadShort();
+			baseChr = (short)ReadShort();
+			bonusStr = (short)ReadShort();
+			bonusDex = (short)ReadShort();
+			bonusCon = (short)ReadShort();
+			bonusQui = (short)ReadShort();
+			bonusInt = (short)ReadShort();
+			bonusPie = (short)ReadShort();
+			bonusEmp = (short)ReadShort();
+			bonusChr = (short)ReadShort();
+			maxHealth = (short)ReadShort();
+			unk1 = ReadShort();
 		}
 
 		/// <summary>

@@ -13,6 +13,8 @@ namespace PacketLogConverter.LogPackets
 		protected uint figureVersion;
 		protected byte figureVersion1;
 		protected byte skin;
+		protected byte genderRace;
+		protected byte gender;
 		protected byte race;
 		protected byte regionExpantions;
 		protected byte zero;
@@ -29,7 +31,8 @@ namespace PacketLogConverter.LogPackets
 		#region public access properties
 
 		public byte Slot { get { return slot; } }
-		public virtual sbyte RaceID { get { return (sbyte)(race > 18 ? 18 - race : race); } }
+		public byte Race { get { return race; } }
+		public byte Gender { get { return gender; } }
 
 		#endregion
 
@@ -51,8 +54,8 @@ namespace PacketLogConverter.LogPackets
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x2000); // Water Options
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x4000); // Water Options
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x8000); // Dynamic Shadow
-				str.AppendFormat(" resolutions:0x{0:X4} options:0x{1:X4}(0x{10:X4}) figureVersion:0x{2:X8}{3:X2} memory:{4,2}({9,-2}) unk1:0x{5:X6} skin:0x{6:X2} race:0x{7:X2}({10, -2}) regionExpantions:0x{8:X2}",
-					resolution, options, figureVersion, figureVersion1, unk1 >> 24, unk1 & 0xFFFFFF, skin, race, regionExpantions, (unk1 >> 24) * 64, optionsBIT, RaceID);
+				str.AppendFormat(" resolutions:0x{0:X4} options:0x{1:X4}(0x{10:X4}) figureVersion:0x{2:X8}{3:X2} memory:{4,2}({9,-2}) unk1:0x{5:X6} skin:0x{6:X2} genderRace:0x{7:X2}(race:{11, -2} gender:{12}) regionExpantions:0x{8:X2}",
+					resolution, options, figureVersion, figureVersion1, unk1 >> 24, unk1 & 0xFFFFFF, skin, genderRace, regionExpantions, (unk1 >> 24) * 64, optionsBIT, race, gender);
 				if (flagsDescription)
 				{
 					str.Append("\n\tExpantions:");
@@ -136,9 +139,16 @@ namespace PacketLogConverter.LogPackets
 				figureVersion = ReadInt();
 				figureVersion1 = ReadByte();
 				skin = ReadByte();
-				race = ReadByte();
+				genderRace = ReadByte();
 				regionExpantions = ReadByte();
 				zero = ReadByte();
+				gender = 0;
+				race = genderRace;
+				if (genderRace > 18)
+				{
+					race = (byte)(genderRace - 18);
+					gender = 1;
+				}
 			}
 		}
 

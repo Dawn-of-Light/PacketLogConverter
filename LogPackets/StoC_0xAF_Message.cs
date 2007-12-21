@@ -31,6 +31,8 @@ namespace PacketLogConverter.LogPackets
 			str.Append("sid:0x").Append(sessionId.ToString("X4"));
 			str.Append(" 0x").Append(type.ToString("X2"));
 
+			if (flagsDescription)
+				str.AppendFormat(" unk1:0x{0:X4} unk2:0x{1:X2} unk3:0x{2:X4}", unk1, unk2, unk3);
 			string s = text;
 			if (s.StartsWith("@@"))
 			{
@@ -44,8 +46,6 @@ namespace PacketLogConverter.LogPackets
 			}
 
 			str.Append(": \"").Append(s).Append('"');
-			if (flagsDescription)
-				str.AppendFormat(" unk1:0x{0:X4} unk2:0x{1:X2} unk3:0x{2:X4}", unk1, unk2, unk3);
 
 			return str.ToString();
 		}

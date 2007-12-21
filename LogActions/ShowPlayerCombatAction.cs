@@ -14,9 +14,16 @@ namespace PacketLogConverter.LogActions
 	{
 		#region ILogAction Members
 
-		public bool Activate(PacketLog log, int selectedIndex)
+		/// <summary>
+		/// Activates a log action.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="selectedPacket">The selected packet.</param>
+		/// <returns><c>true</c> if log data tab should be updated.</returns>
+		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
 		{
-			Hashtable plrInfo = MakeCombatList(selectedIndex, log);
+			PacketLog log = context.LogManager.Logs[selectedPacket.LogIndex];
+			Hashtable plrInfo = MakeCombatList(selectedPacket.PacketIndex, log);
 			StringBuilder str = new StringBuilder();
 
 			foreach (DictionaryEntry entry in plrInfo)

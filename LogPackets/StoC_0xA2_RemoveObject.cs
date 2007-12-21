@@ -24,11 +24,20 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
+		public enum eObjectType: byte
+		{
+			Object = 0,
+			NPC = 1,
+			Player = 2,
+		}
+
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
 
 			str.AppendFormat("oid:0x{0:X4} objectType:{1}", oid, objectType);
+			if (flagsDescription)
+				str.AppendFormat("({0})", (eObjectType)objectType);
 			return str.ToString();
 		}
 

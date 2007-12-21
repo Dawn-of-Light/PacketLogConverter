@@ -6,11 +6,10 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0xEE, -1, ePacketDirection.ServerToClient, "NPC change properties")]
 	public class StoC_0xEE_NpcChangeProperties : Packet, IObjectIdPacket
 	{
-		protected ushort npcOid;
-		protected byte unk1;
-		protected byte level;
+		protected ushort oid;
+		protected ushort level;
 		protected string guildName;
-		protected string lastName;
+		protected string name;
 		protected byte trailingByte;
 
 		/// <summary>
@@ -19,17 +18,16 @@ namespace PacketLogConverter.LogPackets
 		/// <value>The object ids.</value>
 		public ushort[] ObjectIds
 		{
-			get { return new ushort[] { npcOid }; }
+			get { return new ushort[] { oid }; }
 		}
 
 		#region public access properties
 
-		public ushort NpcOid { get { return npcOid; } }
-		public byte Unk1 { get { return unk1; } }
-		public byte Level { get { return level; } }
+		public ushort Oid { get { return oid; } }
+		public ushort Level { get { return level; } }
 		public byte TrailingByte { get { return trailingByte; } }
 		public string GuildName { get { return guildName; } }
-		public string LastName { get { return lastName; } }
+		public string Name { get { return name; } }
 
 		#endregion
 
@@ -37,10 +35,10 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 			if (trailingByte == 0xFF)
-				str.AppendFormat("oid:0x{0:X4} unk1:0x{1:X2} level:{2,-2} trailingByte:0x{3:X2}", npcOid, unk1, level, trailingByte);
+				str.AppendFormat("oid:0x{0:X4} level:{1,-3} trailingByte:0x{2:X2}", oid, level, trailingByte);
 			else
-				str.AppendFormat("oid:0x{0:X4} unk1:0x{1:X2} level:{2,-2} guildName:\"{3}\" lastName:\"{4}\" trailingByte:0x{5:X2}",
-			                 npcOid, unk1, level, guildName, lastName, trailingByte);
+				str.AppendFormat("oid:0x{0:X4} level:{1,-3} guildName:\"{2}\" name:\"{3}\" trailingByte:0x{4:X2}",
+			                 oid, level, guildName, name, trailingByte);
 
 			return str.ToString();
 		}
@@ -51,21 +49,20 @@ namespace PacketLogConverter.LogPackets
 		public override void Init()
 		{
 			Position = 0;
-			npcOid = ReadShort();
-			unk1 = ReadByte();
-			level = ReadByte();
+			oid = ReadShort();
+			level = ReadShort();
 			long tempPosition = Position;
 			trailingByte = ReadByte();
 			if (trailingByte == 0xFF)
 			{
 				guildName = "";
-				lastName = "";
+				name = "";
 			}
 			else
 			{
 				Position = tempPosition;
 				guildName = ReadPascalString();
-				lastName = ReadPascalString();
+				name = ReadPascalString();
 				if (Position < Length)
 					trailingByte = ReadByte();
 				else

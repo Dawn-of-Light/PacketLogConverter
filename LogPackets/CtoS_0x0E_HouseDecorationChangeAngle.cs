@@ -8,14 +8,16 @@ namespace PacketLogConverter.LogPackets
 		protected ushort index;
 		protected ushort houseOid;
 		protected ushort rotateAngle;
-		protected ushort unk1;
+		protected byte place;
+		protected byte unk1;
 
 		#region public access properties
 
 		public ushort Index { get { return index; } }
 		public ushort HouseId { get { return houseOid; } }
 		public ushort RotateAngle { get { return rotateAngle; } }
-		public ushort Unk1 { get { return unk1; } }
+		public byte Place { get { return place; } }
+		public byte Unk1 { get { return unk1; } }
 
 		#endregion
 
@@ -23,7 +25,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("index:{0} houseOid:0x{1:X4} rotateAngle:{2} unk1:0x{3:X4}", index, houseOid, rotateAngle,unk1);
+			str.AppendFormat("index:{0,-3} houseOid:0x{1:X4} rotateAngle:{2,-3} place:{3}({5}) unk1:0x{4:X2}",
+				index, houseOid, rotateAngle, place, unk1, (CtoS_0x0C_HouseItemPlacementRequest.ePlaceType)place);
 
 			return str.ToString();
 		}
@@ -38,7 +41,8 @@ namespace PacketLogConverter.LogPackets
 			index = ReadShort();
 			houseOid = ReadShort();
 			rotateAngle = ReadShort();
-			unk1 = ReadShort();
+			place = ReadByte();
+			unk1 = ReadByte();
 		}
 
 		/// <summary>

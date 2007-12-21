@@ -33,13 +33,20 @@ namespace PacketLogConverter.LogPackets
 				figureVersion = ReadInt();
 				figureVersion1 = ReadByte();
 				skin = ReadByte();
-				race = ReadByte();
+				genderRace = ReadByte();
 				regionExpantions = ReadByte();
 				classId = ReadByte();
 				expantions = ReadByte();
 				VedioVendorId1 = ReadIntLowEndian();
 				VedioVendorId2 = ReadIntLowEndian();
 				zero = ReadByte();
+				gender = 0;
+				race = genderRace;
+				if (genderRace > 18)
+				{
+					race = (byte)(genderRace - 18);
+					gender = 1;
+				}
 			}
 		}
 

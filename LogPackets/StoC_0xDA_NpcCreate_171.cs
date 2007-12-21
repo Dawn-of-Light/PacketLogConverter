@@ -6,13 +6,13 @@ namespace PacketLogConverter.LogPackets
 	public class StoC_0xDA_NpcCreate_171 : StoC_0xDA_NpcCreate
 	{
 		protected byte flag2;
-		protected ushort unk1_171;
-		protected byte instance;
+		protected byte unk1_171;
+		protected ushort unk2_171;
 
 		#region public access properties
 		public byte Flag2 {get {return flag2; } }
-		public ushort Unk1_171 { get { return unk1_171; } }
-		public byte Instance {get {return instance; } }
+		public byte Unk1_171 { get { return unk1_171; } }
+		public ushort Unk2_171 { get { return unk2_171; } }
 
 		public byte Statue {get {return (byte)((level & 0x80) == 0x80 ? 1 : 0); } }
 		public byte Flag0x04 {get {return (byte)((flags & 0x04) == 0x04 ? 1 : 0); } }
@@ -27,8 +27,8 @@ namespace PacketLogConverter.LogPackets
 
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("oid:0x{0:X4} speed:{1,-4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} speedZ:{6, -4} model:0x{7:X4} size:{8,-3} level:{9,-3} flags:0x{10:X2} maxStick:{11,-3} flag2:0x{12:X2} unk1_171:0x{13:X4} instance:0x{14:X2} name:\"{15}\" guild:\"{16}\" unk1:{17}",
-			                 oid, speed, heading, x, y, z, speedZ, model, size, level & 0x7F, flags, maxStick, flag2, unk1_171, instance, name, guildName, unk1);
+			str.AppendFormat("oid:0x{0:X4} speed:{1,-4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} speedZ:{6, -4} model:0x{7:X4} size:{8,-3} level:{9,-3} flags:0x{10:X2} maxStick:{11,-3} flag2:0x{12:X2} unk1_171:0x{13:X2} unk2_171:0x{14:X4} name:\"{15}\" guild:\"{16}\" unk1:{17}",
+			                 oid, speed, heading, x, y, z, speedZ, model, size, level & 0x7F, flags, maxStick, flag2, unk1_171, unk2_171, name, guildName, unk1);
 			if (flagsDescription)
 			{
 				string flag = string.Format("realm:{0}",(flags >> 6) & 3);
@@ -90,8 +90,8 @@ namespace PacketLogConverter.LogPackets
 			flags = ReadByte();
 			maxStick = ReadByte();
 			flag2 = ReadByte();
-			unk1_171 = ReadShort();
-			instance = ReadByte();
+			unk1_171 = ReadByte();
+			unk2_171 = ReadShort();
 			name = ReadPascalString();
 			guildName = ReadPascalString();
 			unk1 = ReadByte();
