@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x78, -1, ePacketDirection.ClientToServer, "Buy from merchant")]
-	public class CtoS_0x78_BuyItem: Packet, IObjectIdPacket
+	public class CtoS_0x78_BuyItem: Packet, ISessionIdPacket
 	{
 		protected uint playerX;
 		protected uint playerY;
@@ -13,15 +13,6 @@ namespace PacketLogConverter.LogPackets
 		protected byte quantity;
 		protected byte windowType; // currency ? =0(gold), 2(DF/seals, catacombs/aurulite)
 		protected ushort unk1;
-
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { sessionId }; }
-		}
 
 		#region public access properties
 

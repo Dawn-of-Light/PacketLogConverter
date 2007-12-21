@@ -3,24 +3,15 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x18, -1, ePacketDirection.ServerToClient, "House decoration rotate")]
-	public class StoC_0x18_HouseDecorationRotate: Packet, IObjectIdPacket
+	public class StoC_0x18_HouseDecorationRotate: Packet, IHouseIdPacket
 	{
 		protected ushort houseOid;
 		protected byte index;
 		protected byte unk1;
 
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { houseOid }; }
-		}
-
 		#region public access properties
 
-		public ushort Oid { get { return houseOid; } }
+		public ushort HouseId { get { return houseOid; } }
 		public byte Index { get { return index; } }
 		public byte Unk1 { get { return unk1; } }
 

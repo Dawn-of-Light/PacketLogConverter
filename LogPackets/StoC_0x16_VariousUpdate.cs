@@ -4,10 +4,34 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x16, -1, ePacketDirection.ServerToClient, "Various update")]
-	public class StoC_0x16_VariousUpdate : Packet
+	public class StoC_0x16_VariousUpdate : Packet, IObjectIdPacket, IHouseIdPacket
 	{
 		protected byte subCode;
 		protected ASubData subData;
+
+		/// <summary>
+		/// Gets the object ids of the packet.
+		/// </summary>
+		/// <value>The object ids.</value>
+		public ushort[] ObjectIds
+		{
+			get
+			{
+				if (subCode == 6)
+					return InPlayerGroupUpdate.m_oids;
+				return new ushort[] {};
+			}
+		}
+
+		public ushort HouseId
+		{
+			get
+			{
+				if (subCode == 3)
+					return InPlayerUpdate.personalHouse;
+				return 0;
+			}
+		}
 
 		#region public access properties
 
@@ -387,6 +411,7 @@ namespace PacketLogConverter.LogPackets
 			public byte unk1;
 			public byte unk2;
 			public GroupMember[] groupMembers;
+			public ushort[] m_oids; // oids list
 
 			public override void Init(StoC_0x16_VariousUpdate pak)
 			{
@@ -394,7 +419,7 @@ namespace PacketLogConverter.LogPackets
 				unk1 = pak.ReadByte();
 				unk2 = pak.ReadByte();
 				groupMembers = new GroupMember[count];
-
+				m_oids = new ushort[count];
 				for (int i = 0; i < count; i++)
 				{
 					GroupMember member = new GroupMember();
@@ -406,7 +431,7 @@ namespace PacketLogConverter.LogPackets
 					member.oid = pak.ReadShort();
 					member.name = pak.ReadPascalString();
 					member.classname = pak.ReadPascalString();
-
+					m_oids[i] = member.oid;
 					groupMembers[i] = member;
 				}
 			}
@@ -419,7 +444,7 @@ namespace PacketLogConverter.LogPackets
 				{
 					GroupMember member = groupMembers[i];
 					str.AppendFormat("\n\tlevel:{0,-2} health:{1,3}% mana:{2,3}% status:0x{3:X2}", member.level, member.health, member.mana, member.status);
-					str.AppendFormat(" oid:0x{0:X4} name:\"{1}\" \tclass:\"{2}\"", member.oid, member.name, member.classname);
+					str.AppendFormat(" oid:0x{0:X4} class:\"{2}\"\t name:\"{1}\" ", member.oid, member.name, member.classname);
 				}
 			}
 		}

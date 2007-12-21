@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x6D, -1, ePacketDirection.ServerToClient, "Keep/Tower component update")]
-	public class StoC_0x6D_KeepComponentUpdate : Packet, IObjectIdPacket
+	public class StoC_0x6D_KeepComponentUpdate : Packet, IKeepIdPacket
 	{
 		private ushort keepId;
 		private ushort componentId;
@@ -13,10 +13,10 @@ namespace PacketLogConverter.LogPackets
 		private byte flags;
 
 		/// <summary>
-		/// Gets the object ids of the packet.
+		/// Gets the keep ids of the packet.
 		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
+		/// <value>The keep ids.</value>
+		public ushort[] KeepIds
 		{
 			get { return new ushort[] { keepId }; }
 		}
@@ -37,6 +37,11 @@ namespace PacketLogConverter.LogPackets
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("keepId:0x{0:X4} componentId:{1,-3} height:{2,-3} health:{3,3}% status:0x{4:X2} flags:0x{5:X2}",
 				keepId, componentId, height, health, status, flags);
+			if (flagsDescription)
+			{
+				if (status > 0)
+					str.AppendFormat(" ({0})", (StoC_0x6C_KeepComponentOverview.eKeepComponentStatus)status);
+			}
 			return str.ToString();
 		}
 

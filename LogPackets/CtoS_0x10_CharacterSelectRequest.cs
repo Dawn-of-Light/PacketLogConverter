@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x10, -1, ePacketDirection.ClientToServer, "Character select request")]
-	public class CtoS_0x10_CharacterSelectRequest : Packet
+	public class CtoS_0x10_CharacterSelectRequest : Packet, ISessionIdPacket
 	{
 		protected ushort sessionId;
 		protected byte regionIndex;

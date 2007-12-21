@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xAF, -1, ePacketDirection.ClientToServer, "cmd")]
-	public class CtoS_0xAF_PlayerCommand : Packet
+	public class CtoS_0xAF_PlayerCommand : Packet, ISessionIdPacket
 	{
 		protected ushort sessionId;
 		protected ushort unk1;

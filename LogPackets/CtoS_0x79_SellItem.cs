@@ -4,21 +4,12 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x79, -1, ePacketDirection.ClientToServer, "Sell item")]
-	public class CtoS_0x79_SellItem: Packet, IObjectIdPacket
+	public class CtoS_0x79_SellItem: Packet, ISessionIdPacket
 	{
 		protected uint playerX;
 		protected uint playerY;
 		protected ushort sessionId;
 		protected ushort itemId;
-
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { sessionId }; }
-		}
 
 		#region public access properties
 

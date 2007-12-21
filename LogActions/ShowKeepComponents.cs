@@ -105,7 +105,7 @@ namespace PacketLogConverter.LogActions
 				if (kc.Zone != 0)
 				{
 					Keep k = (Keep)keeps[kc.KeepId];
-    			str.AppendFormat("keepId:{0,-4} keepX:{1,-6} keepY:{2,-6} angle:{3,-3} ", k.KeepId, k.X, k.Y, k.Angle);
+					str.AppendFormat("keepId:{0,-4} keepX:{1,-6} keepY:{2,-6} angle:{3,-3} ", k.KeepId, k.X, k.Y, k.Angle);
 					str.AppendFormat("componentId:{0,-2} oid:{1,-5} Skin:{2,-2} X:{3,-4} Y:{4,-4} Rotate:{5} ", kc.ComponentId, kc.Oid, kc.Skin, kc.addX, kc.addY, kc.Rotate);
 					str.AppendFormat("Heading:{0,-4} Zone:{1,-3} @X:{2,-5} @Y:{3,-5} Z:{4}\n", kc.Heading, kc.Zone, kc.X, kc.Y, kc.Z);
 				}

@@ -350,7 +350,7 @@ namespace PacketLogConverter
 
 			if (time.Days > 0)
 				str.Append(time.Days).Append('d');
-			str.Append(time.Hours).Append(':');
+			str.Append(time.Hours.ToString("D2")).Append(':');
 			str.Append(time.Minutes.ToString("D2")).Append(':');
 			str.Append(time.Seconds.ToString("D2")).Append('.');
 			str.Append(time.Milliseconds.ToString("D3"));

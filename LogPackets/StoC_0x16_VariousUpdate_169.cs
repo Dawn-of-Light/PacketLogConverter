@@ -20,6 +20,7 @@ namespace PacketLogConverter.LogPackets
 				unk2 = pak.ReadByte();
 				groupMembers = new GroupMember[count];
 
+				m_oids = new ushort[count];
 				for (int i = 0; i < count; i++)
 				{
 					GroupMember member = new GroupMember();
@@ -32,6 +33,7 @@ namespace PacketLogConverter.LogPackets
 					member.oid = pak.ReadShort();
 					member.name = pak.ReadPascalString();
 					member.classname = pak.ReadPascalString();
+					m_oids[i] = member.oid;
 
 					groupMembers[i] = member;
 				}
@@ -46,7 +48,7 @@ namespace PacketLogConverter.LogPackets
 					GroupMember member = groupMembers[i];
 					str.AppendFormat("\n\tlevel:{0,-2} health:{1,3}% mana:{2,3}% endurance:{3,3}% status:0x{4:X2}",
 						member.level, member.health, member.mana, member.endurance, member.status);
-					str.AppendFormat(" pid:0x{0:X4} name:\"{1}\" \tclass:\"{2}\"", member.oid, member.name, member.classname);
+					str.AppendFormat(" pid:0x{0:X4} class:\"{2}\"\t name:\"{1}\"", member.oid, member.name, member.classname);
 				}
 			}
 		}

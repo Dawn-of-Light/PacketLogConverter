@@ -11,7 +11,7 @@ namespace PacketLogConverter.Utils
 	public class FilterWriter : FilterStreamBase<FileStream>
 	{
 		protected BinaryWriter	m_Writer;
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:StreamWrap"/> class.
 		/// </summary>
@@ -21,9 +21,9 @@ namespace PacketLogConverter.Utils
 			m_Stream = new FileStream(filePath, FileMode.Create);
 			m_Writer = new BinaryWriter(m_Stream);
 		}
-		
+
 		#region Write methods
-		
+
 		/// <summary>
 		/// Writes the header. Must be called before any filters are saved.
 		/// </summary>
@@ -33,7 +33,7 @@ namespace PacketLogConverter.Utils
 
 			// Write version
 			m_Writer.Write(s_Version);
-			
+
 			// Write static data
 			m_Writer.Write(CombineFilters);
 			m_Writer.Write(InvertCheck);
@@ -59,7 +59,7 @@ namespace PacketLogConverter.Utils
 		{
 			// Write count of filters
 			m_Writer.Write(filters.Count);
-			
+
 			foreach (ILogFilter filter in filters)
 			{
 				try
@@ -97,7 +97,7 @@ namespace PacketLogConverter.Utils
 		protected override void Dispose(bool isDisposing)
 		{
 			m_Writer.Flush();
-			
+
 			base.Dispose(isDisposing);
 		}
 

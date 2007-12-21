@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x07, -1, ePacketDirection.ClientToServer, "House set permission")]
-	public class CtoS_0x07_HousePermissionSet: Packet, IObjectIdPacket
+	public class CtoS_0x07_HousePermissionSet: Packet, IHouseIdPacket
 	{
 		protected byte level;
 		protected byte unk1;
@@ -12,20 +12,11 @@ namespace PacketLogConverter.LogPackets
 		protected Access permission;
 		protected byte zero; // trailng zero ?
 
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { houseOid }; }
-		}
-
 		#region public access properties
 
 		public byte Level { get { return level; } }
 		public byte Unk1 { get { return unk1; } }
-		public ushort Oid { get { return houseOid; } }
+		public ushort HouseId { get { return houseOid; } }
 		public Access Permission { get { return permission; } }
 		public byte Zero { get { return zero; } }
 

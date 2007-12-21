@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xD4, -1, ePacketDirection.ServerToClient, "Player create")]
-	public class StoC_0xD4_PlayerCreate : Packet, IObjectIdPacket
+	public class StoC_0xD4_PlayerCreate : Packet, IObjectIdPacket, ISessionIdPacket
 	{
 		protected ushort sessionId;
 		protected ushort oid;

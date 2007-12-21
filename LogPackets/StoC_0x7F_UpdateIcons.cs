@@ -86,6 +86,8 @@ namespace PacketLogConverter.LogPackets
 			public string name;
 			public byte immunity; // new in 1.73
 			public byte negative; // new in 1.90c
+			public byte protectedByCount; // unknow from what version
+			public byte[] protectedByIndex; // unknow from what version
 		}
 
 		/// <summary>

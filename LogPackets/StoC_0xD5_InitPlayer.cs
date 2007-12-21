@@ -4,19 +4,10 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xD5, -1, ePacketDirection.ServerToClient, "Init player request?")]
-	public class StoC_0xD5_InitPlayer: Packet, IObjectIdPacket
+	public class StoC_0xD5_InitPlayer: Packet, ISessionIdPacket
 	{
 		protected ushort sessionId;
 		protected ushort unk1;
-
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { sessionId }; }
-		}
 
 		#region public access properties
 

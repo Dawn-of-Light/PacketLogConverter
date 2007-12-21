@@ -23,6 +23,13 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
+		#region Filter Helpers
+		
+		public TrainerSkillsUpdate	InTrainerSkills { get { return subData as TrainerSkillsUpdate; } }
+		public ChampionSkillsUpdate	InChampionAbilities	{ get { return subData as ChampionSkillsUpdate; } }
+		
+		#endregion
+
 		public enum eSubType: byte
 		{
 			Skills = 0x00,
@@ -156,14 +163,18 @@ namespace PacketLogConverter.LogPackets
 					{
 						ChampionSpell spell = new ChampionSpell();
 						spell.index = pak.ReadByte();
-						spell.cost = pak.ReadByte();
+						spell.type = pak.ReadByte();
 						spell.icon = pak.ReadShortLowEndian();
 						spell.name = pak.ReadPascalString();
-						spell.unk1 = pak.ReadByte();
-						spell.unk2 = pak.ReadByte();
+						spell.aviability = pak.ReadByte();
+						spell.stickedSkillsCount = pak.ReadByte();
+						if (spell.stickedSkillsCount > 0)
+							spell.stickedSkills = new byte[spell.stickedSkillsCount];
+						for (int k = 0; k < spell.stickedSkillsCount; k++)
+						{
+							spell.stickedSkills[k] = pak.ReadByte();
+						}
 						skill.m_spells[index] = spell;
-						if (spell.unk2 > 0)
-							pak.Skip(spell.unk2);
 					}
 					m_skills[i] = skill;
 				}
@@ -179,8 +190,12 @@ namespace PacketLogConverter.LogPackets
 					for (int j = 0; j < skill.countSpells; j++)
 					{
 						ChampionSpell spell = (ChampionSpell)skill.m_spells[j];
-						str.AppendFormat("\n\tindex:{0,-3} cost:{1,-2} icon:0x{2:X4} \"{3}\" unk:0x{4:X2}{5:X2}",
-							spell.index, spell.cost, spell.icon, spell.name, spell.unk1, spell.unk2);
+						str.AppendFormat("\n\tindex:{0,-3} type:{1,-2} icon:0x{2:X4} aviability:{4} stickedSkillsCount:{5} \"{3}\" ",
+							spell.index, spell.type, spell.icon, spell.name, spell.aviability, spell.stickedSkillsCount);
+						for (int k = 0; k < spell.stickedSkillsCount; k++)
+						{
+							str.AppendFormat(" [{0}]:0x{1:X2}", k, spell.stickedSkills[k]);
+						}
 					}
 				}
 			}
@@ -198,11 +213,12 @@ namespace PacketLogConverter.LogPackets
 			public byte indexSkill;
 			public byte countSpells;
 			public byte index;
-			public byte cost;
+			public byte type;
 			public ushort icon;
 			public string name;
-			public byte unk1;
-			public byte unk2;
+			public byte aviability;//1 - can purchase, 2 - purchased
+			public byte stickedSkillsCount;
+			public byte[] stickedSkills;
 		}
 
 		#endregion

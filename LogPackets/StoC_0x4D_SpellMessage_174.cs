@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x4D, -1, ePacketDirection.ServerToClient, "Spell message")]
-	public class StoC_0x4D_SpellMessage_174: Packet, IObjectIdPacket
+	public class StoC_0x4D_SpellMessage_174: Packet, ISessionIdPacket
 	{
 		protected ushort unk1;
 		protected ushort sessionId;
@@ -17,15 +17,6 @@ namespace PacketLogConverter.LogPackets
 		protected string message;
 		protected ushort unk5;
 		protected byte unk6;
-
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { sessionId }; }
-		}
 
 		#region public access properties
 

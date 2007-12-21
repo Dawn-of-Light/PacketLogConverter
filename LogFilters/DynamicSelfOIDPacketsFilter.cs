@@ -8,7 +8,7 @@ namespace PacketLogConverter.LogFilters
 	/// <summary>
 	/// Shows all packets which contain OID of user who logged the packets.
 	/// </summary>
-	[LogFilter("Self dynamic OID packets", Shortcut.CtrlD, Priority=200)]
+	[LogFilter("Self dynamic SID/OID packets", Shortcut.CtrlD, Priority=200)]
 	public class SelfDynamicOidFilter : AbstractDynamicOIDFilter
 	{
 		/// <summary>
@@ -17,16 +17,34 @@ namespace PacketLogConverter.LogFilters
 		/// <param name="packet">The packet.</param>
 		protected override void FilterManager_OnFilteringPacketEvent(Packet packet)
 		{
+			//
+			// Set OID
+			//
 			if (packet is StoC_0x20_PlayerPositionAndObjectID)
 			{
 				StoC_0x20_PlayerPositionAndObjectID posAndOid = (StoC_0x20_PlayerPositionAndObjectID)packet;
 				Oid = posAndOid.PlayerOid;
+			}
+			else if (packet is StoC_0xDE_SetObjectGuildId)
+			{
+				StoC_0xDE_SetObjectGuildId guildId = (StoC_0xDE_SetObjectGuildId)packet;
+				if (guildId.ServerId == 0xFF)
+					Oid = guildId.Oid;
 			}
 //			else if (packet is StoC_0x04_CharacterJump)
 //			{
 //				StoC_0x04_CharacterJump plrJump = (StoC_0x04_CharacterJump)packet;
 //				m_oid = plrJump.PlayerOid;
 //			}
+
+			//
+			// Set session ID
+			//
+			else if (packet is StoC_0x28_SetSessionId)
+			{
+				StoC_0x28_SetSessionId sessionPack = (StoC_0x28_SetSessionId)packet;
+				Sid = sessionPack.SessionId;
+			}
 		}
 	}
 }

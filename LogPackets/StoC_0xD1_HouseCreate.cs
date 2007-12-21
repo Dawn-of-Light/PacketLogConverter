@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xD1, -1, ePacketDirection.ServerToClient, "House create")]
-	public class StoC_0xD1_HouseCreate : Packet, IObjectIdPacket
+	public class StoC_0xD1_HouseCreate : Packet, IHouseIdPacket
 	{
 		protected ushort houseOid;
 		protected ushort z;
@@ -25,18 +25,9 @@ namespace PacketLogConverter.LogPackets
 		protected byte materialShutter;
 		protected string name;
 
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { houseOid }; }
-		}
-
 		#region public access properties
 
-		public ushort Oid{ get { return houseOid; } }
+		public ushort HouseId { get { return houseOid; } }
 		public ushort Z { get { return z; } }
 		public uint X{ get { return x; } }
 		public uint Y{ get { return y; } }

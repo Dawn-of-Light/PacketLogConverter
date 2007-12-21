@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Text;
 using PacketLogConverter.LogPackets;
 
@@ -31,6 +32,9 @@ namespace PacketLogConverter.LogActions
 		/// <returns>True if log data tab should be updated</returns>
 		public virtual bool Activate(PacketLog log, int selectedIndex)
 		{
+			string serverName = "UNKNOWN";
+			int serverId = -1;
+			int serverColorHandling = -1;
 			int sessionId = -1;
 			int objectId = -1;
 			int petId = -1;
@@ -51,6 +55,7 @@ namespace PacketLogConverter.LogActions
 			string gloc = "UNKNOWN";
 			string state = "";
 			string charName = "UNKNOWN";
+			string lastName = "";
 			int playersInGroup = -1;
 			int indexInGroup = -1;
 			int mountId = -1;
@@ -71,6 +76,12 @@ namespace PacketLogConverter.LogActions
 			int ml_level = -1;
 			int houseLot = -1;
 			string ml_title = "";
+			int guildID = -1;
+			string guildName = "None";
+			string guildRank = "";
+			string enterRegionName = "";
+			int insideHouseId = 0;
+			Hashtable enterSubRegion = new Hashtable();
 
 			bool flagAwait0xA9 = false;
 
@@ -137,6 +148,10 @@ namespace PacketLogConverter.LogActions
 						ml_level = subData.mlLevel;
 						ml_title = subData.mlTitle;
 						houseLot = subData.personalHouse;
+						guildName = subData.guildName;
+						guildRank = subData.guildRank;
+						lastName = subData.lastName;
+						charName = subData.playerName;
 						if (subData is StoC_0x16_VariousUpdate_179.PlayerUpdate_179)
 						{
 							champ_level = (subData as StoC_0x16_VariousUpdate_179.PlayerUpdate_179).championLevel;
@@ -164,6 +179,25 @@ namespace PacketLogConverter.LogActions
 				{
 					CtoS_0xB0_TargetChange trg = (CtoS_0xB0_TargetChange)pak;
 					clientTargetOid = trg.Oid;
+				}
+				else if (pak is StoC_0xAF_Message)
+				{
+					StoC_0xAF_Message msg = (StoC_0xAF_Message)pak;
+					if (msg.Text.StartsWith("You have entered "))
+					{
+						enterRegionName = regionNameFromMessage(msg.Text.Substring(17));
+					}
+					else if (msg.Text.StartsWith("(Region) You have entered "))
+					{
+						string enterSubRegionName = regionNameFromMessage(msg.Text.Substring(26));
+						if (!enterSubRegion.ContainsKey(enterSubRegionName))
+							enterSubRegion.Add(enterSubRegionName, enterSubRegionName);
+					}
+					else if (msg.Text.StartsWith("(Region) You have left "))
+					{
+						string enterSubRegionName =  regionNameFromMessage(msg.Text.Substring(23));
+						enterSubRegion.Remove(enterSubRegionName);
+					}
 				}
 				else if (pak is StoC_0xF6_ChangeTarget)
 				{
@@ -205,7 +239,19 @@ namespace PacketLogConverter.LogActions
 					glocY = (int)posAndOid.Y;
 					if ((pak as StoC_0x20_PlayerPositionAndObjectID_171) != null)
 						glocRegion = (pak as StoC_0x20_PlayerPositionAndObjectID_171).Region;
+					loc = "UNKNOWN";
+					gloc = string.Format("({0,-3}): ({1,-6} {2,-6} {3,-5})", glocRegion, posAndOid.X, posAndOid.Y, posAndOid.Z);
 					flagAwait0xA9 = true;
+					enterSubRegion.Clear();
+					enterRegionName = "";
+				}
+				else if (pak is StoC_0xDE_SetObjectGuildId)
+				{
+					StoC_0xDE_SetObjectGuildId guildId = (StoC_0xDE_SetObjectGuildId)pak;
+					if (objectId == guildId.Oid)
+						guildID = guildId.GuildId;
+					if (guildId.ServerId == 0xFF) // set ObjectID for old logs (1.70-)
+						objectId = guildId.Oid;
 				}
 				else if (pak is StoC_0x04_CharacterJump)
 				{
@@ -213,6 +259,9 @@ namespace PacketLogConverter.LogActions
 					objectId = plrJump.PlayerOid;
 					glocX = (int)plrJump.X;
 					glocY = (int)plrJump.Y;
+					insideHouseId = plrJump.HouseId;
+					loc = "UNKNOWN";
+					gloc = string.Format("({0,-3}): ({1,-6} {2,-6} {3,-5})", glocRegion, plrJump.X, plrJump.Y, plrJump.Z);
 					flagAwait0xA9 = true;
 				}
 				else if (pak is StoC_0x88_PetWindowUpdate)
@@ -246,57 +295,104 @@ namespace PacketLogConverter.LogActions
 				{
 					healthMax = (pak as StoC_0xFB_CharStatsUpdate).MaxHealth;
 				}
+				else if (pak is StoC_0x2A_LoginGranted)
+				{
+					StoC_0x2A_LoginGranted server = (StoC_0x2A_LoginGranted)pak;
+					serverName = server.ServerName;
+					serverId = server.ServerId;
+					serverColorHandling = server.ColorHandling;
+				}
 			}
 
+			int additionStrings = 0;
 			StringBuilder str = new StringBuilder();
+			if (serverId > 0)
+			{
+				str.AppendFormat("    server: \"{0}\" id:0x{1:X2} color:{2}\n", serverName, serverId, serverColorHandling);
+				additionStrings++;
+			}
 			str.AppendFormat("session id: 0x{0}\n", ValueToString(sessionId, "X4"));
 			str.AppendFormat(" object id: 0x{0}\n", ValueToString(objectId, "X4"));
 			str.AppendFormat("    pet id: 0x{0}\n", ValueToString(petId, "X4"));
-			str.AppendFormat(" char name: {0}\n", charName);
+			str.AppendFormat(" char name: {0}{1}\n", charName, lastName != "None" ? string.Format(" \"{0}\"", lastName) : "");
 			str.AppendFormat("     level: {0} {1}{2}\n", ValueToString(level), className, (raceName != "" ? " (" + raceName + ")" : ""));
+			if (guildName != "None")
+			{
+				str.AppendFormat("     guild: {0}", guildName);
+				str.AppendFormat(" rank:{0}", guildRank);
+				if (guildID != -1)
+					str.AppendFormat(" guildId:0x{0:X4}", guildID);
+				str.AppendFormat("\n");
+				additionStrings++;
+			}
 			if (realm_level > 0)
+			{
 				str.AppendFormat("RealmLevel: {0} \"{1}\"\n", ValueToString(realm_level), realm_title);
+				additionStrings++;
+			}
 			if (ml_level > 0)
+			{
 				str.AppendFormat("  ML level: {0} \"{1}\"\n", ValueToString(ml_level), ml_title);
+				additionStrings++;
+			}
 			if (champ_level > 0)
+			{
 				str.AppendFormat("ChampLevel: {0} \"{1}\"\n", ValueToString(champ_level), champ_title);
+				additionStrings++;
+			}
 			str.AppendFormat("\n");
 			if(houseLot > 0)
-				str.AppendFormat("     houseLot: 0x{0}\n", ValueToString(houseLot, "X4"));
-			if(mountId > 0)
+			{
+				str.AppendFormat("     HouseLot: 0x{0}\n", ValueToString(houseLot, "X4"));
+				additionStrings++;
+			}
+			if (mountId > 0)
+			{
 				str.AppendFormat("     mount id: 0x{0} (slot:{1})\n", ValueToString(mountId, "X4"), ValueToString(mountSlot));
-			if(playersInGroup > 0)
+				additionStrings++;
+			}
+			if (playersInGroup > 0)
+			{
 				str.AppendFormat("        group: {0}[{1}]\n", ValueToString(indexInGroup), ValueToString(playersInGroup));
+				additionStrings++;
+			}
 			str.AppendFormat("        speed: {0,3}\n", ValueToString(speed));
 			str.AppendFormat("     maxSpeed: {0,3}%\n", ValueToString(maxspeed));
 			str.AppendFormat("       health: {0,3}%", ValueToString(healthPercent));
 			if (health != -1)
-				str.AppendFormat(" ({0}/{1})\n", health, healthMax);
+				str.AppendFormat(" ({0}/{1})", health, healthMax);
 			else if (healthMax != -1)
-				str.AppendFormat(" (maxHealth:{0})\n", healthMax);
-			else
-				str.Append('\n');
+				str.AppendFormat(" (maxHealth:{0})", healthMax);
+			str.Append('\n');
 			str.AppendFormat("         mana: {0,3}%", ValueToString(manaPercent));
 			if (mana != -1)
-				str.AppendFormat(" ({0}/{1})\n", mana, manaMax);
-			else
-				str.Append('\n');
+				str.AppendFormat(" ({0}/{1})", mana, manaMax);
+			str.Append('\n');
 			str.AppendFormat("    endurance: {0,3}%\n", ValueToString(endurancePercent));
 			str.AppendFormat("concentration: {0,3}%", ValueToString(concentrationPercent));
 			if (conc != -1)
-				str.AppendFormat(" ({0}/{1})\n", conc, concMax);
-			else
-				str.Append('\n');
+				str.AppendFormat(" ({0}/{1})", conc, concMax);
+			str.Append('\n');
 			str.AppendFormat(" clientTarget: 0x{0}\n", ValueToString(clientTargetOid, "X4"));
 			str.AppendFormat("  checkTarget: 0x{0}\n", ValueToString(serverTargetOid, "X4"));
-			str.AppendFormat(" current zone: {0}\n", loc);
+			str.AppendFormat(" current zone: {0}{1}\n", loc, enterRegionName == "" ? "" : " (" + enterRegionName + ")");
 			str.AppendFormat("  calced gloc: {0}\n", gloc);
+			int subReg = 0;
+			foreach (string subRegionName in enterSubRegion.Values)
+			{
+				str.AppendFormat(" subRegion[{0}]: {1}\n", subReg++, subRegionName);
+				additionStrings++;
+			}
+			if (insideHouseId != 0)
+			{
+				str.AppendFormat(" inside House: {0}\n", insideHouseId);
+				additionStrings++;
+			}
 			str.AppendFormat("        flags: {0}\n", state);
-
 			InfoWindowForm infoWindow = new InfoWindowForm();
 			infoWindow.Text = "Player info (right click to close)";
 			infoWindow.Width = 500;
-			infoWindow.Height = 350;
+			infoWindow.Height = 310 + 15 * additionStrings;
 			infoWindow.InfoRichTextBox.Text = str.ToString();
 			infoWindow.StartWindowThread();
 
@@ -317,6 +413,13 @@ namespace PacketLogConverter.LogActions
 			if (format == null)
 				return i.ToString();
 			return i.ToString(format);
+		}
+
+		private string regionNameFromMessage(string msg)
+		{
+			if (msg.Length > 0 && msg[msg.Length - 1] == '.')
+				return msg.Substring(0, msg.Length - 1);
+			return msg;
 		}
 	}
 }

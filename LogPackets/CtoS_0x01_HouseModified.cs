@@ -4,19 +4,11 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x01, -1, ePacketDirection.ClientToServer, "House modified")]
-	public class CtoS_0x01_HouseModified: Packet, IObjectIdPacket
+	public class CtoS_0x01_HouseModified: Packet, ISessionIdPacket
 	{
 		protected ushort sessionId;
 		protected short[] objects;
 
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { sessionId }; }
-		}
 
 		#region public access properties
 

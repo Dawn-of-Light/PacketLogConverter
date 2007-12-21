@@ -104,6 +104,7 @@ namespace PacketLogConverter.LogPackets
 			Normal = 0x00,
 			Bp = 0x01,
 			Count = 0x02,
+			HousingLotShop = 0x03,
 			HousingOutsideMenu = 0x04,
 			HousingMerchant = 0x05,
 			HousingInsideShop = 0x06,

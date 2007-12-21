@@ -4,24 +4,15 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x00, -1, ePacketDirection.ClientToServer, "House Menu request")]
-	public class CtoS_0x00_HouseMenuRequest: Packet, IObjectIdPacket
+	public class CtoS_0x00_HouseMenuRequest: Packet, IHouseIdPacket
 	{
-		protected ushort houseOid;
+		protected ushort houseId;
 		protected byte code;
 		protected byte unk1; // Trailing zero ?
 
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { houseOid }; }
-		}
-
 		#region public access properties
 
-		public ushort Oid { get { return houseOid; } }
+		public ushort HouseId { get { return houseId; } }
 		public byte MenuCode { get { return code; } }
 		public byte Unk1 { get { return unk1; } }
 
@@ -64,8 +55,8 @@ namespace PacketLogConverter.LogPackets
 					code_type = "UNKNOWN";
 					break;
 			}
-			str.AppendFormat("houseOid:0x{0:X4} code:{1}({3}) unk1:0x{2:X2}",
-				houseOid, code, unk1, code_type);
+			str.AppendFormat("houseId:0x{0:X4} code:{1}({3}) unk1:0x{2:X2}",
+				houseId, code, unk1, code_type);
 
 			return str.ToString();
 		}
@@ -77,7 +68,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			houseOid = ReadShort();
+			houseId = ReadShort();
 			code = ReadByte();
 			unk1 = ReadByte();
 		}

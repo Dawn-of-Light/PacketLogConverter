@@ -25,7 +25,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("timeStamp:0x{0:X8} sequence:0x{1:X4} unk1:0x{2:X8} unk2:0x{3:X8} unk4:0x{4:X4}",
+			str.AppendFormat("timeStamp:0x{0:X8} sequence:0x{1:X4} unk1:0x{2:X8} unk2:0x{3:X8} unk3:0x{4:X4}",
 				timeStamp, sequence, unk1, unk2, unk3);
 
 			return str.ToString();

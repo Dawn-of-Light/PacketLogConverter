@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xA9, -1, ePacketDirection.ServerToClient, "Player position update")]
-	public class StoC_0xA9_PlayerPosition : Packet, IObjectIdPacket
+	public class StoC_0xA9_PlayerPosition : Packet, IObjectIdPacket, ISessionIdPacket
 	{
 		protected ushort sessionId;
 		protected ushort status;
@@ -27,9 +27,9 @@ namespace PacketLogConverter.LogPackets
 			{
 				if ((status & 0x1C00) == 0x1800)
 				{
-					return new ushort[] { sessionId, heading };
+					return new ushort[] { heading };
 				}
-				return new ushort[] { sessionId };
+				return new ushort[] {};
 			}
 		}
 
@@ -47,14 +47,14 @@ namespace PacketLogConverter.LogPackets
 		public ushort Speed { get { return speed; } }
 		public byte Flag { get { return flag; } }
 		public byte Health { get { return health; } }
-		public bool IsRaided
+		public byte IsRaided
 		{
 			get
 			{
 				if ((status & 0x1C00) == 0x1800)
-					return true;
+					return 1;
 				else
-					return false;
+					return 0;
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace PacketLogConverter.LogPackets
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			bool isRaided = IsRaided;
+			bool isRaided = IsRaided == 1;
 			int zSpeed = speed & 0xFFF;
 			if ((speed & 0x1000) == 0x1000)
 				zSpeed *= -1;

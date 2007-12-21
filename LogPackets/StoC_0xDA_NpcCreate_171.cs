@@ -17,7 +17,7 @@ namespace PacketLogConverter.LogPackets
 		public byte Statue {get {return (byte)((level & 0x80) == 0x80 ? 1 : 0); } }
 		public byte Flag0x04 {get {return (byte)((flags & 0x04) == 0x04 ? 1 : 0); } }
 		public byte LongRangeVisible {get {return (byte)((flags & 0x08) == 0x08 ? 1 : 0); } }
-		public byte HaveOwner {get {return (byte)((flag2 & 0x80) == 0x80 ? 1 : 0); } }
+		public byte HaveOwner {get {return (byte)((flag2 & 0x80) == 0x80 ? 1 : 0); } }// 1.87+
 
 		#endregion
 

@@ -4,26 +4,17 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x06, -1, ePacketDirection.ClientToServer, "House permission list set")]
-	public class CtoS_0x06_HousePermissionListSet: Packet, IObjectIdPacket
+	public class CtoS_0x06_HousePermissionListSet: Packet, IHouseIdPacket
 	{
 		protected byte index;
 		protected byte level;
 		protected ushort houseOid;
 
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { houseOid }; }
-		}
-
 		#region public access properties
 
 		public byte Index { get { return index; } }
 		public byte Level { get { return level; } }
-		public ushort Oid { get { return houseOid; } }
+		public ushort HouseId { get { return houseOid; } }
 
 		#endregion
 

@@ -32,7 +32,7 @@ namespace PacketLogConverter.LogFilters
 			{
 				return;
 			}
-			
+
 			// Get properties
 			PropertyInfo[] properties = clazz.GetProperties(flags);
 			foreach (PropertyInfo info in properties)
@@ -188,7 +188,7 @@ namespace PacketLogConverter.LogFilters
 			{
 				this.members = members;
 				this.isRecursive = isRecursive;
-				
+
 				if (members == null)
 				{
 					if (isRecursive)
@@ -211,7 +211,7 @@ namespace PacketLogConverter.LogFilters
 							str.Append('.');
 						}
 						str.Append(info.Name);
-						
+
 						// Check if member is an array
 						if ((info is PropertyInfo && ((PropertyInfo)info).PropertyType.IsArray)
 						    || (info is FieldInfo && ((FieldInfo)info).FieldType.IsArray))
@@ -310,6 +310,14 @@ namespace PacketLogConverter.LogFilters
 			public readonly string relation;
 			public readonly string condition;
 			public static readonly ArrayList m_ignoredProperties = new ArrayList();
+			[NonSerialized]
+			private double valueToFindDouble;
+			[NonSerialized]
+			private bool canCompareAsDouble;
+			[NonSerialized]
+			private uint valueToFindInt = 0;
+			[NonSerialized]
+			private bool canCompareAsInt;
 
 			static FilterListEntry()
 			{
@@ -317,6 +325,25 @@ namespace PacketLogConverter.LogFilters
 				foreach (PropertyInfo property in ignoredType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
 				{
 					m_ignoredProperties.Add(property);
+				}
+			}
+
+			public void InitNonSerialized()
+			{
+				if (this.valueToFind != null && this.valueToFind != "")
+				{
+					try
+					{
+						this.valueToFindDouble = double.Parse(this.valueToFind);
+						this.canCompareAsDouble = true;
+					}
+					catch {}
+					try
+					{
+						this.valueToFindInt = uint.Parse(this.valueToFind);
+						this.canCompareAsInt = true;
+					}
+					catch {}
 				}
 			}
 
@@ -328,6 +355,7 @@ namespace PacketLogConverter.LogFilters
 				this.isRecursive = isRecursive;
 				this.relation = relation;
 				this.condition = condition;
+				InitNonSerialized();
 			}
 
 			public override string ToString()
@@ -338,7 +366,7 @@ namespace PacketLogConverter.LogFilters
 			public bool IsPacketIgnored(Packet packet)
 			{
 				bool isIgnored = true;
-				
+
 				// Filter by packet type
 				if (packetClass.type != null && !packetClass.type.IsAssignableFrom(packet.GetType()))
 				{
@@ -360,7 +388,7 @@ namespace PacketLogConverter.LogFilters
 				{
 					return true;
 				}
-				
+
 				// No path if last element
 				if (depth < 0)
 				{
@@ -368,7 +396,7 @@ namespace PacketLogConverter.LogFilters
 				}
 
 				bool isIgnored = true;
-				
+
 				if (fieldValue != null)
 				{
 					// Ignore certain types for better performance
@@ -417,7 +445,7 @@ namespace PacketLogConverter.LogFilters
 												break;
 											}
 										}
-										
+
 										// Don't check .ToString() of arrays - it makes no sense
 										if (depth == 0)
 										{
@@ -508,16 +536,57 @@ namespace PacketLogConverter.LogFilters
 							else if (fieldValue != null)
 							{
 								// Packet property string equals filter value
-								bool rc = fieldValue.ToString().ToLower().Equals(valueToFind);
-								if (rc && relation == "==")
-									isIgnored = false;
-								else if (!rc && relation == "!=")
-									isIgnored = false;
+								if (relation == "&&" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is byte || fieldValue is ushort || fieldValue is uint))
+								{
+									uint fieldValue2 = Convert.ToUInt32(fieldValue);
+									isIgnored = ((fieldValue2 & valueToFindInt) == 0); // same as !((a & b) != 0)
+								}
+								// Packet property string equals filter value
+								if (relation == "!&" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is byte || fieldValue is ushort || fieldValue is uint))
+								{
+									uint fieldValue2 = Convert.ToUInt32(fieldValue);
+									isIgnored = ((fieldValue2 & valueToFindInt) != 0); // same as !((a & b) == 0)
+								}
+								else if (relation == "&=" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is byte || fieldValue is ushort || fieldValue is uint))
+								{
+									uint fieldValue2 = Convert.ToUInt32(fieldValue);
+									isIgnored = (fieldValue2 & valueToFindInt) != valueToFindInt; // same as !(a & b) == b
+								}
+								else if (canCompareAsDouble && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is double || fieldValue is float))
+								{
+//									PacketLogConverter.LogWriters.Logger.Say(string.Format("fieldValue:{0} valType:{1}", fieldValue, valType));
+									double fieldValue2 = Convert.ToDouble(fieldValue);
+									switch (relation)
+									{
+										case "==":
+											isIgnored = fieldValue2 != valueToFindDouble; // same as !(a == b)
+											break;
+										case ">":
+											isIgnored = fieldValue2 <= valueToFindDouble; // same as !(a > b)
+											break;
+										case "<":
+											isIgnored = fieldValue2 >= valueToFindDouble; // same as !(a < b)
+											break;
+										case "!=":
+											isIgnored = fieldValue2 == valueToFindDouble; // same as !(a != b)
+											break;
+										default:
+											break;
+									}
+								}
+								else
+								{
+									bool rc = fieldValue.ToString().ToLower().Equals(valueToFind);
+									if (rc && relation == "==")
+										isIgnored = false;
+									else if (!rc && relation == "!=")
+										isIgnored = false;
+								}
 							}
 						}
 					}
 				}
-				
+
 				return isIgnored;
 			}
 		}

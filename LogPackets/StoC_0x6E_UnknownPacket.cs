@@ -3,13 +3,22 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x6E, 190, ePacketDirection.ServerToClient, "Unknown packet")]
-	public class StoC_0x6E_UnknownPacket: Packet
+	public class StoC_0x6E_UnknownPacket: Packet, IKeepIdPacket
 	{
 		protected ushort unk1; // keep part oid ?
 		protected ushort unk2;
 
-		#region public access properties
+		/// <summary>
+		/// Gets the keep ids of the packet.
+		/// </summary>
+		/// <value>The keep ids.</value>
+		public ushort[] KeepIds
+		{
+			get { return new ushort[] { unk1 }; }
+		}
 
+		#region public access properties
+		
 		public ushort Unk1 { get { return unk1 ; } }
 		public ushort Unk2 { get { return unk2; } }
 
@@ -19,7 +28,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("unk1:0x{0:X4} unk2:0x{1:X4}", unk1, unk2);
+			str.AppendFormat("keepId?:0x{0:X4} unk2:0x{1:X4}", unk1, unk2);
 
 			return str.ToString();
 		}

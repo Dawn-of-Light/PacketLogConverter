@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xBA, -1, ePacketDirection.ClientToServer, "Player Short State")]
-	public class CtoS_0xBA_PlayerShortState : Packet, IObjectIdPacket
+	public class CtoS_0xBA_PlayerShortState : Packet, ISessionIdPacket
 	{
 		protected ushort sessionId;
 		protected ushort heading;
@@ -23,15 +23,6 @@ namespace PacketLogConverter.LogPackets
 			Dead = 5,
 			Ride = 6,
 			Climb = 7,
-		}
-
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { sessionId }; }
 		}
 
 		#region public access properties

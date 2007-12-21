@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x4B, 172, ePacketDirection.ServerToClient, "Player create v172")]
-	public class StoC_0x4B_PlayerCreate_172 : Packet, IObjectIdPacket
+	public class StoC_0x4B_PlayerCreate_172 : Packet, IObjectIdPacket, ISessionIdPacket
 	{
 		protected ushort sessionId;
 		protected ushort oid;
@@ -34,7 +34,7 @@ namespace PacketLogConverter.LogPackets
 		/// <value>The object ids.</value>
 		public ushort[] ObjectIds
 		{
-			get { return new ushort[] { oid, sessionId }; }
+			get { return new ushort[] { oid }; }
 		}
 
 		#region public access properties

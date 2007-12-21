@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x6F, -1, ePacketDirection.ClientToServer, "Keep/Tower interact")]
-	public class CtoS_0x6F_KeepInteractRequest : Packet, IObjectIdPacket
+	public class CtoS_0x6F_KeepInteractRequest : Packet, IKeepIdPacket
 	{
 		protected ushort keepId;
 		protected ushort componentId;
@@ -11,10 +11,10 @@ namespace PacketLogConverter.LogPackets
 		protected ushort hpIndex;
 
 		/// <summary>
-		/// Gets the object ids of the packet.
+		/// Gets the keep ids of the packet.
 		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
+		/// <value>The keep ids.</value>
+		public ushort[] KeepIds
 		{
 			get { return new ushort[] { keepId }; }
 		}

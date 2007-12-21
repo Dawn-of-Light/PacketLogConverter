@@ -7,7 +7,7 @@ namespace PacketLogConverter.LogActions
 	/// <summary>
 	/// Shows known player info before selected packet
 	/// </summary>
-	[LogAction("Show player effects", Priority=1000)]
+	[LogAction("Show player effects", Priority=950)]
 	public class ShowPlayerEffectsAction : ILogAction
 	{
 		#region ILogAction Members

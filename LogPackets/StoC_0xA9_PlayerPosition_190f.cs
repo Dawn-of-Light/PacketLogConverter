@@ -18,7 +18,7 @@ namespace PacketLogConverter.LogPackets
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			bool isRaided = IsRaided;
+			bool isRaided = IsRaided == 1;
 			int zSpeed = speed & 0xFFF;
 			if ((speed & 0x1000) == 0x1000)
 				zSpeed *= -1;

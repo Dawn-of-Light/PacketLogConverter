@@ -4,25 +4,16 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x09, -1, ePacketDirection.ServerToClient, "House decoration update")]
-	public class StoC_0x09_HouseDecorationUpdate : Packet, IObjectIdPacket
+	public class StoC_0x09_HouseDecorationUpdate : Packet, IHouseIdPacket
 	{
 		protected ushort houseOid;
 		protected byte count;
 		protected byte decorationCode;
 		protected Furniture[] m_furnitures;
 
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { houseOid }; }
-		}
-
 		#region public access properties
 
-		public ushort Oid { get { return houseOid; } }
+		public ushort HouseId { get { return houseOid; } }
 		public byte Count { get { return count; } }
 		public byte DecorationCode { get { return decorationCode; } }
 		public Furniture[] Furnitures { get { return m_furnitures; } }

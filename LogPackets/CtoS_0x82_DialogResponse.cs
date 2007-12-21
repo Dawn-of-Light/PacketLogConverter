@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x82, -1, ePacketDirection.ClientToServer, "Dialog response")]
-	public class CtoS_0x82_DialogResponse : Packet, IObjectIdPacket
+	public class CtoS_0x82_DialogResponse : Packet, IObjectIdPacket, ISessionIdPacket
 	{
 		protected ushort data1;
 		protected ushort data2;
@@ -23,7 +23,7 @@ namespace PacketLogConverter.LogPackets
 			{
 				switch ((eDialogCode)dialogCode)
 				{
-					case eDialogCode.CustomDialog://data1=sessionId
+//					case eDialogCode.CustomDialog://data1=sessionId
 					case eDialogCode.InvitedJoinGuild://data1=oid
 					case eDialogCode.InvitedToBoard://data1=oid
 					case eDialogCode.RequestedPermissionToClaim://data1=oid
@@ -37,6 +37,15 @@ namespace PacketLogConverter.LogPackets
 			}
 		}
 
+		public ushort SessionId
+		{
+			get
+			{
+				if ((eDialogCode)dialogCode == eDialogCode.CustomDialog)
+					return data1;
+				return 0;
+			}
+		}
 		#region public access properties
 
 		public ushort Data1 { get { return data1; } }
@@ -66,6 +75,7 @@ namespace PacketLogConverter.LogPackets
 			PurchaseHouseLot = 0x11,
 			TransferHomeToGuildHouse = 0x13,
 			DepositHouseRent = 0x14,
+			HouseUpgradeDowngrade = 0x15,
 			InvitedToBoard = 0x16,
 			RequestedPermissionToClaim = 0x17,
 			InvitedJoinBattleGroup = 0x18,

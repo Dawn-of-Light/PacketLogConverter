@@ -56,8 +56,8 @@ namespace PacketLogConverter.LogPackets
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
-			str.AppendFormat("oid:0x{0:X4} speed:{1,-4} speedZ:{2,-4} heading:0x{3:X4} currentZone({4,-3}): ({5,-6} {6,-6} {7,-5}) walkToZone({8,-3}): ({9,-6} {10,-6} {11,-5}) health:{12,3}% targetOID:0x{13:X4} flags:0x{14:X2}",
-			                 npcOID, speed, speedZ, heading, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, targetZoneId, targetZoneX, targetZoneY, targetZoneZ, healthPercent, targetOID, flags);
+			str.AppendFormat("oid:0x{0:X4} speed:{1,-4} speedZ:{2,-4}({15,-4}) heading:0x{3:X4} currentZone({4,-3}): ({5,-6} {6,-6} {7,-5}) walkToZone({8,-3}): ({9,-6} {10,-6} {11,-5}) health:{12,3}% targetOID:0x{13:X4} flags:0x{14:X2}",
+				npcOID, speed, speedZ, heading, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, targetZoneId, targetZoneX, targetZoneY, targetZoneZ, healthPercent, targetOID, flags, speedZ * 4);
 			if (flagsDescription)
 			{
 				string flag = string.Format("realm:{0}",(flags >> 6) & 3);
@@ -87,7 +87,7 @@ namespace PacketLogConverter.LogPackets
 			if ((temp & 0x800) == 0x800)
 				speed = (short)-speed;
 			heading = ReadShort();
-			speedZ = (short)(((temp & 0x7000) >> 8) | (heading >> 12));
+			speedZ = (short)(((temp & 0x7000) >> 8) | (heading >> 12)); // ZSpeed in 0xA1 = 1/4 0xDA ZSpeed
 			if ((temp & 0x8000) == 0x8000)
 				speedZ = (short)-speedZ;
 			heading = (ushort)(heading & 0xFFF);

@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xAF, -1, ePacketDirection.ServerToClient, "msg")]
-	public class StoC_0xAF_Message : Packet
+	public class StoC_0xAF_Message : Packet, ISessionIdPacket
 	{
 		protected ushort unk1;
 		protected ushort sessionId;

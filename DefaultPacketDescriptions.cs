@@ -136,6 +136,8 @@ namespace PacketLogConverter
 			m_stocDescriptions[0x2F] = "UDP init reply";
 			m_stocDescriptions[0x4B] = "Request missing player response";
 			m_stocDescriptions[0x4C] = "Visual Effect on Living";
+			m_stocDescriptions[0x5C] = "Set XFire status";
+			m_stocDescriptions[0x5F] = "Set roleplay status?";
 			m_stocDescriptions[0x61] = "Repair cockpit + keep upgrade?";
 			m_stocDescriptions[0x62] = "Keep lord?";
 			m_stocDescriptions[0x63] = "Siege store?";

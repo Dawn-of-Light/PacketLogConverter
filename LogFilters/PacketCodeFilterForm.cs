@@ -47,7 +47,7 @@ namespace PacketLogConverter.LogFilters
 
 			stocCheckedListBox.Items.Clear();
 			ctosCheckedListBox.Items.Clear();
-	
+
 			for (int i = 0; i < Packet.MAX_CODE; i++)
 			{
 				string description;
@@ -322,11 +322,11 @@ namespace PacketLogConverter.LogFilters
 			this.stocGroupBox.SuspendLayout();
 			this.ctosGroupBox.SuspendLayout();
 			this.SuspendLayout();
-			// 
+			//
 			// stocGroupBox
-			// 
-			this.stocGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
+			//
+			this.stocGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+				| System.Windows.Forms.AnchorStyles.Left)
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.stocGroupBox.Controls.Add(this.stocCheckedListBox);
 			this.stocGroupBox.Controls.Add(this.stocClearAllButton);
@@ -337,9 +337,9 @@ namespace PacketLogConverter.LogFilters
 			this.stocGroupBox.TabIndex = 0;
 			this.stocGroupBox.TabStop = false;
 			this.stocGroupBox.Text = "Server to Client allowed packets";
-			// 
+			//
 			// stocCheckedListBox
-			// 
+			//
 			this.stocCheckedListBox.CheckOnClick = true;
 			this.stocCheckedListBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.stocCheckedListBox.Location = new System.Drawing.Point(8, 16);
@@ -347,28 +347,28 @@ namespace PacketLogConverter.LogFilters
 			this.stocCheckedListBox.Size = new System.Drawing.Size(352, 388);
 			this.stocCheckedListBox.TabIndex = 1;
 			this.stocCheckedListBox.ThreeDCheckBoxes = true;
-			// 
+			//
 			// stocClearAllButton
-			// 
+			//
 			this.stocClearAllButton.Location = new System.Drawing.Point(184, 424);
 			this.stocClearAllButton.Name = "stocClearAllButton";
 			this.stocClearAllButton.Size = new System.Drawing.Size(176, 23);
 			this.stocClearAllButton.TabIndex = 4;
 			this.stocClearAllButton.Text = "Clear All";
 			this.stocClearAllButton.Click += new System.EventHandler(this.stocClearAllButton_Click);
-			// 
+			//
 			// stocSelectAllButton
-			// 
+			//
 			this.stocSelectAllButton.Location = new System.Drawing.Point(8, 424);
 			this.stocSelectAllButton.Name = "stocSelectAllButton";
 			this.stocSelectAllButton.Size = new System.Drawing.Size(176, 23);
 			this.stocSelectAllButton.TabIndex = 3;
 			this.stocSelectAllButton.Text = "Select All";
 			this.stocSelectAllButton.Click += new System.EventHandler(this.stocSelectAllButton_Click);
-			// 
+			//
 			// ctosGroupBox
-			// 
-			this.ctosGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			//
+			this.ctosGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 				| System.Windows.Forms.AnchorStyles.Left)));
 			this.ctosGroupBox.Controls.Add(this.ctosCheckedListBox);
 			this.ctosGroupBox.Controls.Add(this.ctosClearAllButton);
@@ -379,110 +379,110 @@ namespace PacketLogConverter.LogFilters
 			this.ctosGroupBox.TabIndex = 1;
 			this.ctosGroupBox.TabStop = false;
 			this.ctosGroupBox.Text = "Client to Server allowed packets";
-			// 
+			//
 			// ctosCheckedListBox
-			// 
+			//
 			this.ctosCheckedListBox.CheckOnClick = true;
 			this.ctosCheckedListBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.ctosCheckedListBox.Location = new System.Drawing.Point(8, 16);
 			this.ctosCheckedListBox.Name = "ctosCheckedListBox";
 			this.ctosCheckedListBox.Size = new System.Drawing.Size(352, 388);
 			this.ctosCheckedListBox.TabIndex = 2;
-			// 
+			//
 			// ctosClearAllButton
-			// 
+			//
 			this.ctosClearAllButton.Location = new System.Drawing.Point(184, 424);
 			this.ctosClearAllButton.Name = "ctosClearAllButton";
 			this.ctosClearAllButton.Size = new System.Drawing.Size(176, 23);
 			this.ctosClearAllButton.TabIndex = 6;
 			this.ctosClearAllButton.Text = "Clear All";
 			this.ctosClearAllButton.Click += new System.EventHandler(this.ctosClearAllButton_Click);
-			// 
+			//
 			// ctosSelectAllButton
-			// 
+			//
 			this.ctosSelectAllButton.Location = new System.Drawing.Point(8, 424);
 			this.ctosSelectAllButton.Name = "ctosSelectAllButton";
 			this.ctosSelectAllButton.Size = new System.Drawing.Size(176, 23);
 			this.ctosSelectAllButton.TabIndex = 5;
 			this.ctosSelectAllButton.Text = "Select All";
 			this.ctosSelectAllButton.Click += new System.EventHandler(this.ctosSelectAllButton_Click);
-			// 
+			//
 			// acceptButton
-			// 
+			//
 			this.acceptButton.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.acceptButton.Location = new System.Drawing.Point(584, 496);
 			this.acceptButton.Name = "acceptButton";
 			this.acceptButton.TabIndex = 0;
 			this.acceptButton.Text = "Accept";
-			// 
+			//
 			// cancelButton
-			// 
+			//
 			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.cancelButton.Location = new System.Drawing.Point(672, 496);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.TabIndex = 11;
 			this.cancelButton.Text = "Cancel";
-			// 
+			//
 			// label1
-			// 
+			//
 			this.label1.Location = new System.Drawing.Point(16, 496);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(360, 23);
 			this.label1.TabIndex = 4;
 			this.label1.Text = "Codes with at least one packet parser are marked with \">>>\"";
-			// 
+			//
 			// ignoreAllButton
-			// 
+			//
 			this.ignoreAllButton.Location = new System.Drawing.Point(408, 464);
 			this.ignoreAllButton.Name = "ignoreAllButton";
 			this.ignoreAllButton.TabIndex = 7;
 			this.ignoreAllButton.Text = "Ignore all";
 			this.ignoreAllButton.Click += new System.EventHandler(this.ignoreAllButton_Click);
-			// 
+			//
 			// allowAllbutton
-			// 
+			//
 			this.allowAllbutton.Location = new System.Drawing.Point(496, 464);
 			this.allowAllbutton.Name = "allowAllbutton";
 			this.allowAllbutton.TabIndex = 8;
 			this.allowAllbutton.Text = "Allow all";
 			this.allowAllbutton.Click += new System.EventHandler(this.allowAllbutton_Click);
-			// 
+			//
 			// invertButton
-			// 
+			//
 			this.invertButton.Location = new System.Drawing.Point(584, 464);
 			this.invertButton.Name = "invertButton";
 			this.invertButton.TabIndex = 9;
 			this.invertButton.Text = "Invert";
 			this.invertButton.Click += new System.EventHandler(this.invertButton_Click);
-			// 
+			//
 			// selectAllKnownButton
-			// 
+			//
 			this.selectAllKnownButton.Location = new System.Drawing.Point(672, 464);
 			this.selectAllKnownButton.Name = "selectAllKnownButton";
 			this.selectAllKnownButton.TabIndex = 10;
 			this.selectAllKnownButton.Text = "All known";
 			this.selectAllKnownButton.Click += new System.EventHandler(this.selectAllKnownButton_Click);
-			// 
+			//
 			// templateComboBox
-			// 
+			//
 			this.templateComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.templateComboBox.Location = new System.Drawing.Point(408, 496);
 			this.templateComboBox.Name = "templateComboBox";
 			this.templateComboBox.Size = new System.Drawing.Size(160, 21);
 			this.templateComboBox.TabIndex = 12;
 			this.templateComboBox.SelectedIndexChanged += new System.EventHandler(this.templateComboBox_SelectedIndexChanged);
-			// 
+			//
 			// listSelectedButton
-			// 
+			//
 			this.listSelectedButton.Location = new System.Drawing.Point(16, 464);
 			this.listSelectedButton.Name = "listSelectedButton";
 			this.listSelectedButton.Size = new System.Drawing.Size(96, 23);
 			this.listSelectedButton.TabIndex = 7;
 			this.listSelectedButton.Text = "List selected";
 			this.listSelectedButton.Click += new System.EventHandler(this.listSelectedButton_Click);
-			// 
+			//
 			// PacketCodeFilterForm
-			// 
+			//
 			this.AcceptButton = this.acceptButton;
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.CancelButton = this.cancelButton;
@@ -544,7 +544,7 @@ namespace PacketLogConverter.LogFilters
 		}
 
 		#endregion
-		
+
 		#region ILogFilter members
 
 		/// <summary>
@@ -668,7 +668,6 @@ namespace PacketLogConverter.LogFilters
 			{
 				data.WriteByte((byte)(stocCheckedListBox.GetItemChecked(i) ? 1 : 0));
 			}
-			
 			return true;
 		}
 
@@ -696,7 +695,6 @@ namespace PacketLogConverter.LogFilters
 				int active = data.ReadByte();
 				stocCheckedListBox.SetItemChecked(i, (active == 1 ? true : false));
 			}
-			
 			return true;
 		}
 

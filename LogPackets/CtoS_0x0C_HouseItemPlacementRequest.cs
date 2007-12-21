@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x0C, -1, ePacketDirection.ClientToServer, "House item placement request")]
-	public class CtoS_0x0C_HouseItemPlacementRequest: Packet, IObjectIdPacket
+	public class CtoS_0x0C_HouseItemPlacementRequest: Packet, IHouseIdPacket
 	{
 		protected ushort slot;
 		protected ushort houseOid;
@@ -14,19 +14,10 @@ namespace PacketLogConverter.LogPackets
 		protected short x;
 		protected short y;
 
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { houseOid }; }
-		}
-
 		#region public access properties
 
 		public ushort Slot { get { return slot; } }
-		public ushort HouseOid { get { return houseOid; } }
+		public ushort HouseId { get { return houseOid; } }
 		public ushort Surface { get { return surface; } }
 		public byte Place { get { return place; } }
 		public byte Rotation { get { return rotation; } }

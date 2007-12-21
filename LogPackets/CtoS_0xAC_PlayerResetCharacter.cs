@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xAC, -1, ePacketDirection.ClientToServer, "Reset Character")]
-	public class CtoS_0xAC_PlayerResetCharacter : Packet
+	public class CtoS_0xAC_PlayerResetCharacter : Packet, ISessionIdPacket
 	{
 		protected ushort sessionId;
 		protected ushort unk1;

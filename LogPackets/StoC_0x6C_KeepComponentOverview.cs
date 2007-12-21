@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x6C, -1, ePacketDirection.ServerToClient, "Keep/Tower component overview")]
-	public class StoC_0x6C_KeepComponentOverview : Packet, IObjectIdPacket
+	public class StoC_0x6C_KeepComponentOverview : Packet, IObjectIdPacket, IKeepIdPacket
 	{
 		protected ushort keepId;
 		protected ushort componentId;
@@ -24,7 +24,16 @@ namespace PacketLogConverter.LogPackets
 		/// <value>The object ids.</value>
 		public ushort[] ObjectIds
 		{
-			get { return new ushort[] { uid, keepId }; }
+			get { return new ushort[] { uid }; }
+		}
+
+		/// <summary>
+		/// Gets the keep ids of the packet.
+		/// </summary>
+		/// <value>The keep ids.</value>
+		public ushort[] KeepIds
+		{
+			get { return new ushort[] { keepId }; }
 		}
 
 		#region public access properties
@@ -69,6 +78,14 @@ namespace PacketLogConverter.LogPackets
 			BridgeHightWithHook2 = 20,
 		}
 
+		public enum eKeepComponentStatus: byte
+		{
+			Broken = 1,
+			Climbable = 2,
+			FixingDamaged = 3,
+			BrokenTower = 4,
+			RizedTower = 5,
+		}
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();
@@ -79,7 +96,11 @@ namespace PacketLogConverter.LogPackets
 				byte componentType = skin;
 				if (componentType > 20)
 					componentType -= 20;
-				str.AppendFormat(" ({1}{0})", (eKeepComponentType)componentType, skin > 20 ? "New" : "");
+				str.AppendFormat(" ({1}{0}", (eKeepComponentType)componentType, skin > 20 ? "New" : "");
+				if (status > 0)
+					str.AppendFormat(",{0}", (eKeepComponentStatus)status);
+				str.Append(')');
+	
 			}
 			return str.ToString();
 		}

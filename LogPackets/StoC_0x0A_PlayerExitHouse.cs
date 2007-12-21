@@ -3,14 +3,14 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x0A, -1, ePacketDirection.ServerToClient, "Player exit house")]
-	public class StoC_0x0A_ExitHouse: Packet
+	public class StoC_0x0A_ExitHouse: Packet, IHouseIdPacket
 	{
 		protected ushort houseOid;
 		protected ushort unk1;
 
 		#region public access properties
 
-		public ushort HouseOid { get { return houseOid; } }
+		public ushort HouseId { get { return houseOid; } }
 		public ushort Unk1 { get { return unk1; } }
 
 		#endregion

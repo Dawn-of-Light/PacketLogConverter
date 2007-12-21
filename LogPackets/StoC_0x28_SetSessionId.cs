@@ -1,7 +1,7 @@
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x28, -1, ePacketDirection.ServerToClient, "Set session ID")]
-	public class StoC_0x28_SetSessionId : Packet
+	public class StoC_0x28_SetSessionId : Packet, ISessionIdPacket
 	{
 		protected ushort sessionId;
 

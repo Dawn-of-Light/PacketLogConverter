@@ -7,7 +7,7 @@ namespace PacketLogConverter.LogActions
 	/// <summary>
 	/// Shows known player info before selected packet
 	/// </summary>
-	[LogAction("Show player weapon", Priority=1000)]
+	[LogAction("Show player weapon", Priority=950)]
 	public class ShowPlayerWeaponAction : ILogAction
 	{
 		#region ILogAction Members

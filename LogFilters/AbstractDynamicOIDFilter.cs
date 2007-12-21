@@ -14,6 +14,7 @@ namespace PacketLogConverter.LogFilters
 		
 		private DynamicFilterHelper m_filterHelper;
 		private ushort m_oid;
+		private ushort m_sid;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:AbstractDynamicOIDFilter"/> class.
@@ -36,6 +37,16 @@ namespace PacketLogConverter.LogFilters
 			set { m_oid = value; }
 		}
 
+		/// <summary>
+		/// Gets or sets the sid.
+		/// </summary>
+		/// <value>The sid.</value>
+		protected ushort Sid
+		{
+			get { return m_sid; }
+			set { m_sid = value; }
+		}
+
 		#region Filter event handlers
 
 		/// <summary>
@@ -45,6 +56,7 @@ namespace PacketLogConverter.LogFilters
 		protected virtual void FilterManager_OnFilteringStartedEvent(PacketLog log)
 		{
 			m_oid = ID_NOT_SET;
+			m_sid = ID_NOT_SET;
 		}
 
 		/// <summary>
@@ -74,25 +86,32 @@ namespace PacketLogConverter.LogFilters
 		/// </returns>
 		public override bool IsPacketIgnored(Packet packet)
 		{
-			// No id is set
-			if (m_oid == ID_NOT_SET)
-				return true;
-
 			bool bRet = true;
 
-			IObjectIdPacket pak = packet as IObjectIdPacket;
-			if (pak != null)
+			if (m_sid != ID_NOT_SET)
 			{
-#warning TODO: Check performance?
-//				int index = Array.IndexOf<ushort>(pak.ObjectIds, m_selfOID);
-//				bRet = 0 > index;
-				// Check pet OID
-				foreach (ushort id in pak.ObjectIds)
+				ISessionIdPacket spak = packet as ISessionIdPacket;
+				if (spak != null && spak.SessionId == m_sid)
 				{
-					if (id == m_oid)
+					bRet = false;
+				}
+			}
+			if (bRet && m_oid != ID_NOT_SET)
+			{
+				IObjectIdPacket pak = packet as IObjectIdPacket;
+				if (pak != null)
+				{
+#warning TODO: Check performance?
+//					int index = Array.IndexOf<ushort>(pak.ObjectIds, m_selfOID);
+//					bRet = 0 > index;
+					// Check pet OID
+					foreach (ushort id in pak.ObjectIds)
 					{
-						bRet = false;
-						break;
+						if (id == m_oid)
+						{
+							bRet = false;
+							break;
+						}
 					}
 				}
 			}

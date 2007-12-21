@@ -4,24 +4,15 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x05, -1, ePacketDirection.ClientToServer, "House Friend Level permission request")]
-	public class CtoS_0x05_HousePermissionRequest: Packet, IObjectIdPacket
+	public class CtoS_0x05_HousePermissionRequest: Packet, IHouseIdPacket
 	{
 		protected ushort unk1;
 		protected ushort houseOid;
 
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { houseOid }; }
-		}
-
 		#region public access properties
 
 		public ushort Unk1 { get { return unk1; } }
-		public ushort Oid { get { return houseOid; } }
+		public ushort HouseId { get { return houseOid; } }
 
 		#endregion
 

@@ -4,23 +4,14 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xD5, -1, ePacketDirection.ClientToServer, "Player creation request")]
-	public class CtoS_0xD5_PlayerCreationRequest : Packet, IObjectIdPacket
+	public class CtoS_0xD5_PlayerCreationRequest : Packet, ISessionIdPacket
 	{
 		protected ushort sessionId;
 		protected ushort unk1;
 
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { sessionId }; }
-		}
-
 		#region public access properties
 
-		public ushort Oid { get { return sessionId; } }
+		public ushort SessionId { get { return sessionId; } }
 		public ushort Unk1 { get { return unk1; } }
 
 		#endregion

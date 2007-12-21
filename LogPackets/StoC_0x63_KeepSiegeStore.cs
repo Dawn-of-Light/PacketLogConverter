@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x63, -1, ePacketDirection.ServerToClient, "hookpoint siege store")]
-	public class StoC_0x63_KeepSiegeStore : Packet, IObjectIdPacket
+	public class StoC_0x63_KeepSiegeStore : Packet, IKeepIdPacket
 	{
 		protected ushort keepId;
 		protected ushort componentId;
@@ -17,10 +17,10 @@ namespace PacketLogConverter.LogPackets
 		protected StoC_0x17_MerchantWindow.MerchantItem[] items;
 
 		/// <summary>
-		/// Gets the object ids of the packet.
+		/// Gets the keep ids of the packet.
 		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
+		/// <value>The keep ids.</value>
+		public ushort[] KeepIds
 		{
 			get { return new ushort[] { keepId }; }
 		}

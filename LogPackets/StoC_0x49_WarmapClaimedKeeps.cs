@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x49, -1, ePacketDirection.ServerToClient, "Show warmap")]
-	public class StoC_0x49_WarmapShow : Packet, IObjectIdPacket
+	public class StoC_0x49_WarmapShow : Packet, IKeepIdPacket
 	{
 		protected ushort templeBitMask;
 		protected byte countKeep;
@@ -17,13 +17,12 @@ namespace PacketLogConverter.LogPackets
 		protected byte r6;
 		protected Keep[] m_keeps;
 
-
 		protected ushort[] m_oids;
 		/// <summary>
-		/// Gets the object ids of the packet.
+		/// Gets the keep ids of the packet.
 		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
+		/// <value>The keep ids.</value>
+		public ushort[] KeepIds
 		{
 			get { return m_oids; }
 		}

@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x7A, -1, ePacketDirection.ClientToServer, "Object interact request")]
-	public class CtoS_0x7A_ObjectInteractRequest : Packet, IObjectIdPacket
+	public class CtoS_0x7A_ObjectInteractRequest : Packet, IObjectIdPacket, ISessionIdPacket
 	{
 		protected uint playerX;
 		protected uint playerY;
@@ -17,7 +17,7 @@ namespace PacketLogConverter.LogPackets
 		/// <value>The object ids.</value>
 		public ushort[] ObjectIds
 		{
-			get { return new ushort[] { objectOid, sessionId }; }
+			get { return new ushort[] { objectOid }; }
 		}
 
 		#region public access properties

@@ -21,11 +21,13 @@ namespace PacketLogConverter
 		private static bool m_combineFilters;
 		private static bool m_invertCheck;
 		private static bool m_loading;
+		private static bool m_IgnoreFilters;
 
 		public static event FilterAction FilterAddedEvent;
 		public static event FilterAction FilterRemovedEvent;
 		public static event StatusChange CombineFiltersChangedEvent;
 		public static event StatusChange InvertCheckChangedEvent;
+		public static event StatusChange IgnoreFiltersChangedEvent;
 
 		/// <summary>
 		/// Event is raised when log filtering is started.
@@ -58,11 +60,14 @@ namespace PacketLogConverter
 		/// </returns>
 		public static bool IsPacketIgnored(Packet pak)
 		{
+			if (m_IgnoreFilters) // temporary Ignore filters
+				return false;
+
 			// Notify all listeners
 			RaiseFilteringPacketEvent(pak);
-			
+
 			bool ret = false;
-			
+
 			if (m_loading)
 			{
 				ret = true;
@@ -96,7 +101,7 @@ namespace PacketLogConverter
 					}
 				}
 			}
-			
+
 			return ret;
 		}
 
@@ -154,6 +159,20 @@ namespace PacketLogConverter
 			{
 				m_invertCheck = value;
 				RaiseStatusChangeEvent(InvertCheckChangedEvent, value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether to Ignore filter check.
+		/// </summary>
+		/// <value><c>true</c> if filter check is Ignored; otherwise, <c>false</c>.</value>
+		public static bool IgnoreFilters
+		{
+			get { return m_IgnoreFilters; }
+			set
+			{
+				m_IgnoreFilters = value;
+				RaiseStatusChangeEvent(IgnoreFiltersChangedEvent, value);
 			}
 		}
 
@@ -233,11 +252,11 @@ namespace PacketLogConverter
 			if (e != null)
 				e(filter);
 		}
-		
+
 		#endregion
 
 		#region Save/Load
-		
+
 		/// <summary>
 		/// Saves the filters.
 		/// </summary>
@@ -254,7 +273,7 @@ namespace PacketLogConverter
 					{
 						allFilters = (ArrayList)m_filters.Clone();
 					}
-					
+
 					// Copy data
 					writer.CombineFilters	= CombineFilters;
 					writer.InvertCheck		= InvertCheck;
@@ -322,7 +341,7 @@ namespace PacketLogConverter
 		}
 
 		#endregion
-		
+
 		#region Filtering start/stop events
 
 		/// <summary>
@@ -366,7 +385,7 @@ namespace PacketLogConverter
 				Log.Error(e.Message, e);
 			}
 		}
-		
+
 		#endregion
 	}
 }

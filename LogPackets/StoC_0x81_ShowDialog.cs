@@ -4,7 +4,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x81, -1, ePacketDirection.ServerToClient, "Show dialog")]
-	public class StoC_0x81_ShowDialog : Packet, IObjectIdPacket
+	public class StoC_0x81_ShowDialog : Packet, IObjectIdPacket, ISessionIdPacket
 	{
 		protected ushort dialogCode;
 		protected ushort data1;
@@ -30,7 +30,7 @@ namespace PacketLogConverter.LogPackets
 					case eDialogCode.NewQuestSubscribe:
 					case eDialogCode.QuestSubscribe:
 						return new ushort[] { data2 };
-					case eDialogCode.CustomDialog://data1=sessionId
+//					case eDialogCode.CustomDialog://data1=sessionId
 					case eDialogCode.InvitedJoinGroup://data1=sessionId (responce in CtoS_0x98)
 					case eDialogCode.InvitedJoinGuild://data1=oid
 					case eDialogCode.InvitedToBoard://data1=oid
@@ -39,6 +39,16 @@ namespace PacketLogConverter.LogPackets
 						return new ushort[] { data1 };
 					default: return new ushort[] { };
 				}
+			}
+		}
+
+		public ushort SessionId
+		{
+			get
+			{
+				if ((eDialogCode)dialogCode == eDialogCode.CustomDialog)
+					return data1;
+				return 0;
 			}
 		}
 
@@ -73,8 +83,10 @@ namespace PacketLogConverter.LogPackets
 			Recharge = 0x0F,
 			RespecAllSkills = 0x10,
 			PurchaseHouseLot = 0x11,
+//			TransferOwnerships = 0x12, ?
 			TransferHomeToGuildHouse = 0x13,
 			DepositHouseRent = 0x14,
+			HouseUpgradeDowngrade = 0x15, // "Housing10" from help.txt(ihf.mpk)
 			InvitedToBoard = 0x16,
 			RequestedPermissionToClaim = 0x17,
 			InvitedJoinBattleGroup = 0x18,

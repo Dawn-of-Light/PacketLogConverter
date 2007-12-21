@@ -27,6 +27,26 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
+		#region Filter Helpers
+
+		public DefaultUpdate           InDefaultUpdate           { get { return subData as DefaultUpdate; } }
+		public MobGhostEffectUpdate    InMobGhostEffectUpdate    { get { return subData as MobGhostEffectUpdate; } }
+		public HexEffectsUpdate        InHexEffectsUpdate        { get { return subData as HexEffectsUpdate; } }
+		public UndergoundRaceFlyUpdate InUndergoundRaceFlyUpdate { get { return subData as UndergoundRaceFlyUpdate; } }
+		public ColorNameUpdate         InColorNameUpdate         { get { return subData as ColorNameUpdate; } }
+		public MobStealthEffectUpdate  InMobStealthEffectUpdate  { get { return subData as MobStealthEffectUpdate; } }
+		public QuestEffectUpdate       InQuestEffectUpdate       { get { return subData as QuestEffectUpdate; } }
+		public BlinkPanelUpdate        InBlinkPanelUpdate        { get { return subData as BlinkPanelUpdate; } }
+		public FreeLevelUpdate         InFreeLevelUpdate         { get { return subData as FreeLevelUpdate; } }
+		public TitleUpdate             InTitleUpdate             { get { return subData as TitleUpdate; } }
+		public BannerUpdate            InBannerUpdate            { get { return subData as BannerUpdate; } }
+		public MinoRelicBeginUpdate    InMinoRelicBeginUpdate    { get { return subData as MinoRelicBeginUpdate; } }
+		public MinoRelicTimerUpdate    InMinoRelicTimerUpdate    { get { return subData as MinoRelicTimerUpdate; } }
+		public MinoRelicSetTimerUpdate InMinoRelicSetTimerUpdate { get { return subData as MinoRelicSetTimerUpdate; } }
+
+
+		#endregion
+
 		public override string GetPacketDataString(bool flagsDescription)
 		{
 			StringBuilder str = new StringBuilder();

@@ -79,7 +79,7 @@ namespace PacketLogConverter.LogActions
 				{
 					StoC_0xD1_HouseCreate house = (StoC_0xD1_HouseCreate)pak;
 
-					oidInfo[house.Oid] = new ObjectInfo(pak.Time, "HOUS", house.Name, 0);
+					oidInfo[house.HouseId] = new ObjectInfo(pak.Time, "HOUS", house.Name, 0);
 				}
 				else if (pak is StoC_0xDA_NpcCreate)
 				{

@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xF7, -1, ePacketDirection.ServerToClient, "Show help window")]
-	public class StoC_0xF7_ShowHelp: Packet
+	public class StoC_0xF7_ShowHelp: Packet, IHouseIdPacket
 	{
 		protected ushort index;
 		protected ushort lot;
@@ -11,7 +11,7 @@ namespace PacketLogConverter.LogPackets
 		#region public access properties
 
 		public ushort Index { get { return index; } }
-		public ushort Lot { get { return lot; } }
+		public ushort HouseId { get { return lot; } }
 
 		#endregion
 
@@ -19,7 +19,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("topicIndex:{0} houseLot?:{1}", index, lot);
+			str.AppendFormat("topicIndex:{0} houseLot:{1}", index, lot);
 
 			return str.ToString();
 		}

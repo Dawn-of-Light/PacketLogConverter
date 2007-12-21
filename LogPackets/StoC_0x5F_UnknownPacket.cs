@@ -2,27 +2,27 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0x5F, 190, ePacketDirection.ServerToClient, "Unknown packet")]
-	public class StoC_0x5F_UnknownPacket: Packet
+	[LogPacket(0x5F, 190, ePacketDirection.ServerToClient, "Set roleplay status v190")]
+	public class StoC_0x5F_UnknownPacket: Packet, IObjectIdPacket
 	{
+		protected byte rp;
+		protected ushort objectId;
 		protected byte unk1;
-		protected ushort sessionId;
-		protected byte unk2;
-		protected uint unk3;
+		protected uint unk2;
 
 		#region public access properties
 
+		public byte RP { get { return rp; } }
+		public ushort SessionId { get { return objectId; } }
 		public byte Unk1 { get { return unk1; } }
-		public ushort SessionId { get { return sessionId; } }
-		public byte Unk2 { get { return unk2; } }
-		public uint Unk3 { get { return unk3; } }
+		public uint Unk2 { get { return unk2; } }
 
 		#endregion
 		public ushort[] ObjectIds
 		{
 			get
 			{
-				return new ushort[] { sessionId };
+				return new ushort[] { objectId };
 			}
 		}
 
@@ -31,7 +31,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("sessionId:0x{0:X4} unk1:{1} unk2:{2} unk3:0x{3:X8}", sessionId, unk1, unk2, unk3);
+			str.AppendFormat("objectId:0x{0:X4} RP:{1} unk1:{2} unk2:0x{3:X8}", objectId, rp, unk1, unk2);
 
 			return str.ToString();
 		}
@@ -43,10 +43,10 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
+			rp = ReadByte();
+			objectId = ReadShortLowEndian();
 			unk1 = ReadByte();
-			sessionId = ReadShortLowEndian();
-			unk2 = ReadByte();
-			unk3 = ReadInt();
+			unk2 = ReadInt();
 		}
 
 		/// <summary>

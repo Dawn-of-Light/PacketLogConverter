@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x67, -1, ePacketDirection.ServerToClient, "Keep/Tower update")]
-	public class StoC_0x67_KeepUpdate : Packet, IObjectIdPacket
+	public class StoC_0x67_KeepUpdate : Packet, IKeepIdPacket
 	{
 		protected ushort keepId;
 		protected byte realm;
@@ -13,10 +13,10 @@ namespace PacketLogConverter.LogPackets
 		protected byte unk1;
 
 		/// <summary>
-		/// Gets the object ids of the packet.
+		/// Gets the keep ids of the packet.
 		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
+		/// <value>The keep ids.</value>
+		public ushort[] KeepIds
 		{
 			get { return new ushort[] { keepId }; }
 		}

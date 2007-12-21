@@ -3,7 +3,7 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xA9, -1, ePacketDirection.ClientToServer, "Player position update")]
-	public class CtoS_0xA9_PlayerPosition : Packet, IObjectIdPacket
+	public class CtoS_0xA9_PlayerPosition : Packet, ISessionIdPacket
 	{
 		protected ushort sessionId;
 		protected ushort status;
@@ -16,15 +16,6 @@ namespace PacketLogConverter.LogPackets
 		protected ushort speed;
 		protected byte flag;
 		protected byte health;
-
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { sessionId }; }
-		}
 
 		#region public access properties
 

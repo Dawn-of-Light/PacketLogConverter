@@ -13,6 +13,8 @@ namespace PacketLogConverter.LogFilters
 	[LogFilter("OID filter...", Shortcut.CtrlI, Priority=900)]
 	public class ObjectIdFilterForm : Form, ILogFilter
 	{
+		private ListBoxOid[] m_selectedOidsCache;
+
 		private Label label1;
 		private Button acceptButton;
 		private Label label3;
@@ -33,6 +35,29 @@ namespace PacketLogConverter.LogFilters
 		{
 			InitializeComponent();
 			UpdateControls();
+
+			// Cache entered OIDs
+			FilterManager.FilteringStartedEvent +=
+				delegate(PacketLog log)
+					{
+						if (IsFilterActive)
+						{
+							ListBoxOid[] oids = new ListBoxOid[allowedOidListBox.Items.Count];
+							int i = 0;
+							foreach (ListBoxOid oid in allowedOidListBox.Items)
+							{
+								oids[i++] = oid;
+							}
+							m_selectedOidsCache = oids;
+						}
+					};
+
+			// Clear cached OIDs
+			FilterManager.FilteringStoppedEvent +=
+				delegate(PacketLog log)
+					{
+						m_selectedOidsCache = null;
+					};
 		}
 
 		/// <summary>
@@ -244,43 +269,107 @@ namespace PacketLogConverter.LogFilters
 		/// </returns>
 		public bool IsPacketIgnored(Packet packet)
 		{
-			bool bRet = true;
-			
 			// Check whether message packets should be included
-			if (includeMessagesCheckBox.Checked)
+			if (packet is StoC_0xAF_Message || packet is StoC_0x4D_SpellMessage_174)
 			{
-				if (packet is StoC_0xAF_Message || packet is StoC_0x4D_SpellMessage_174)
+				return false;
+			}
+
+			// Session Id
+			ISessionIdPacket spak = packet as ISessionIdPacket;
+			if (spak != null)
+			{
+				foreach (ListBoxOid boxOid in m_selectedOidsCache)
 				{
-					bRet = false;
+					if (spak.SessionId == boxOid.oid)
+					{
+						return false;
+					}
 				}
 			}
 
-			if (bRet)
+			// Object Ids
+			IObjectIdPacket pak = packet as IObjectIdPacket;
+			if (pak != null)
 			{
-				IObjectIdPacket pak = packet as IObjectIdPacket;
-				if (pak == null)
+				// Check all entered OIDs
+				foreach (ListBoxOid boxOid in m_selectedOidsCache)
 				{
-					bRet = true;
-				}
-				else
-				{
-					// Check all entered OIDs
-					foreach (ListBoxOid boxOid in allowedOidListBox.Items)
+					// ...in packet's list of OIDs
+					foreach (ushort id in pak.ObjectIds)
 					{
-						// ...in packet's list of OIDs
-						foreach (ushort id in pak.ObjectIds)
+						if (id == boxOid.oid)
 						{
-							if (id == boxOid.oid)
-							{
-								bRet = false;
-								break;
-							}
+							return false;
+						}
+					}
+				}
+			}
+
+			// House Id
+			IHouseIdPacket hpak = packet as IHouseIdPacket;
+			if (hpak != null)
+			{
+				foreach (ListBoxOid boxOid in m_selectedOidsCache)
+				{
+					if (hpak.HouseId == boxOid.oid)
+					{
+						return false;
+					}
+				}
+			}
+
+			// Keep Ids
+			IKeepIdPacket kpak = packet as IKeepIdPacket;
+			if (kpak != null)
+			{
+				// Check all entered OIDs
+				foreach (ListBoxOid boxOid in m_selectedOidsCache)
+				{
+					// ...in packet's list of OIDs
+					foreach (ushort id in kpak.KeepIds)
+					{
+						if (id == boxOid.oid)
+						{
+							return false;
 						}
 					}
 				}
 			}
 			
-			return bRet;
+			return true;
+		}
+
+		private abstract class AbstractChecker<T> where T : Packet
+		{
+			protected T m_packet;
+
+			/// <summary>
+			/// Inits the checker.
+			/// </summary>
+			/// <param name="packet">The packet.</param>
+			/// <returns><c>true</c> if checker is initialized successfully and should be used for checking, <c>false</c> otherwise</returns>
+			public bool Init(Packet packet)
+			{
+				m_packet = packet as T;
+				bool ret = (m_packet != null);
+				return ret;
+			}
+
+			/// <summary>
+			/// Disposes this instance.
+			/// </summary>
+			public void Dispose()
+			{
+				m_packet = null;
+			}
+
+			/// <summary>
+			/// Checks the oid.
+			/// </summary>
+			/// <param name="oid">The oid.</param>
+			/// <returns></returns>
+			protected abstract bool CheckOid(ListBoxOid oid);
 		}
 
 		/// <summary>

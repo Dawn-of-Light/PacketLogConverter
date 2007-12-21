@@ -4,21 +4,12 @@ using System.Text;
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xB5, -1, ePacketDirection.ClientToServer, "Pick up object")]
-	public class CtoS_0xB5_PickupObject: Packet, IObjectIdPacket
+	public class CtoS_0xB5_PickupObject: Packet, ISessionIdPacket
 	{
 		protected uint playerX;
 		protected uint playerY;
 		protected ushort sessionId;
 		protected ushort unk1;
-
-		/// <summary>
-		/// Gets the object ids of the packet.
-		/// </summary>
-		/// <value>The object ids.</value>
-		public ushort[] ObjectIds
-		{
-			get { return new ushort[] { sessionId }; }
-		}
 
 		#region public access properties
 
