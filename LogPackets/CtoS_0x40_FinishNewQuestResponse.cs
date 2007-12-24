@@ -6,12 +6,10 @@ namespace PacketLogConverter.LogPackets
 	public class CtoS_0x40_FinishNewQuest: Packet, IObjectIdPacket
 	{
 		protected byte response;
-		protected byte rewardSelected;
-		protected byte rewardOptionalChoice;
-		protected byte unk1;
+		protected byte optionalRewardsSelected;
+		protected byte[] optionalRewardsChoice = new byte[8];
+		protected ushort unk1;
 		protected uint unk2;
-		protected uint unk3;
-		protected uint unk4;
 		protected ushort questId;
 		protected ushort objectId;
 
@@ -27,12 +25,10 @@ namespace PacketLogConverter.LogPackets
 		#region public access properties
 
 		public byte Response { get { return response; } }
-		public byte RewardSelected { get { return rewardSelected; } }
-		public byte RewardOptionalChoice { get { return rewardOptionalChoice; } }
-		public byte Unk1 { get { return unk1; } }
+		public byte OptionalRewardsSelected { get { return optionalRewardsSelected; } }
+		public byte[] OptionalRewardsChoice { get { return optionalRewardsChoice; } }
+		public ushort Unk1 { get { return unk1; } }
 		public uint Unk2 { get { return unk2; } }
-		public uint Unk3 { get { return unk3; } }
-		public uint Unk4 { get { return unk4; } }
 		public ushort QuestId { get { return questId; } }
 		public ushort ObjectId { get { return objectId; } }
 
@@ -42,8 +38,32 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("response:{0} rewardSelected:{1} rewardOptionalChoice:{2} questID:0x{4:X4} objectId:0x{5:X4} unk1:0x{3:X2} 0x{6:X8} 0x{7:X8} 0x{8:X8}",
-				response, rewardSelected, rewardOptionalChoice, unk1, questId, objectId, unk2, unk3, unk4);
+			str.AppendFormat("response:{0} rewardsSelected:{1} questID:0x{2:X4} objectId:0x{3:X4} unk1:0x{4:X4} unk2:0x{5:X8}\n\t",
+				response, optionalRewardsSelected, questId, objectId, unk1, unk2);
+
+			int i = 0;
+			if (i < optionalRewardsSelected)
+				str.Append("selected rewards:[");
+			bool skipFirstSeparator = true;
+			for (; i < optionalRewardsSelected; i++)
+			{
+				if (!skipFirstSeparator)
+					str.Append(',');
+				str.AppendFormat("{0}", optionalRewardsChoice[i]);
+				skipFirstSeparator = false;
+			}
+			if (i > 0)
+				str.Append("]");
+			if (i < 8)
+				str.Append(" not used :(");
+			skipFirstSeparator = true;
+			for (; i < 8; i++)
+			{
+				if (!skipFirstSeparator)
+					str.Append(',');
+				str.AppendFormat("{0}", optionalRewardsChoice[i]);
+				skipFirstSeparator = false;
+			}
 
 			return str.ToString();
 		}
@@ -56,12 +76,11 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			response = ReadByte();
-			rewardSelected = ReadByte();
-			rewardOptionalChoice = ReadByte();
-			unk1 = ReadByte();
-			unk2 = ReadIntLowEndian();
-			unk3 = ReadIntLowEndian();
-			unk4 = ReadIntLowEndian();
+			optionalRewardsSelected = ReadByte();
+			for (int i = 0; i < 8; i++ )
+				optionalRewardsChoice[i] = ReadByte();
+			unk1 = ReadShort();
+			unk2 = ReadInt();
 			questId = ReadShort();
 			objectId = ReadShort();
 		}

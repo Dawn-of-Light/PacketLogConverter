@@ -9,15 +9,15 @@ namespace PacketLogConverter
 	/// </summary>
 	public class PacketLog : IEnumerable
 	{
-		private float m_version;
+		private bool m_isDirty = true;
 
-		public float Version
+		public bool IsDirty
 		{
-			get { return m_version; }
-			set { m_version = value; }
+			get { return m_isDirty; }
+			set { m_isDirty = value; }
 		}
 
-		private string m_streamName = "";
+		private string m_streamName = string.Empty;
 
 		public string StreamName
 		{
@@ -56,6 +56,55 @@ namespace PacketLogConverter
 			get { return m_unknownPacketsCount; }
 		}
 
+		private float m_version;
+		private bool m_reinitRequired;
+		private bool m_ignoreVersionChanges;
+
+		/// <summary>
+		/// Gets or sets the version.
+		/// </summary>
+		/// <value>The version.</value>
+		public float Version
+		{
+			get { return m_version; }
+			set
+			{
+				if (IgnoreVersionChanges)
+					return;
+				if (m_version != value)
+					m_reinitRequired = true;
+
+				IsDirty = m_version != value;
+				m_version = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether version changes should be ignored.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if version changes ignored; otherwise, <c>false</c>.
+		/// </value>
+		public bool IgnoreVersionChanges
+		{
+			get { return m_ignoreVersionChanges; }
+			set
+			{
+				IsDirty = m_ignoreVersionChanges != value;
+				m_ignoreVersionChanges = value;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether [reinit required].
+		/// </summary>
+		/// <value><c>true</c> if [reinit required]; otherwise, <c>false</c>.</value>
+		public bool ReinitRequired
+		{
+			get { return m_reinitRequired; }
+			set { m_reinitRequired = value; }
+		}
+
 		/// <summary>
 		/// Loads the packet parsers based on current log version.
 		/// </summary>
@@ -70,7 +119,7 @@ namespace PacketLogConverter
 				return;
 			}
 
-			manager.ReinitRequired = false;
+			ReinitRequired = false;
 
 			int workTotal = m_packets.Count;
 			int workDone = 0;
@@ -82,13 +131,11 @@ namespace PacketLogConverter
 
 				Packet packet = (Packet)m_packets[i];
 				if (packet.AllowClassChange)
-					packet = PacketManager.ChangePacketClass(packet, manager.Version);
+					packet = PacketManager.ChangePacketClass(packet, Version);
 				packet.InitLog(this);
-#warning HACK: Version is taken from last log; implement proper versioning
-				manager.Version = Version;
 				m_packets[i] = packet;
 
-				if (manager.ReinitRequired)
+				if (ReinitRequired)
 				{
 					Init(manager, maxRepeat - 1, callback);
 					return; // version changed by the packets, start again...

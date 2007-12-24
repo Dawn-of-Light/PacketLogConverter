@@ -180,7 +180,7 @@ namespace PacketLogConverter.LogWriters
 							{
 								StoC_0x16_VariousUpdate.SkillsUpdate subData = (StoC_0x16_VariousUpdate.SkillsUpdate) stat.SubData;
 								styleIcons.Clear();
-								if (context.LogManager.Version < 186)
+								if (log.Version < 186)
 								{
 									styleIcons.Add((ushort) 0x01F4, "Bow prepare");
 									styleIcons.Add((ushort) 0x01F5, "Lefthand hit");

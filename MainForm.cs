@@ -72,6 +72,16 @@ namespace PacketLogConverter
 		private System.Windows.Forms.MenuItem mnuPacketSequence;
 		private OpenFileDialog openFilterDialog;
 		private SaveFileDialog saveFilterDialog;
+		private BindingSource openLogsBindingSource;
+		private DataGridView openLogsDataGridView;
+		private GroupBox li_totalGroupBox;
+		private GroupBox li_initialValuesGroupBox;
+		private GroupBox li_openLogsGroupBox;
+		private DataGridViewTextBoxColumn streamNameDataGridViewTextBoxColumn;
+		private DataGridViewTextBoxColumn countDataGridViewTextBoxColumn;
+		private DataGridViewTextBoxColumn unknownPacketsCountDataGridViewTextBoxColumn;
+		private DataGridViewTextBoxColumn versionDataGridViewTextBoxColumn;
+		private DataGridViewCheckBoxColumn IgnoreVersionChanges;
 		private Label label3;
 
 		public MainForm()
@@ -105,6 +115,14 @@ namespace PacketLogConverter
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+			this.openLogsDataGridView = new System.Windows.Forms.DataGridView();
+			this.streamNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.countDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.unknownPacketsCountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.versionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.IgnoreVersionChanges = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.openLogsBindingSource = new System.Windows.Forms.BindingSource(this.components);
 			this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
 			this.menuOpenFile = new System.Windows.Forms.MenuItem();
@@ -136,19 +154,22 @@ namespace PacketLogConverter
 			this.instantVersion = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.logInfoTab = new System.Windows.Forms.TabPage();
-			this.li_ignoreVersionChanges = new System.Windows.Forms.CheckBox();
-			this.label9 = new System.Windows.Forms.Label();
-			this.li_unknownPacketsCount = new System.Windows.Forms.TextBox();
-			this.label10 = new System.Windows.Forms.Label();
+			this.li_openLogsGroupBox = new System.Windows.Forms.GroupBox();
 			this.li_changesLabel = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
 			this.applyButton = new System.Windows.Forms.Button();
-			this.label2 = new System.Windows.Forms.Label();
-			this.li_clientVersion = new System.Windows.Forms.TextBox();
+			this.label3 = new System.Windows.Forms.Label();
+			this.li_initialValuesGroupBox = new System.Windows.Forms.GroupBox();
 			this.label1 = new System.Windows.Forms.Label();
+			this.li_clientVersion = new System.Windows.Forms.TextBox();
+			this.label2 = new System.Windows.Forms.Label();
+			this.li_ignoreVersionChanges = new System.Windows.Forms.CheckBox();
+			this.li_totalGroupBox = new System.Windows.Forms.GroupBox();
 			this.label7 = new System.Windows.Forms.Label();
-			this.li_packetsCount = new System.Windows.Forms.TextBox();
 			this.label8 = new System.Windows.Forms.Label();
+			this.li_packetsCount = new System.Windows.Forms.TextBox();
+			this.label9 = new System.Windows.Forms.Label();
+			this.label10 = new System.Windows.Forms.Label();
+			this.li_unknownPacketsCount = new System.Windows.Forms.TextBox();
 			this.logDataTab = new System.Windows.Forms.TabPage();
 			this.logDataDisableUpdatesCheckBox = new System.Windows.Forms.CheckBox();
 			this.logDataFindButton = new System.Windows.Forms.Button();
@@ -158,22 +179,108 @@ namespace PacketLogConverter
 			this.openFolderLogDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.openFilterDialog = new System.Windows.Forms.OpenFileDialog();
 			this.saveFilterDialog = new System.Windows.Forms.SaveFileDialog();
+			((System.ComponentModel.ISupportInitialize)(this.openLogsDataGridView)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.openLogsBindingSource)).BeginInit();
 			this.mainFormTabs.SuspendLayout();
 			this.instantParseTab.SuspendLayout();
 			this.instantResultGroupBox1.SuspendLayout();
 			this.inputDataGroupBox.SuspendLayout();
 			this.logInfoTab.SuspendLayout();
+			this.li_openLogsGroupBox.SuspendLayout();
+			this.li_initialValuesGroupBox.SuspendLayout();
+			this.li_totalGroupBox.SuspendLayout();
 			this.logDataTab.SuspendLayout();
 			this.SuspendLayout();
-			//
+			// 
+			// openLogsDataGridView
+			// 
+			this.openLogsDataGridView.AllowUserToAddRows = false;
+			this.openLogsDataGridView.AllowUserToDeleteRows = false;
+			this.openLogsDataGridView.AllowUserToOrderColumns = true;
+			this.openLogsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.openLogsDataGridView.AutoGenerateColumns = false;
+			this.openLogsDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+			this.openLogsDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+			this.openLogsDataGridView.BackgroundColor = System.Drawing.SystemColors.Control;
+			this.openLogsDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.openLogsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.openLogsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.streamNameDataGridViewTextBoxColumn,
+            this.countDataGridViewTextBoxColumn,
+            this.unknownPacketsCountDataGridViewTextBoxColumn,
+            this.versionDataGridViewTextBoxColumn,
+            this.IgnoreVersionChanges});
+			this.openLogsDataGridView.DataSource = this.openLogsBindingSource;
+			this.openLogsDataGridView.Location = new System.Drawing.Point(9, 46);
+			this.openLogsDataGridView.MultiSelect = false;
+			this.openLogsDataGridView.Name = "openLogsDataGridView";
+			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.openLogsDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+			this.openLogsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+			this.openLogsDataGridView.ShowEditingIcon = false;
+			this.openLogsDataGridView.Size = new System.Drawing.Size(553, 132);
+			this.openLogsDataGridView.TabIndex = 10;
+			this.openLogsDataGridView.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.openLogsDataGridView_CellBeginEdit);
+			this.openLogsDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.openLogsDataGridView_CellValueChanged);
+			// 
+			// streamNameDataGridViewTextBoxColumn
+			// 
+			this.streamNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.streamNameDataGridViewTextBoxColumn.DataPropertyName = "StreamName";
+			this.streamNameDataGridViewTextBoxColumn.HeaderText = "File";
+			this.streamNameDataGridViewTextBoxColumn.Name = "streamNameDataGridViewTextBoxColumn";
+			this.streamNameDataGridViewTextBoxColumn.ReadOnly = true;
+			// 
+			// countDataGridViewTextBoxColumn
+			// 
+			this.countDataGridViewTextBoxColumn.DataPropertyName = "Count";
+			this.countDataGridViewTextBoxColumn.HeaderText = "Packets total";
+			this.countDataGridViewTextBoxColumn.Name = "countDataGridViewTextBoxColumn";
+			this.countDataGridViewTextBoxColumn.ReadOnly = true;
+			this.countDataGridViewTextBoxColumn.Width = 87;
+			// 
+			// unknownPacketsCountDataGridViewTextBoxColumn
+			// 
+			this.unknownPacketsCountDataGridViewTextBoxColumn.DataPropertyName = "UnknownPacketsCount";
+			this.unknownPacketsCountDataGridViewTextBoxColumn.HeaderText = "Packets unknown";
+			this.unknownPacketsCountDataGridViewTextBoxColumn.Name = "unknownPacketsCountDataGridViewTextBoxColumn";
+			this.unknownPacketsCountDataGridViewTextBoxColumn.ReadOnly = true;
+			this.unknownPacketsCountDataGridViewTextBoxColumn.Width = 108;
+			// 
+			// versionDataGridViewTextBoxColumn
+			// 
+			this.versionDataGridViewTextBoxColumn.DataPropertyName = "Version";
+			this.versionDataGridViewTextBoxColumn.HeaderText = "Version";
+			this.versionDataGridViewTextBoxColumn.Name = "versionDataGridViewTextBoxColumn";
+			this.versionDataGridViewTextBoxColumn.Width = 67;
+			// 
+			// IgnoreVersionChanges
+			// 
+			this.IgnoreVersionChanges.DataPropertyName = "IgnoreVersionChanges";
+			this.IgnoreVersionChanges.HeaderText = "Ignore version changes";
+			this.IgnoreVersionChanges.Name = "IgnoreVersionChanges";
+			this.IgnoreVersionChanges.Width = 112;
+			// 
+			// openLogsBindingSource
+			// 
+			this.openLogsBindingSource.DataSource = typeof(PacketLogConverter.PacketLog);
+			// 
 			// mainMenu1
-			//
+			// 
 			this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItem1,
             this.menuItem2});
-			//
+			// 
 			// menuItem1
-			//
+			// 
 			this.menuItem1.Index = 0;
 			this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuOpenFile,
@@ -185,92 +292,92 @@ namespace PacketLogConverter
             this.menuItem5,
             this.menuExitApp});
 			this.menuItem1.Text = "&File";
-			//
+			// 
 			// menuOpenFile
-			//
+			// 
 			this.menuOpenFile.Index = 0;
 			this.menuOpenFile.Shortcut = System.Windows.Forms.Shortcut.CtrlO;
 			this.menuOpenFile.Text = "&Open...";
 			this.menuOpenFile.Click += new System.EventHandler(this.menuOpenFile_Click);
-			//
+			// 
 			// menuOpenAnother
-			//
+			// 
 			this.menuOpenAnother.Index = 1;
 			this.menuOpenAnother.Text = "Open another...";
 			this.menuOpenAnother.Click += new System.EventHandler(this.menuOpenAnother_Click);
-			//
+			// 
 			// menuOpenFolder
-			//
+			// 
 			this.menuOpenFolder.Index = 2;
 			this.menuOpenFolder.Text = "Open folder ...";
 			this.menuOpenFolder.Click += new System.EventHandler(this.menuOpenFolder_Click);
-			//
+			// 
 			// menuSaveFile
-			//
+			// 
 			this.menuSaveFile.Enabled = false;
 			this.menuSaveFile.Index = 3;
 			this.menuSaveFile.Shortcut = System.Windows.Forms.Shortcut.CtrlS;
 			this.menuSaveFile.Text = "&Save...";
 			this.menuSaveFile.Click += new System.EventHandler(this.menuSaveFile_Click);
-			//
+			// 
 			// menuItem3
-			//
+			// 
 			this.menuItem3.Index = 4;
 			this.menuItem3.Text = "-";
-			//
+			// 
 			// menuRecentFiles
-			//
+			// 
 			this.menuRecentFiles.Index = 5;
 			this.menuRecentFiles.Text = "&Recent Files";
-			//
+			// 
 			// menuItem5
-			//
+			// 
 			this.menuItem5.Index = 6;
 			this.menuItem5.Text = "-";
-			//
+			// 
 			// menuExitApp
-			//
+			// 
 			this.menuExitApp.Index = 7;
 			this.menuExitApp.Text = "E&xit";
 			this.menuExitApp.Click += new System.EventHandler(this.menuExitApp_Click);
-			//
+			// 
 			// menuItem2
-			//
+			// 
 			this.menuItem2.Index = 1;
 			this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.packetTimeDiffMenuItem,
             this.mnuPacketSequence,
             this.mnuPacketFlags});
 			this.menuItem2.Text = "&View";
-			//
+			// 
 			// packetTimeDiffMenuItem
-			//
+			// 
 			this.packetTimeDiffMenuItem.Index = 0;
 			this.packetTimeDiffMenuItem.Text = "Packet time difference";
 			this.packetTimeDiffMenuItem.Click += new System.EventHandler(this.packetTimeDiffMenuItem_Click);
-			//
+			// 
 			// mnuPacketSequence
-			//
+			// 
 			this.mnuPacketSequence.Index = 1;
 			this.mnuPacketSequence.Text = "Packet sequence ";
 			this.mnuPacketSequence.Click += new System.EventHandler(this.mnuPacketSequence_Click);
-			//
+			// 
 			// mnuPacketFlags
-			//
+			// 
 			this.mnuPacketFlags.Index = 2;
 			this.mnuPacketFlags.Text = "Packet flags";
 			this.mnuPacketFlags.Click += new System.EventHandler(this.mnuPacketFlags_Click);
-			//
+			// 
 			// openLogDialog
-			//
+			// 
 			this.openLogDialog.Multiselect = true;
-			//
+			// 
 			// saveLogDialog
-			//
+			// 
 			this.saveLogDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveLogDialog_FileOk);
-			//
+			// 
 			// mainFormTabs
-			//
+			// 
 			this.mainFormTabs.Controls.Add(this.instantParseTab);
 			this.mainFormTabs.Controls.Add(this.logInfoTab);
 			this.mainFormTabs.Controls.Add(this.logDataTab);
@@ -280,9 +387,9 @@ namespace PacketLogConverter
 			this.mainFormTabs.SelectedIndex = 0;
 			this.mainFormTabs.Size = new System.Drawing.Size(592, 373);
 			this.mainFormTabs.TabIndex = 0;
-			//
+			// 
 			// instantParseTab
-			//
+			// 
 			this.instantParseTab.Controls.Add(this.instantResultGroupBox1);
 			this.instantParseTab.Controls.Add(this.inputDataGroupBox);
 			this.instantParseTab.Location = new System.Drawing.Point(4, 22);
@@ -290,9 +397,10 @@ namespace PacketLogConverter
 			this.instantParseTab.Size = new System.Drawing.Size(584, 347);
 			this.instantParseTab.TabIndex = 2;
 			this.instantParseTab.Text = "Instant parse";
-			//
+			this.instantParseTab.UseVisualStyleBackColor = true;
+			// 
 			// instantResultGroupBox1
-			//
+			// 
 			this.instantResultGroupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
@@ -303,9 +411,9 @@ namespace PacketLogConverter
 			this.instantResultGroupBox1.TabIndex = 2;
 			this.instantResultGroupBox1.TabStop = false;
 			this.instantResultGroupBox1.Text = "Instant result";
-			//
+			// 
 			// instantParseOut
-			//
+			// 
 			this.instantParseOut.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
@@ -317,9 +425,9 @@ namespace PacketLogConverter
 			this.instantParseOut.TabIndex = 0;
 			this.instantParseOut.Text = "";
 			this.instantParseOut.WordWrap = false;
-			//
+			// 
 			// inputDataGroupBox
-			//
+			// 
 			this.inputDataGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.inputDataGroupBox.Controls.Add(this.button1);
@@ -337,18 +445,18 @@ namespace PacketLogConverter
 			this.inputDataGroupBox.TabIndex = 1;
 			this.inputDataGroupBox.TabStop = false;
 			this.inputDataGroupBox.Text = "Input data";
-			//
+			// 
 			// button1
-			//
+			// 
 			this.button1.Location = new System.Drawing.Point(512, 23);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(64, 23);
 			this.button1.TabIndex = 8;
 			this.button1.Text = "Clear";
 			this.button1.Click += new System.EventHandler(this.button1_Click);
-			//
+			// 
 			// instantParseInput
-			//
+			// 
 			this.instantParseInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.instantParseInput.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -360,9 +468,9 @@ namespace PacketLogConverter
 			this.instantParseInput.TabIndex = 7;
 			this.instantParseInput.WordWrap = false;
 			this.instantParseInput.TextChanged += new System.EventHandler(this.InstantParseUpdateEvent);
-			//
+			// 
 			// instantServerToClient
-			//
+			// 
 			this.instantServerToClient.Checked = true;
 			this.instantServerToClient.Location = new System.Drawing.Point(312, 24);
 			this.instantServerToClient.Name = "instantServerToClient";
@@ -371,27 +479,27 @@ namespace PacketLogConverter
 			this.instantServerToClient.TabStop = true;
 			this.instantServerToClient.Text = "server to client";
 			this.instantServerToClient.CheckedChanged += new System.EventHandler(this.InstantParseUpdateEvent);
-			//
+			// 
 			// instantClientToServer
-			//
+			// 
 			this.instantClientToServer.Location = new System.Drawing.Point(416, 24);
 			this.instantClientToServer.Name = "instantClientToServer";
 			this.instantClientToServer.Size = new System.Drawing.Size(96, 20);
 			this.instantClientToServer.TabIndex = 5;
 			this.instantClientToServer.Text = "client to server";
 			this.instantClientToServer.CheckedChanged += new System.EventHandler(this.InstantParseUpdateEvent);
-			//
+			// 
 			// label6
-			//
+			// 
 			this.label6.Location = new System.Drawing.Point(248, 24);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(56, 20);
 			this.label6.TabIndex = 4;
 			this.label6.Text = "Direction:";
 			this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			//
+			// 
 			// instantCode
-			//
+			// 
 			this.instantCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
 			this.instantCode.Location = new System.Drawing.Point(176, 24);
 			this.instantCode.MaxLength = 10;
@@ -399,18 +507,18 @@ namespace PacketLogConverter
 			this.instantCode.Size = new System.Drawing.Size(64, 20);
 			this.instantCode.TabIndex = 3;
 			this.instantCode.TextChanged += new System.EventHandler(this.InstantParseUpdateEvent);
-			//
+			// 
 			// label5
-			//
+			// 
 			this.label5.Location = new System.Drawing.Point(128, 24);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(40, 20);
 			this.label5.TabIndex = 2;
 			this.label5.Text = "Code:";
 			this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			//
+			// 
 			// instantVersion
-			//
+			// 
 			this.instantVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
 			this.instantVersion.Location = new System.Drawing.Point(64, 24);
 			this.instantVersion.MaxLength = 10;
@@ -418,156 +526,195 @@ namespace PacketLogConverter
 			this.instantVersion.Size = new System.Drawing.Size(56, 20);
 			this.instantVersion.TabIndex = 1;
 			this.instantVersion.TextChanged += new System.EventHandler(this.InstantParseUpdateEvent);
-			//
+			// 
 			// label4
-			//
+			// 
 			this.label4.Location = new System.Drawing.Point(8, 24);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(48, 20);
 			this.label4.TabIndex = 0;
 			this.label4.Text = "Version:";
 			this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			//
+			// 
 			// logInfoTab
-			//
-			this.logInfoTab.Controls.Add(this.li_ignoreVersionChanges);
-			this.logInfoTab.Controls.Add(this.label9);
-			this.logInfoTab.Controls.Add(this.li_unknownPacketsCount);
-			this.logInfoTab.Controls.Add(this.label10);
-			this.logInfoTab.Controls.Add(this.li_changesLabel);
-			this.logInfoTab.Controls.Add(this.label3);
-			this.logInfoTab.Controls.Add(this.applyButton);
-			this.logInfoTab.Controls.Add(this.label2);
-			this.logInfoTab.Controls.Add(this.li_clientVersion);
-			this.logInfoTab.Controls.Add(this.label1);
-			this.logInfoTab.Controls.Add(this.label7);
-			this.logInfoTab.Controls.Add(this.li_packetsCount);
-			this.logInfoTab.Controls.Add(this.label8);
+			// 
+			this.logInfoTab.Controls.Add(this.li_openLogsGroupBox);
+			this.logInfoTab.Controls.Add(this.li_initialValuesGroupBox);
+			this.logInfoTab.Controls.Add(this.li_totalGroupBox);
 			this.logInfoTab.Location = new System.Drawing.Point(4, 22);
 			this.logInfoTab.Name = "logInfoTab";
 			this.logInfoTab.Size = new System.Drawing.Size(584, 347);
 			this.logInfoTab.TabIndex = 0;
 			this.logInfoTab.Text = "Log info";
-			//
-			// li_ignoreVersionChanges
-			//
-			this.li_ignoreVersionChanges.Location = new System.Drawing.Point(456, 112);
-			this.li_ignoreVersionChanges.Name = "li_ignoreVersionChanges";
-			this.li_ignoreVersionChanges.Size = new System.Drawing.Size(104, 32);
-			this.li_ignoreVersionChanges.TabIndex = 9;
-			this.li_ignoreVersionChanges.Text = "Ignore version packets";
-			this.li_ignoreVersionChanges.CheckedChanged += new System.EventHandler(this.li_changes_Event);
-			//
-			// label9
-			//
-			this.label9.Location = new System.Drawing.Point(240, 78);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(320, 32);
-			this.label9.TabIndex = 8;
-			this.label9.Text = "The count of unknown packets in the log.";
-			this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			//
-			// li_unknownPacketsCount
-			//
-			this.li_unknownPacketsCount.Location = new System.Drawing.Point(120, 84);
-			this.li_unknownPacketsCount.MaxLength = 10;
-			this.li_unknownPacketsCount.Name = "li_unknownPacketsCount";
-			this.li_unknownPacketsCount.ReadOnly = true;
-			this.li_unknownPacketsCount.Size = new System.Drawing.Size(100, 20);
-			this.li_unknownPacketsCount.TabIndex = 7;
-			//
-			// label10
-			//
-			this.label10.Location = new System.Drawing.Point(16, 82);
-			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(100, 24);
-			this.label10.TabIndex = 6;
-			this.label10.Text = "Unknown packets:";
-			this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			//
+			this.logInfoTab.UseVisualStyleBackColor = true;
+			// 
+			// li_openLogsGroupBox
+			// 
+			this.li_openLogsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.li_openLogsGroupBox.Controls.Add(this.li_changesLabel);
+			this.li_openLogsGroupBox.Controls.Add(this.openLogsDataGridView);
+			this.li_openLogsGroupBox.Controls.Add(this.applyButton);
+			this.li_openLogsGroupBox.Controls.Add(this.label3);
+			this.li_openLogsGroupBox.Location = new System.Drawing.Point(8, 151);
+			this.li_openLogsGroupBox.Name = "li_openLogsGroupBox";
+			this.li_openLogsGroupBox.Size = new System.Drawing.Size(568, 188);
+			this.li_openLogsGroupBox.TabIndex = 13;
+			this.li_openLogsGroupBox.TabStop = false;
+			this.li_openLogsGroupBox.Text = "Open logs";
+			// 
 			// li_changesLabel
-			//
-			this.li_changesLabel.Location = new System.Drawing.Point(16, 13);
+			// 
+			this.li_changesLabel.Location = new System.Drawing.Point(6, 16);
 			this.li_changesLabel.Name = "li_changesLabel";
 			this.li_changesLabel.Size = new System.Drawing.Size(100, 23);
 			this.li_changesLabel.TabIndex = 5;
 			this.li_changesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			//
-			// label3
-			//
-			this.label3.Location = new System.Drawing.Point(240, 8);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(320, 32);
-			this.label3.TabIndex = 4;
-			this.label3.Text = "Parse the log again using current info.";
-			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			//
+			// 
 			// applyButton
-			//
-			this.applyButton.Location = new System.Drawing.Point(120, 13);
+			// 
+			this.applyButton.Location = new System.Drawing.Point(110, 16);
 			this.applyButton.Name = "applyButton";
 			this.applyButton.Size = new System.Drawing.Size(100, 23);
 			this.applyButton.TabIndex = 3;
 			this.applyButton.Text = "Apply";
 			this.applyButton.Click += new System.EventHandler(this.li_applyButton_Click);
-			//
+			// 
+			// label3
+			// 
+			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.label3.Location = new System.Drawing.Point(230, 11);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(332, 32);
+			this.label3.TabIndex = 4;
+			this.label3.Text = "Parse logs again using current values.";
+			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// li_initialValuesGroupBox
+			// 
+			this.li_initialValuesGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.li_initialValuesGroupBox.Controls.Add(this.label1);
+			this.li_initialValuesGroupBox.Controls.Add(this.li_clientVersion);
+			this.li_initialValuesGroupBox.Controls.Add(this.label2);
+			this.li_initialValuesGroupBox.Controls.Add(this.li_ignoreVersionChanges);
+			this.li_initialValuesGroupBox.Location = new System.Drawing.Point(8, 96);
+			this.li_initialValuesGroupBox.Name = "li_initialValuesGroupBox";
+			this.li_initialValuesGroupBox.Size = new System.Drawing.Size(568, 49);
+			this.li_initialValuesGroupBox.TabIndex = 12;
+			this.li_initialValuesGroupBox.TabStop = false;
+			this.li_initialValuesGroupBox.Text = "Initial values";
+			// 
+			// label1
+			// 
+			this.label1.Location = new System.Drawing.Point(6, 16);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(100, 24);
+			this.label1.TabIndex = 0;
+			this.label1.Text = "Log version:";
+			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// li_clientVersion
+			// 
+			this.li_clientVersion.Location = new System.Drawing.Point(110, 18);
+			this.li_clientVersion.MaxLength = 10;
+			this.li_clientVersion.Name = "li_clientVersion";
+			this.li_clientVersion.Size = new System.Drawing.Size(100, 20);
+			this.li_clientVersion.TabIndex = 1;
+			// 
 			// label2
-			//
-			this.label2.Location = new System.Drawing.Point(240, 112);
+			// 
+			this.label2.Location = new System.Drawing.Point(230, 12);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(208, 32);
 			this.label2.TabIndex = 2;
 			this.label2.Text = "Can be set explicitly if no version info is in the log else it will be overwriten" +
 				".";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			//
-			// li_clientVersion
-			//
-			this.li_clientVersion.Location = new System.Drawing.Point(120, 118);
-			this.li_clientVersion.MaxLength = 10;
-			this.li_clientVersion.Name = "li_clientVersion";
-			this.li_clientVersion.Size = new System.Drawing.Size(100, 20);
-			this.li_clientVersion.TabIndex = 1;
-			this.li_clientVersion.TextChanged += new System.EventHandler(this.li_changes_Event);
-			//
-			// label1
-			//
-			this.label1.Location = new System.Drawing.Point(16, 116);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(100, 24);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Log version:";
-			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			//
+			// 
+			// li_ignoreVersionChanges
+			// 
+			this.li_ignoreVersionChanges.Location = new System.Drawing.Point(446, 12);
+			this.li_ignoreVersionChanges.Name = "li_ignoreVersionChanges";
+			this.li_ignoreVersionChanges.Size = new System.Drawing.Size(116, 32);
+			this.li_ignoreVersionChanges.TabIndex = 9;
+			this.li_ignoreVersionChanges.Text = "Ignore version packets";
+			// 
+			// li_totalGroupBox
+			// 
+			this.li_totalGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.li_totalGroupBox.Controls.Add(this.label7);
+			this.li_totalGroupBox.Controls.Add(this.label8);
+			this.li_totalGroupBox.Controls.Add(this.li_packetsCount);
+			this.li_totalGroupBox.Controls.Add(this.label9);
+			this.li_totalGroupBox.Controls.Add(this.label10);
+			this.li_totalGroupBox.Controls.Add(this.li_unknownPacketsCount);
+			this.li_totalGroupBox.Location = new System.Drawing.Point(8, 6);
+			this.li_totalGroupBox.Name = "li_totalGroupBox";
+			this.li_totalGroupBox.Size = new System.Drawing.Size(568, 84);
+			this.li_totalGroupBox.TabIndex = 11;
+			this.li_totalGroupBox.TabStop = false;
+			this.li_totalGroupBox.Text = "Total";
+			// 
 			// label7
-			//
-			this.label7.Location = new System.Drawing.Point(240, 44);
+			// 
+			this.label7.Location = new System.Drawing.Point(230, 12);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(320, 32);
+			this.label7.Size = new System.Drawing.Size(332, 32);
 			this.label7.TabIndex = 2;
 			this.label7.Text = "The count of successfully parsed packets.";
 			this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			//
-			// li_packetsCount
-			//
-			this.li_packetsCount.Location = new System.Drawing.Point(120, 50);
-			this.li_packetsCount.MaxLength = 10;
-			this.li_packetsCount.Name = "li_packetsCount";
-			this.li_packetsCount.ReadOnly = true;
-			this.li_packetsCount.Size = new System.Drawing.Size(100, 20);
-			this.li_packetsCount.TabIndex = 1;
-			//
+			// 
 			// label8
-			//
-			this.label8.Location = new System.Drawing.Point(16, 48);
+			// 
+			this.label8.Location = new System.Drawing.Point(6, 16);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(100, 24);
 			this.label8.TabIndex = 0;
 			this.label8.Text = "Packets count:";
 			this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			//
+			// 
+			// li_packetsCount
+			// 
+			this.li_packetsCount.Location = new System.Drawing.Point(110, 18);
+			this.li_packetsCount.MaxLength = 10;
+			this.li_packetsCount.Name = "li_packetsCount";
+			this.li_packetsCount.ReadOnly = true;
+			this.li_packetsCount.Size = new System.Drawing.Size(100, 20);
+			this.li_packetsCount.TabIndex = 1;
+			// 
+			// label9
+			// 
+			this.label9.Location = new System.Drawing.Point(230, 46);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(332, 32);
+			this.label9.TabIndex = 8;
+			this.label9.Text = "The count of unknown packets in logs.";
+			this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// label10
+			// 
+			this.label10.Location = new System.Drawing.Point(6, 50);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(100, 24);
+			this.label10.TabIndex = 6;
+			this.label10.Text = "Unknown packets:";
+			this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// li_unknownPacketsCount
+			// 
+			this.li_unknownPacketsCount.Location = new System.Drawing.Point(110, 52);
+			this.li_unknownPacketsCount.MaxLength = 10;
+			this.li_unknownPacketsCount.Name = "li_unknownPacketsCount";
+			this.li_unknownPacketsCount.ReadOnly = true;
+			this.li_unknownPacketsCount.Size = new System.Drawing.Size(100, 20);
+			this.li_unknownPacketsCount.TabIndex = 7;
+			// 
 			// logDataTab
-			//
+			// 
 			this.logDataTab.Controls.Add(this.logDataDisableUpdatesCheckBox);
 			this.logDataTab.Controls.Add(this.logDataFindButton);
 			this.logDataTab.Controls.Add(this.logDataFindTextBox);
@@ -577,36 +724,37 @@ namespace PacketLogConverter
 			this.logDataTab.Size = new System.Drawing.Size(584, 347);
 			this.logDataTab.TabIndex = 1;
 			this.logDataTab.Text = "Log data";
-			//
+			this.logDataTab.UseVisualStyleBackColor = true;
+			// 
 			// logDataDisableUpdatesCheckBox
-			//
+			// 
 			this.logDataDisableUpdatesCheckBox.Location = new System.Drawing.Point(16, 8);
 			this.logDataDisableUpdatesCheckBox.Name = "logDataDisableUpdatesCheckBox";
 			this.logDataDisableUpdatesCheckBox.Size = new System.Drawing.Size(104, 24);
 			this.logDataDisableUpdatesCheckBox.TabIndex = 3;
 			this.logDataDisableUpdatesCheckBox.Text = "disable updates";
 			this.logDataDisableUpdatesCheckBox.CheckedChanged += new System.EventHandler(this.logDataDisableUpdatesCheckBox_CheckedChanged);
-			//
+			// 
 			// logDataFindButton
-			//
+			// 
 			this.logDataFindButton.Location = new System.Drawing.Point(8, 40);
 			this.logDataFindButton.Name = "logDataFindButton";
 			this.logDataFindButton.Size = new System.Drawing.Size(75, 23);
 			this.logDataFindButton.TabIndex = 2;
 			this.logDataFindButton.Text = "&Find";
 			this.logDataFindButton.Click += new System.EventHandler(this.logDataFindButton_Click);
-			//
+			// 
 			// logDataFindTextBox
-			//
+			// 
 			this.logDataFindTextBox.Location = new System.Drawing.Point(88, 40);
 			this.logDataFindTextBox.Name = "logDataFindTextBox";
 			this.logDataFindTextBox.Size = new System.Drawing.Size(488, 20);
 			this.logDataFindTextBox.TabIndex = 1;
 			this.logDataFindTextBox.WordWrap = false;
 			this.logDataFindTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.logDataFindText_KeyPress);
-			//
+			// 
 			// logDataText
-			//
+			// 
 			this.logDataText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
@@ -620,23 +768,23 @@ namespace PacketLogConverter
 			this.logDataText.Text = "";
 			this.logDataText.WordWrap = false;
 			this.logDataText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.logDataFindText_KeyPress);
-			//
+			// 
 			// openAnotherLogDialog
-			//
+			// 
 			this.openAnotherLogDialog.Multiselect = true;
-			//
+			// 
 			// openFilterDialog
-			//
+			// 
 			this.openFilterDialog.Filter = "Filters (*.flt)|*.flt";
 			this.openFilterDialog.RestoreDirectory = true;
-			//
+			// 
 			// saveFilterDialog
-			//
+			// 
 			this.saveFilterDialog.Filter = "Filters (*.flt)|*.flt";
 			this.saveFilterDialog.RestoreDirectory = true;
-			//
+			// 
 			// MainForm
-			//
+			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(592, 373);
 			this.Controls.Add(this.mainFormTabs);
@@ -646,13 +794,19 @@ namespace PacketLogConverter
 			this.Text = "MainForm";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
+			((System.ComponentModel.ISupportInitialize)(this.openLogsDataGridView)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.openLogsBindingSource)).EndInit();
 			this.mainFormTabs.ResumeLayout(false);
 			this.instantParseTab.ResumeLayout(false);
 			this.instantResultGroupBox1.ResumeLayout(false);
 			this.inputDataGroupBox.ResumeLayout(false);
 			this.inputDataGroupBox.PerformLayout();
 			this.logInfoTab.ResumeLayout(false);
-			this.logInfoTab.PerformLayout();
+			this.li_openLogsGroupBox.ResumeLayout(false);
+			this.li_initialValuesGroupBox.ResumeLayout(false);
+			this.li_initialValuesGroupBox.PerformLayout();
+			this.li_totalGroupBox.ResumeLayout(false);
+			this.li_totalGroupBox.PerformLayout();
 			this.logDataTab.ResumeLayout(false);
 			this.logDataTab.PerformLayout();
 			this.ResumeLayout(false);
@@ -1049,7 +1203,21 @@ namespace PacketLogConverter
 
 		#region open files
 
-		private void LoadFiles(ILogReader reader, ICollection<PacketLog> logs, string[] files, ProgressCallback progress)
+		/// <summary>
+		/// Loads the files.
+		/// </summary>
+		/// <param name="reader">The log reader.</param>
+		/// <param name="logs">The list to add open logs to.</param>
+		/// <param name="files">The files too open.</param>
+		/// <param name="initialVersion">The initial log version.</param>
+		/// <param name="ignoreVersionChanges">If set to <c>true</c> version information in the log is ignored.</param>
+		/// <param name="progress">The progress.</param>
+		private void LoadFiles(ILogReader reader,
+								ICollection<PacketLog> logs,
+								string[] files,
+								float initialVersion,
+								bool ignoreVersionChanges,
+								ProgressCallback progress)
 		{
 			foreach (string fileName in files)
 			{
@@ -1057,6 +1225,8 @@ namespace PacketLogConverter
 				{
 					// Create new log for each file
 					PacketLog log = new PacketLog();
+					log.Version = initialVersion;
+					log.IgnoreVersionChanges = ignoreVersionChanges;
 
 					m_progress.SetDescription("Loading file: " + fileName + "...");
 
@@ -1075,7 +1245,6 @@ namespace PacketLogConverter
 					}
 
 					// Initialize log
-#warning TODO: Unlink log poperties from log manager and make a list of all logs and their properties in log info tab
 					m_progress.SetDescription("Initializing log and packets...");
 					log.Init(LogManager, 3, progress);
 
@@ -1135,18 +1304,10 @@ namespace PacketLogConverter
 			OpenData data = (OpenData) state;
 			data.Logs = new List<PacketLog>();
 
-			LogManager.IgnoreVersionChanges = false;
 			float version;
 			Util.ParseFloat(li_clientVersion.Text, out version, -1);
 
-			LogManager.Version = version;
-
-			if (li_ignoreVersionChanges.Checked)
-			{
-				LogManager.IgnoreVersionChanges = true;
-			}
-
-			LoadFiles(data.Reader, data.Logs, data.Files, progress);
+			LoadFiles(data.Reader, data.Logs, data.Files, version, li_ignoreVersionChanges.Checked, progress);
 		}
 
 		private void OpenFileFinishedCallback(object state)
@@ -1169,11 +1330,10 @@ namespace PacketLogConverter
 			}
 			Refresh();
 
-			// Add loadedlogs to current list
+			// Add loaded logs to the current list
 			LogManager.AddLogRange(data.Logs);
 
 			// Update current version
-			li_clientVersion.Text = LogManager.Version.ToString();
 			logDataText.Focus();
 
 			LogReaderDelegate e = FilesLoaded;
@@ -1759,20 +1919,13 @@ namespace PacketLogConverter
 
 		private void UpdateLogInfoTab()
 		{
-			if (LogManager != null)
-			{
-				li_packetsCount.Text = LogManager.CountPackets().ToString("N0");
-				li_unknownPacketsCount.Text = LogManager.CountUnknownPackets().ToString("N0");
-				li_clientVersion.Text = LogManager.Version.ToString();
-				li_changesLabel.Text = "";
-			}
-			else
-			{
-				li_packetsCount.Text = string.Empty;
-//				li_clientVersion.Text = string.Empty; // leave unchanged
-				li_unknownPacketsCount.Text = string.Empty;
-				li_changesLabel.Text = string.Empty;
-			}
+			li_packetsCount.Text = LogManager.CountPackets().ToString("N0");
+			li_unknownPacketsCount.Text = LogManager.CountUnknownPackets().ToString("N0");
+			li_changesLabel.Text = string.Empty;
+
+			// Read-only collections cannot be modified, even properties of contained objects
+			IList<PacketLog> source = new List<PacketLog>(m_currentLogs.Logs);
+			openLogsBindingSource.DataSource = source;
 		}
 
 		private void li_applyButton_Click(object sender, EventArgs e)
@@ -1782,12 +1935,6 @@ namespace PacketLogConverter
 				Log.Info("Nothing loaded.");
 				return;
 			}
-
-			LogManager.IgnoreVersionChanges = false;
-			float version;
-			Util.ParseFloat(li_clientVersion.Text, out version, -1);
-			LogManager.Version = version;
-			LogManager.IgnoreVersionChanges = li_ignoreVersionChanges.Checked;
 
 			// Reinitialize in another thread
 			m_progress.SetDescription("Reinitializing log and packets...");
@@ -1810,6 +1957,61 @@ namespace PacketLogConverter
 		{
 			li_changesLabel.Text = "(changes)";
 		}
+
+		#region HACK: Version is being updated - penetrate "ignore version changes" flag
+
+		private bool oldLogIgnoreVersionFlag;
+
+		/// <summary>
+		/// Handles the CellValueChanged event of the openLogsDataGridView control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="T:System.Windows.Forms.DataGridViewCellEventArgs"/> instance containing the event data.</param>
+		private void openLogsDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+		{
+			SaveIgnoreVersionFlag(e.ColumnIndex, e.RowIndex, false);
+			li_changes_Event(null, null);
+		}
+
+		/// <summary>
+		/// Handles the CellBeginEdit event of the openLogsDataGridView control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="T:System.Windows.Forms.DataGridViewCellCancelEventArgs"/> instance containing the event data.</param>
+		private void openLogsDataGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+		{
+			SaveIgnoreVersionFlag(e.ColumnIndex, e.RowIndex, true);
+		}
+
+		/// <summary>
+		/// Saves and restores "ignore version changes" flag.
+		/// </summary>
+		/// <param name="columnIndex">Index of the log column.</param>
+		/// <param name="rowIndex">Index of the log row.</param>
+		/// <param name="getFlag">If set to <c>true</c> gets the current flag, restores saved value otherwise.</param>
+		private void SaveIgnoreVersionFlag(int columnIndex, int rowIndex, bool getFlag)
+		{
+			if (rowIndex >= 0)
+			{
+				DataGridViewCell cell = openLogsDataGridView[columnIndex, rowIndex];
+				if (cell.ColumnIndex == versionDataGridViewTextBoxColumn.Index)
+				{
+					PacketLog updatedLog = (PacketLog)openLogsBindingSource.List[rowIndex];
+
+					if (getFlag)
+					{
+						oldLogIgnoreVersionFlag = updatedLog.IgnoreVersionChanges;
+						updatedLog.IgnoreVersionChanges = false;
+					}
+					else
+					{
+						updatedLog.IgnoreVersionChanges = oldLogIgnoreVersionFlag;
+					}
+				}
+			}
+		}
+
+		#endregion
 
 		#endregion
 

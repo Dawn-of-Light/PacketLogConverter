@@ -14,48 +14,6 @@ namespace PacketLogConverter
 		public event LogManagerUpdate OnPacketLogsChanged;
 
 		private IList<PacketLog> m_logs = new List<PacketLog>(0).AsReadOnly();
-		private float m_version = -1;
-		private bool m_ignoreVersionChanges;
-		private bool m_reinitRequired;
-
-		/// <summary>
-		/// Gets or sets the version.
-		/// </summary>
-		/// <value>The version.</value>
-		public float Version
-		{
-			get { return m_version; }
-			set
-			{
-				if (IgnoreVersionChanges)
-					return;
-				if (m_version != value)
-					m_reinitRequired = true;
-				m_version = value;
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets a value indicating whether version changes should be ignored.
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if version changes ignored; otherwise, <c>false</c>.
-		/// </value>
-		public bool IgnoreVersionChanges
-		{
-			get { return m_ignoreVersionChanges; }
-			set { m_ignoreVersionChanges = value; }
-		}
-
-		/// <summary>
-		/// Gets or sets a value indicating whether [reinit required].
-		/// </summary>
-		/// <value><c>true</c> if [reinit required]; otherwise, <c>false</c>.</value>
-		public bool ReinitRequired
-		{
-			get { return m_reinitRequired; }
-			set { m_reinitRequired = value; }
-		}
 
 		/// <summary>
 		/// Gets the logs.
@@ -159,7 +117,12 @@ namespace PacketLogConverter
 		{
 			foreach (PacketLog log in m_logs)
 			{
-				log.Init(this, depth, callback);
+				// Init only dirty logs
+				if (log.IsDirty)
+				{
+					log.Init(this, depth, callback);
+					log.IsDirty = false;
+				}
 			}
 		}
 

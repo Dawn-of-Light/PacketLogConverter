@@ -22,9 +22,16 @@ namespace PacketLogConverter.LogWriters
 			{
 				foreach (PacketLog log in context.LogManager.Logs)
 				{
+					// Log file name
+					s.WriteLine();
+					s.WriteLine();
+					s.WriteLine("Log file: " + log.StreamName);
+					s.WriteLine("==============================================");
+
 					for (int i = 0; i < log.Count; i++)
 					{
-						if (callback != null && (i & 0xFFF) == 0) // update progress every 4096th packet
+						// Update progress every 4096th packet
+						if (callback != null && (i & 0xFFF) == 0)
 							callback(i, log.Count - 1);
 
 						Packet packet = log[i];

@@ -1,4 +1,7 @@
 ------------------------------------------------------------------------------
+Noret (24.Dec.2007):
+- Implemented (proper) support for multiple open logs
+------------------------------------------------------------------------------
 Noret (21.Sep.2007):
 - New filter events are fired also when log is saved
 - Right-clicks on InfoWindowForm (used in all log actions) should no longer "leak" into background windows
