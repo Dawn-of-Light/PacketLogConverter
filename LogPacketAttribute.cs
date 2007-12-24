@@ -8,16 +8,17 @@ namespace PacketLogConverter
 	[Serializable, AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 	public class LogPacketAttribute : Attribute
 	{
-		private int m_packetCode;
+		private byte m_packetCode;
 		private float m_version;
 		private ePacketDirection m_direction;
 		private string m_description;
 
-		public LogPacketAttribute(int packetCode, float version, ePacketDirection direction) : this (packetCode,  version, direction, null)
+		public LogPacketAttribute(byte packetCode, float version, ePacketDirection direction)
+			: this(packetCode, version, direction, null)
 		{
 		}
 
-		public LogPacketAttribute(int packetCode, float version, ePacketDirection direction, string packetDescription)
+		public LogPacketAttribute(byte packetCode, float version, ePacketDirection direction, string packetDescription)
 		{
 			m_packetCode = packetCode;
 			m_version = version;

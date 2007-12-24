@@ -1,6 +1,7 @@
 ------------------------------------------------------------------------------
 Noret (24.Dec.2007):
 - Implemented (proper) support for multiple open logs
+- Optimizing memory usage
 ------------------------------------------------------------------------------
 Noret (21.Sep.2007):
 - New filter events are fired also when log is saved

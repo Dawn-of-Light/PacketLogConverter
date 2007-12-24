@@ -82,6 +82,7 @@ namespace PacketLogConverter
 		private DataGridViewTextBoxColumn unknownPacketsCountDataGridViewTextBoxColumn;
 		private DataGridViewTextBoxColumn versionDataGridViewTextBoxColumn;
 		private DataGridViewCheckBoxColumn IgnoreVersionChanges;
+		private CheckBox logDataCountLogDataSizeheckBox;
 		private Label label3;
 
 		public MainForm()
@@ -115,14 +116,9 @@ namespace PacketLogConverter
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.openLogsDataGridView = new System.Windows.Forms.DataGridView();
-			this.streamNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.countDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.unknownPacketsCountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.versionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.IgnoreVersionChanges = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.openLogsBindingSource = new System.Windows.Forms.BindingSource(this.components);
 			this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
 			this.menuOpenFile = new System.Windows.Forms.MenuItem();
@@ -179,8 +175,13 @@ namespace PacketLogConverter
 			this.openFolderLogDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.openFilterDialog = new System.Windows.Forms.OpenFileDialog();
 			this.saveFilterDialog = new System.Windows.Forms.SaveFileDialog();
+			this.logDataCountLogDataSizeheckBox = new System.Windows.Forms.CheckBox();
+			this.streamNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.countDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.unknownPacketsCountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.versionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.openLogsBindingSource = new System.Windows.Forms.BindingSource(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.openLogsDataGridView)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.openLogsBindingSource)).BeginInit();
 			this.mainFormTabs.SuspendLayout();
 			this.instantParseTab.SuspendLayout();
 			this.instantResultGroupBox1.SuspendLayout();
@@ -190,6 +191,7 @@ namespace PacketLogConverter
 			this.li_initialValuesGroupBox.SuspendLayout();
 			this.li_totalGroupBox.SuspendLayout();
 			this.logDataTab.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.openLogsBindingSource)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// openLogsDataGridView
@@ -207,23 +209,23 @@ namespace PacketLogConverter
 			this.openLogsDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.openLogsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.openLogsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.IgnoreVersionChanges,
             this.streamNameDataGridViewTextBoxColumn,
             this.countDataGridViewTextBoxColumn,
             this.unknownPacketsCountDataGridViewTextBoxColumn,
-            this.versionDataGridViewTextBoxColumn,
-            this.IgnoreVersionChanges});
+            this.versionDataGridViewTextBoxColumn});
 			this.openLogsDataGridView.DataSource = this.openLogsBindingSource;
 			this.openLogsDataGridView.Location = new System.Drawing.Point(9, 46);
 			this.openLogsDataGridView.MultiSelect = false;
 			this.openLogsDataGridView.Name = "openLogsDataGridView";
-			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-			dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-			dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.openLogsDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.openLogsDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
 			this.openLogsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
 			this.openLogsDataGridView.ShowEditingIcon = false;
 			this.openLogsDataGridView.Size = new System.Drawing.Size(553, 132);
@@ -231,47 +233,12 @@ namespace PacketLogConverter
 			this.openLogsDataGridView.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.openLogsDataGridView_CellBeginEdit);
 			this.openLogsDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.openLogsDataGridView_CellValueChanged);
 			// 
-			// streamNameDataGridViewTextBoxColumn
-			// 
-			this.streamNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.streamNameDataGridViewTextBoxColumn.DataPropertyName = "StreamName";
-			this.streamNameDataGridViewTextBoxColumn.HeaderText = "File";
-			this.streamNameDataGridViewTextBoxColumn.Name = "streamNameDataGridViewTextBoxColumn";
-			this.streamNameDataGridViewTextBoxColumn.ReadOnly = true;
-			// 
-			// countDataGridViewTextBoxColumn
-			// 
-			this.countDataGridViewTextBoxColumn.DataPropertyName = "Count";
-			this.countDataGridViewTextBoxColumn.HeaderText = "Packets total";
-			this.countDataGridViewTextBoxColumn.Name = "countDataGridViewTextBoxColumn";
-			this.countDataGridViewTextBoxColumn.ReadOnly = true;
-			this.countDataGridViewTextBoxColumn.Width = 87;
-			// 
-			// unknownPacketsCountDataGridViewTextBoxColumn
-			// 
-			this.unknownPacketsCountDataGridViewTextBoxColumn.DataPropertyName = "UnknownPacketsCount";
-			this.unknownPacketsCountDataGridViewTextBoxColumn.HeaderText = "Packets unknown";
-			this.unknownPacketsCountDataGridViewTextBoxColumn.Name = "unknownPacketsCountDataGridViewTextBoxColumn";
-			this.unknownPacketsCountDataGridViewTextBoxColumn.ReadOnly = true;
-			this.unknownPacketsCountDataGridViewTextBoxColumn.Width = 108;
-			// 
-			// versionDataGridViewTextBoxColumn
-			// 
-			this.versionDataGridViewTextBoxColumn.DataPropertyName = "Version";
-			this.versionDataGridViewTextBoxColumn.HeaderText = "Version";
-			this.versionDataGridViewTextBoxColumn.Name = "versionDataGridViewTextBoxColumn";
-			this.versionDataGridViewTextBoxColumn.Width = 67;
-			// 
 			// IgnoreVersionChanges
 			// 
 			this.IgnoreVersionChanges.DataPropertyName = "IgnoreVersionChanges";
 			this.IgnoreVersionChanges.HeaderText = "Ignore version changes";
 			this.IgnoreVersionChanges.Name = "IgnoreVersionChanges";
 			this.IgnoreVersionChanges.Width = 112;
-			// 
-			// openLogsBindingSource
-			// 
-			this.openLogsBindingSource.DataSource = typeof(PacketLogConverter.PacketLog);
 			// 
 			// mainMenu1
 			// 
@@ -589,7 +556,7 @@ namespace PacketLogConverter
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(332, 32);
 			this.label3.TabIndex = 4;
-			this.label3.Text = "Parse logs again using current values.";
+			this.label3.Text = "Parse only changed logs again using current values.";
 			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// li_initialValuesGroupBox
@@ -715,6 +682,7 @@ namespace PacketLogConverter
 			// 
 			// logDataTab
 			// 
+			this.logDataTab.Controls.Add(this.logDataCountLogDataSizeheckBox);
 			this.logDataTab.Controls.Add(this.logDataDisableUpdatesCheckBox);
 			this.logDataTab.Controls.Add(this.logDataFindButton);
 			this.logDataTab.Controls.Add(this.logDataFindTextBox);
@@ -783,6 +751,53 @@ namespace PacketLogConverter
 			this.saveFilterDialog.Filter = "Filters (*.flt)|*.flt";
 			this.saveFilterDialog.RestoreDirectory = true;
 			// 
+			// logDataCountLogDataSizeheckBox
+			// 
+			this.logDataCountLogDataSizeheckBox.AutoSize = true;
+			this.logDataCountLogDataSizeheckBox.Checked = true;
+			this.logDataCountLogDataSizeheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.logDataCountLogDataSizeheckBox.Location = new System.Drawing.Point(126, 12);
+			this.logDataCountLogDataSizeheckBox.Name = "logDataCountLogDataSizeheckBox";
+			this.logDataCountLogDataSizeheckBox.Size = new System.Drawing.Size(227, 17);
+			this.logDataCountLogDataSizeheckBox.TabIndex = 4;
+			this.logDataCountLogDataSizeheckBox.Text = "Count log data size before buffer allocation";
+			this.logDataCountLogDataSizeheckBox.UseVisualStyleBackColor = true;
+			// 
+			// streamNameDataGridViewTextBoxColumn
+			// 
+			this.streamNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.streamNameDataGridViewTextBoxColumn.DataPropertyName = "StreamName";
+			this.streamNameDataGridViewTextBoxColumn.HeaderText = "File";
+			this.streamNameDataGridViewTextBoxColumn.Name = "streamNameDataGridViewTextBoxColumn";
+			this.streamNameDataGridViewTextBoxColumn.ReadOnly = true;
+			// 
+			// countDataGridViewTextBoxColumn
+			// 
+			this.countDataGridViewTextBoxColumn.DataPropertyName = "Count";
+			this.countDataGridViewTextBoxColumn.HeaderText = "Packets total";
+			this.countDataGridViewTextBoxColumn.Name = "countDataGridViewTextBoxColumn";
+			this.countDataGridViewTextBoxColumn.ReadOnly = true;
+			this.countDataGridViewTextBoxColumn.Width = 87;
+			// 
+			// unknownPacketsCountDataGridViewTextBoxColumn
+			// 
+			this.unknownPacketsCountDataGridViewTextBoxColumn.DataPropertyName = "UnknownPacketsCount";
+			this.unknownPacketsCountDataGridViewTextBoxColumn.HeaderText = "Packets unknown";
+			this.unknownPacketsCountDataGridViewTextBoxColumn.Name = "unknownPacketsCountDataGridViewTextBoxColumn";
+			this.unknownPacketsCountDataGridViewTextBoxColumn.ReadOnly = true;
+			this.unknownPacketsCountDataGridViewTextBoxColumn.Width = 108;
+			// 
+			// versionDataGridViewTextBoxColumn
+			// 
+			this.versionDataGridViewTextBoxColumn.DataPropertyName = "Version";
+			this.versionDataGridViewTextBoxColumn.HeaderText = "Version";
+			this.versionDataGridViewTextBoxColumn.Name = "versionDataGridViewTextBoxColumn";
+			this.versionDataGridViewTextBoxColumn.Width = 67;
+			// 
+			// openLogsBindingSource
+			// 
+			this.openLogsBindingSource.DataSource = typeof(PacketLogConverter.PacketLog);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -795,7 +810,6 @@ namespace PacketLogConverter
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			((System.ComponentModel.ISupportInitialize)(this.openLogsDataGridView)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.openLogsBindingSource)).EndInit();
 			this.mainFormTabs.ResumeLayout(false);
 			this.instantParseTab.ResumeLayout(false);
 			this.instantResultGroupBox1.ResumeLayout(false);
@@ -809,6 +823,7 @@ namespace PacketLogConverter
 			this.li_totalGroupBox.PerformLayout();
 			this.logDataTab.ResumeLayout(false);
 			this.logDataTab.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.openLogsBindingSource)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -1721,82 +1736,70 @@ namespace PacketLogConverter
 					return;
 				}
 
-//				logDataText.Clear();
 				PacketLocation selectedPacket = PacketLocation.UNKNOWN;
 				if (logDataText.TextLength > 0)
 				{
 					selectedPacket = LogManager.GetPacketIndexByTextIndex(logDataText.SelectionStart);
 				}
-				int packetsCount = 0;
-				int packetsCountInTCP = 0;
-				int packetsCountOutTCP = 0;
-				int packetsCountInUDP = 0;
-				int packetsCountOutUDP = 0;
+
+				// Clear current log data before new memory is allocated
+				logDataText.Clear();
+
 				bool timeDiff = packetTimeDiffMenuItem.Checked;
 				bool showPacketSequence = mnuPacketSequence.Checked;
-				TimeSpan baseTime = new TimeSpan(0);
+				TimeSpan baseTime = TimeSpan.Zero;
+				LogDataStatistics stats = LogDataStatistics.Zero;
+				StringBuilder text = new StringBuilder();
+
+				//
+				// Calculate the size of string buffer
+				//
+				IList<PacketLog> logs = LogManager.Logs;
+				int logSize = 0;
+				if (logDataCountLogDataSizeheckBox.Checked)
+				{
+					FilterManager.LogFilteringStarted(this);
+					try
+					{
+						foreach (PacketLog log in logs)
+						{
+							foreach (Packet pak in log)
+							{
+								AppendPacketData(pak, ref stats, showPacketSequence, text, ref baseTime, timeDiff);
+								logSize += text.Length;
+								text.Length = 0;
+							}
+						}
+					}
+					finally
+					{
+						FilterManager.LogFilteringStopped(this);
+					}
+				}
+
+				// Reset variables after log data size is counted
+				stats = LogDataStatistics.Zero;
+				baseTime = TimeSpan.Zero;
+				text = new StringBuilder(logSize);
 
 				// Notify filter manager that log filtering starts
 				FilterManager.LogFilteringStarted(this);
 
-				StringBuilder text = new StringBuilder();
-				IList<PacketLog> logs = LogManager.Logs;
 				foreach (PacketLog log in logs)
 				{
 					foreach (Packet pak in log)
 					{
-						int pakIndex = 0;
-						if (showPacketSequence)
-						{
-							if (pak.Protocol == ePacketProtocol.TCP)
-							{
-								if (pak.Direction == ePacketDirection.ClientToServer)
-								{
-									pakIndex = ++packetsCountOutTCP;
-								}
-								else
-								{
-									pakIndex = ++packetsCountInTCP;
-								}
-							}
-							else if (pak.Protocol == ePacketProtocol.UDP)
-							{
-								if (pak.Direction == ePacketDirection.ClientToServer)
-								{
-									pakIndex = ++packetsCountOutUDP;
-								}
-								else
-								{
-									pakIndex = ++packetsCountInUDP;
-								}
-							}
-						}
-						if (FilterManager.IsPacketIgnored(pak))
-						{
-							pak.LogTextIndex = -1;
-							continue;
-						}
-						pak.LogTextIndex = text.Length;
-						++packetsCount;
-
-						if (showPacketSequence)
-						{
-							text.AppendFormat("{0}:{1,-5} ", pak.Protocol, pakIndex);
-						}
-
-						// main description
-						text.Append(pak.ToHumanReadableString(baseTime, mnuPacketFlags.Checked));
-						text.Append('\n');
-						if (timeDiff)
-							baseTime = pak.Time;
+						AppendPacketData(pak, ref stats, showPacketSequence, text, ref baseTime, timeDiff);
 					}
 				}
 
-				newTabName = string.Format("{0} ({1}{2:N0} packets)", newTabName, (timeDiff ? "time diff, " : ""), packetsCount);
+				newTabName = string.Format("{0} ({1}{2:N0} packets)", newTabName, (timeDiff ? "time diff, " : ""), stats.PacketsCount);
 				logDataTab.Text = newTabName;
 
 				logDataText.SelectionIndent = 4;
-				logDataText.Text = text.ToString();
+				string logData = text.ToString();
+				text = null;
+				logDataText.Text = logData;
 
 				// Restore previously selected packet if it is visible
 				int restoreIndex = -1;
@@ -1818,6 +1821,65 @@ namespace PacketLogConverter
 			{
 				// Notify filter manager that filtering is finished
 				FilterManager.LogFilteringStopped(this);
+			}
+		}
+
+		/// <summary>
+		/// Appends the packet data.
+		/// </summary>
+		/// <param name="pak">The paket.</param>
+		/// <param name="stats">The current stats.</param>
+		/// <param name="showPacketSequence">If set to <c>true</c> shows packet sequences.</param>
+		/// <param name="text">The buffer to append packet data to.</param>
+		/// <param name="baseTime">The base time.</param>
+		/// <param name="timeDiff">If set to <c>true</c> shows packet time delta.</param>
+		private void AppendPacketData(Packet pak, ref LogDataStatistics stats, bool showPacketSequence, StringBuilder text, ref TimeSpan baseTime, bool timeDiff)
+		{
+			int pakIndex = 0;
+			if (showPacketSequence)
+			{
+				if (pak.Protocol == ePacketProtocol.TCP)
+				{
+					if (pak.Direction == ePacketDirection.ClientToServer)
+					{
+						pakIndex = ++stats.PacketsCountOutTCP;
+					}
+					else
+					{
+						pakIndex = ++stats.PacketsCountInTCP;
+					}
+				}
+				else if (pak.Protocol == ePacketProtocol.UDP)
+				{
+					if (pak.Direction == ePacketDirection.ClientToServer)
+					{
+						pakIndex = ++stats.PacketsCountOutUDP;
+					}
+					else
+					{
+						pakIndex = ++stats.PacketsCountInUDP;
+					}
+				}
+			}
+			if (FilterManager.IsPacketIgnored(pak))
+			{
+				pak.LogTextIndex = -1;
+				return;
+			}
+			pak.LogTextIndex = text.Length;
+			++stats.PacketsCount;
+
+			if (showPacketSequence)
+			{
+				text.AppendFormat("{0}:{1,-5} ", pak.Protocol, pakIndex);
+			}
+
+			// main description
+			text.Append(pak.ToHumanReadableString(baseTime, mnuPacketFlags.Checked));
+			text.Append('\n');
+			if (timeDiff)
+			{
+				baseTime = pak.Time;
 			}
 		}
 
