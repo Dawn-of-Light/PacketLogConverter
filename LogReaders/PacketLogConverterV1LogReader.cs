@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -12,12 +13,12 @@ namespace PacketLogConverter.LogReaders
 	[LogReader("PacketLogConverter v1", "*.plc", Priority=5000)]
 	public class PacketLogConverterV1LogReader : ILogReader
 	{
-		public ICollection ReadLog(Stream stream, ProgressCallback callback)
+		public ICollection<Packet> ReadLog(Stream stream, ProgressCallback callback)
 		{
 			Type[] constrType = new Type[] {typeof (int)};
 			object[] param = new object[1];
 			Assembly asm = typeof (Packet).Assembly;
-			ArrayList packets = new ArrayList();
+			List<Packet> packets = new List<Packet>();
 			ArrayList ignored = new ArrayList();
 			Hashtable pakByName = new Hashtable(512);
 			int counter = 0;

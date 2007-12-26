@@ -1,9 +1,13 @@
-namespace PacketLogConverter
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace PacketLogConverter.LogActions
 {
 	/// <summary>
-	/// An action on selected in the log packet.
+	/// Base class for typical enabled actions.
 	/// </summary>
-	public interface ILogAction
+	public abstract class AbstractEnabledAction : ILogAction
 	{
 		/// <summary>
 		/// Determines whether the action is enabled.
@@ -13,7 +17,10 @@ namespace PacketLogConverter
 		/// <returns>
 		/// 	<c>true</c> if the action is enabled; otherwise, <c>false</c>.
 		/// </returns>
-		bool IsEnabled(IExecutionContext context, PacketLocation selectedPacket);
+		public virtual bool IsEnabled(IExecutionContext context, PacketLocation selectedPacket)
+		{
+			return true;
+		}
 
 		/// <summary>
 		/// Activates a log action.
@@ -21,6 +28,6 @@ namespace PacketLogConverter
 		/// <param name="context">The context.</param>
 		/// <param name="selectedPacket">The selected packet.</param>
 		/// <returns><c>true</c> if log data tab should be updated.</returns>
-		bool Activate(IExecutionContext context, PacketLocation selectedPacket);
+		public abstract bool Activate(IExecutionContext context, PacketLocation selectedPacket);
 	}
 }

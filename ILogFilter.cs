@@ -10,8 +10,11 @@ namespace PacketLogConverter
 		/// <summary>
 		/// Activates the filter.
 		/// </summary>
-		/// <returns><code>true</code> if filter has changed and log should be updated.</returns>
-		bool ActivateFilter();
+		/// <param name="context">The context.</param>
+		/// <returns>
+		/// 	<code>true</code> if filter has changed and log should be updated.
+		/// </returns>
+		bool ActivateFilter(IExecutionContext context);
 		
 		/// <summary>
 		/// Determines whether the packet should be ignored.

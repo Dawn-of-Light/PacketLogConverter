@@ -9,7 +9,7 @@ namespace PacketLogConverter.LogActions
 	/// Shows all known Oids before selected packet
 	/// </summary>
 	[LogAction("Show known Oids", Priority=800)]
-	public class ShowKnownOidAction : ILogAction
+	public class ShowKnownOidAction : AbstractEnabledAction
 	{
 		#region ILogAction Members
 
@@ -19,7 +19,7 @@ namespace PacketLogConverter.LogActions
 		/// <param name="context">The context.</param>
 		/// <param name="selectedPacket">The selected packet.</param>
 		/// <returns><c>true</c> if log data tab should be updated.</returns>
-		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
+		public override bool Activate(IExecutionContext context, PacketLocation selectedPacket)
 		{
 			int currentRegion;
 			int currentZone;

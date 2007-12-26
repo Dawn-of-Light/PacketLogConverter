@@ -14,6 +14,7 @@ namespace PacketLogConverter.LogFilters
 	public class ObjectIdFilterForm : Form, ILogFilter
 	{
 		private ListBoxOid[] m_selectedOidsCache;
+		private bool m_initialized;
 
 		private Label label1;
 		private Button acceptButton;
@@ -26,6 +27,7 @@ namespace PacketLogConverter.LogFilters
 		private System.Windows.Forms.Button addButton;
 		private System.Windows.Forms.ListBox allowedOidListBox;
 		private System.Windows.Forms.CheckBox enableFilterCheckBox;
+
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -35,29 +37,6 @@ namespace PacketLogConverter.LogFilters
 		{
 			InitializeComponent();
 			UpdateControls();
-
-			// Cache entered OIDs
-			FilterManager.FilteringStartedEvent +=
-				delegate(IExecutionContext log)
-					{
-						if (IsFilterActive)
-						{
-							ListBoxOid[] oids = new ListBoxOid[allowedOidListBox.Items.Count];
-							int i = 0;
-							foreach (ListBoxOid oid in allowedOidListBox.Items)
-							{
-								oids[i++] = oid;
-							}
-							m_selectedOidsCache = oids;
-						}
-					};
-
-			// Clear cached OIDs
-			FilterManager.FilteringStoppedEvent +=
-				delegate(IExecutionContext log)
-					{
-						m_selectedOidsCache = null;
-					};
 		}
 
 		/// <summary>
@@ -221,9 +200,14 @@ namespace PacketLogConverter.LogFilters
 		/// <summary>
 		/// Activates the filter.
 		/// </summary>
-		/// <returns><code>true</code> if filter has changed and log should be updated.</returns>
-		public bool ActivateFilter()
+		/// <param name="context">The context.</param>
+		/// <returns>
+		/// 	<code>true</code> if filter has changed and log should be updated.
+		/// </returns>
+		public bool ActivateFilter(IExecutionContext context)
 		{
+			Initialize(context);
+
 			bool oldEnabled = enableFilterCheckBox.Checked;
 
 			ArrayList oldAllowed = new ArrayList();
@@ -242,11 +226,11 @@ namespace PacketLogConverter.LogFilters
 
 			if (IsFilterActive)
 			{
-				FilterManager.AddFilter(this);
+				context.FilterManager.AddFilter(this);
 			}
 			else
 			{
-				FilterManager.RemoveFilter(this);
+				context.FilterManager.RemoveFilter(this);
 				return false;
 			}
 
@@ -258,6 +242,47 @@ namespace PacketLogConverter.LogFilters
 			}
 
 			return oldAllowed.Count != allowedOidListBox.Items.Count || oldIncludeMessages != includeMessagesCheckBox.Checked || oldEnabled != enableFilterCheckBox.Checked;
+		}
+
+		/// <summary>
+		/// Initializes the this instance.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		private void Initialize(IExecutionContext context)
+		{
+			if (!m_initialized)
+			{
+				//
+				// Add event handlers
+				//
+
+				// Cache entered OIDs
+				context.FilterManager.FilteringStartedEvent +=
+					delegate(IExecutionContext log)
+					{
+						if (IsFilterActive)
+						{
+							ListBoxOid[] oids = new ListBoxOid[allowedOidListBox.Items.Count];
+							int i = 0;
+							foreach (ListBoxOid oid in allowedOidListBox.Items)
+							{
+								oids[i++] = oid;
+							}
+							m_selectedOidsCache = oids;
+						}
+					};
+
+				// Clear cached OIDs
+				context.FilterManager.FilteringStoppedEvent +=
+					delegate(IExecutionContext log)
+					{
+						m_selectedOidsCache = null;
+					};
+
+
+				// Initialization finished successfully
+				m_initialized = true;
+			}
 		}
 
 		/// <summary>

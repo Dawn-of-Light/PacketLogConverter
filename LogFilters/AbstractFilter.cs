@@ -12,14 +12,21 @@ namespace PacketLogConverter.LogFilters
 		/// <summary>
 		/// Activates the filter.
 		/// </summary>
-		/// <returns><code>true</code> if filter has changed.</returns>
-		public virtual bool ActivateFilter()
+		/// <param name="context">The context.</param>
+		/// <returns>
+		/// 	<code>true</code> if filter has changed and log should be updated.
+		/// </returns>
+		public virtual bool ActivateFilter(IExecutionContext context)
 		{
 			IsFilterActive = !IsFilterActive;
 			if (IsFilterActive)
-				FilterManager.AddFilter(this);
+			{
+				context.FilterManager.AddFilter(this);
+			}
 			else
-				FilterManager.RemoveFilter(this);
+			{
+				context.FilterManager.RemoveFilter(this);
+			}
 			
 			return true;
 		}

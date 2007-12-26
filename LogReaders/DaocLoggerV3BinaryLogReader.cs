@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -11,9 +12,9 @@ namespace PacketLogConverter.LogReaders
 	[LogReader("DAOCLogger v3.0 binary logs", "*.log", Priority=9900)]
 	public class DaocLoggerV3BinaryLogReader : ILogReader
 	{
-		public ICollection ReadLog(Stream stream, ProgressCallback callback)
+		public ICollection<Packet> ReadLog(Stream stream, ProgressCallback callback)
 		{
-			ArrayList packets = new ArrayList((int)(stream.Length/128));
+			List<Packet> packets = new List<Packet>((int)(stream.Length / 128));
 
 			int counter = 0;
 			Packet pak = null;

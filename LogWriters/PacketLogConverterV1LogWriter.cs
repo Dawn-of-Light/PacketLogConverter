@@ -30,7 +30,7 @@ namespace PacketLogConverter.LogWriters
 							callback(i + 1, log.Count);
 
 						Packet packet = log[i];
-						if (FilterManager.IsPacketIgnored(packet))
+						if (context.FilterManager.IsPacketIgnored(packet))
 							continue;
 
 						byte[] buf = packet.GetBuffer();

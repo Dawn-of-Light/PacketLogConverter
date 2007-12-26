@@ -15,19 +15,19 @@ namespace PacketLogConverter
 	/// <summary>
 	/// Manages log filters
 	/// </summary>
-	public static class FilterManager
+	public class FilterManager
 	{
-		private static readonly ArrayList m_filters = new ArrayList();
-		private static bool m_combineFilters;
-		private static bool m_invertCheck;
-		private static bool m_loading;
-		private static bool m_IgnoreFilters;
+		private readonly ArrayList m_filters = new ArrayList();
+		private bool m_combineFilters;
+		private bool m_invertCheck;
+		private bool m_loading;
+		private bool m_IgnoreFilters;
 
-		public static event FilterAction FilterAddedEvent;
-		public static event FilterAction FilterRemovedEvent;
-		public static event StatusChange CombineFiltersChangedEvent;
-		public static event StatusChange InvertCheckChangedEvent;
-		public static event StatusChange IgnoreFiltersChangedEvent;
+		public event FilterAction FilterAddedEvent;
+		public event FilterAction FilterRemovedEvent;
+		public event StatusChange CombineFiltersChangedEvent;
+		public event StatusChange InvertCheckChangedEvent;
+		public event StatusChange IgnoreFiltersChangedEvent;
 
 		/// <summary>
 		/// Event is raised when log filtering is started.
@@ -35,21 +35,21 @@ namespace PacketLogConverter
 		/// <remarks>
 		/// Calling thread is not guaranteed to be UI thread, but all three events are called from the same thread.
 		/// </remarks>
-		public static event LogAction FilteringStartedEvent;
+		public event LogAction FilteringStartedEvent;
 		/// <summary>
 		/// Event is raised when log filtering is stopped.
 		/// </summary>
 		/// <remarks>
 		/// Calling thread is not guaranteed to be UI thread, but all three events are called from the same thread.
 		/// </remarks>
-		public static event LogAction FilteringStoppedEvent;
+		public event LogAction FilteringStoppedEvent;
 		/// <summary>
 		/// Event is raised when packet is being processed.
 		/// </summary>
 		/// <remarks>
 		/// Calling thread is not guaranteed to be UI thread, but all three events are called from the same thread.
 		/// </remarks>
-		public static event PacketAction FilteringPacketEvent;
+		public event PacketAction FilteringPacketEvent;
 
 		/// <summary>
 		/// Determines whether the specified packet is ignored.
@@ -58,7 +58,7 @@ namespace PacketLogConverter
 		/// <returns>
 		/// 	<c>true</c> if the specified packet is ignored; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsPacketIgnored(Packet pak)
+		public bool IsPacketIgnored(Packet pak)
 		{
 			if (m_IgnoreFilters) // temporary Ignore filters
 				return false;
@@ -109,7 +109,7 @@ namespace PacketLogConverter
 		/// Raises the filtering packet event.
 		/// </summary>
 		/// <param name="pak">The pak.</param>
-		private static void RaiseFilteringPacketEvent(Packet pak)
+		private void RaiseFilteringPacketEvent(Packet pak)
 		{
 			try
 			{
@@ -127,7 +127,7 @@ namespace PacketLogConverter
 		/// Gets the filters count.
 		/// </summary>
 		/// <value>The filters count.</value>
-		public static int FiltersCount
+		public int FiltersCount
 		{
 			get { return m_filters.Count; }
 		}
@@ -138,7 +138,7 @@ namespace PacketLogConverter
 		/// Gets or sets a value indicating whether to combine filters.
 		/// </summary>
 		/// <value><c>true</c> if filter checks combined; otherwise, <c>false</c>.</value>
-		public static bool CombineFilters
+		public bool CombineFilters
 		{
 			get { return m_combineFilters; }
 			set
@@ -152,7 +152,7 @@ namespace PacketLogConverter
 		/// Gets or sets a value indicating whether to invert filter check.
 		/// </summary>
 		/// <value><c>true</c> if filter check is inverted invert; otherwise, <c>false</c>.</value>
-		public static bool InvertCheck
+		public bool InvertCheck
 		{
 			get { return m_invertCheck; }
 			set
@@ -166,7 +166,7 @@ namespace PacketLogConverter
 		/// Gets or sets a value indicating whether to Ignore filter check.
 		/// </summary>
 		/// <value><c>true</c> if filter check is Ignored; otherwise, <c>false</c>.</value>
-		public static bool IgnoreFilters
+		public bool IgnoreFilters
 		{
 			get { return m_IgnoreFilters; }
 			set
@@ -181,7 +181,7 @@ namespace PacketLogConverter
 		/// </summary>
 		/// <param name="e">The event delegates.</param>
 		/// <param name="value">New value.</param>
-		private static void RaiseStatusChangeEvent(StatusChange e, bool value)
+		private void RaiseStatusChangeEvent(StatusChange e, bool value)
 		{
 			if (null != e)
 			{
@@ -198,7 +198,7 @@ namespace PacketLogConverter
 		/// </summary>
 		/// <param name="filter">The filter.</param>
 		/// <returns><code>true</code> if filter is added, <code>false</code> if already active.</returns>
-		public static bool AddFilter(ILogFilter filter)
+		public bool AddFilter(ILogFilter filter)
 		{
 			if (filter == null)
 				return false;
@@ -217,7 +217,7 @@ namespace PacketLogConverter
 		/// </summary>
 		/// <param name="filter">The filter.</param>
 		/// <returns><code>true</code> if filter is removed, <code>false</code> if not active already.</returns>
-		public static bool RemoveFilter(ILogFilter filter)
+		public bool RemoveFilter(ILogFilter filter)
 		{
 			if (filter == null)
 				return false;
@@ -235,7 +235,7 @@ namespace PacketLogConverter
 		/// Raises the filter added event.
 		/// </summary>
 		/// <param name="filter">The filter.</param>
-		private static void RaiseFilterAddedEvent(ILogFilter filter)
+		private void RaiseFilterAddedEvent(ILogFilter filter)
 		{
 			FilterAction e = FilterAddedEvent;
 			if (e != null)
@@ -246,7 +246,7 @@ namespace PacketLogConverter
 		/// Raises the filter removed event.
 		/// </summary>
 		/// <param name="filter">The filter.</param>
-		private static void RaiseFilterRemovedEvent(ILogFilter filter)
+		private void RaiseFilterRemovedEvent(ILogFilter filter)
 		{
 			FilterAction e = FilterRemovedEvent;
 			if (e != null)
@@ -261,7 +261,7 @@ namespace PacketLogConverter
 		/// Saves the filters.
 		/// </summary>
 		/// <param name="path">The path.</param>
-		public static void SaveFilters(string path)
+		public void SaveFilters(string path)
 		{
 			using (FilterWriter writer = new FilterWriter(path))
 			{
@@ -295,7 +295,7 @@ namespace PacketLogConverter
 		/// </summary>
 		/// <param name="path">The path.</param>
 		/// <param name="allFilters">Collection with all loaded filter instances.</param>
-		public static void LoadFilters(string path, ICollection allFilters)
+		public void LoadFilters(string path, ICollection allFilters)
 		{
 			m_loading = true;
 
@@ -348,7 +348,7 @@ namespace PacketLogConverter
 		/// Manager is notified that filtering is started.
 		/// </summary>
 		/// <param name="context">The context.</param>
-		public static void LogFilteringStarted(IExecutionContext context)
+		public void LogFilteringStarted(IExecutionContext context)
 		{
 			try
 			{
@@ -369,7 +369,7 @@ namespace PacketLogConverter
 		/// Manager is notified that filtering is stopped.
 		/// </summary>
 		/// <param name="context">The context.</param>
-		public static void LogFilteringStopped(IExecutionContext context)
+		public void LogFilteringStopped(IExecutionContext context)
 		{
 			try
 			{

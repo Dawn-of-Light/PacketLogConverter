@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace PacketLogConverter
@@ -25,11 +26,11 @@ namespace PacketLogConverter
 			set { m_streamName = value; }
 		}
 
-		private ArrayList m_packets = new ArrayList();
+		private List<Packet> m_packets = new List<Packet>();
 
 		public Packet this[int index]
 		{
-			get { return (Packet)m_packets[index]; }
+			get { return m_packets[index]; }
 		}
 
 		public void AddPacket(Packet pak)
@@ -39,9 +40,15 @@ namespace PacketLogConverter
 			m_packets.Add(pak);
 		}
 
-		public void AddRange(ICollection collection)
+		public void AddRange(ICollection<Packet> collection)
 		{
 			m_packets.AddRange(collection);
+		}
+
+		public List<Packet> GetRange(int startIndex, int endIndex)
+		{
+			List<Packet> ret = m_packets.GetRange(startIndex, endIndex - startIndex);
+			return ret;
 		}
 
 		public int Count

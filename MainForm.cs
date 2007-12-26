@@ -77,12 +77,12 @@ namespace PacketLogConverter
 		private GroupBox li_totalGroupBox;
 		private GroupBox li_initialValuesGroupBox;
 		private GroupBox li_openLogsGroupBox;
+		private CheckBox logDataCountLogDataSizeheckBox;
 		private DataGridViewTextBoxColumn streamNameDataGridViewTextBoxColumn;
 		private DataGridViewTextBoxColumn countDataGridViewTextBoxColumn;
 		private DataGridViewTextBoxColumn unknownPacketsCountDataGridViewTextBoxColumn;
 		private DataGridViewTextBoxColumn versionDataGridViewTextBoxColumn;
 		private DataGridViewCheckBoxColumn IgnoreVersionChanges;
-		private CheckBox logDataCountLogDataSizeheckBox;
 		private Label label3;
 
 		public MainForm()
@@ -118,7 +118,6 @@ namespace PacketLogConverter
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.openLogsDataGridView = new System.Windows.Forms.DataGridView();
-			this.IgnoreVersionChanges = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
 			this.menuOpenFile = new System.Windows.Forms.MenuItem();
@@ -167,6 +166,7 @@ namespace PacketLogConverter
 			this.label10 = new System.Windows.Forms.Label();
 			this.li_unknownPacketsCount = new System.Windows.Forms.TextBox();
 			this.logDataTab = new System.Windows.Forms.TabPage();
+			this.logDataCountLogDataSizeheckBox = new System.Windows.Forms.CheckBox();
 			this.logDataDisableUpdatesCheckBox = new System.Windows.Forms.CheckBox();
 			this.logDataFindButton = new System.Windows.Forms.Button();
 			this.logDataFindTextBox = new System.Windows.Forms.TextBox();
@@ -175,12 +175,12 @@ namespace PacketLogConverter
 			this.openFolderLogDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.openFilterDialog = new System.Windows.Forms.OpenFileDialog();
 			this.saveFilterDialog = new System.Windows.Forms.SaveFileDialog();
-			this.logDataCountLogDataSizeheckBox = new System.Windows.Forms.CheckBox();
+			this.openLogsBindingSource = new System.Windows.Forms.BindingSource(this.components);
 			this.streamNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.countDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.unknownPacketsCountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.versionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.openLogsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+			this.IgnoreVersionChanges = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			((System.ComponentModel.ISupportInitialize)(this.openLogsDataGridView)).BeginInit();
 			this.mainFormTabs.SuspendLayout();
 			this.instantParseTab.SuspendLayout();
@@ -209,11 +209,11 @@ namespace PacketLogConverter
 			this.openLogsDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.openLogsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.openLogsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.IgnoreVersionChanges,
             this.streamNameDataGridViewTextBoxColumn,
             this.countDataGridViewTextBoxColumn,
             this.unknownPacketsCountDataGridViewTextBoxColumn,
-            this.versionDataGridViewTextBoxColumn});
+            this.versionDataGridViewTextBoxColumn,
+            this.IgnoreVersionChanges});
 			this.openLogsDataGridView.DataSource = this.openLogsBindingSource;
 			this.openLogsDataGridView.Location = new System.Drawing.Point(9, 46);
 			this.openLogsDataGridView.MultiSelect = false;
@@ -232,13 +232,6 @@ namespace PacketLogConverter
 			this.openLogsDataGridView.TabIndex = 10;
 			this.openLogsDataGridView.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.openLogsDataGridView_CellBeginEdit);
 			this.openLogsDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.openLogsDataGridView_CellValueChanged);
-			// 
-			// IgnoreVersionChanges
-			// 
-			this.IgnoreVersionChanges.DataPropertyName = "IgnoreVersionChanges";
-			this.IgnoreVersionChanges.HeaderText = "Ignore version changes";
-			this.IgnoreVersionChanges.Name = "IgnoreVersionChanges";
-			this.IgnoreVersionChanges.Width = 112;
 			// 
 			// mainMenu1
 			// 
@@ -694,6 +687,18 @@ namespace PacketLogConverter
 			this.logDataTab.Text = "Log data";
 			this.logDataTab.UseVisualStyleBackColor = true;
 			// 
+			// logDataCountLogDataSizeheckBox
+			// 
+			this.logDataCountLogDataSizeheckBox.AutoSize = true;
+			this.logDataCountLogDataSizeheckBox.Checked = true;
+			this.logDataCountLogDataSizeheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.logDataCountLogDataSizeheckBox.Location = new System.Drawing.Point(126, 12);
+			this.logDataCountLogDataSizeheckBox.Name = "logDataCountLogDataSizeheckBox";
+			this.logDataCountLogDataSizeheckBox.Size = new System.Drawing.Size(227, 17);
+			this.logDataCountLogDataSizeheckBox.TabIndex = 4;
+			this.logDataCountLogDataSizeheckBox.Text = "Count log data size before buffer allocation";
+			this.logDataCountLogDataSizeheckBox.UseVisualStyleBackColor = true;
+			// 
 			// logDataDisableUpdatesCheckBox
 			// 
 			this.logDataDisableUpdatesCheckBox.Location = new System.Drawing.Point(16, 8);
@@ -751,17 +756,9 @@ namespace PacketLogConverter
 			this.saveFilterDialog.Filter = "Filters (*.flt)|*.flt";
 			this.saveFilterDialog.RestoreDirectory = true;
 			// 
-			// logDataCountLogDataSizeheckBox
+			// openLogsBindingSource
 			// 
-			this.logDataCountLogDataSizeheckBox.AutoSize = true;
-			this.logDataCountLogDataSizeheckBox.Checked = true;
-			this.logDataCountLogDataSizeheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.logDataCountLogDataSizeheckBox.Location = new System.Drawing.Point(126, 12);
-			this.logDataCountLogDataSizeheckBox.Name = "logDataCountLogDataSizeheckBox";
-			this.logDataCountLogDataSizeheckBox.Size = new System.Drawing.Size(227, 17);
-			this.logDataCountLogDataSizeheckBox.TabIndex = 4;
-			this.logDataCountLogDataSizeheckBox.Text = "Count log data size before buffer allocation";
-			this.logDataCountLogDataSizeheckBox.UseVisualStyleBackColor = true;
+			this.openLogsBindingSource.DataSource = typeof(PacketLogConverter.PacketLog);
 			// 
 			// streamNameDataGridViewTextBoxColumn
 			// 
@@ -777,7 +774,7 @@ namespace PacketLogConverter
 			this.countDataGridViewTextBoxColumn.HeaderText = "Packets total";
 			this.countDataGridViewTextBoxColumn.Name = "countDataGridViewTextBoxColumn";
 			this.countDataGridViewTextBoxColumn.ReadOnly = true;
-			this.countDataGridViewTextBoxColumn.Width = 87;
+			this.countDataGridViewTextBoxColumn.Width = 94;
 			// 
 			// unknownPacketsCountDataGridViewTextBoxColumn
 			// 
@@ -794,9 +791,12 @@ namespace PacketLogConverter
 			this.versionDataGridViewTextBoxColumn.Name = "versionDataGridViewTextBoxColumn";
 			this.versionDataGridViewTextBoxColumn.Width = 67;
 			// 
-			// openLogsBindingSource
+			// IgnoreVersionChanges
 			// 
-			this.openLogsBindingSource.DataSource = typeof(PacketLogConverter.PacketLog);
+			this.IgnoreVersionChanges.DataPropertyName = "IgnoreVersionChanges";
+			this.IgnoreVersionChanges.HeaderText = "Ignore version changes";
+			this.IgnoreVersionChanges.Name = "IgnoreVersionChanges";
+			this.IgnoreVersionChanges.Width = 112;
 			// 
 			// MainForm
 			// 
@@ -849,7 +849,7 @@ namespace PacketLogConverter
 			try
 			{
 				Thread.CurrentThread.Name = "Main";
-				AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledExceptionCallback);
+				AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionCallback;
 				m_formInstance = new MainForm();
 				Application.Run(m_formInstance);
 				Application.Exit();
@@ -882,7 +882,8 @@ namespace PacketLogConverter
 
 		private readonly Progress m_progress;
 
-		private readonly LogManager m_currentLogs = new LogManager();
+		private readonly LogManager		m_currentLogs = new LogManager();
+		private readonly FilterManager	m_filterManager = new FilterManager();
 
 		/// <summary>
 		/// Gets or sets the current log.
@@ -891,6 +892,15 @@ namespace PacketLogConverter
 		public LogManager LogManager
 		{
 			get { return m_currentLogs; }
+		}
+
+		/// <summary>
+		/// Gets the filter manager.
+		/// </summary>
+		/// <value>The filter manager.</value>
+		public FilterManager FilterManager
+		{
+			get { return m_filterManager; }
 		}
 
 		/// <summary>
@@ -906,12 +916,21 @@ namespace PacketLogConverter
 			GC.Collect();
 		}
 
+		/// <summary>
+		/// Shows the data tab.
+		/// </summary>
+		public void ShowDataTab()
+		{
+			mainFormTabs.SelectedTab = logDataTab;
+		}
+
 		private ArrayList m_logReaders = new ArrayList();
 		private ArrayList m_logWriters = new ArrayList();
 		private ArrayList m_logFilters = new ArrayList();
-		private ArrayList m_logActions = new ArrayList();
 		private SortedList m_filterMenuItemsByPriority = new SortedList();
 		private SortedList m_actionMenuItemsByPriority = new SortedList();
+		private SortedList m_actionByPriority = new SortedList();
+		private Hashtable m_actionByMenuItem = new Hashtable();
 
 		/// <summary>
 		/// Handles the Load event of the MainForm control.
@@ -924,14 +943,15 @@ namespace PacketLogConverter
 			SortedList readers = new SortedList();
 			SortedList writers = new SortedList();
 			SortedList filters = new SortedList();
-			SortedList actions = new SortedList();
 			Hashtable readerFilterStrings = new Hashtable();
 			Hashtable writerFilterStrings = new Hashtable();
 			m_filterMenuItemsByPriority.Clear();
 			m_actionMenuItemsByPriority.Clear();
+			m_actionByMenuItem.Clear();
+			m_actionByPriority.Clear();
 
 			// Find handlers
-			FindAllHandlers(m_actionMenuItemsByPriority, actions, m_filterMenuItemsByPriority, filters, readerFilterStrings, readers, writerFilterStrings, writers);
+			FindAllHandlers(m_actionMenuItemsByPriority, m_actionByMenuItem, m_actionByPriority, m_filterMenuItemsByPriority, filters, readerFilterStrings, readers, writerFilterStrings, writers);
 
 
 			//
@@ -976,9 +996,9 @@ namespace PacketLogConverter
 			}
 
 			// Actions menu
-			if (actions.Count > 0)
+			if (m_actionByPriority.Count > 0)
 			{
-				CreateMenuActions(m_actionMenuItemsByPriority, actions);
+				logDataText.MouseDown += logDataText_MouseClickEvent;
 			}
 
 			// Updates
@@ -1004,6 +1024,7 @@ namespace PacketLogConverter
 		/// Finds all handlers.
 		/// </summary>
 		/// <param name="actionMenuItems">The action menu items.</param>
+		/// <param name="actionsByMenuItem">The actions by menu item.</param>
 		/// <param name="actions">The action names.</param>
 		/// <param name="filterMenuItems">The filter menu items.</param>
 		/// <param name="filters">The filter names.</param>
@@ -1011,7 +1032,7 @@ namespace PacketLogConverter
 		/// <param name="readers">The reader names.</param>
 		/// <param name="writerFilterStrings">The writer filter strings.</param>
 		/// <param name="writers">The writer names.</param>
-		private void FindAllHandlers(IDictionary actionMenuItems, SortedList actions, IDictionary filterMenuItems, SortedList filters, Hashtable readerFilterStrings, SortedList readers, Hashtable writerFilterStrings, SortedList writers)
+		private void FindAllHandlers(IDictionary actionMenuItems, IDictionary actionsByMenuItem, SortedList actions, IDictionary filterMenuItems, SortedList filters, Hashtable readerFilterStrings, SortedList readers, Hashtable writerFilterStrings, SortedList writers)
 		{
 			foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
 			{
@@ -1080,8 +1101,10 @@ namespace PacketLogConverter
 								int position = -attr.Priority;
 								while (actions.ContainsKey(position))
 									++position;
-								actions.Add(position, Activator.CreateInstance(type));
+								object action = Activator.CreateInstance(type);
+								actions.Add(position, action);
 								actionMenuItems.Add(position, actionMenuItem);
+								actionsByMenuItem.Add(actionMenuItem, action);
 							}
 						}
 					}
@@ -1098,18 +1121,27 @@ namespace PacketLogConverter
 		/// </summary>
 		/// <param name="actionMenuItems">The action menu items.</param>
 		/// <param name="actions">The actions.</param>
-		private void CreateMenuActions(IDictionary actionMenuItems, SortedList actions)
+		/// <param name="selectedPacket">Location of selected packet.</param>
+		/// <returns>Context menu with actions for specified packet if at least one eixsts, <c>null</c> otherwise.</returns>
+		private ContextMenu CreateMenuActions(IDictionary actionMenuItems, SortedList actions, PacketLocation selectedPacket)
 		{
 			ArrayList actionsMenu = new ArrayList();
 			foreach (DictionaryEntry entry in actions)
 			{
 				int position = (int)entry.Key;
 				ILogAction action = (ILogAction)entry.Value;
-				actionsMenu.Add(actionMenuItems[position]);
-				m_logActions.Add(action);
+				if (action.IsEnabled(this, selectedPacket))
+				{
+					actionsMenu.Add(actionMenuItems[position]);
+				}
 			}
-			m_logActionsMenu = new ContextMenu((MenuItem[])actionsMenu.ToArray(typeof (MenuItem)));
-			logDataText.MouseDown += new System.Windows.Forms.MouseEventHandler(logDataText_MouseClickEvent);
+
+			ContextMenu ret = null;
+			if (actionsMenu.Count > 0)
+			{
+				ret = new ContextMenu((MenuItem[]) actionsMenu.ToArray(typeof (MenuItem)));
+			}
+			return ret;
 		}
 
 		/// <summary>
@@ -1912,21 +1944,23 @@ namespace PacketLogConverter
 				UpdateLogDataTab();
 		}
 
-		private ContextMenu m_logActionsMenu;
-		private int m_logDataClickIndex;
+		private PacketLocation m_logDataClickPacketLocation;
 
 		private void logDataText_MouseClickEvent(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Right)
 			{
-				if (m_logActionsMenu == null)
-					return;
-				if (LogManager == null)
-					return;
-
 				Point clickPoint = new Point(e.X, e.Y);
-				m_logDataClickIndex = logDataText.GetCharIndexFromPosition(clickPoint);
-				m_logActionsMenu.Show(logDataText, clickPoint);
+				int logDataClickIndex = logDataText.GetCharIndexFromPosition(clickPoint);
+
+				// Find log and packet indices
+				m_logDataClickPacketLocation = LogManager.GetPacketIndexByTextIndex(logDataClickIndex);
+
+				ContextMenu actionsMenu = CreateMenuActions(m_actionMenuItemsByPriority, m_actionByPriority, m_logDataClickPacketLocation);
+				if (actionsMenu != null)
+				{
+					actionsMenu.Show(logDataText, clickPoint);
+				}
 			}
 		}
 
@@ -1937,18 +1971,12 @@ namespace PacketLogConverter
 				return;
 			MenuItem menu = sender as MenuItem;
 			if (menu == null) return;
-			if (menu.Index > m_logActions.Count)
-				return;
-
-			// Find log and packet indices
-			PacketLocation packetLocation = LogManager.GetPacketIndexByTextIndex(m_logDataClickIndex);
-			if (PacketLocation.UNKNOWN == packetLocation)
-				return;
+			ILogAction action = (ILogAction) m_actionByMenuItem[menu];
+			if (action == null) return;
 
 			try
 			{
-				ILogAction action = (ILogAction)m_logActions[menu.Index];
-				if (action.Activate(this, packetLocation))
+				if (action.Activate(this, m_logDataClickPacketLocation))
 					UpdateLogDataTab();
 			}
 			catch (Exception e1)
@@ -2276,7 +2304,7 @@ namespace PacketLogConverter
 				int oldFilters = FilterManager.FiltersCount;
 
 				ILogFilter filter = (ILogFilter)m_logFilters[index];
-				update |= filter.ActivateFilter(); // changes to the filter
+				update |= filter.ActivateFilter(this); // changes to the filter
 
 				update |= oldFilters != FilterManager.FiltersCount;
 

@@ -130,6 +130,7 @@
     <Compile Include="LogActionAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogActions\AbstractEnabledAction.cs" />
     <Compile Include="LogActions\InfoWindowForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,6 +153,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogActions\ShowSlotItemInfo.cs" />
+    <Compile Include="LogActions\ShowPacketContextAction.cs" />
     <Compile Include="LogDataStatistics.cs" />
     <Compile Include="LogFilterAttribute.cs">
       <SubType>Code</SubType>

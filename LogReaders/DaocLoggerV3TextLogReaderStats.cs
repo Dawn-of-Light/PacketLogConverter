@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -22,7 +23,7 @@ namespace PacketLogConverter.LogReaders
 			MainForm.Instance.FilesLoaded += new MainForm.LogReaderDelegate(ShowReport);
 		}
 
-		public ICollection ReadLog(Stream stream, ProgressCallback callback)
+		public ICollection<Packet> ReadLog(Stream stream, ProgressCallback callback)
 		{
 			int counter = 0;
 			string line = null;
@@ -146,8 +147,8 @@ namespace PacketLogConverter.LogReaders
 				}
 				Log.Info(ignored.ToString());
 			}
-			
-			return new ArrayList(0);
+
+			return new List<Packet>(0);
 		}
 		
 		private void ShowReport(ILogReader reader)

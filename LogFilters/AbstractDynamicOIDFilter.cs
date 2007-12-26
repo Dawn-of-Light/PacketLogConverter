@@ -15,6 +15,7 @@ namespace PacketLogConverter.LogFilters
 		private DynamicFilterHelper m_filterHelper;
 		private ushort m_oid;
 		private ushort m_sid;
+		private IExecutionContext m_context;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:AbstractDynamicOIDFilter"/> class.
@@ -120,6 +121,19 @@ namespace PacketLogConverter.LogFilters
 		}
 
 		/// <summary>
+		/// Activates the filter.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <returns>
+		/// 	<code>true</code> if filter has changed and log should be updated.
+		/// </returns>
+		public override bool ActivateFilter(IExecutionContext context)
+		{
+			m_context = context;
+			return base.ActivateFilter(context);
+		}
+
+		/// <summary>
 		/// Gets a value indicating whether this instance is active.
 		/// </summary>
 		/// <value>
@@ -130,7 +144,7 @@ namespace PacketLogConverter.LogFilters
 			set
 			{
 				base.IsFilterActive = value;
-				m_filterHelper.SetEventHandlers(value);
+				m_filterHelper.SetEventHandlers(m_context, value);
 			}
 		}
 

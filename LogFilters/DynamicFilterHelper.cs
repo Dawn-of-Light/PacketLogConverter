@@ -16,22 +16,23 @@ namespace PacketLogConverter.LogFilters
 		/// <summary>
 		/// Sets the events.
 		/// </summary>
+		/// <param name="context">The context.</param>
 		/// <param name="add">if set to <c>true</c> events are added, removed otherwise.</param>
-		public void SetEventHandlers(bool add)
+		public void SetEventHandlers(IExecutionContext context, bool add)
 		{
 			if (add)
 			{
 				// Add all events
-				FilterManager.FilteringStartedEvent += Start;
-				FilterManager.FilteringPacketEvent += ProcessPacket;
-				FilterManager.FilteringStoppedEvent += Stop;
+				context.FilterManager.FilteringStartedEvent += Start;
+				context.FilterManager.FilteringPacketEvent += ProcessPacket;
+				context.FilterManager.FilteringStoppedEvent += Stop;
 			}
 			else
 			{
 				// Remove all events
-				FilterManager.FilteringStoppedEvent -= Stop;
-				FilterManager.FilteringPacketEvent -= ProcessPacket;
-				FilterManager.FilteringStartedEvent -= Start;
+				context.FilterManager.FilteringStoppedEvent -= Stop;
+				context.FilterManager.FilteringPacketEvent -= ProcessPacket;
+				context.FilterManager.FilteringStartedEvent -= Start;
 			}
 		}
 	}

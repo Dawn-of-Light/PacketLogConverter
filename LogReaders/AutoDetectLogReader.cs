@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -11,7 +11,7 @@ namespace PacketLogConverter.LogReaders
 	[LogReader("autodetect log type", "*.log;*.plc", Priority=100000)]
 	public class AutoDetectLogReader : ILogReader
 	{
-		public ICollection ReadLog(Stream stream, ProgressCallback callback)
+		public ICollection<Packet> ReadLog(Stream stream, ProgressCallback callback)
 		{
 			string line;
 			ILogReader reader = null;

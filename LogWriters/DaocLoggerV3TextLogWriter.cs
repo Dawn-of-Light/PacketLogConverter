@@ -33,7 +33,7 @@ namespace PacketLogConverter.LogWriters
 							callback(i, log.Count - 1);
 
 						Packet packet = log[i];
-						if (FilterManager.IsPacketIgnored(packet))
+						if (context.FilterManager.IsPacketIgnored(packet))
 							continue;
 
 						header.Length = 1;

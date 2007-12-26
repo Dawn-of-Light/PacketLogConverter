@@ -8,7 +8,7 @@ namespace PacketLogConverter.LogActions
 	/// Show the raw packet data
 	/// </summary>
 	[LogAction("Show raw data", Priority=500)]
-	public class ShowRawData : ILogAction
+	public class ShowRawData : AbstractEnabledAction
 	{
 		/// <summary>
 		/// Activates a log action.
@@ -16,7 +16,7 @@ namespace PacketLogConverter.LogActions
 		/// <param name="context">The context.</param>
 		/// <param name="selectedPacket">The selected packet.</param>
 		/// <returns><c>true</c> if log data tab should be updated.</returns>
-		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
+		public override bool Activate(IExecutionContext context, PacketLocation selectedPacket)
 		{
 			Packet pak = context.LogManager.GetPacket(selectedPacket);
 			StringBuilder str = new StringBuilder();

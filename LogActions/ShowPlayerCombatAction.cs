@@ -10,7 +10,7 @@ namespace PacketLogConverter.LogActions
 	/// Shows all known Oids before selected packet
 	/// </summary>
 	[LogAction("Show combat statistics")]
-	public class ShowPlayerCombatAction : ILogAction
+	public class ShowPlayerCombatAction : AbstractEnabledAction
 	{
 		#region ILogAction Members
 
@@ -20,7 +20,7 @@ namespace PacketLogConverter.LogActions
 		/// <param name="context">The context.</param>
 		/// <param name="selectedPacket">The selected packet.</param>
 		/// <returns><c>true</c> if log data tab should be updated.</returns>
-		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
+		public override bool Activate(IExecutionContext context, PacketLocation selectedPacket)
 		{
 			PacketLog log = context.LogManager.Logs[selectedPacket.LogIndex];
 			Hashtable plrInfo = MakeCombatList(selectedPacket.PacketIndex, log);

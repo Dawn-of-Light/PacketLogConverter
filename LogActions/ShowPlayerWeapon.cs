@@ -8,7 +8,7 @@ namespace PacketLogConverter.LogActions
 	/// Shows known player info before selected packet
 	/// </summary>
 	[LogAction("Show player weapon", Priority=950)]
-	public class ShowPlayerWeaponAction : ILogAction
+	public class ShowPlayerWeaponAction : AbstractEnabledAction
 	{
 		#region ILogAction Members
 
@@ -18,7 +18,7 @@ namespace PacketLogConverter.LogActions
 		/// <param name="context">The context.</param>
 		/// <param name="selectedPacket">The selected packet.</param>
 		/// <returns><c>true</c> if log data tab should be updated.</returns>
-		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
+		public override bool Activate(IExecutionContext context, PacketLocation selectedPacket)
 		{
 			PacketLog log = context.LogManager.Logs[selectedPacket.LogIndex];
 			int selectedIndex = selectedPacket.PacketIndex;

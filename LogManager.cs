@@ -55,6 +55,21 @@ namespace PacketLogConverter
 		}
 
 		/// <summary>
+		/// Gets the packet log.
+		/// </summary>
+		/// <param name="logIndex">Index of the log.</param>
+		/// <returns>Packet log if it exists, <c>null</c> otherwise.</returns>
+		public PacketLog GetPacketLog(int logIndex)
+		{
+			PacketLog log = null;
+			if (0 <= logIndex && m_logs.Count > logIndex)
+			{
+				log = m_logs[logIndex];
+			}
+			return log;
+		}
+
+		/// <summary>
 		/// Fires the packet logs changed event.
 		/// </summary>
 		private void FirePacketLogsChangedEvent()

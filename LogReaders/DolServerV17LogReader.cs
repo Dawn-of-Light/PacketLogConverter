@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -11,9 +12,9 @@ namespace PacketLogConverter.LogReaders
 	[LogReader("DOL Server v1.7 logs", "*.log", Priority=8000)]
 	public class DolServerV17LogReader : ILogReader
 	{
-		public ICollection ReadLog(Stream stream, ProgressCallback callback)
+		public ICollection<Packet> ReadLog(Stream stream, ProgressCallback callback)
 		{
-			ArrayList packets = new ArrayList();
+			List<Packet> packets = new List<Packet>();
 
 			int index = 0;
 			int currentVersion = -1;

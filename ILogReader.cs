@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace PacketLogConverter
@@ -8,6 +8,12 @@ namespace PacketLogConverter
 	/// </summary>
 	public interface ILogReader
 	{
-		ICollection ReadLog(Stream stream, ProgressCallback callback);
+		/// <summary>
+		/// Reads the log.
+		/// </summary>
+		/// <param name="stream">The stream.</param>
+		/// <param name="callback">The callback.</param>
+		/// <returns>Found packets.</returns>
+		ICollection<Packet> ReadLog(Stream stream, ProgressCallback callback);
 	}
 }

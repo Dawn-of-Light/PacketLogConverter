@@ -1,4 +1,8 @@
 ------------------------------------------------------------------------------
+Noret (26.Dec.2007):
+- Added "Show packet context" action which opens another window with 100+- packets around the selected one
+- Action context menu is now context-sensitive - actions decide if they should appear in the list
+------------------------------------------------------------------------------
 Noret (24.Dec.2007):
 - Implemented (proper) support for multiple open logs
 - Optimizing memory usage
