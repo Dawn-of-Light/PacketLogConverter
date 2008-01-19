@@ -31,7 +31,7 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			unk1 = ReadShort();
-			unk2 = ReadShort();
+			unk2 = ReadShortLowEndian();
 		}
 
 		/// <summary>

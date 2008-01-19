@@ -28,22 +28,20 @@ namespace PacketLogConverter.LogPackets
 			str.AppendFormat("flagSpeedData:0x{0:X4} heading:0x{1:X4} spellLevel:{2,-2} spellLineIndex:{3} unk1:0x{4:X4}", flagSpeedData, heading, spellLevel, spellLineIndex, unk1);
 			if (flagsDescription)
 			{
-				string speed = (flagSpeedData & 0x1FF).ToString();
-				if ((flagSpeedData & 0x200) == 0x200)
-					speed = "-" + speed;
+				str.AppendFormat(" (speed:{0}{1}", (flagSpeedData & 0x200) == 0x200 ? "-" : "", flagSpeedData & 0x1FF);
 				if ((flagSpeedData & 0x400) == 0x400)
-					speed += ",UNKx0400";
+					str.Append(",UNKx0400");
 				if ((flagSpeedData & 0x800) == 0x800)
-					speed += ",PetInView";
+					str.Append(",PetInView");
 				if ((flagSpeedData & 0x1000) == 0x1000)
-					speed += ",GTinView";
+					str.Append(",GTinView");
 				if ((flagSpeedData & 0x2000) == 0x2000)
-					speed += ",CheckTargetInView";
+					str.Append(",CheckTargetInView");
 				if ((flagSpeedData & 0x4000) == 0x4000)
-					speed += ",Strafe";// Swim under water
+					str.Append(",Strafe");// Swim under water
 				if ((flagSpeedData & 0x8000) == 0x8000)
-					speed += ",TargetInView";
-				str.AppendFormat(" (speed:{0})", speed);
+					str.Append(",TargetInView");
+				str.Append(')');
 			}
 
 			return str.ToString();

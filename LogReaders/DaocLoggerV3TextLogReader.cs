@@ -70,8 +70,8 @@ namespace PacketLogConverter.LogReaders
 								}
 								else
 								{
-									pak = PacketManager.CreatePacket(log.Version, code, dir, dataBytesCount);
-									pak.Code = code;
+									pak = PacketManager.CreatePacket(log.Version, (byte)code, dir, dataBytesCount);
+									pak.Code = (byte)code;
 									pak.Direction = dir;
 									pak.Protocol = prot;
 									pak.Time = time;

@@ -14,10 +14,8 @@ namespace PacketLogConverter.LogActions
 		/// </summary>
 		/// <param name="context">The context.</param>
 		/// <param name="selectedPacket">The selected packet.</param>
-		/// <returns>
-		/// 	<c>true</c> if the action is enabled; otherwise, <c>false</c>.
-		/// </returns>
-		public virtual bool IsEnabled(IExecutionContext context, PacketLocation selectedPacket)
+		/// <returns>Always <c>true</c>.</returns>
+		public bool IsEnabled(IExecutionContext context, PacketLocation selectedPacket)
 		{
 			return true;
 		}

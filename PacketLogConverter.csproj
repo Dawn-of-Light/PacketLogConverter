@@ -140,6 +140,8 @@
     <Compile Include="LogActions\ShowKnownOidAction.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogActions\ShowObjectKnownInfoAction.cs" />
+    <Compile Include="LogActions\ShowObjectSamePacketsAction.cs" />
     <Compile Include="LogActions\ShowPlayerCombatAction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -154,6 +156,7 @@
     </Compile>
     <Compile Include="LogActions\ShowSlotItemInfo.cs" />
     <Compile Include="LogActions\ShowPacketContextAction.cs" />
+    <Compile Include="LogActions\ShowUseSkillInfo.cs" />
     <Compile Include="LogDataStatistics.cs" />
     <Compile Include="LogFilterAttribute.cs">
       <SubType>Code</SubType>

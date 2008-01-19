@@ -18,10 +18,10 @@ namespace PacketLogConverter.LogPackets
 		protected uint unk2;
 		protected uint unk3;
 		protected uint AunkB;
-		protected uint Aunk1;//client signature or CRC
-		protected uint Aunk2;
-		protected uint Aunk3;
-		protected uint Aunk4;
+		protected uint aunk1;//client signature or CRC
+		protected uint aunk2;
+		protected uint aunk3;
+		protected uint aunk4;
 		protected ushort unkS1;
 		protected byte unkB1;
 		protected byte cryptKeyRequests;
@@ -35,6 +35,10 @@ namespace PacketLogConverter.LogPackets
 		public string ClientAccountPassword { get { return clientAccountPassword; } }
 		public string ClientAccountName { get { return clientAccountName; } }
 		public byte CryptKeyRequests { get { return cryptKeyRequests; } }
+		public uint Signature { get { return aunk1; } }
+		public uint Aunk2 { get { return aunk2; } }
+		public uint Aunk3 { get { return aunk3; } }
+		public uint Aunk4 { get { return aunk4; } }
 
 		#endregion
 
@@ -54,7 +58,7 @@ namespace PacketLogConverter.LogPackets
 				}
 				str.AppendFormat(" unkB1:0x{0:X2} unkS1:0x{1:X4}", unkB1, unkS1);
 				str.Append("\n\tinfo different with and without logger:");
-				str.AppendFormat("\n\tAunk1:0x{0:X8} 0x{1:X8} 0x{2:X8} 0x{3:X8}", Aunk1, Aunk2, Aunk3, Aunk4);
+				str.AppendFormat("\n\tAunk1:0x{0:X8} 0x{1:X8} 0x{2:X8} 0x{3:X8}", aunk1, aunk2, aunk3, aunk4);
 				str.AppendFormat("\n\tunk1 :0x{0:X8} unk2:0x{1:X8} unk3:0x{2:X8}", unk1, unk2, unk3);
 				str.AppendFormat("\n\tEDI: 0x{0:X8} stack?:0x{1:X8}", edi, AunkB);
 			}
@@ -89,10 +93,10 @@ namespace PacketLogConverter.LogPackets
 			clientVersionBuild = ReadByte();
 			clientAccountPassword = ReadString(19);
 			unk3 = ReadIntLowEndian();
-			Aunk1 = ReadIntLowEndian();
-			Aunk2 = ReadIntLowEndian();
-			Aunk3 = ReadIntLowEndian();
-			Aunk4 = ReadIntLowEndian();
+			aunk1 = ReadIntLowEndian();
+			aunk2 = ReadIntLowEndian();
+			aunk3 = ReadIntLowEndian();
+			aunk4 = ReadIntLowEndian();
 			unk1 = ReadIntLowEndian();
 			edi = ReadIntLowEndian();
 			AunkB = ReadIntLowEndian();

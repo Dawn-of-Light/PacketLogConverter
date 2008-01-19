@@ -14,10 +14,35 @@ namespace PacketLogConverter.LogActions
 
 		#region ILogAction Members
 
-		public bool Activate(PacketLog log, int selectedIndex)
+		/// <summary>
+		/// Determines whether the action is enabled.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="selectedPacket">The selected packet.</param>
+		/// <returns>
+		/// 	<c>true</c> if the action is enabled; otherwise, <c>false</c>.
+		/// </returns>
+		public bool IsEnabled(IExecutionContext context, PacketLocation selectedPacket)
 		{
-			ushort[] objectIds = null;
+			Packet pak = context.LogManager.GetPacket(selectedPacket);
+			if (pak is IObjectIdPacket)
+				return true;
+			return false;
+		}
+
+		/// <summary>
+		/// Activates a log action.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="selectedPacket">The selected packet.</param>
+		/// <returns><c>true</c> if log data tab should be updated.</returns>
+		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
+		{
+			PacketLog log = context.LogManager.Logs[selectedPacket.LogIndex];
+			int selectedIndex = selectedPacket.PacketIndex;
+
 			Packet originalPak = log[selectedIndex];
+			ushort[] objectIds = null;
 			if (originalPak is IObjectIdPacket)
 				objectIds = (originalPak as IObjectIdPacket).ObjectIds;
 			StringBuilder str = new StringBuilder();

@@ -45,7 +45,7 @@ namespace PacketLogConverter.LogReaders
 								pak = new Packet(data.Length);
 								pak.Direction = ePacketDirection.ClientToServer;
 								pak.Protocol = ePacketProtocol.TCP;
-								pak.Code = code;
+								pak.Code = (byte)code;
 								pak.Time = ParseTime(line);
 								pak.Write(data, 0, data.Length);
 							}
@@ -61,7 +61,7 @@ namespace PacketLogConverter.LogReaders
 								pak = new Packet(data.Length - 3);
 								pak.Protocol = ePacketProtocol.TCP; // can't detect protocol
 								pak.Direction = ePacketDirection.ServerToClient;
-								pak.Code = code;
+								pak.Code = (byte)code;
 								pak.Time = ParseTime(line);
 								pak.Write(data, 3, data.Length - 3);
 							}

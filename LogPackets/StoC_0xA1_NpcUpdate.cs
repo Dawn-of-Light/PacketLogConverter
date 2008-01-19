@@ -60,17 +60,17 @@ namespace PacketLogConverter.LogPackets
 				npcOID, speed, speedZ, heading, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, targetZoneId, targetZoneX, targetZoneY, targetZoneZ, healthPercent, targetOID, flags, speedZ * 4);
 			if (flagsDescription)
 			{
-				string flag = string.Format("realm:{0}",(flags >> 6) & 3);
+				str.AppendFormat(" (realm:{0}", (flags >> 6) & 3);
 				if ((flags & 0x01) == 0x01)
-					flag += ",-DOR";
+					str.Append(",-DOR");
 				if ((flags & 0x02) == 0x02)
-					flag += ",-NON";
+					str.Append(",-NON");
 				// 0x04 - zone bit 0x100 , 0x08 - targetZone bit 0x100
 				if ((flags & 0x10) == 0x10)
-					flag += ",Underwater";
+					str.Append(",Underwater");
 				if ((flags & 0x20) == 0x20)
-					flag += ",Fly";
-				str.AppendFormat(" ({0})", flag);
+					str.Append(",Fly");
+				str.Append(')');
 /* 				if (targetZoneX != 0 || targetZoneY !=0 || targetZoneZ !=0)
 				{
 					int diffZ = (targetZoneZ - currentZoneZ);

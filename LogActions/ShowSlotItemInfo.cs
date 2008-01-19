@@ -10,9 +10,25 @@ namespace PacketLogConverter.LogActions
 	/// Shows use skill info
 	/// </summary>
 	[LogAction("Show slot item info", Priority=980)]
-	public class ShowMoveItemInfoAction : AbstractEnabledAction
+	public class ShowMoveItemInfoAction : ILogAction
 	{
 		#region ILogAction Members
+
+		/// <summary>
+		/// Determines whether the action is enabled.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="selectedPacket">The selected packet.</param>
+		/// <returns>
+		/// 	<c>true</c> if the action is enabled; otherwise, <c>false</c>.
+		/// </returns>
+		public bool IsEnabled(IExecutionContext context, PacketLocation selectedPacket)
+		{
+			Packet originalPak = context.LogManager.GetPacket(selectedPacket);
+			if (!(originalPak is CtoS_0xDD_PlayerMoveItemRequest || originalPak is CtoS_0x79_SellItem || originalPak is CtoS_0xE0_AppraiseItem || originalPak is CtoS_0x71_UseItem || originalPak is CtoS_0x80_DestroyInventoryItem || originalPak is CtoS_0x41_UseNewQuestItem || originalPak is CtoS_0x0C_HouseItemPlacementRequest || originalPak is CtoS_0xEB_ModifyTradeWindow || originalPak is StoC_0xEA_TradeWindow || originalPak is CtoS_0xD8_DetailDisplayRequest)) // activate condition
+				return false;
+			return true;
+		}
 
 		/// <summary>
 		/// Activates a log action.
@@ -20,7 +36,7 @@ namespace PacketLogConverter.LogActions
 		/// <param name="context">The context.</param>
 		/// <param name="selectedPacket">The selected packet.</param>
 		/// <returns><c>true</c> if log data tab should be updated.</returns>
-		public override bool Activate(IExecutionContext context, PacketLocation selectedPacket)
+		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
 		{
 			PacketLog log = context.LogManager.Logs[selectedPacket.LogIndex];
 			int selectedIndex = selectedPacket.PacketIndex;

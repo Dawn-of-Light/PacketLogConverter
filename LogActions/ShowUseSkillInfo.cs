@@ -10,18 +10,37 @@ namespace PacketLogConverter.LogActions
 	/// Shows use skill info
 	/// </summary>
 	[LogAction("Show use skill info", Priority=980)]
-	public class ShowUseSkillInfoAction: ILogAction
+	public class ShowUseSkillInfoAction : ILogAction
 	{
-		TimeSpan zeroTimeSpan = new TimeSpan(0);
 		#region ILogAction Members
+
 		/// <summary>
-		/// Activate log action
+		/// Determines whether the action is enabled.
 		/// </summary>
-		/// <param name="log">The current log</param>
-		/// <param name="selectedIndex">The selected packet index</param>
-		/// <returns>True if log data tab should be updated</returns>
-		public virtual bool Activate(PacketLog log, int selectedIndex)
+		/// <param name="context">The context.</param>
+		/// <param name="selectedPacket">The selected packet.</param>
+		/// <returns>
+		/// 	<c>true</c> if the action is enabled; otherwise, <c>false</c>.
+		/// </returns>
+		public bool IsEnabled(IExecutionContext context, PacketLocation selectedPacket)
 		{
+			Packet originalPak = context.LogManager.GetPacket(selectedPacket);
+			if (!(originalPak is CtoS_0xBB_UseSkill || originalPak is CtoS_0x7D_UseSpellList  || originalPak is CtoS_0xD8_DetailDisplayRequest)) // activate condition
+				return false;
+			return true;
+		}
+
+		/// <summary>
+		/// Activates a log action.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <param name="selectedPacket">The selected packet.</param>
+		/// <returns><c>true</c> if log data tab should be updated.</returns>
+		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
+		{
+			PacketLog log = context.LogManager.Logs[selectedPacket.LogIndex];
+			int selectedIndex = selectedPacket.PacketIndex;
+
 			Packet originalPak = log[selectedIndex];
 			if (!(originalPak is CtoS_0xBB_UseSkill || originalPak is CtoS_0x7D_UseSpellList  || originalPak is CtoS_0xD8_DetailDisplayRequest)) // activate condition
 				return false;
@@ -54,7 +73,7 @@ namespace PacketLogConverter.LogActions
 			ushort spellIcon = 0xFFFF;
 			string spellName = "UNKNOWN";
 			bool searchInSpellEffects = false;
-			str.Append(originalPak.ToHumanReadableString(zeroTimeSpan, true));
+			str.Append(originalPak.ToHumanReadableString(TimeSpan.Zero, true));
 			str.Append('\n');
 			for (int i = selectedIndex; i >= 0 ; i--)
 			{
@@ -146,7 +165,7 @@ namespace PacketLogConverter.LogActions
 								{
 									StoC_0x7F_UpdateIcons.Effect effect = effectsPak.Effects[j];
 									str.Append('\n');
-									str.Append(pak.ToHumanReadableString(zeroTimeSpan, true));
+									str.Append(pak.ToHumanReadableString(TimeSpan.Zero, true));
 									str.Append('\n');
 									spellIcon = effect.icon;
 									additionStringCount += (2 + effectsPak.EffectsCount);
@@ -186,7 +205,7 @@ namespace PacketLogConverter.LogActions
 					if (animatePak != null && animatePak.SpellId == icon)
 					{
 						str.Append('\n');
-						str.Append(pak.ToHumanReadableString(zeroTimeSpan, true));
+						str.Append(pak.ToHumanReadableString(TimeSpan.Zero, true));
 						str.Append('\n');
 						additionStringCount += 3;
 						break;
@@ -202,7 +221,7 @@ namespace PacketLogConverter.LogActions
 					if (effectPak != null && effectPak.SpellId == icon)
 					{
 						str.Append('\n');
-						str.Append(pak.ToHumanReadableString(zeroTimeSpan, true));
+						str.Append(pak.ToHumanReadableString(TimeSpan.Zero, true));
 						str.Append('\n');
 						additionStringCount += 3;
 						break;
@@ -215,7 +234,7 @@ namespace PacketLogConverter.LogActions
 				if (pak is StoC_0xC4_CustomTextWindow && (pak as StoC_0xC4_CustomTextWindow).Caption == spellName)
 				{
 					str.Append('\n');
-					str.Append(pak.ToHumanReadableString(zeroTimeSpan, true));
+					str.Append(pak.ToHumanReadableString(TimeSpan.Zero, true));
 					additionStringCount += ((pak as StoC_0xC4_CustomTextWindow).Lines.Length + 4);
 					break;
 				}

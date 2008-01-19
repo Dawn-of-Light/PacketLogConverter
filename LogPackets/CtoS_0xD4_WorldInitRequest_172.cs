@@ -19,7 +19,8 @@ namespace PacketLogConverter.LogPackets
 			model = ReadShort();
 			unk4 = ReadByte();
 			slot = ReadByte();
-			unk5 = ReadInt();
+			unk5 = ReadShortLowEndian();
+			unk6 = ReadShortLowEndian();
 		}
 
 		/// <summary>

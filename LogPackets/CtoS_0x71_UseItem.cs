@@ -24,20 +24,18 @@ namespace PacketLogConverter.LogPackets
 			str.AppendFormat("flagSpeedData:0x{0:X4} slot:{1} type:{2}", flagSpeedData, slot, type);
 			if (flagsDescription)
 			{
-				string speed = (flagSpeedData & 0x1FF).ToString();
-				if ((flagSpeedData & 0x200) == 0x200)
-					speed = "-" + speed;
+				str.AppendFormat(" (speed:{0}{1}", (flagSpeedData & 0x200) == 0x200 ? "-" : "", flagSpeedData & 0x1FF);
 				if ((flagSpeedData & 0x800) == 0x800)
-					speed += ",PetInView";
+					str.Append(",PetInView");
 				if ((flagSpeedData & 0x1000) == 0x1000)
-					speed += ",GTinView";
+					str.Append(",GTinView");
 				if ((flagSpeedData & 0x4000) == 0x4000)
-					speed += ",Strafe";// Swim under water
+					str.Append(",Strafe");// Swim under water
 				if ((flagSpeedData & 0x2000) == 0x2000)
-					speed += ",CheckTargetInView";
+					str.Append(",CheckTargetInView");
 				if ((flagSpeedData & 0x8000) == 0x8000)
-					speed += ",TargetInView";
-				str.AppendFormat(" (speed:{0})", speed);
+					str.Append(",TargetInView");
+				str.Append(')');
 			}
 
 			return str.ToString();

@@ -58,22 +58,22 @@ namespace PacketLogConverter.LogPackets
 			                 oid, speed, heading, x, y, z, speedZ, model, size, level, flags, maxStick, name, guildName, unk1);
 			if (flagsDescription)
 			{
-				string flag = string.Format("realm:{0}",(flags >> 6) & 3);
+				str.AppendFormat(" (realm:{0}", (flags >> 6) & 3);
 				if ((flags & 0x01) == 0x01)
-					flag += ",Ghost";
+					str.Append(",Ghost");
 				if ((flags & 0x02) == 0x02)
-					flag += ",Inventory";
+					str.Append(",Inventory");
 				if ((flags & 0x04) == 0x04)
-					flag += ",UNK_0x04";
+					str.Append(",UNK_0x04");
 				if ((flags & 0x08) == 0x08)
-					flag += ",LongRangeVisible"; // ~5550
+					str.Append(",LongRangeVisible"); // ~5550
 				if ((flags & 0x10) == 0x10)
-					flag += ",Peace";
+					str.Append(",Peace");
 				if ((flags & 0x20) == 0x20)
-					flag += ",Fly";
+					str.Append(",Fly");
 				if ((model & 0x8000) == 0x8000)
-					flag += ",Underwater";
-				str.AppendFormat(" ({0})", flag);
+					str.Append(",Underwater");
+				str.Append(')');
 			}
 			return str.ToString();
 		}

@@ -24,12 +24,12 @@ namespace PacketLogConverter
 			return (LogPacketAttribute) m_attributeByType[t];
 		}
 
-		public static Packet CreatePacket(float version, int code, ePacketDirection dir)
+		public static Packet CreatePacket(float version, byte code, ePacketDirection dir)
 		{
 			return CreatePacket(version, code, dir, 0);
 		}
 
-		public static Packet CreatePacket(float version, int code, ePacketDirection dir, int capacity)
+		public static Packet CreatePacket(float version, byte code, ePacketDirection dir, int capacity)
 		{
 			LogPacketData packetData = GetPacketData(version, code, dir);
 			return CreatePacket(packetData, capacity);
@@ -66,7 +66,7 @@ namespace PacketLogConverter
 			}
 		}
 
-		private static LogPacketData GetPacketData(float version, int code, ePacketDirection dir)
+		private static LogPacketData GetPacketData(float version, byte code, ePacketDirection dir)
 		{
 			SortedList typesByVersion =
 				dir == ePacketDirection.ClientToServer

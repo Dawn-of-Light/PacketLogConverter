@@ -19,7 +19,7 @@ namespace PacketLogConverter.LogPackets
 					str.AppendFormat("|0x{0:X8}", AunkI[i]);
 			}
 			str.AppendFormat("|unkB1|0x{0:X2}|unkS1|0x{1:X4}", unkB1, unkS1);
-			str.AppendFormat("|Aunk1|0x{0:X8}|0x{1:X8}|0x{2:X8}|0x{3:X8}", Aunk1, Aunk2, Aunk3, Aunk4);
+			str.AppendFormat("|Aunk1|0x{0:X8}|0x{1:X8}|0x{2:X8}|0x{3:X8}", aunk1, aunk2, aunk3, aunk4);
 			str.AppendFormat("|unk1|0x{0:X8}|unk2|0x{1:X8}|unk3|0x{2:X8}", unk1, unk2, unk3);
 			str.AppendFormat("|EDI|0x{0:X8}|stack?|0x{1:X8}|", edi, AunkB);
 

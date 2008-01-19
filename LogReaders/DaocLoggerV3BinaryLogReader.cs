@@ -80,8 +80,8 @@ namespace PacketLogConverter.LogReaders
 							TimeSpan time;
 							dataBytesCount = DaocLoggerV3TextLogReader.ParseHeader(header.ToString(), out code, out dir, out prot, out time);
 
-							pak = PacketManager.CreatePacket(log.Version, code, dir, dataBytesCount);
-							pak.Code = code;
+							pak = PacketManager.CreatePacket(log.Version, (byte)code, dir, dataBytesCount);
+							pak.Code = (byte)code;
 							pak.Direction = dir;
 							pak.Protocol = prot;
 							pak.Time = time;

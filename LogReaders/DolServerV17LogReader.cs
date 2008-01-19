@@ -45,7 +45,7 @@ namespace PacketLogConverter.LogReaders
 								continue;
 							pak = new Packet(data.Length - 5);
 							pak.Protocol = ePacketProtocol.UDP;
-							pak.Code = data[4];
+							pak.Code = (byte)data[4];
 							pak.Direction = ePacketDirection.ServerToClient;
 							pak.Time = ParseTime(line);
 							pak.Write(data, 5, data.Length - 5);
@@ -58,7 +58,7 @@ namespace PacketLogConverter.LogReaders
 								continue;
 							pak = new Packet(data.Length - 3);
 							pak.Protocol = ePacketProtocol.TCP;
-							pak.Code = data[2];
+							pak.Code = (byte)data[2];
 							pak.Direction = ePacketDirection.ServerToClient;
 							pak.Time = ParseTime(line);
 							pak.Write(data, 3, data.Length - 3);
@@ -73,7 +73,7 @@ namespace PacketLogConverter.LogReaders
 								pak = new Packet(data.Length);
 								pak.Protocol = ePacketProtocol.TCP; // can't detect protocol
 								pak.Direction = ePacketDirection.ClientToServer;
-								pak.Code = code;
+								pak.Code = (byte)code;
 								pak.Time = ParseTime(line);
 								pak.Write(data, 0, data.Length);
 							}
@@ -86,6 +86,13 @@ namespace PacketLogConverter.LogReaders
 						else if ((index = line.IndexOf("Client crash (Version")) >= 0)
 						{
 							int len = "Client crash (Version".Length;
+							if (!Util.ParseDecFast(line, index + len, 3, out currentVersion))
+								currentVersion = -1;
+							continue;
+						}
+						else if ((index = line.IndexOf("templogger - Version")) >= 0)
+						{
+							int len = "templogger - Version".Length;
 							if (!Util.ParseDecFast(line, index + len, 3, out currentVersion))
 								currentVersion = -1;
 							continue;

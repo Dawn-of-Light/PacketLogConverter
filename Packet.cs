@@ -41,7 +41,7 @@ namespace PacketLogConverter
 	{
 		public const int MAX_CODE = byte.MaxValue+1;
 
-		private int                m_code;
+		private byte               m_code;
 		private ePacketDirection   m_direction;
 		private ePacketProtocol    m_protocol;
 		private TimeSpan           m_time;
@@ -56,7 +56,7 @@ namespace PacketLogConverter
 		{
 		}
 
-		public int Code
+		public byte Code
 		{
 			get { return m_code; }
 			set { m_code = value; }

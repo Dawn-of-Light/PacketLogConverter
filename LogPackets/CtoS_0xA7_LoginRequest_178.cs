@@ -20,10 +20,10 @@ namespace PacketLogConverter.LogPackets
 			clientAccountPassword = ReadString(19);
 			unk1 = ReadIntLowEndian();
 			unk2 = ReadIntLowEndian();
-			Aunk1 = ReadIntLowEndian();
-			Aunk2 = ReadIntLowEndian();
-			Aunk3 = ReadIntLowEndian();
-			Aunk4 = ReadIntLowEndian();
+			aunk1 = ReadIntLowEndian();
+			aunk2 = ReadIntLowEndian();
+			aunk3 = ReadIntLowEndian();
+			aunk4 = ReadIntLowEndian();
 			unk3 = ReadIntLowEndian();
 //			Skip(32); cryptKeyRequests; Skip(18);
 			edi = ReadIntLowEndian();

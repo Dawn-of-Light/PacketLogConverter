@@ -65,7 +65,7 @@ namespace PacketLogConverter.LogReaders
 						continue;
 					}
 					
-					p.Code = s.ReadUInt16(); // 2 bytes
+					p.Code = (byte)s.ReadUInt16(); // 2 bytes
 					p.Direction = (ePacketDirection) s.ReadByte(); // 1 byte
 					p.Protocol = (ePacketProtocol) s.ReadByte(); // 1 byte
 					p.Time = new TimeSpan(s.ReadInt64()); // 8 bytes

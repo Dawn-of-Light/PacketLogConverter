@@ -31,40 +31,40 @@ namespace PacketLogConverter.LogPackets
 			                 oid, speed, heading, x, y, z, speedZ, model, size, level & 0x7F, flags, maxStick, flag2, unk1_171, unk2_171, name, guildName, unk1);
 			if (flagsDescription)
 			{
-				string flag = string.Format("realm:{0}",(flags >> 6) & 3);
+				str.AppendFormat(" (realm:{0}", (flags >> 6) & 3);
 				if ((flags & 0x01) == 0x01)
-					flag += ",Ghost";
+					str.Append(",Ghost");
 				if ((flags & 0x02) == 0x02)
-					flag += ",Inventory";
+					str.Append(",Inventory");
 				if ((flags & 0x04) == 0x04)
-					flag += ",UNK_0x04";
+					str.Append(",UNK_0x04");
 				if ((flags & 0x08) == 0x08)
-					flag += ",LongRangeVisible"; // ~5550
+					str.Append(",LongRangeVisible"); // ~5550
 				if ((flags & 0x10) == 0x10)
-					flag += ",Peace";
+					str.Append(",Peace");
 				if ((flags & 0x20) == 0x20)
-					flag += ",Fly";
+					str.Append(",Fly");
 				if ((model & 0x8000) == 0x8000)
-					flag += ",Underwater";
+					str.Append(",Underwater");
 				if ((flag2 & 0x01) == 0x01)
-					flag += ",-DOR";
+					str.Append(",-DOR");
 				if ((flag2 & 0x02) == 0x02)
-					flag += ",-NON";
+					str.Append(",-NON");
 				if ((flag2 & 0x04) == 0x04)
-					flag += ",Stealth";
+					str.Append(",Stealth");
 				if ((flag2 & 0x08) == 0x08)
-					flag += ",Quest";
+					str.Append(",Quest");
 				if ((flag2 & 0x10) == 0x10)
-					flag += ",F2_UNK_0x10";//waiting Finish new Quest ?
+					str.Append(",F2_UNK_0x10");//waiting Finish new Quest ?
 				if ((flag2 & 0x20) == 0x20)
-					flag += ",F2_UNK_0x20";//mb see Underwater creature from water outside ?
+					str.Append(",F2_UNK_0x20");//mb see Underwater creature from water outside ?
 				if ((flag2 & 0x40) == 0x40)
-					flag += ",F2_UNK_0x40";
+					str.Append(",F2_UNK_0x40");
 				if ((flag2 & 0x80) == 0x80)
-					flag += ",HaveOwner";
+					str.Append(",HaveOwner");
 				if ((level & 0x80) == 0x80)
-					flag += ",Statue"; // can't breath. Not in debug mode can't target and not see name. in debug mode see name, can name, see -DOR
-				str.AppendFormat(" ({0})", flag);
+					str.Append(",Statue"); // can't breath. Not in debug mode can't target and not see name. in debug mode see name, can name, see -DOR
+				str.Append(')');
 			}
 
 			return str.ToString();
