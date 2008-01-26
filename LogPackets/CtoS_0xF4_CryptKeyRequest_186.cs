@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xF4, 186, ePacketDirection.ClientToServer, "Crypt key request v186")]
@@ -11,9 +13,12 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			return "keyLenght:" + keyLenght.ToString("D") + " " + base.GetPacketDataString(flagsDescription);
+			text.Write("keyLenght:");
+			text.Write(keyLenght.ToString("D"));
+			text.Write(" ");
+			base.GetPacketDataString(text, flagsDescription);
 		}
 		/// <summary>
 		/// Initializes the packet. All data parsing must be done here.

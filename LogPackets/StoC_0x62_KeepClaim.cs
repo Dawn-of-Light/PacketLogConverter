@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -30,9 +31,8 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 			string type;
 			switch (keepType)
 			{
@@ -52,9 +52,8 @@ namespace PacketLogConverter.LogPackets
 					type = "unknown";
 					break;
 			}
-			str.AppendFormat("keepId:0x{0:X4} permission:{1} keepType:{2}({5}) to-level:{3} level:{4}",
+			text.Write("keepId:0x{0:X4} permission:{1} keepType:{2}({5}) to-level:{3} level:{4}",
 				keepId, permission, keepType, targetLevel, level, type);
-			return str.ToString();
 		}
 
 		public override void Init()

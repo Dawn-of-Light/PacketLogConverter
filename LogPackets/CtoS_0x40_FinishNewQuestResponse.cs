@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -34,38 +35,34 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("response:{0} rewardsSelected:{1} questID:0x{2:X4} objectId:0x{3:X4} unk1:0x{4:X4} unk2:0x{5:X8}\n\t",
+			text.Write("response:{0} rewardsSelected:{1} questID:0x{2:X4} objectId:0x{3:X4} unk1:0x{4:X4} unk2:0x{5:X8}\n\t",
 				response, optionalRewardsSelected, questId, objectId, unk1, unk2);
 
 			int i = 0;
 			if (i < optionalRewardsSelected)
-				str.Append("selected rewards:[");
+				text.Write("selected rewards:[");
 			bool skipFirstSeparator = true;
 			for (; i < optionalRewardsSelected; i++)
 			{
 				if (!skipFirstSeparator)
-					str.Append(',');
-				str.AppendFormat("{0}", optionalRewardsChoice[i]);
+					text.Write(',');
+				text.Write("{0}", optionalRewardsChoice[i]);
 				skipFirstSeparator = false;
 			}
 			if (i > 0)
-				str.Append("]");
+				text.Write("]");
 			if (i < 8)
-				str.Append(" not used :(");
+				text.Write(" not used :(");
 			skipFirstSeparator = true;
 			for (; i < 8; i++)
 			{
 				if (!skipFirstSeparator)
-					str.Append(',');
-				str.AppendFormat("{0}", optionalRewardsChoice[i]);
+					text.Write(',');
+				text.Write("{0}", optionalRewardsChoice[i]);
 				skipFirstSeparator = false;
 			}
-
-			return str.ToString();
 		}
 
 		/// <summary>

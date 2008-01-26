@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -27,13 +28,11 @@ namespace PacketLogConverter.LogPackets
 			success = 3,
 			masterpiece = 4,
 		};
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("unk1:0x{0:X4} result:0x{1:X4}({4}) unk2:0x{2:X8} unk3:0x{3:X8}", unk1, result, unk2, unk3, (craftResult)result);
+			text.Write("unk1:0x{0:X4} result:0x{1:X4}({4}) unk2:0x{2:X8} unk3:0x{3:X8}", unk1, result, unk2, unk3, (craftResult)result);
 
-			return str.ToString();
 		}
 
 		/// <summary>

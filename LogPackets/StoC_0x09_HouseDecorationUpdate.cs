@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -28,23 +29,20 @@ namespace PacketLogConverter.LogPackets
 			hookPoints = 3
 		}
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("houseOid:0x{0:X4} count:{1} code:0x{2:X2}", houseOid, count, decorationCode);
+			text.Write("houseOid:0x{0:X4} count:{1} code:0x{2:X2}", houseOid, count, decorationCode);
 
 			for (int i = 0; i < count; i++)
 			{
 				Furniture furniture = (Furniture)m_furnitures[i];
 				if (furniture.flagRemove)
-					str.AppendFormat("\n\tindex:{0,2} remove", furniture.index);
+					text.Write("\n\tindex:{0,2} remove", furniture.index);
 				else
-					str.AppendFormat("\n\tindex:{0,2} model:0x{1:X4} color:0x{2:X4} unk1:0x{3:X2}{4:X2} (x:{5,-5} y:{6,-5}) angle:{7,-3} size:{8,3}% surface:{9,-3} place:{10}({11})",
+					text.Write("\n\tindex:{0,2} model:0x{1:X4} color:0x{2:X4} unk1:0x{3:X2}{4:X2} (x:{5,-5} y:{6,-5}) angle:{7,-3} size:{8,3}% surface:{9,-3} place:{10}({11})",
 					furniture.index, furniture.model, furniture.color, furniture.type, furniture.unk1, furniture.x, furniture.y, furniture.angle, furniture.size, furniture.surface, furniture.place, (ePlaceType)furniture.place);
 			}
 
-			return str.ToString();
 		}
 
 		/// <summary>

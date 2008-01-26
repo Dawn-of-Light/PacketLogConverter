@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -60,41 +61,39 @@ namespace PacketLogConverter.LogPackets
 			close = 3,
 		};
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("code:{0}({8}) recieveItems:{1} repair:{2} combine:{3} unk1:{4} unk2:{5} unk3:{6} description:\"{7}\"",
+			text.Write("code:{0}({8}) recieveItems:{1} repair:{2} combine:{3} unk1:{4} unk2:{5} unk3:{6} description:\"{7}\"",
 				tradeCode, itemCount, repair, combine, unk1, unk2, unk3, tradeDescription, (tradeCommand)tradeCode);
-			str.AppendFormat("\n\tgive money (copper:{0,-2} silver:{1,-2} gold:{2,-3} platinum:{3} mithril:{4,-3})",
+			text.Write("\n\tgive money (copper:{0,-2} silver:{1,-2} gold:{2,-3} platinum:{3} mithril:{4,-3})",
 				copperPlayer, silverPlayer, goldPlayer, platinumPlayer, mithrilPlayer);
-			str.AppendFormat("\n\ttake money (copper:{0,-2} silver:{1,-2} gold:{2,-3} platinum:{3} mithril:{4,-3})",
+			text.Write("\n\ttake money (copper:{0,-2} silver:{1,-2} gold:{2,-3} platinum:{3} mithril:{4,-3})",
 				copperPartner, silverPartner, goldPartner, platinumPartner, mithrilPartner);
 
-			str.Append("\n\tgive slots:(");
+			text.Write("\n\tgive slots:(");
 			for (byte i = 0; i < slots.Length ; i++)
 			{
 				if (i > 0)
-					str.Append(',');
-				str.AppendFormat("{0,-3}", slots[i]);
+					text.Write(',');
+				text.Write("{0,-3}", slots[i]);
 			}
-			str.Append(")");
+			text.Write(")");
 
 			for (int i = 0; i < itemCount; i++)
 			{
-				WriteItemInfo(i, str, flagsDescription);
+				WriteItemInfo(i, text, flagsDescription);
 			}
 
-			return str.ToString();
 		}
 
-		protected virtual void WriteItemInfo(int i, StringBuilder str, bool flagsDescription)
+		protected virtual void WriteItemInfo(int i, TextWriter text, bool flagsDescription)
 		{
 			StoC_0x02_InventoryUpdate.Item item = items[i];
-			str.AppendFormat("\n\tslot:{0,-2} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} \"{16}\"",
+			text.Write("\n\tslot:{0,-2} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} \"{16}\"",
 				item.slot, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.name);
 			if (flagsDescription && item.name != null && item.name != "")
-				str.AppendFormat(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
+				text.Write(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
 		}
 
 		/// <summary>

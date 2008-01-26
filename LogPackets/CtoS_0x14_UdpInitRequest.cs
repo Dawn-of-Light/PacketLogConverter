@@ -1,4 +1,4 @@
-using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -7,46 +7,18 @@ namespace PacketLogConverter.LogPackets
 	public class CtoS_0x14_UdpInitRequest : Packet
 	{
 		protected string clientIp;
-		protected uint signature;
-		protected uint port;
-		protected string checkIP;
-		protected bool flagSignature;
+		protected ushort port;
 
 		#region public access properties
 
 		public string ClientIP { get { return clientIp; } }
-		public uint Port { get { return port; } }
+		public ushort Port { get { return port; } }
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.AppendFormat("client IP:\"{0}\":{1}", clientIp, port);
-			if (flagsDescription)
-			{
-				if (flagSignature)
-				{
-					str.AppendFormat(" sig:0x{0:X8}", signature);
-					if (Enum.IsDefined(typeof(signatures),(signatures)(signature & 0xFFFF)))
-						str.AppendFormat(" ({0})", (signatures)(signature & 0xFFFF));
-				}
-				else
-				{
-					str.AppendFormat(" partIP:\"{0}\"", checkIP);
-				}
-			}
-			return str.ToString();
-		}
-
-		public enum signatures: ushort
-		{
-			valid1 = 0,
-			valid2 = 10000,
-			Autokiller = 3,
-			logger351 = 0x2406,
-			logger35 = 0x2407,
-			logger30 = 0x21F7,
+			text.Write("client IP:\"{0}\":{1}", clientIp, port);
 		}
 
 		/// <summary>
@@ -54,16 +26,9 @@ namespace PacketLogConverter.LogPackets
 		/// </summary>
 		public override void Init()
 		{
-			long savePos;
 			Position = 0;
-			clientIp = ReadString(16);
-			signature = ReadIntLowEndian();
-			port = ReadInt();
-			savePos = Position;
-			Position = (1 + clientIp.Length > 12) ? 1 + clientIp.Length : 12;
-			checkIP = ReadString(8);
-			flagSignature = checkIP.Length == 0 | (clientIp.IndexOf(checkIP) == -1);
-			Position = savePos;
+			clientIp = ReadString(22);
+			port = ReadShort();
 		}
 
 		/// <summary>

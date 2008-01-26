@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -23,14 +24,10 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("encryption:{0} isSI:0x{1:X2} majorVersion:{2} minorVersion:{3} build:{4} keyLenght:{5}",
+			text.Write("encryption:{0} isSI:0x{1:X2} majorVersion:{2} minorVersion:{3} build:{4} keyLenght:{5}",
 			                 encryption, isSI, majorVersion, minorVersion, build, keyLenght);
-
-			return str.ToString();
 		}
 
 		/// <summary>

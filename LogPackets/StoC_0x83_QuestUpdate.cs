@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 namespace PacketLogConverter.LogPackets
 {
@@ -18,15 +19,13 @@ namespace PacketLogConverter.LogPackets
 		
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 			if (subData == null)
-				str.AppendFormat(" UNKNOWN SUBCODE");
+				text.Write(" UNKNOWN SUBCODE");
 			else
-				subData.MakeString(str, flagsDescription);
+				subData.MakeString(text, flagsDescription);
 
-			return str.ToString();
 		}
 
 		/// <summary>
@@ -56,7 +55,7 @@ namespace PacketLogConverter.LogPackets
 		public abstract class ASubData
 		{
 			abstract public void Init(StoC_0x83_QuestUpdate pak);
-			abstract public void MakeString(StringBuilder str, bool flagsDescription);
+			abstract public void MakeString(TextWriter text, bool flagsDescription);
 		}
 
 		protected virtual void InitQuestUpdate()
@@ -89,13 +88,13 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				str.AppendFormat("index:{0,-2} NameLen:{1,-3} descLen:{2,-3}", index, lenName, lenDesc);
+				text.Write("index:{0,-2} NameLen:{1,-3} descLen:{2,-3}", index, lenName, lenDesc);
 
 				if (lenName == 0 && lenDesc == 0)
 					return;
-				str.AppendFormat("\n\tname: \"{0}\"\n\tdesc: \"{1}\"", name, desc);
+				text.Write("\n\tname: \"{0}\"\n\tdesc: \"{1}\"", name, desc);
 			}
 		}
 
@@ -110,7 +109,7 @@ namespace PacketLogConverter.LogPackets
 			public override void Init(StoC_0x83_QuestUpdate pak)
 			{
 			}
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
 			}
 		}

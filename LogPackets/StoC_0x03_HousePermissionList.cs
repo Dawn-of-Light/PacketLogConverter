@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -46,11 +47,9 @@ namespace PacketLogConverter.LogPackets
 			Race = 7
 		}
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("count:{0} unk1:0x{1:X2} houseOid:0x{2:X4}", count, unk1, houseOid);
+			text.Write("count:{0} unk1:0x{1:X2} houseOid:0x{2:X4}", count, unk1, houseOid);
 			string levelDescription;
 			string typeDescription;
 			for (int i = 0; i < count; i++)
@@ -66,11 +65,10 @@ namespace PacketLogConverter.LogPackets
 					typeDescription = "";
 					levelDescription = "";
 				}
-				str.AppendFormat("\n\tindex:{0,-2} unk1:0x{1:X4} type:{2}{5} level:{3}{6} name:\"{4}\"",
+				text.Write("\n\tindex:{0,-2} unk1:0x{1:X4} type:{2}{5} level:{3}{6} name:\"{4}\"",
 					permission.index, permission.unk1, permission.type, permission.level, permission.name, typeDescription, levelDescription);
 			}
 
-			return str.ToString();
 		}
 
 		/// <summary>

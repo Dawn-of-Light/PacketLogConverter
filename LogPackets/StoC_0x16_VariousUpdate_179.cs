@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -25,10 +26,10 @@ namespace PacketLogConverter.LogPackets
 				championTitle = pak.ReadPascalString();
 			}
 
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				base.MakeString(str, flagsDescription);
-				str.AppendFormat(" championTitle:\"{0}\" championLevel:{1}", championTitle, championLevel);
+				base.MakeString(text, flagsDescription);
+				text.Write(" championTitle:\"{0}\" championLevel:{1}", championTitle, championLevel);
 			}
 		}
 

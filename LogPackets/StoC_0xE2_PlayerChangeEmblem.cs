@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -19,13 +20,11 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("logo:{0,-3} pattern:{1} primaryColor:{2,-2} secondaryColor:{3}", logo, pattern, color1, color2);
+			text.Write("logo:{0,-3} pattern:{1} primaryColor:{2,-2} secondaryColor:{3}", logo, pattern, color1, color2);
 
-			return str.ToString();
 		}
 
 		/// <summary>

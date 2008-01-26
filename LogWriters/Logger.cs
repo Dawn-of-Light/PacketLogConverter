@@ -10,6 +10,7 @@ namespace PacketLogConverter.LogWriters
 	{
 		static string LogFile=null;
 		static bool LogInit=true;
+		static StreamWriter sw = null;
 
 		private Logger()
 		{
@@ -31,6 +32,8 @@ namespace PacketLogConverter.LogWriters
 				try
 				{
 					LogFile=(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase)+System.IO.Path.DirectorySeparatorChar+System.IO.Path.ChangeExtension(System.IO.Path.GetFileName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase),"log")).Replace("file:\\","");
+					if (sw == null)
+						sw = new StreamWriter(LogFile, true, System.Text.Encoding.Default);
 				}
 				catch
 				{
@@ -41,9 +44,9 @@ namespace PacketLogConverter.LogWriters
 			Console.WriteLine(System.DateTime.Now.ToString() + " " + s);
 			if (LogFile != null)
 			{
-				StreamWriter sw = new StreamWriter(LogFile,true,System.Text.Encoding.Default);
+//				StreamWriter sw = new StreamWriter(LogFile,true,System.Text.Encoding.Default);
 				sw.WriteLine(System.DateTime.Now.ToString() + " " + s);
-				sw.Close();
+				sw.Flush();
 			}
 		}
 

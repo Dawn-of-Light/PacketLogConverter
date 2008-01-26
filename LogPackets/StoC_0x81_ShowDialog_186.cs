@@ -1,5 +1,6 @@
 #define SKIP_CR_IN_DESCRIPTION
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -131,47 +132,47 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				str.AppendFormat("\n\tQuestName: \"{0}\"\n\tQuestDesc: \"{1}\"", questName, questDesc);
-				str.AppendFormat("\n\tlen:{0} message:\"{1}\"", dialogLen, message);
-				str.AppendFormat("\n\tquestID:0x{0:X4} goalsCount:{1}", questID, goalsCount);
+				text.Write("\n\tQuestName: \"{0}\"\n\tQuestDesc: \"{1}\"", questName, questDesc);
+				text.Write("\n\tlen:{0} message:\"{1}\"", dialogLen, message);
+				text.Write("\n\tquestID:0x{0:X4} goalsCount:{1}", questID, goalsCount);
 				for (int i = 0; i < goalsCount; i++)
 				{
-					str.AppendFormat("\n\t[{0}]: \"{1}\"", i, goals[i]);
+					text.Write("\n\t[{0}]: \"{1}\"", i, goals[i]);
 				}
-				str.AppendFormat("\n\trewardLevel:{0} gold:{1}% Exp:{2:00.0}% baseRewardsCount:{3}", questLevel, rewardGold, rewardExp, baseRewardsCount);
+				text.Write("\n\trewardLevel:{0} gold:{1}% Exp:{2:00.0}% baseRewardsCount:{3}", questLevel, rewardGold, rewardExp, baseRewardsCount);
 				for (int i = 0; i < baseRewardsCount; i++)
 				{
 
 					StoC_0x02_InventoryUpdate.Item item = baseRewards[i];
 
-					str.AppendFormat("\n\t[{0}]: level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} \"{17}\"",
+					text.Write("\n\t[{0}]: level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} \"{17}\"",
 						i, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name);
 					if (flagsDescription && item.name != null && item.name != "")
-						str.AppendFormat(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
+						text.Write(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
 					if ((item.flag & 0x08) == 0x08)
-						str.AppendFormat("\n\t\teffectIcon:0x{0:X4}  effectName:\"{1}\"",
+						text.Write("\n\t\teffectIcon:0x{0:X4}  effectName:\"{1}\"",
 						item.effectIcon, item.effectName);
 					if ((item.flag & 0x10) == 0x10)
-						str.AppendFormat("\n\t\teffectIcon2:0x{0:X4}  effectName2:\"{1}\"",
+						text.Write("\n\t\teffectIcon2:0x{0:X4}  effectName2:\"{1}\"",
 						item.effectIcon2, item.effectName2);
 				}
-				str.AppendFormat("\n\toptionalRewardsChoiceMax:{0} optionalRewardsCount:{1}", optionalRewardsChoiceMax, optionalRewardsCount);
+				text.Write("\n\toptionalRewardsChoiceMax:{0} optionalRewardsCount:{1}", optionalRewardsChoiceMax, optionalRewardsCount);
 				for (int i = 0; i < optionalRewardsCount; i++)
 				{
 
 					StoC_0x02_InventoryUpdate.Item item = optionalRewards[i];
 
-					str.AppendFormat("\n\t[{0}]: level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} \"{17}\"",
+					text.Write("\n\t[{0}]: level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} \"{17}\"",
 						i, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name);
 					if (flagsDescription && item.name != null && item.name != "")
-						str.AppendFormat(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
+						text.Write(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
 					if ((item.flag & 0x08) == 0x08)
-						str.AppendFormat("\n\t\teffectIcon:0x{0:X4}  effectName:\"{1}\"",
+						text.Write("\n\t\teffectIcon:0x{0:X4}  effectName:\"{1}\"",
 						item.effectIcon, item.effectName);
 					if ((item.flag & 0x10) == 0x10)
-						str.AppendFormat("\n\t\teffectIcon2:0x{0:X4}  effectName2:\"{1}\"",
+						text.Write("\n\t\teffectIcon2:0x{0:X4}  effectName2:\"{1}\"",
 						item.effectIcon2, item.effectName2);
 				}
 			}

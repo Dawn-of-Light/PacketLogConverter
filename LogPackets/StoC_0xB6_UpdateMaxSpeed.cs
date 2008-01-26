@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -17,13 +18,11 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("{0,3}% turning:{1} waterSpeed:{2}", maxSpeedPercent, turningEnabled, waterMaxSpeedPercent);
+			text.Write("{0,3}% turning:{1} waterSpeed:{2}", maxSpeedPercent, turningEnabled, waterMaxSpeedPercent);
 
-			return str.ToString();
 		}
 
 		/// <summary>

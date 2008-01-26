@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -43,23 +44,21 @@ namespace PacketLogConverter.LogPackets
 			accept = 2,
 		};
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.AppendFormat("\n\tcode:{0}({1}) repair:{2} combine:{3} unk1:0x{4:X2} unk2:0x{5:X4} unk3:0x{6:X4}",
+			text.Write("\n\tcode:{0}({1}) repair:{2} combine:{3} unk1:0x{4:X2} unk2:0x{5:X4} unk3:0x{6:X4}",
 				tradeCode, (tradeCommand)tradeCode, repair, combine, unk1, unk2, unk3);
-			str.AppendFormat("\n\tmoney (copper:{0,-2} silver:{1,-2} gold:{2,-3} platinum:{3} mithril:{4,-3})",
+			text.Write("\n\tmoney (copper:{0,-2} silver:{1,-2} gold:{2,-3} platinum:{3} mithril:{4,-3})",
 				copperPlayer, silverPlayer, goldPlayer, platinumPlayer, mithrilPlayer);
-			str.Append("\n\tslots:(");
+			text.Write("\n\tslots:(");
 			for (byte i = 0; i < slots.Length ; i++)
 			{
 				if (i > 0)
-					str.Append(',');
-				str.AppendFormat("{0,-3}", slots[i]);
+					text.Write(',');
+				text.Write("{0,-3}", slots[i]);
 			}
-			str.Append(")");
+			text.Write(")");
 
-			return str.ToString();
 		}
 
 		/// <summary>

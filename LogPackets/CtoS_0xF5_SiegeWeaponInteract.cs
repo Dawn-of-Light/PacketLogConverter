@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -29,9 +30,8 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 			string actionType;
 			switch (action)
 			{
@@ -69,10 +69,8 @@ namespace PacketLogConverter.LogPackets
 					actionType = "unknown";
 					break;
 			}
-			str.AppendFormat("unk1:0x{0:X4} action:{1}({2}) ammo?:{3, -2} unk2:0x{4:X4} unk3:0x{5:X4} unk4:0x{6:X4} unk5:0x{7:X4} unk6:0x{8:X4} unk7:0x{9:X4}",
+			text.Write("unk1:0x{0:X4} action:{1}({2}) ammo?:{3, -2} unk2:0x{4:X4} unk3:0x{5:X4} unk4:0x{6:X4} unk5:0x{7:X4} unk6:0x{8:X4} unk7:0x{9:X4}",
 				unk1, action, actionType, ammo, unk2, unk3, unk4, unk5, unk6, unk7);
-
-			return str.ToString();
 		}
 
 		/// <summary>

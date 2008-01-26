@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -34,15 +35,13 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("sessionId:0x{0:X4} font:0x{1:X2} type:{2,-2} flag:{3} msg:\"{4}\"",
+			text.Write("sessionId:0x{0:X4} font:0x{1:X2} type:{2,-2} flag:{3} msg:\"{4}\"",
 				sessionId, font, type, flag, message);
 			if (flagsDescription)
 			{
-				str.AppendFormat("\n\tunk1:0x{0:X4} unk2:0x{1:X4} unk3:0x{2:X4} unk4:0x{3:X4} unk5:0x{4:X4} unk6:0x{5:X2}",
+				text.Write("\n\tunk1:0x{0:X4} unk2:0x{1:X4} unk3:0x{2:X4} unk4:0x{3:X4} unk5:0x{4:X4} unk6:0x{5:X2}",
 				unk1, unk2, unk3, unk4, unk5, unk6);
 			}
 			string pattern="UNKNOWN";
@@ -63,9 +62,7 @@ namespace PacketLogConverter.LogPackets
 				default:break;
 			}
 			if (flag!=0) pattern=string.Format(pattern,message);
-			str.AppendFormat("\n\tmessage:\"{0}\"", pattern);
-
-			return str.ToString();
+			text.Write("\n\tmessage:\"{0}\"", pattern);
 		}
 
 		/// <summary>

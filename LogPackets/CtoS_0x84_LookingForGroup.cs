@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -25,13 +26,10 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.AppendFormat("lfg:{0} code:{1} lvlMin:{2} lvlMax:{3})",
+			text.Write("lfg:{0} code:{1} lvlMin:{2} lvlMax:{3})",
 				lfgFlag, unk1, lvlMin, lvlMax);
-
-			return str.ToString();
 		}
 
 		/// <summary>

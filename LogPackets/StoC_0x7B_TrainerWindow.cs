@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 using System;
 
@@ -37,17 +38,15 @@ namespace PacketLogConverter.LogPackets
 			ChampionAbilities = 0x02,
 		}
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("{5}:{0} points:{1} type:{2}({4}) unk1:{3}", count, points, subCode, unk1, ((eSubType)subCode).ToString(), subCode == 2 ? "IdLine" : "count");
+			text.Write("{5}:{0} points:{1} type:{2}({4}) unk1:{3}", count, points, subCode, unk1, ((eSubType)subCode).ToString(), subCode == 2 ? "IdLine" : "count");
 			if (subData == null)
-				str.AppendFormat(" UNKNOWN SUBCODE");
+				text.Write(" UNKNOWN SUBCODE");
 			else
-				subData.MakeString(str);
+				subData.MakeString(text);
 
-			return str.ToString();
 		}
 
 		/// <summary>
@@ -82,7 +81,7 @@ namespace PacketLogConverter.LogPackets
 		public abstract class ASubData
 		{
 			abstract public void Init(StoC_0x7B_TrainerWindow pak);
-			abstract public void MakeString(StringBuilder str);
+			abstract public void MakeString(TextWriter text);
 		}
 
 		#region subcode 1 - Trainer Skills Update
@@ -114,12 +113,12 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(TextWriter text)
 			{
 				for (int i = 0; i < m_skills.Length; i++)
 				{
 					Skill skill = (Skill)m_skills[i];
-					str.AppendFormat("\n\tindex:{0,-3} level:{1,-2} cost:{2,-2} \"{3}\"",
+					text.Write("\n\tindex:{0,-3} level:{1,-2} cost:{2,-2} \"{3}\"",
 					skill.index, skill.level, skill.cost, skill.name);
 				}
 			}
@@ -180,21 +179,21 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str)
+			public override void MakeString(TextWriter text)
 			{
 				for (int i = 0; i < countRows; i++)
 				{
 					ChampionSkill skill = (ChampionSkill)m_skills[i];
-					str.AppendFormat("\n\tskillIndex:{0,-3} countSpells:{1,-2}",
+					text.Write("\n\tskillIndex:{0,-3} countSpells:{1,-2}",
 						skill.index, skill.countSpells);
 					for (int j = 0; j < skill.countSpells; j++)
 					{
 						ChampionSpell spell = (ChampionSpell)skill.m_spells[j];
-						str.AppendFormat("\n\tindex:{0,-3} type:{1,-2} icon:0x{2:X4} aviability:{4} stickedSkillsCount:{5} \"{3}\" ",
+						text.Write("\n\tindex:{0,-3} type:{1,-2} icon:0x{2:X4} aviability:{4} stickedSkillsCount:{5} \"{3}\" ",
 							spell.index, spell.type, spell.icon, spell.name, spell.aviability, spell.stickedSkillsCount);
 						for (int k = 0; k < spell.stickedSkillsCount; k++)
 						{
-							str.AppendFormat(" [{0}]:0x{1:X2}", k, spell.stickedSkills[k]);
+							text.Write(" [{0}]:0x{1:X2}", k, spell.stickedSkills[k]);
 						}
 					}
 				}

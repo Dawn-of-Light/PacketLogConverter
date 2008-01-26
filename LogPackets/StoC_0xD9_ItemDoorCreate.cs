@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -53,11 +54,10 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("oid:0x{0:X4} emblem:0x{1:X4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} model:0x{6:X4} health:{7,3}% flags:0x{8:X2}(realm:{11}) extraBytes:{9} name:\"{10}\"",
+			text.Write("oid:0x{0:X4} emblem:0x{1:X4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} model:0x{6:X4} health:{7,3}% flags:0x{8:X2}(realm:{11}) extraBytes:{9} name:\"{10}\"",
 				oid, emblem, heading, x, y, z, model, hp, flags, extraBytes, name, (flags & 0x30)>>4);
 			if (flagsDescription)
 			{
@@ -76,11 +76,11 @@ namespace PacketLogConverter.LogPackets
 				if ((flags & 0x80) == 0x80)
 					flag += ",UNK_0x80";
 				if(flag != "")
-					str.AppendFormat(" ({0})", flag);
+					text.Write(" ({0})", flag);
 			}
 			if (extraBytes == 4)
 			{
-				str.AppendFormat(" doorId:0x{0:X4}", internalId);
+				text.Write(" doorId:0x{0:X4}", internalId);
 				if (flagsDescription)
 				{
 					uint doorType = internalId / 100000000;
@@ -90,13 +90,13 @@ namespace PacketLogConverter.LogPackets
 						uint keepPiece = (internalId - 700000000 - keepId * 100000) / 10000;
 						uint componentId = (internalId - 700000000 - keepId * 100000 - keepPiece * 10000) / 100;
 						int doorIndex = (int)(internalId - 700000000 - keepId * 100000 - keepPiece * 10000 - componentId * 100);
-						str.AppendFormat(" (keepID:{0} componentId:{1} doorIndex:{2})", keepId + keepPiece * 256, componentId, doorIndex);
+						text.Write(" (keepID:{0} componentId:{1} doorIndex:{2})", keepId + keepPiece * 256, componentId, doorIndex);
 					}
 					else if(doorType == 9)
 					{
 						doorType = internalId / 10000000;
 						uint doorIndex = internalId - doorType * 10000000;
-						str.AppendFormat(" (doorType:{0} houseDoorId:{1})", doorType, doorIndex);
+						text.Write(" (doorType:{0} houseDoorId:{1})", doorType, doorIndex);
 					}
 					else
 					{
@@ -105,7 +105,7 @@ namespace PacketLogConverter.LogPackets
 						int fixturePiece = fixture;
 						fixture /= 100;
 						fixturePiece = fixturePiece - fixture * 100;
-						str.AppendFormat(" (zone:{0} fixture:{1} fixturePeace:{2})", zoneDoor, fixture, fixturePiece);
+						text.Write(" (zone:{0} fixture:{1} fixturePeace:{2})", zoneDoor, fixture, fixturePiece);
 					}
 				}
 			}
@@ -113,10 +113,9 @@ namespace PacketLogConverter.LogPackets
 			{
 				int guildLogo = emblem >> 9;
 				if (guildLogo != 0)
-					str.AppendFormat(" guildLogo:{0,-3} pattern:{1} primaryColor:{2,-2} secondaryColor:{3}", guildLogo, (emblem >> 7) & 2, (emblem >> 3) & 0x0F, emblem & 7);
+					text.Write(" guildLogo:{0,-3} pattern:{1} primaryColor:{2,-2} secondaryColor:{3}", guildLogo, (emblem >> 7) & 2, (emblem >> 3) & 0x0F, emblem & 7);
 			}
 
-			return str.ToString();
 		}
 
 		/// <summary>

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -102,9 +103,8 @@ namespace PacketLogConverter.LogPackets
 
 		}
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 			string template = "(dialogCode:0x{0:X4}({7}) data1:0x{1:X4} data2:0x{2:X4} data3:0x{3:X4} data4:0x{4:X4} dialogType:{5} autoWrapText:{6}";
 
 			switch((eDialogCode)dialogCode)
@@ -125,10 +125,8 @@ namespace PacketLogConverter.LogPackets
 					template = "dialogCode:0x{0:X4}({7}) questID:0x{1:X4} oid:0x{2:X4} data3:0x{3:X4} data4:0x{4:X4} dialogType:{5} autoWrapText:{6}";
 					break;
 			}
-			str.AppendFormat(template, dialogCode, data1, data2, data3, data4, dialogType, autoWrapText, (eDialogCode)dialogCode);
-			subData.MakeString(str, flagsDescription);
-
-			return str.ToString();
+			text.Write(template, dialogCode, data1, data2, data3, data4, dialogType, autoWrapText, (eDialogCode)dialogCode);
+			subData.MakeString(text, flagsDescription);
 		}
 
 		/// <summary>
@@ -168,7 +166,7 @@ namespace PacketLogConverter.LogPackets
 		public abstract class ASubData
 		{
 			abstract public void Init(StoC_0x81_ShowDialog pak);
-			abstract public void MakeString(StringBuilder str, bool flagsDescription);
+			abstract public void MakeString(TextWriter text, bool flagsDescription);
 		}
 
 		protected virtual void InitDialogUpdate()
@@ -185,9 +183,9 @@ namespace PacketLogConverter.LogPackets
 				message = pak.ReadString();
 			}
 
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				str.AppendFormat("\n\t\"{0}\"", message);
+				text.Write("\n\t\"{0}\"", message);
 			}
 		}
 
@@ -203,7 +201,7 @@ namespace PacketLogConverter.LogPackets
 			{
 			}
 
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
 			}
 		}
@@ -219,7 +217,7 @@ namespace PacketLogConverter.LogPackets
 			public override void Init(StoC_0x81_ShowDialog pak)
 			{
 			}
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
 			}
 		}

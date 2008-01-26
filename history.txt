@@ -1,4 +1,13 @@
 ------------------------------------------------------------------------------
+Noret (26.Jan.2008):
+Code from Tiv:
+- Log positions can be saved/restored using ALT/CTRL + number from 0 to 9
+Code from Tiv and me:
+- Replaced all StringBuilders in packet parsers with one global TextWriter
+------------------------------------------------------------------------------
+Noret (19.Jan.2008):
+- Updated log actions to show up only for packets they are built for
+------------------------------------------------------------------------------
 Noret (26.Dec.2007):
 - Added "Show packet context" action which opens another window with 100+- packets around the selected one
 - Action context menu is now context-sensitive - actions decide if they should appear in the list

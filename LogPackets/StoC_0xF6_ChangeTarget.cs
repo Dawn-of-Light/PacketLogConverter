@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xF6, -1, ePacketDirection.ServerToClient, "Change target")]
@@ -24,9 +26,9 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			return string.Format("oid:0x{0:X4} type:{1} unk1:0x{2:X2}", oid, type, unk1);
+			text.Write("oid:0x{0:X4} type:{1} unk1:0x{2:X2}", oid, type, unk1);
 		}
 
 		/// <summary>

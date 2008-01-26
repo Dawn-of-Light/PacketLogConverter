@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -23,15 +24,11 @@ namespace PacketLogConverter.LogPackets
 			Red = 3,
 		}
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("id:{0} type:{1}", id, type);
+			text.Write("id:{0} type:{1}", id, type);
 			if (flagsDescription)
-				str.AppendFormat("({0})", (eRelicType)type);
-
-			return str.ToString();
+				text.Write("({0})", (eRelicType)type);
 		}
 
 		/// <summary>

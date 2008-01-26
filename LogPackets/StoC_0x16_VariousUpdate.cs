@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -81,17 +82,13 @@ namespace PacketLogConverter.LogPackets
 		
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("subcode:{0} count:{1} subType:{2} startIndex:{3}", subCode, subCount, subType, startIndex);
+			text.Write("subcode:{0} count:{1} subType:{2} startIndex:{3}", subCode, subCount, subType, startIndex);
 			if (subData == null)
-				str.AppendFormat(" UNKNOWN SUBCODE");
+				text.Write(" UNKNOWN SUBCODE");
 			else
-				subData.MakeString(str, flagsDescription);
-
-			return str.ToString();
+				subData.MakeString(text, flagsDescription);
 		}
 
 		/// <summary>
@@ -129,7 +126,7 @@ namespace PacketLogConverter.LogPackets
 		public abstract class ASubData
 		{
 			abstract public void Init(StoC_0x16_VariousUpdate pak);
-			abstract public void MakeString(StringBuilder str, bool flagsDescription);
+			abstract public void MakeString(TextWriter text, bool flagsDescription);
 		}
 
 		#region subcode 1 - Skills Update
@@ -174,20 +171,20 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				str.AppendFormat("\nSKILLS UPDATE:");
+				text.Write("\nSKILLS UPDATE:");
 				int index = -1;
 				foreach (Skill skill in data)
 				{
-					str.Append("\n\t");
+					text.Write("\n\t");
 					if (flagsDescription)
 					{
 					 	if((int)skill.page > 0)
 							index++;
-						str.AppendFormat("[{0,-2}] ", index);
+						text.Write("[{0,-2}] ", index);
 					}
-					str.AppendFormat("level:{0,-2} type:{1}({2,-14}) stlOpen:0x{3:X4} bonus:{4,-2} icon:0x{5:X4} name:\"{6}\"",
+					text.Write("level:{0,-2} type:{1}({2,-14}) stlOpen:0x{3:X4} bonus:{4,-2} icon:0x{5:X4} name:\"{6}\"",
 						skill.level, (int)skill.page, skill.page.ToString().ToLower(), skill.stlOpen, skill.bonus, skill.icon, skill.name);
 				}
 			}
@@ -234,12 +231,12 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				str.AppendFormat("\nSPELLS LIST UPDATE:");
+				text.Write("\nSPELLS LIST UPDATE:");
 				foreach (Spell spell in list)
 				{
-					str.AppendFormat("\n\tlevel:{0,-2} icon:0x{1:X4} name:\"{2}\"",
+					text.Write("\n\tlevel:{0,-2} icon:0x{1:X4} name:\"{2}\"",
 						spell.level, spell.icon, spell.name);
 				}
 			}
@@ -326,11 +323,11 @@ namespace PacketLogConverter.LogPackets
 				mlTitle = pak.ReadPascalString();
 			}
 
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				str.AppendFormat("\nPLAYER UPDATE:level:{0} name:\"{1}\" health:{2} className:\"{3}\" profession:\"{4}\" title:\"{5}\" realmLevel:{6} realmTitle:\"{7}\" realmSpecPoints:{8} classBaseName:\"{9}\" guildName:\"{10}\" lastName:\"{11}\" raceName:\"{12}\" guildRank:\"{13}\" crafterGuild:\"{14}\" crafterTitle:\"{15}\" ML:\"{16}\"({17})",
+				text.Write("\nPLAYER UPDATE:level:{0} name:\"{1}\" health:{2} className:\"{3}\" profession:\"{4}\" title:\"{5}\" realmLevel:{6} realmTitle:\"{7}\" realmSpecPoints:{8} classBaseName:\"{9}\" guildName:\"{10}\" lastName:\"{11}\" raceName:\"{12}\" guildRank:\"{13}\" crafterGuild:\"{14}\" crafterTitle:\"{15}\" ML:\"{16}\"({17})",
 					playerLevel, playerName, health, className, profession, title, realmLevel, realmTitle, realmSpecPoints, classBaseName, guildName, lastName, raceName, guildRank, crafterGuild, crafterTitle, mlTitle, mlLevel);
-				str.AppendFormat("\n\tpersonalHouse:{0} unk1:{1} unk2:{2} unk3:{3} unk4:{4} unk5:{5}",
+				text.Write("\n\tpersonalHouse:{0} unk1:{1} unk2:{2} unk3:{3} unk4:{4} unk5:{5}",
 					personalHouse, unk1, unk2, unk3, unk4, unk5);
 			}
 		}
@@ -383,15 +380,15 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				str.AppendFormat("\nPLAYER STATE UPDATE:");
-				str.AppendFormat("\n\tweapDam:{0,2}.{1,-3} weapSkill:{2,-4} effectiveAF:{3}",
+				text.Write("\nPLAYER STATE UPDATE:");
+				text.Write("\n\tweapDam:{0,2}.{1,-3} weapSkill:{2,-4} effectiveAF:{3}",
 					weaponDamageHigh, weaponDamageLow, (weaponSkillHigh << 8) + weaponSkillLow, (effectiveAFHigh << 8) + effectiveAFLow);
 
 				foreach (PlayerStateProperty prop in properties)
 				{
-					str.AppendFormat("\n\t[{0}] {1} \"{2}\"", prop.index, prop.value, prop.name);
+					text.Write("\n\t[{0}] {1} \"{2}\"", prop.index, prop.value, prop.name);
 				}
 			}
 		}
@@ -438,14 +435,14 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				str.AppendFormat("\nPLAYER GROUP UPDATE:");
+				text.Write("\nPLAYER GROUP UPDATE:");
 
 				foreach (GroupMember member in groupMembers)
 				{
-					str.AppendFormat("\n\tlevel:{0,-2} health:{1,3}% mana:{2,3}% status:0x{3:X2}", member.level, member.health, member.mana, member.status);
-					str.AppendFormat(" oid:0x{0:X4} class:\"{2}\"\t name:\"{1}\" ", member.oid, member.name, member.classname);
+					text.Write("\n\tlevel:{0,-2} health:{1,3}% mana:{2,3}% status:0x{3:X2}", member.level, member.health, member.mana, member.status);
+					text.Write(" oid:0x{0:X4} class:\"{2}\"\t name:\"{1}\" ", member.oid, member.name, member.classname);
 				}
 			}
 		}
@@ -493,13 +490,13 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				str.AppendFormat("\nCRAFTING SKILLS UPDATE:");
+				text.Write("\nCRAFTING SKILLS UPDATE:");
 
 				foreach (CraftingSkill skill in skills)
 				{
-					str.AppendFormat("\n\tpoints:{0,-4} icon:0x{1:X2} unk2:{2} name:\"{3}\"", skill.points, skill.icon, skill.unk2, skill.name);
+					text.Write("\n\tpoints:{0,-4} icon:0x{1:X2} unk2:{2} name:\"{3}\"", skill.points, skill.icon, skill.unk2, skill.name);
 				}
 			}
 		}

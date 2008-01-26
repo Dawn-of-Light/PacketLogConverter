@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -33,10 +34,8 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-
-			StringBuilder str = new StringBuilder();
 			string type;
 			switch (keepType)
 			{
@@ -57,10 +56,8 @@ namespace PacketLogConverter.LogPackets
 					break;
 			}
 
-			str.AppendFormat("keepId:0x{0:X4} realm:{1} HP:{2}% level:{3} to-level:{4} keepType:{5}({6}) guild:\"{7}\"",
+			text.Write("keepId:0x{0:X4} realm:{1} HP:{2}% level:{3} to-level:{4} keepType:{5}({6}) guild:\"{7}\"",
 				keepId, realm, hp, level, targetLevel, keepType, type, guild);
-
-			return str.ToString();
 		}
 
 		/// <summary>

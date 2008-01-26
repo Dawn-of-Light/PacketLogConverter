@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -21,53 +22,51 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 			Position = 0;
 
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("oid:0x{0:X4} speed:{1,-4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} speedZ:{6, -4} model:0x{7:X4} size:{8,-3} level:{9,-3} flags:0x{10:X2} maxStick:{11,-3} flag2:0x{12:X2} unk1_171:0x{13:X2} unk2_171:0x{14:X4} name:\"{15}\" guild:\"{16}\" unk1:{17}",
+			text.Write("oid:0x{0:X4} speed:{1,-4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} speedZ:{6, -4} model:0x{7:X4} size:{8,-3} level:{9,-3} flags:0x{10:X2} maxStick:{11,-3} flag2:0x{12:X2} unk1_171:0x{13:X2} unk2_171:0x{14:X4} name:\"{15}\" guild:\"{16}\" unk1:{17}",
 			                 oid, speed, heading, x, y, z, speedZ, model, size, level & 0x7F, flags, maxStick, flag2, unk1_171, unk2_171, name, guildName, unk1);
 			if (flagsDescription)
 			{
-				str.AppendFormat(" (realm:{0}", (flags >> 6) & 3);
+				text.Write(" (realm:{0}", (flags >> 6) & 3);
 				if ((flags & 0x01) == 0x01)
-					str.Append(",Ghost");
+					text.Write(",Ghost");
 				if ((flags & 0x02) == 0x02)
-					str.Append(",Inventory");
+					text.Write(",Inventory");
 				if ((flags & 0x04) == 0x04)
-					str.Append(",UNK_0x04");
+					text.Write(",UNK_0x04");
 				if ((flags & 0x08) == 0x08)
-					str.Append(",LongRangeVisible"); // ~5550
+					text.Write(",LongRangeVisible"); // ~5550
 				if ((flags & 0x10) == 0x10)
-					str.Append(",Peace");
+					text.Write(",Peace");
 				if ((flags & 0x20) == 0x20)
-					str.Append(",Fly");
+					text.Write(",Fly");
 				if ((model & 0x8000) == 0x8000)
-					str.Append(",Underwater");
+					text.Write(",Underwater");
 				if ((flag2 & 0x01) == 0x01)
-					str.Append(",-DOR");
+					text.Write(",-DOR");
 				if ((flag2 & 0x02) == 0x02)
-					str.Append(",-NON");
+					text.Write(",-NON");
 				if ((flag2 & 0x04) == 0x04)
-					str.Append(",Stealth");
+					text.Write(",Stealth");
 				if ((flag2 & 0x08) == 0x08)
-					str.Append(",Quest");
+					text.Write(",Quest");
 				if ((flag2 & 0x10) == 0x10)
-					str.Append(",F2_UNK_0x10");//waiting Finish new Quest ?
+					text.Write(",F2_UNK_0x10");//waiting Finish new Quest ?
 				if ((flag2 & 0x20) == 0x20)
-					str.Append(",F2_UNK_0x20");//mb see Underwater creature from water outside ?
+					text.Write(",F2_UNK_0x20");//mb see Underwater creature from water outside ?
 				if ((flag2 & 0x40) == 0x40)
-					str.Append(",F2_UNK_0x40");
+					text.Write(",F2_UNK_0x40");
 				if ((flag2 & 0x80) == 0x80)
-					str.Append(",HaveOwner");
+					text.Write(",HaveOwner");
 				if ((level & 0x80) == 0x80)
-					str.Append(",Statue"); // can't breath. Not in debug mode can't target and not see name. in debug mode see name, can name, see -DOR
-				str.Append(')');
+					text.Write(",Statue"); // can't breath. Not in debug mode can't target and not see name. in debug mode see name, can name, see -DOR
+				text.Write(')');
 			}
 
-			return str.ToString();
 		}
 
 		/// <summary>

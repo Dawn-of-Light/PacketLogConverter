@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -22,18 +23,14 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("count:{0,-2} unk1:{1} unk2:{2} unk3:{3}", effectsCount, unk1, unk2, unk3);
+			text.Write("count:{0,-2} unk1:{1} unk2:{2} unk3:{3}", effectsCount, unk1, unk2, unk3);
 			for (int i = 0; i < effectsCount; i++)
 			{
 				ConcentrationEffect effect = (ConcentrationEffect)effects[i];
-				str.AppendFormat("\n\tindex:{0,-2} conc:{1,-2} icon:0x{2:X4} unk1:{3} ownerName:\"{4}\" effectName:\"{5}\"", effect.index, effect.concentration, effect.icon, effect.unk1, effect.ownerName, effect.effectName);
+				text.Write("\n\tindex:{0,-2} conc:{1,-2} icon:0x{2:X4} unk1:{3} ownerName:\"{4}\" effectName:\"{5}\"", effect.index, effect.concentration, effect.icon, effect.unk1, effect.ownerName, effect.effectName);
 			}
-
-			return str.ToString();
 		}
 
 		/// <summary>

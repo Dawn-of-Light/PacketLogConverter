@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -15,10 +16,15 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 			string temp = flagsDescription ? " 0x" + unks0.ToString("X4") + unks1.ToString("X2") : "";
-			return "serverId:0x" + serverId.ToString("X2") + temp + " " + base.GetPacketDataString(flagsDescription);
+			text.Write("serverId:0x");
+			text.Write(serverId.ToString("X2"));
+			text.Write(temp);
+			text.Write(" ");
+//			((Packet) this).GetPacketDataString(text, flagsDescription); // this crash program
+			base.GetPacketDataString(text, flagsDescription);
 		}
 
 		/// <summary>
@@ -49,6 +55,23 @@ namespace PacketLogConverter.LogPackets
 			unk3 = ReadShort();
 		}
 
+		/// <summary>
+		/// Set all log variables from the packet here
+		/// </summary>
+		/// <param name="log"></param>
+		public override void InitLog(PacketLog log)
+		{
+			// Reinit only on for 190 version and subversion lower 190.1
+			if (!log.IgnoreVersionChanges && log.Version >= 190 && log.Version < 190.1f)
+			{
+				if (Length == 100)
+				{
+					log.Version = 190.1f;
+					log.SubversionReinit = true;
+//					log.IgnoreVersionChanges = true;
+				}
+			}
+		}
 		/// <summary>
 		/// Constructs new instance with given capacity
 		/// </summary>

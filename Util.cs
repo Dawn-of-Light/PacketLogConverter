@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Forms;
 
@@ -158,6 +159,42 @@ namespace PacketLogConverter
 		{
 			System.DateTime dateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
 			return dateTime.AddSeconds((double)data);
+		}
+
+		/// <summary>
+		/// Gets the object by index if it exists.
+		/// </summary>
+		/// <param name="list">The list.</param>
+		/// <param name="index">The index.</param>
+		/// <param name="def">The default value.</param>
+		/// <returns>Object for the list, <c>default(T)</c> otherwise.</returns>
+		public static T GetObjectByIndexSafe<T>(IIndexedContainer<T> list, int index, T def)
+		{
+			T ret = def;
+			if (list != null && list.Count >= 0 && index >= 0 && index < list.Count)
+			{
+				ret = list[index];
+			}
+
+			return ret;
+		}
+
+		/// <summary>
+		/// Gets the object by index if it exists.
+		/// </summary>
+		/// <param name="list">The list.</param>
+		/// <param name="index">The index.</param>
+		/// <param name="def">The default value.</param>
+		/// <returns>Object for the list, <c>default(T)</c> otherwise.</returns>
+		public static T GetObjectByIndexSafe<T>(IList<T> list, int index, T def)
+		{
+			T ret = def;
+			if (list != null && list.Count >= 0 && index >= 0 && index < list.Count)
+			{
+				ret = list[index];
+			}
+
+			return ret;
 		}
 	}
 }

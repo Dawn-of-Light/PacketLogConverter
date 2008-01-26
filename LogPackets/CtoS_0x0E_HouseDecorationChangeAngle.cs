@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -21,14 +22,10 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("index:{0,-3} houseOid:0x{1:X4} rotateAngle:{2,-3} place:{3}({5}) unk1:0x{4:X2}",
+			text.Write("index:{0,-3} houseOid:0x{1:X4} rotateAngle:{2,-3} place:{3}({5}) unk1:0x{4:X2}",
 				index, houseOid, rotateAngle, place, unk1, (CtoS_0x0C_HouseItemPlacementRequest.ePlaceType)place);
-
-			return str.ToString();
 		}
 
 		/// <summary>

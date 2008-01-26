@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -51,16 +52,14 @@ namespace PacketLogConverter.LogPackets
 			hitMagic = 0x14
 		}
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("attackerOid:0x{0:X4} defenderOid:0x{1:X4} attackerWeaponModel:0x{2:X4} defenderWeaponModel:0x{3:X4} styleId:0x{4:X4} stance:0x{5:X2} result:0x{6:X2} targetHealth:{7,3}%",
+			text.Write("attackerOid:0x{0:X4} defenderOid:0x{1:X4} attackerWeaponModel:0x{2:X4} defenderWeaponModel:0x{3:X4} styleId:0x{4:X4} stance:0x{5:X2} result:0x{6:X2} targetHealth:{7,3}%",
 				attackerOid, defenderOid, weaponId, defenseWeapon, styleId, stance, result, targetHealthPercent);
 			if(flagsDescription)
-				str.AppendFormat(" ({0})", (eResult)(result & 0x7F));
+				text.Write(" ({0})", (eResult)(result & 0x7F));
 
-			return str.ToString();
 		}
 
 		/// <summary>

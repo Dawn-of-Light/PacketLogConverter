@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -21,22 +22,18 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("\n\tcount:{0,-2} windowType:{1}({4}) page:{2} unk1:{3}", itemCount, windowType, page, unk1, (eMerchantWindowType)windowType);
+			text.Write("\n\tcount:{0,-2} windowType:{1}({4}) page:{2} unk1:{3}", itemCount, windowType, page, unk1, (eMerchantWindowType)windowType);
 
 			for (int i = 0; i < itemCount; i++)
 			{
 				MerchantItem item = items[i];
-				str.AppendFormat("\n\tindex:{0,-2} level:{1,-2} value1:{2,-3} value2:{3,-3} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} canUse:{7} weight:{8,-4} price:{9,-8} model:0x{10:X4} name:\"{11}\"",
+				text.Write("\n\tindex:{0,-2} level:{1,-2} value1:{2,-3} value2:{3,-3} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} canUse:{7} weight:{8,-4} price:{9,-8} model:0x{10:X4} name:\"{11}\"",
 					item.index, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.canUse, item.weight, item.price, item.model, item.name);
 				if (flagsDescription)
-					str.AppendFormat(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
+					text.Write(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
     		}
-
-			return str.ToString();
 		}
 
 		/// <summary>

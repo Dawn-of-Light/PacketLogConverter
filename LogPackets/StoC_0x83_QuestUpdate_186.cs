@@ -1,4 +1,5 @@
 #define SKIP_CR_IN_DESCRIPTION
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -34,13 +35,13 @@ namespace PacketLogConverter.LogPackets
 
 		public class QuestUpdate_186 : QuestUpdate_184
 		{
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				str.AppendFormat("index:{0,-2} NameLen:{1,-3} descLen:{2,-3} rewards:{3} level:{4}", index, lenName, lenDesc, unk1, level);
+				text.Write("index:{0,-2} NameLen:{1,-3} descLen:{2,-3} rewards:{3} level:{4}", index, lenName, lenDesc, unk1, level);
 
 				if (lenName == 0 && lenDesc == 0)
 					return;
-				str.AppendFormat("\n\tname: \"{0}\"\n\tdesc: \"{1}\"", name, desc);
+				text.Write("\n\tname: \"{0}\"\n\tdesc: \"{1}\"", name, desc);
 			}
 		}
 
@@ -138,38 +139,38 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				str.AppendFormat("index:{0,-2} (NewQuest) NameLen:{1,-3} descLen:{2,-3} goals:{3} level:{4} unk2:{5}", index, lenName, lenDesc, goalsCount, level, unk2);
+				text.Write("index:{0,-2} (NewQuest) NameLen:{1,-3} descLen:{2,-3} goals:{3} level:{4} unk2:{5}", index, lenName, lenDesc, goalsCount, level, unk2);
 
 				if (lenName == 0 && lenDesc == 0)
 					return;
-				str.AppendFormat("\n\tQuestName: \"{0}\"\n\tQuestDesc: \"{1}\"", name, desc);
+				text.Write("\n\tQuestName: \"{0}\"\n\tQuestDesc: \"{1}\"", name, desc);
 				for (int i = 0; i < goalsCount; i++)
 				{
-					str.AppendFormat("\n\t[{0}]: \"{1}\"", i, goals[i]);
+					text.Write("\n\t[{0}]: \"{1}\"", i, goals[i]);
 
 					QuestGoalInfo questGoalInfo = goalInfo[i];
-					str.AppendFormat("\n\tinfo: type:0x{0:X4}",
+					text.Write("\n\tinfo: type:0x{0:X4}",
 						questGoalInfo.type);
-					str.AppendFormat("\n\tzoneId2:{0,-3} @X2:{1,-5} @Y2:{2,-5} radius?:{3}",
+					text.Write("\n\tzoneId2:{0,-3} @X2:{1,-5} @Y2:{2,-5} radius?:{3}",
  						questGoalInfo.zoneId2, questGoalInfo.XOff2, questGoalInfo.YOff2, questGoalInfo.unk2);
-					str.AppendFormat("\n\tzoneId1:{0,-3} @X1:{1,-5} @Y1:{2,-5} unk1:0x{3:X4}",
+					text.Write("\n\tzoneId1:{0,-3} @X1:{1,-5} @Y1:{2,-5} unk1:0x{3:X4}",
  						questGoalInfo.zoneId, questGoalInfo.XOff, questGoalInfo.YOff, questGoalInfo.unk1);
 
 					StoC_0x02_InventoryUpdate.Item item = goalItems[i];
 
 					if (item.slot > 0)
 					{
-						str.AppendFormat("\n\tslot:{0,-2} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} \"{17}\"",
+						text.Write("\n\tslot:{0,-2} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} \"{17}\"",
 							item.slot, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name);
 						if (flagsDescription && item.name != null && item.name != "")
-							str.AppendFormat(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
+							text.Write(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
 						if ((item.flag & 0x08) == 0x08)
-							str.AppendFormat("\n\t\teffectIcon:0x{0:X4}  effectName:\"{1}\"",
+							text.Write("\n\t\teffectIcon:0x{0:X4}  effectName:\"{1}\"",
 							item.effectIcon, item.effectName);
 						if ((item.flag & 0x10) == 0x10)
-							str.AppendFormat("\n\t\teffectIcon2:0x{0:X4}  effectName2:\"{1}\"",
+							text.Write("\n\t\teffectIcon2:0x{0:X4}  effectName2:\"{1}\"",
 							item.effectIcon2, item.effectName2);
 					}
 				}

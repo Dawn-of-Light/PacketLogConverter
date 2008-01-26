@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x04, -1, ePacketDirection.ServerToClient, "Character Jump")]
@@ -30,11 +32,11 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 			// SendPlayerJump()
 
-			return string.Format("OID:0x{0:X4} x:{1,-6} y:{2,-6} z:{3,-5} heading:0x{4:X4} houseId:{5}", playerOid, x, y, z, heading, house);
+			text.Write("OID:0x{0:X4} x:{1,-6} y:{2,-6} z:{3,-5} heading:0x{4:X4} houseId:{5}", playerOid, x, y, z, heading, house);
 		}
 
 		/// <summary>

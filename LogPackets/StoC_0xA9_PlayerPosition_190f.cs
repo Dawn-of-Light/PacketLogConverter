@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -15,17 +16,16 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 			bool isRaided = IsRaided == 1;
 			int zSpeed = speed & 0xFFF;
 			if ((speed & 0x1000) == 0x1000)
 				zSpeed *= -1;
-			str.AppendFormat("sessionId:0x{0:X4} status:0x{1:X2} speed:{2,-3} {3}:0x{4:X4}(0x{14:X2}) currentZone({5,-3}): ({6,-6} {7,-6} {8,-5}) flyFlags:0x{9:X2} {10}:{11,-5} flags:0x{12:X2} health:{13,3}%",
+			text.Write("sessionId:0x{0:X4} status:0x{1:X2} speed:{2,-3} {3}:0x{4:X4}(0x{14:X2}) currentZone({5,-3}): ({6,-6} {7,-6} {8,-5}) flyFlags:0x{9:X2} {10}:{11,-5} flags:0x{12:X2} health:{13,3}%",
 				sessionId, (status & 0x1FF ^ status) >> 8 ,status & 0x1FF, isRaided ? "mountId" : "heading", isRaided ? heading : heading & 0xFFF, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, (speed & 0x7FF ^ speed) >> 8, (isRaided ? "bSlot " : "SpeedZ") , zSpeed, flag, health & 0x7F, isRaided ? 0 : (heading & 0xFFF ^ heading) >> 8);
-			str.AppendFormat(" mana:{0,3}% endurance:{1,3}%", manaPercent, endurancePercent);
-			str.AppendFormat(" RP:{0} unk190_1:0x{1:X2} className:{2}", flagRP, unk190_1, className);
+			text.Write(" mana:{0,3}% endurance:{1,3}%", manaPercent, endurancePercent);
+			text.Write(" RP:{0} unk190_1:0x{1:X2} className:{2}", flagRP, unk190_1, className);
 			if (flagsDescription)
 			{
 				byte plrState = (byte)((status >> 10) & 7);
@@ -63,9 +63,8 @@ namespace PacketLogConverter.LogPackets
 				if ((speed & 0x2000) == 0x2000)
 					flags += ",speed_UNK_0x2000";
 				if (flags.Length > 0)
-					str.Append(" ("+flags+")");
+					text.Write(" ("+flags+")");
 			}
-			return str.ToString();
 		}
 
 		/// <summary>

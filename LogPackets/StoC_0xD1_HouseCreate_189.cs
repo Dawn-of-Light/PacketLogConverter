@@ -1,9 +1,10 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0xD1, 189, ePacketDirection.ServerToClient, "House create v189")]
+	[LogPacket(0xD1, 189.1f, ePacketDirection.ServerToClient, "House create v189")] // not sure in what subversion it changed
 	public class StoC_0xD1_HouseCreate_189 : StoC_0xD1_HouseCreate
 	{
 		protected ushort scheduled;
@@ -16,16 +17,14 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.Append(base.GetPacketDataString(flagsDescription));
-			str.AppendFormat(" unk3:0x{0:X4} scheduledHours:{1}", unk3, scheduled);
+			base.GetPacketDataString(text, flagsDescription);
+			text.Write(" unk3:0x{0:X4} scheduledHours:{1}", unk3, scheduled);
 			if (flagsDescription)
 				if (scheduled > 0)
-					str.AppendFormat(" ({0} days)", scheduled / 24);
-			return str.ToString();
+					text.Write(" ({0} days)", scheduled / 24);
 		}
 
 		/// <summary>

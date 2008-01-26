@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -7,16 +8,16 @@ namespace PacketLogConverter.LogPackets
 	{
 		protected byte osType;
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			string str = base.GetPacketDataString(flagsDescription);
+			base.GetPacketDataString(text, flagsDescription);
 			if (flag > 0)
 			{
-				str += " OS:" + osType.ToString("D");
+				text.Write(" OS:");
+				text.Write(osType.ToString("D"));
 				if(flagsDescription)
-					str += "(" + (eOSType)osType + ")";
+					text.Write("(" + (eOSType)osType + ")");
 			}
-			return str;
 		}
 
 		/// <summary>

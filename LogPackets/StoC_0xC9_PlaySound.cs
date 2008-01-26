@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -23,14 +24,12 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("soundId:0x{0:X4} zoneId:{1,-3} x:{2,-5} y:{3,-5} z:{4,-5} radius:{5}",
+			text.Write("soundId:0x{0:X4} zoneId:{1,-3} x:{2,-5} y:{3,-5} z:{4,-5} radius:{5}",
 				soundId, zoneId, x, y, z, radius);
 
-			return str.ToString();
 		}
 
 		/// <summary>

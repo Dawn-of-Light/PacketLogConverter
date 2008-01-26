@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -36,15 +37,15 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				str.AppendFormat("\nPLAYER GROUP UPDATE:");
+				text.Write("\nPLAYER GROUP UPDATE:");
 
 				foreach (GroupMember member in groupMembers)
 				{
-					str.AppendFormat("\n\tlevel:{0,-2} health:{1,3}% mana:{2,3}% endurance:{3,3}% status:0x{4:X2}",
+					text.Write("\n\tlevel:{0,-2} health:{1,3}% mana:{2,3}% endurance:{3,3}% status:0x{4:X2}",
 						member.level, member.health, member.mana, member.endurance, member.status);
-					str.AppendFormat(" pid:0x{0:X4} class:\"{2}\"\t name:\"{1}\"", member.oid, member.name, member.classname);
+					text.Write(" pid:0x{0:X4} class:\"{2}\"\t name:\"{1}\"", member.oid, member.name, member.classname);
 				}
 			}
 		}

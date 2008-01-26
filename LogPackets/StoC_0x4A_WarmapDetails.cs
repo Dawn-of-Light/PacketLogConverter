@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -26,16 +27,13 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("countFights:{0} countGroups:{1}", count, countGroups);
+			text.Write("countFights:{0} countGroups:{1}", count, countGroups);
 			for (int i = 0; i < count; i++)
 			{
 				Item item = m_items[i];
-				str.AppendFormat("\n\tzone:{0,-3} offset:0x{1:X2}(X:{2}, Y:{3}) color:{4}({6}) size:{5}",
+				text.Write("\n\tzone:{0,-3} offset:0x{1:X2}(X:{2}, Y:{3}) color:{4}({6}) size:{5}",
 					item.zone, item.loc, item.loc >> 4, item.loc & 0x0F, item.color, item.type, ((IconColor)item.color).ToString());
 			}
 			for (int i = count; i < count + countGroups; i++)
@@ -56,11 +54,9 @@ namespace PacketLogConverter.LogPackets
 					if (realmInfo !="") realmInfo += ", ";
 					realmInfo += string.Format("HibSize:{0}", (item.type >> 4) & 0x03);
 				}
-				str.AppendFormat("\n\tzone:{0,-3} offset:0x{1:X2}(X:{2}, Y:{3}) realmBitMask:{4} icon:0x{5:X2}({6})",
+				text.Write("\n\tzone:{0,-3} offset:0x{1:X2}(X:{2}, Y:{3}) realmBitMask:{4} icon:0x{5:X2}({6})",
 					item.zone, item.loc, item.loc >> 4, item.loc & 0x0F, item.color, item.type, realmInfo);
 			}
-
-			return str.ToString();
 		}
 
 		/// <summary>

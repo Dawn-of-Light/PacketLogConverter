@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -31,24 +32,20 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("oid:0x{0:X4} hoodUp:{1} visibleWeaponSlots:0x{2:X2} count:{3,-2}", oid, hoodUp, visibleWeaponSlots, count);
+			text.Write("oid:0x{0:X4} hoodUp:{1} visibleWeaponSlots:0x{2:X2} count:{3,-2}", oid, hoodUp, visibleWeaponSlots, count);
 			if (count > 0)
-				str.Append("  items:(");
+				text.Write("  items:(");
 			for (int i = 0; i < count; i++)
 			{
 				if (i > 0)
-					str.Append(" | ");
+					text.Write(" | ");
 				Item item = (Item)items[i];
-				str.AppendFormat("slot:{0,-2} model:0x{1:X4} color:0x{2:X4} effect:0x{3:X2}", item.slot, item.model, item.color, item.effect);
+				text.Write("slot:{0,-2} model:0x{1:X4} color:0x{2:X4} effect:0x{3:X2}", item.slot, item.model, item.color, item.effect);
 			}
 			if (count > 0)
-				str.Append(")");
-
-			return str.ToString();
+				text.Write(")");
 		}
 
 		/// <summary>

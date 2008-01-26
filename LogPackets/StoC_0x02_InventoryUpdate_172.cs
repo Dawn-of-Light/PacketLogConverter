@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -6,24 +7,21 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x02, 172, ePacketDirection.ServerToClient, "Inventory update v172")]
 	public class StoC_0x02_InventoryUpdate_172 : StoC_0x02_InventoryUpdate
 	{
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder(16 + m_slotsCount*32);
-			str.AppendFormat("slots:{0} bits:0x{1:X2} visibleSlots:0x{2:X2} preAction:0x{3:X2}", SlotsCount, Bits, VisibleSlots, PreAction);
+			text.Write("slots:{0} bits:0x{1:X2} visibleSlots:0x{2:X2} preAction:0x{3:X2}", SlotsCount, Bits, VisibleSlots, PreAction);
 			if (flagsDescription)
-				str.AppendFormat("({0})", (ePreActionType)PreAction);
+				text.Write("({0})", (ePreActionType)PreAction);
 
 			for (int i = 0; i < m_slotsCount; i++)
 			{
 				Item item = Items[i];
 
-				str.AppendFormat("\n\tslot:{0,-3} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} \"{17}\"",
+				text.Write("\n\tslot:{0,-3} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} \"{17}\"",
 				                 item.slot, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name);
 				if (flagsDescription && item.name != null && item.name != "")
-					str.AppendFormat(" ({0})", (eObjectType)item.objectType);
+					text.Write(" ({0})", (eObjectType)item.objectType);
 			}
-
-			return str.ToString();
 		}
 
 		/// <summary>

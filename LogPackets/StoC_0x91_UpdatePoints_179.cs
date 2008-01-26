@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -13,14 +14,12 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("realmPoints:{0,-9} levelPermill:{1:000.0}%  skillSpecPoints:{2,-4} bountyPoints:{3,-6} realmSpecPoints:{4,-3} champLevelPermill:{5:000.0}%",
+			text.Write("realmPoints:{0,-9} levelPermill:{1:000.0}%  skillSpecPoints:{2,-4} bountyPoints:{3,-6} realmSpecPoints:{4,-3} champLevelPermill:{5:000.0}%",
 				realmPoints, 0.1 * levelPermill, skillSpecPoints, bountyPoints, realmSpecPoints, 0.1 * champLevelPermill);
 
-			return str.ToString();
 		}
 
 		/// <summary>

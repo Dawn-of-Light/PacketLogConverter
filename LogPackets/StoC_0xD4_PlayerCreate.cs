@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -59,14 +60,12 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("sessionId:0x{0:X4} oid:0x{1:X4} zoneId:{2,-3} zoneLoc:({3,-5} {4,-5} {5,-5}) heading:0x{6:X4} model:0x{7:X4} alive:{8} realm:{9} level:{10,-2} stealthed:{11} unk1:{12} unk2:{13} unk3:{14} name:\"{15}\" guild:\"{16}\" lastName:\"{17}\" trailingZero:{18}",
+			text.Write("sessionId:0x{0:X4} oid:0x{1:X4} zoneId:{2,-3} zoneLoc:({3,-5} {4,-5} {5,-5}) heading:0x{6:X4} model:0x{7:X4} alive:{8} realm:{9} level:{10,-2} stealthed:{11} unk1:{12} unk2:{13} unk3:{14} name:\"{15}\" guild:\"{16}\" lastName:\"{17}\" trailingZero:{18}",
 				sessionId, oid, zoneId, zoneX, zoneY, zoneZ, heading, model, alive, realm, level, stealthed, unk1, unk2, unk3, name, guildName, lastName, trailingZero);
 
-			return str.ToString();
 		}
 
 		/// <summary>

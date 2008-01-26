@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -19,13 +20,9 @@ namespace PacketLogConverter.LogPackets
 			NormalQuit= 1,
 		}
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("Code:{0}{1}", flag, flagsDescription ? "(" + (eFlagType)flag + ")" : "");
-
-			return str.ToString();
+			text.Write("Code:{0}{1}", flag, flagsDescription ? "(" + (eFlagType)flag + ")" : "");
 		}
 
 		/// <summary>

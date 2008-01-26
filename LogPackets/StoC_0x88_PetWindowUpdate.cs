@@ -36,77 +36,75 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("pet:0x{0:X4} ", petId);
+			text.Write("pet:0x{0:X4} ", petId);
 			switch (windowAction)
 			{
 				case 0:
-					str.Append(" (close)");
+					text.Write(" (close)");
 					break;
 				case 1:
-					str.Append("(update)");
+					text.Write("(update)");
 					break;
 				case 2:
-					str.Append("  (open)");
+					text.Write("  (open)");
 					break;
 				default:
-					str.AppendFormat("unk {0:X2}", windowAction);
+					text.Write("unk {0:X2}", windowAction);
 					break;
 			}
-			str.Append(" aggro:");
+			text.Write(" aggro:");
 			switch (aggroLevel)
 			{
 				case 1:
-					str.Append("aggr");
+					text.Write("aggr");
 					break;
 				case 2:
-					str.Append("def ");
+					text.Write("def ");
 					break;
 				case 3:
-					str.Append("pass");
+					text.Write("pass");
 					break;
 				default:
-					str.AppendFormat("? {0:X2}", aggroLevel);
+					text.Write("? {0:X2}", aggroLevel);
 					break;
 			}
-			str.Append(" walk:");
+			text.Write(" walk:");
 			switch (walkState)
 			{
 				case 1:
-					str.Append("follow");
+					text.Write("follow");
 					break;
 				case 2:
-					str.Append("stay  ");
+					text.Write("stay  ");
 					break;
 				case 3:
-					str.Append("goto  ");
+					text.Write("goto  ");
 					break;
 				case 4:
-					str.Append("here  ");
+					text.Write("here  ");
 					break;
 				default:
-					str.AppendFormat("unk {0:X2}", walkState);
+					text.Write("unk {0:X2}", walkState);
 					break;
 			}
 
-			str.AppendFormat("  unused1:0 unused2:1", unused1, unused2);
+			text.Write("  unused1:0 unused2:1", unused1, unused2);
 
 			if (petEffects.Length > 0)
 			{
-				str.Append("  pet effects:(");
+				text.Write(" pet effects:(");
 				for (int i = 0; i < petEffects.Length; i++)
 				{
 					if (i > 0)
-						str.Append(',');
-					str.AppendFormat("0x{0:X4}", petEffects[i]);
+						text.Write(',');
+					text.Write("0x{0:X4}", petEffects[i]);
 				}
-				str.Append(")");
+				text.Write(")");
 			}
 
-			return str.ToString();
 		}
 
 		/// <summary>

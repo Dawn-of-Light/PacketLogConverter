@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -19,31 +20,28 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("flagSpeedData:0x{0:X4} heading:0x{1:X4} spellLevel:{2,-2} spellLineIndex:{3} playerZonePos({4,3}):({5,-6} {6,-6} {7,-5}) unk1:0x{8:X4})",
+			text.Write("flagSpeedData:0x{0:X4} heading:0x{1:X4} spellLevel:{2,-2} spellLineIndex:{3} playerZonePos({4,3}):({5,-6} {6,-6} {7,-5}) unk1:0x{8:X4})",
 				flagSpeedData, heading, spellLevel, spellLineIndex, currentZoneId, xOffsetInZone, yOffsetInZone, realZ, unk1);
 			if (flagsDescription)
 			{
-				str.AppendFormat(" (speed:{0}{1}", (flagSpeedData & 0x200) == 0x200 ? "-" : "", flagSpeedData & 0x1FF);
+				text.Write(" (speed:{0}{1}", (flagSpeedData & 0x200) == 0x200 ? "-" : "", flagSpeedData & 0x1FF);
 				if ((flagSpeedData & 0x400) == 0x400)
-					str.Append(",UNKx0400");
+					text.Write(",UNKx0400");
 				if ((flagSpeedData & 0x800) == 0x800)
-					str.Append(",PetInView");
+					text.Write(",PetInView");
 				if ((flagSpeedData & 0x1000) == 0x1000)
-					str.Append(",GTinView");
+					text.Write(",GTinView");
 				if ((flagSpeedData & 0x2000) == 0x2000)
-					str.Append(",CheckTargetInView");
+					text.Write(",CheckTargetInView");
 				if ((flagSpeedData & 0x4000) == 0x4000)
-					str.Append(",Strafe");// Swim under water
+					text.Write(",Strafe");// Swim under water
 				if ((flagSpeedData & 0x8000) == 0x8000)
-					str.Append(",TargetInView");
-				str.AppendFormat(")");
+					text.Write(",TargetInView");
+				text.Write(")");
 			}
 
-			return str.ToString();
 		}
 
 		/// <summary>

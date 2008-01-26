@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -60,17 +61,13 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
 			for (int i = 0; i < updates.Length; i++)
 			{
-				str.Append("\n\t");
-				str.Append(updates[i].ToString());
+				text.Write("\n\t");
+				text.Write(updates[i].ToString());
 			}
-
-			return str.ToString();
 		}
 
 		/// <summary>

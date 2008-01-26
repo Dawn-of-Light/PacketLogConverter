@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -49,19 +50,16 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("sessionId:0x{0:X4} toSlot:{1,-4} fromSlot:{2,-4} itemCount:{3}", sessionId, toSlot, fromSlot, itemCount);
+			text.Write("sessionId:0x{0:X4} toSlot:{1,-4} fromSlot:{2,-4} itemCount:{3}", sessionId, toSlot, fromSlot, itemCount);
 			if (flagsDescription)
 			{
 				if (toSlot > 1000)
-					str.AppendFormat(" (toOid:0x{0:X4}", toSlot - 1000);
+					text.Write(" (toOid:0x{0:X4}", toSlot - 1000);
 				if (fromSlot > 1000)
-					str.AppendFormat(" (fromOid:0x{0:X4}", fromSlot - 1000);
+					text.Write(" (fromOid:0x{0:X4}", fromSlot - 1000);
 			}
-			return str.ToString();
 		}
 
 		/// <summary>

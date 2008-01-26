@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -86,23 +87,21 @@ namespace PacketLogConverter.LogPackets
 			BrokenTower = 4,
 			RizedTower = 5,
 		}
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.AppendFormat("keepId:0x{0:X4} componentId:{1,-3} unk1:0x{2:X4} uid:0x{3:X4} wallSkinId:{4,-3} x:{5,-3} y:{6,-3} rotate:{7} height:{8} health:{9,3}% status:0x{10:X2} flag:0x{11:X2}",
+			text.Write("keepId:0x{0:X4} componentId:{1,-3} unk1:0x{2:X4} uid:0x{3:X4} wallSkinId:{4,-3} x:{5,-3} y:{6,-3} rotate:{7} height:{8} health:{9,3}% status:0x{10:X2} flag:0x{11:X2}",
 				keepId, componentId, unk1, uid, skin, (sbyte)x, (sbyte)y, heading, height, health, status, flag);
 			if (flagsDescription)
 			{
 				byte componentType = skin;
 				if (componentType > 20)
 					componentType -= 20;
-				str.AppendFormat(" ({1}{0}", (eKeepComponentType)componentType, skin > 20 ? "New" : "");
+				text.Write(" ({1}{0}", (eKeepComponentType)componentType, skin > 20 ? "New" : "");
 				if (status > 0)
-					str.AppendFormat(",{0}", (eKeepComponentStatus)status);
-				str.Append(')');
+					text.Write(",{0}", (eKeepComponentStatus)status);
+				text.Write(')');
 	
 			}
-			return str.ToString();
 		}
 
 		/// <summary>

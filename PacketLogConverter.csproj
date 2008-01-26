@@ -109,6 +109,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IExecutionContext.cs" />
+    <Compile Include="IIndexedContainer.cs" />
     <Compile Include="ILogAction.cs">
       <SubType>Code</SubType>
     </Compile>

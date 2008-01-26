@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -97,25 +98,21 @@ namespace PacketLogConverter.LogPackets
 			WIN2003 = 8,
 		}
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("module:{0} version:{1} errorCode:0x{2:X8} CS=0x{3:X8} EIP=0x{4:X8}",
+			text.Write("module:{0} version:{1} errorCode:0x{2:X8} CS=0x{3:X8} EIP=0x{4:X8}",
 				module, version, errorCode, cs, eip);
-			str.AppendFormat("\n\tOS:{0} region:{1,-3} uptime:{2}s codeError:0x{3:X2}(windowMode:{4}{5} error:{6})",
+			text.Write("\n\tOS:{0} region:{1,-3} uptime:{2}s codeError:0x{3:X2}(windowMode:{4}{5} error:{6})",
 				osType, region, uptime, options, options & 0x1, ((options & 0x02) == 0x02) ? ", SecondCopyDaoc" : "", options >> 2);
-			str.AppendFormat("\n\tstack:0x{0:X8} 0x{1:X8} 0x{2:X8} 0x{3:X8}", stack1, stack2, stack3, stack4);
+			text.Write("\n\tstack:0x{0:X8} 0x{1:X8} 0x{2:X8} 0x{3:X8}", stack1, stack2, stack3, stack4);
 			if (flagsDescription)
 			{
-				str.AppendFormat("\n\tclnRegionExpantions:{0} clnType:{1}({4}) OS:{2}({5}) clnExpantions:{3}", clnRegionExpantions, clnType, osType, clnExpantions, (eClientType)clnType, (eOSType)osType);
-				str.AppendFormat("\n\t{0} caused {1} in module {2} at {3:X4}:{4:X8}.", "?", ((eErrorCode)errorCode).ToString().Replace("_", " "), module, cs, eip);
-				str.AppendFormat("\n\tGSXM:");
+				text.Write("\n\tclnRegionExpantions:{0} clnType:{1}({4}) OS:{2}({5}) clnExpantions:{3}", clnRegionExpantions, clnType, osType, clnExpantions, (eClientType)clnType, (eOSType)osType);
+				text.Write("\n\t{0} caused {1} in module {2} at {3:X4}:{4:X8}.", "?", ((eErrorCode)errorCode).ToString().Replace("_", " "), module, cs, eip);
+				text.Write("\n\tGSXM:");
 				for(int i = 0; i < 16; i++)
-					str.AppendFormat(" {0:0000}", gsxm[i]);
+					text.Write(" {0:0000}", gsxm[i]);
 			}
-
-			return str.ToString();
 		}
 
 		/// <summary>

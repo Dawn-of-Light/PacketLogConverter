@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -27,13 +28,9 @@ namespace PacketLogConverter.LogPackets
 		}
 
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("objectId:0x{0:X4} RP:{1} unk1:{2} unk2:0x{3:X8}", objectId, rp, unk1, unk2);
-
-			return str.ToString();
+			text.Write("objectId:0x{0:X4} RP:{1} unk1:{2} unk2:0x{3:X8}", objectId, rp, unk1, unk2);
 		}
 
 		/// <summary>

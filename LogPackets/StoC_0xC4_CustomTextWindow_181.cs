@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -14,29 +15,27 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("\n\tisTitle:{0} caption: \"{1}\" unk1_181:0x{2:X2}", flagAnswers, caption, unk1);
+			text.Write("\n\tisTitle:{0} caption: \"{1}\" unk1_181:0x{2:X2}", flagAnswers, caption, unk1);
 
 			for (int i = 0; i < lines.Length; i++)
 			{
 				LineEntry line = (LineEntry)lines[i];
-				str.AppendFormat("\n\t{0,2}: \"{1}\"", line.number, line.text);
+				text.Write("\n\t{0,2}: \"{1}\"", line.number, line.text);
 			}
 			if (flagAnswers > 0)
 			{
 
-				str.AppendFormat("\n\tcountAnswers:{0}", countAnswers);
+				text.Write("\n\tcountAnswers:{0}", countAnswers);
 				for (int i = 0; i < countAnswers; i++)
 				{
 					TitleEntry line = (TitleEntry)titles[i];
-					str.AppendFormat("\n\t{0,2}: \"{1}\"", line.number, line.text);
+					text.Write("\n\t{0,2}: \"{1}\"", line.number, line.text);
 				}
 			}
 
-			return str.ToString();
 		}
 
 		/// <summary>

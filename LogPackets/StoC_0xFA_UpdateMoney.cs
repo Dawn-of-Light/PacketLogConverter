@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -21,14 +22,12 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("copper:{0,-2} silver:{1,-2} gold:{2,-3} mithril:{3,-3} platinum:{4}",
+			text.Write("copper:{0,-2} silver:{1,-2} gold:{2,-3} mithril:{3,-3} platinum:{4}",
 				copper, silver, gold, mithril, platinum);
 
-			return str.ToString();
 		}
 
 		/// <summary>

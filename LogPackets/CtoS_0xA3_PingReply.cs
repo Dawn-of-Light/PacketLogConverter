@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -20,18 +21,17 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("timeStamp:0x{0:X8} unk1:0x{1:X4} unk2:0x{2:X4} unk3:0x{3:X8}", timeStamp, unk1, unk2, unk3);
+			text.Write("timeStamp:0x{0:X8} unk1:0x{1:X4} unk2:0x{2:X4} unk3:0x{3:X8}", timeStamp, unk1, unk2, unk3);
 			if (flagsDescription)
 			{
 				TimeSpan timeUp = new TimeSpan((long) timeStamp * 1000); // TimeSpan in 100-nanosecond
-				str.AppendFormat(" upTime:{0}", timeUp);
+				text.Write(" upTime:");
+				text.Write(timeUp);
 			}
 
-			return str.ToString();
 		}
 
 		/// <summary>

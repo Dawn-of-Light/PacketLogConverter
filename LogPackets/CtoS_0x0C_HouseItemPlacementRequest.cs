@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -35,14 +36,10 @@ namespace PacketLogConverter.LogPackets
 			hookPoints = 5
 		}
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("slot:{0,-3} houseOid:0x{1:X4} surface:{2,-3} place:{3}({4}) rotation:{5} (x:{6} y:{7})",
+			text.Write("slot:{0,-3} houseOid:0x{1:X4} surface:{2,-3} place:{3}({4}) rotation:{5} (x:{6} y:{7})",
 				slot, houseOid, surface, place, (ePlaceType)place, rotation, x, y);
-
-			return str.ToString();
 		}
 
 		/// <summary>

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -42,28 +43,24 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("version:{0}.{1}.{2} accountName:\"{3}\" accountPassword:\"{4}\" cryptKeyRequests:0x{5:X2}",
+			text.Write("version:{0}.{1}.{2} accountName:\"{3}\" accountPassword:\"{4}\" cryptKeyRequests:0x{5:X2}",
 				clientVersionMajor, clientVersionMinor, clientVersionBuild, clientAccountName, clientAccountPassword, cryptKeyRequests);
 			if (flagsDescription)
 			{
 				if (AunkI.Length > 0)
 				{
-					str.Append("\n\tAunkI:");
+					text.Write("\n\tAunkI:");
 					for (byte i = 0; i < AunkI.Length; i++)
-						str.AppendFormat(" 0x{0:X8}", AunkI[i]);
+						text.Write(" 0x{0:X8}", AunkI[i]);
 				}
-				str.AppendFormat(" unkB1:0x{0:X2} unkS1:0x{1:X4}", unkB1, unkS1);
-				str.Append("\n\tinfo different with and without logger:");
-				str.AppendFormat("\n\tAunk1:0x{0:X8} 0x{1:X8} 0x{2:X8} 0x{3:X8}", aunk1, aunk2, aunk3, aunk4);
-				str.AppendFormat("\n\tunk1 :0x{0:X8} unk2:0x{1:X8} unk3:0x{2:X8}", unk1, unk2, unk3);
-				str.AppendFormat("\n\tEDI: 0x{0:X8} stack?:0x{1:X8}", edi, AunkB);
+				text.Write(" unkB1:0x{0:X2} unkS1:0x{1:X4}", unkB1, unkS1);
+				text.Write("\n\tinfo different with and without logger:");
+				text.Write("\n\tAunk1:0x{0:X8} 0x{1:X8} 0x{2:X8} 0x{3:X8}", aunk1, aunk2, aunk3, aunk4);
+				text.Write("\n\tunk1 :0x{0:X8} unk2:0x{1:X8} unk3:0x{2:X8}", unk1, unk2, unk3);
+				text.Write("\n\tEDI: 0x{0:X8} stack?:0x{1:X8}", edi, AunkB);
 			}
-
-			return str.ToString();
 		}
 
 		/// <summary>
@@ -72,6 +69,8 @@ namespace PacketLogConverter.LogPackets
 		/// <param name="log"></param>
 		public override void InitLog(PacketLog log)
 		{
+			if (log.SubversionReinit)
+				return;
 			Position = 2;
 			int major = ReadByte();
 			int minor = ReadByte();

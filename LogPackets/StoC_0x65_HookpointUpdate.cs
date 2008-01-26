@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -39,19 +40,17 @@ if hook point count > 1
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("keepId:0x{0:X4} componentId:{1} HookPointCount:{2} selectedHookPointIndex:0x{3:X2}",
+			text.Write("keepId:0x{0:X4} componentId:{1} HookPointCount:{2} selectedHookPointIndex:0x{3:X2}",
 				keepId, componentId, hookPointCount, unk1);
 			string type;
 			if (hookPointCount != 0)
 			{
-				str.Append(" HookPoints:");
+				text.Write(" HookPoints:");
 				for (int i=0;i<hookPointCount;i++)
 				{
-					str.AppendFormat(" [{0}]=0x{1:X2}", i, hookpoint[i]);
+					text.Write(" [{0}]=0x{1:X2}", i, hookpoint[i]);
 					switch(hookpoint[i])
 					{
 						case 0x41:
@@ -68,10 +67,9 @@ if hook point count > 1
 							break;
 					}
 					if (type != "")
-						str.AppendFormat("({0})", type);
+						text.Write("({0})", type);
 				}
 			}
-			return str.ToString();
 		}
 
 		/// <summary>

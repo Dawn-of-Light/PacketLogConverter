@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x28, -1, ePacketDirection.ServerToClient, "Set session ID")]
@@ -11,9 +13,10 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			return "sessionId:0x" + sessionId.ToString("X4");
+			text.Write("sessionId:0x");
+			text.Write(sessionId.ToString("X4"));
 		}
 
 		/// <summary>

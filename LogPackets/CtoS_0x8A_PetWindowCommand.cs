@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -19,76 +20,100 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 			Position = 0;
 
-			StringBuilder str = new StringBuilder();
 
 			if (flagsDescription)
-				str.AppendFormat("aggroState:{0} walkState:{1} command:{2} unk1:{3} ", aggroState, walkState, command, unk1);
-			int baseLen = str.Length;
+				text.Write("aggroState:{0} walkState:{1} command:{2} unk1:{3} ", aggroState, walkState, command, unk1);
+
+			//
+			// Write aggro state
+			//
+			string strAggro = null;
 			switch (aggroState)
 			{
 				case 0:
 					break;
 				case 1:
-					str.Append("aggressive");
+					strAggro = "aggressive";
 					break;
 				case 2:
-					str.Append("defensive");
+					strAggro = "defensive";
 					break;
 				case 3:
-					str.Append("passive");
+					strAggro = "passive";
 					break;
 				default:
-					str.AppendFormat("unk aggro 0x{0:X2}", aggroState);
+					strAggro = "unk aggro 0x" + aggroState.ToString("X2");
 					break;
 			}
+			if (strAggro != null)
+			{
+				text.Write(strAggro);
+			}
+
+			//
+			// Write walk state
+			//
+			string strWalkState = null;
 			if (walkState != 0)
 			{
-				if (str.Length != baseLen) str.Append(',');
+				if (strAggro != null) text.Write(',');
 				switch (walkState)
 				{
 					case 0:
 						break;
 					case 1:
-						str.Append("follow");
+						strWalkState = "follow";
 						break;
 					case 2:
-						str.Append("stay");
+						strWalkState = "stay";
 						break;
 					case 3:
-						str.Append("goto");
+						strWalkState = "goto";
 						break;
 					case 4:
-						str.Append("here");
+						strWalkState = "here";
 						break;
 					default:
-						str.AppendFormat("unk walk 0x{0:2X}", walkState);
+						strWalkState = "unk walk 0x" + walkState.ToString("X2");
 						break;
 				}
+				if (strWalkState != null)
+				{
+					text.Write(strWalkState);
+				}
 			}
+
+			//
+			// Write command
+			//
 			if (command != 0)
 			{
-				if (str.Length != baseLen) str.Append(',');
+				if (strAggro != null || strWalkState != null) text.Write(',');
+				string strCommand = null;
 				switch (command)
 				{
 					case 0:
 						break;
 					case 1:
-						str.Append("attack");
+						strCommand = "attack";
 						break;
 					case 2:
-						str.Append("release");
+						strCommand = "release";
 						break;
 					default:
-						str.AppendFormat("unk command 0x{0:2X}", command);
+						strCommand = "unk command 0x" + command.ToString("2X");
 						break;
+				}
+				if (strCommand != null)
+				{
+					text.Write(strCommand);
 				}
 			}
 
-			return str.ToString();
 		}
 
 		public override void Init()

@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -13,9 +14,9 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			return string.Format("UDP:{0}({1})", useUDP, (useUDP == 1) ? "Enable" : "Disable");
+			text.Write("UDP:{0}({1})", useUDP, (useUDP == 1) ? "Enable" : "Disable");
 		}
 
 		/// <summary>

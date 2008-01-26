@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -13,9 +14,10 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			return "unk1:0x"+unk1.ToString("X2");
+			text.Write("unk1:0x");
+			text.Write(unk1.ToString("X2"));
 		}
 
 		/// <summary>

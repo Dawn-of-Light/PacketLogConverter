@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -110,13 +111,11 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("oid:0x{0:X4} unk1:0x{1:X2} emote:{2}({3})", oid, unk1, emote, (eEmote)emote);
+			text.Write("oid:0x{0:X4} unk1:0x{1:X2} emote:{2}({3})", oid, unk1, emote, (eEmote)emote);
 
-			return str.ToString();
 		}
 
 		/// <summary>

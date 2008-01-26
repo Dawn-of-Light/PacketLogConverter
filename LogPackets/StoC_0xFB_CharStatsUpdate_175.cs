@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -113,31 +114,29 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			if (flag==0xFF)	str.Append("\n\t    resist |cru|sla|thr|hea|col|mat|bod|spi|ene");
-			else str.Append("\n\t      stat |str|dex|con|qui|int|pie|emp|chr|");
+			if (flag==0xFF)	text.Write("\n\t    resist |cru|sla|thr|hea|col|mat|bod|spi|ene");
+			else text.Write("\n\t      stat |str|dex|con|qui|int|pie|emp|chr|");
 
-			str.AppendFormat("\n\tbase       |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}|{8,-3}",
+			text.Write("\n\tbase       |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}|{8,-3}",
 				_str, _dex, _con, _qui, _int, _pie, _emp, _chr, unk1);
 
-			str.AppendFormat("\n\tbuf        |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}|{8,-3}",
+			text.Write("\n\tbuf        |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}|{8,-3}",
 				b_str, b_dex, b_con, b_qui, b_int, b_pie, b_emp, b_chr, b_unk1);
 
-			str.AppendFormat("\n\titem bonus |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}|{8,-3}",
+			text.Write("\n\titem bonus |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}|{8,-3}",
 				i_str, i_dex, i_con, i_qui, i_int, i_pie, i_emp, i_chr, i_unk1);
 
-			str.AppendFormat("\n\titem cap   |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}|{8,-3}",
+			text.Write("\n\titem cap   |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}|{8,-3}",
 				c_str, c_dex, c_con, c_qui, c_int, c_pie, c_emp, c_chr, c_unk1);
 
-			str.AppendFormat("\n\tra bonus   |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}|{8,-3}",
+			text.Write("\n\tra bonus   |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}|{8,-3}",
 				r_str, r_dex, r_con, r_qui, r_int, r_pie, r_emp, r_chr, r_unk1);
 
-			if (flag != 0xFF) str.AppendFormat("\n\t{4}:{0} conLost:{1,-2} maxHealth:{2,-4} unk2:0x{3:X4}", flag, conLost, maxHealth, unk2, flag == 0 ? "subCode" : "vampBonus");
-			else str.AppendFormat("\n\tsubCode:{0} unk1:0x{1:X4} unk2:0x{2:X4} unk3:0x{3:X4}",  flag, conLost, maxHealth, unk2);
+			if (flag != 0xFF) text.Write("\n\t{4}:{0} conLost:{1,-2} maxHealth:{2,-4} unk2:0x{3:X4}", flag, conLost, maxHealth, unk2, flag == 0 ? "subCode" : "vampBonus");
+			else text.Write("\n\tsubCode:{0} unk1:0x{1:X4} unk2:0x{2:X4} unk3:0x{3:X4}",  flag, conLost, maxHealth, unk2);
 
-			return str.ToString();
 		}
 
 		/// <summary>

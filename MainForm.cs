@@ -118,6 +118,12 @@ namespace PacketLogConverter
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.openLogsDataGridView = new System.Windows.Forms.DataGridView();
+			this.streamNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.countDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.unknownPacketsCountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.versionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.IgnoreVersionChanges = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.openLogsBindingSource = new System.Windows.Forms.BindingSource(this.components);
 			this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
 			this.menuOpenFile = new System.Windows.Forms.MenuItem();
@@ -175,13 +181,8 @@ namespace PacketLogConverter
 			this.openFolderLogDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.openFilterDialog = new System.Windows.Forms.OpenFileDialog();
 			this.saveFilterDialog = new System.Windows.Forms.SaveFileDialog();
-			this.openLogsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-			this.streamNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.countDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.unknownPacketsCountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.versionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.IgnoreVersionChanges = new System.Windows.Forms.DataGridViewCheckBoxColumn();
 			((System.ComponentModel.ISupportInitialize)(this.openLogsDataGridView)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.openLogsBindingSource)).BeginInit();
 			this.mainFormTabs.SuspendLayout();
 			this.instantParseTab.SuspendLayout();
 			this.instantResultGroupBox1.SuspendLayout();
@@ -191,11 +192,10 @@ namespace PacketLogConverter
 			this.li_initialValuesGroupBox.SuspendLayout();
 			this.li_totalGroupBox.SuspendLayout();
 			this.logDataTab.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.openLogsBindingSource)).BeginInit();
 			this.SuspendLayout();
-			//
+			// 
 			// openLogsDataGridView
-			//
+			// 
 			this.openLogsDataGridView.AllowUserToAddRows = false;
 			this.openLogsDataGridView.AllowUserToDeleteRows = false;
 			this.openLogsDataGridView.AllowUserToOrderColumns = true;
@@ -232,15 +232,57 @@ namespace PacketLogConverter
 			this.openLogsDataGridView.TabIndex = 10;
 			this.openLogsDataGridView.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.openLogsDataGridView_CellBeginEdit);
 			this.openLogsDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.openLogsDataGridView_CellValueChanged);
-			//
+			// 
+			// streamNameDataGridViewTextBoxColumn
+			// 
+			this.streamNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.streamNameDataGridViewTextBoxColumn.DataPropertyName = "StreamName";
+			this.streamNameDataGridViewTextBoxColumn.HeaderText = "File";
+			this.streamNameDataGridViewTextBoxColumn.Name = "streamNameDataGridViewTextBoxColumn";
+			this.streamNameDataGridViewTextBoxColumn.ReadOnly = true;
+			// 
+			// countDataGridViewTextBoxColumn
+			// 
+			this.countDataGridViewTextBoxColumn.DataPropertyName = "Count";
+			this.countDataGridViewTextBoxColumn.HeaderText = "Packets total";
+			this.countDataGridViewTextBoxColumn.Name = "countDataGridViewTextBoxColumn";
+			this.countDataGridViewTextBoxColumn.ReadOnly = true;
+			this.countDataGridViewTextBoxColumn.Width = 87;
+			// 
+			// unknownPacketsCountDataGridViewTextBoxColumn
+			// 
+			this.unknownPacketsCountDataGridViewTextBoxColumn.DataPropertyName = "UnknownPacketsCount";
+			this.unknownPacketsCountDataGridViewTextBoxColumn.HeaderText = "Packets unknown";
+			this.unknownPacketsCountDataGridViewTextBoxColumn.Name = "unknownPacketsCountDataGridViewTextBoxColumn";
+			this.unknownPacketsCountDataGridViewTextBoxColumn.ReadOnly = true;
+			this.unknownPacketsCountDataGridViewTextBoxColumn.Width = 108;
+			// 
+			// versionDataGridViewTextBoxColumn
+			// 
+			this.versionDataGridViewTextBoxColumn.DataPropertyName = "Version";
+			this.versionDataGridViewTextBoxColumn.HeaderText = "Version";
+			this.versionDataGridViewTextBoxColumn.Name = "versionDataGridViewTextBoxColumn";
+			this.versionDataGridViewTextBoxColumn.Width = 67;
+			// 
+			// IgnoreVersionChanges
+			// 
+			this.IgnoreVersionChanges.DataPropertyName = "IgnoreVersionChanges";
+			this.IgnoreVersionChanges.HeaderText = "Ignore version changes";
+			this.IgnoreVersionChanges.Name = "IgnoreVersionChanges";
+			this.IgnoreVersionChanges.Width = 112;
+			// 
+			// openLogsBindingSource
+			// 
+			this.openLogsBindingSource.DataSource = typeof(PacketLogConverter.PacketLog);
+			// 
 			// mainMenu1
-			//
+			// 
 			this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItem1,
             this.menuItem2});
-			//
+			// 
 			// menuItem1
-			//
+			// 
 			this.menuItem1.Index = 0;
 			this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuOpenFile,
@@ -252,92 +294,92 @@ namespace PacketLogConverter
             this.menuItem5,
             this.menuExitApp});
 			this.menuItem1.Text = "&File";
-			//
+			// 
 			// menuOpenFile
-			//
+			// 
 			this.menuOpenFile.Index = 0;
 			this.menuOpenFile.Shortcut = System.Windows.Forms.Shortcut.CtrlO;
 			this.menuOpenFile.Text = "&Open...";
 			this.menuOpenFile.Click += new System.EventHandler(this.menuOpenFile_Click);
-			//
+			// 
 			// menuOpenAnother
-			//
+			// 
 			this.menuOpenAnother.Index = 1;
 			this.menuOpenAnother.Text = "Open another...";
 			this.menuOpenAnother.Click += new System.EventHandler(this.menuOpenAnother_Click);
-			//
+			// 
 			// menuOpenFolder
-			//
+			// 
 			this.menuOpenFolder.Index = 2;
 			this.menuOpenFolder.Text = "Open folder ...";
 			this.menuOpenFolder.Click += new System.EventHandler(this.menuOpenFolder_Click);
-			//
+			// 
 			// menuSaveFile
-			//
+			// 
 			this.menuSaveFile.Enabled = false;
 			this.menuSaveFile.Index = 3;
 			this.menuSaveFile.Shortcut = System.Windows.Forms.Shortcut.CtrlS;
 			this.menuSaveFile.Text = "&Save...";
 			this.menuSaveFile.Click += new System.EventHandler(this.menuSaveFile_Click);
-			//
+			// 
 			// menuItem3
-			//
+			// 
 			this.menuItem3.Index = 4;
 			this.menuItem3.Text = "-";
-			//
+			// 
 			// menuRecentFiles
-			//
+			// 
 			this.menuRecentFiles.Index = 5;
 			this.menuRecentFiles.Text = "&Recent Files";
-			//
+			// 
 			// menuItem5
-			//
+			// 
 			this.menuItem5.Index = 6;
 			this.menuItem5.Text = "-";
-			//
+			// 
 			// menuExitApp
-			//
+			// 
 			this.menuExitApp.Index = 7;
 			this.menuExitApp.Text = "E&xit";
 			this.menuExitApp.Click += new System.EventHandler(this.menuExitApp_Click);
-			//
+			// 
 			// menuItem2
-			//
+			// 
 			this.menuItem2.Index = 1;
 			this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.packetTimeDiffMenuItem,
             this.mnuPacketSequence,
             this.mnuPacketFlags});
 			this.menuItem2.Text = "&View";
-			//
+			// 
 			// packetTimeDiffMenuItem
-			//
+			// 
 			this.packetTimeDiffMenuItem.Index = 0;
 			this.packetTimeDiffMenuItem.Text = "Packet time difference";
 			this.packetTimeDiffMenuItem.Click += new System.EventHandler(this.packetTimeDiffMenuItem_Click);
-			//
+			// 
 			// mnuPacketSequence
-			//
+			// 
 			this.mnuPacketSequence.Index = 1;
 			this.mnuPacketSequence.Text = "Packet sequence ";
 			this.mnuPacketSequence.Click += new System.EventHandler(this.mnuPacketSequence_Click);
-			//
+			// 
 			// mnuPacketFlags
-			//
+			// 
 			this.mnuPacketFlags.Index = 2;
 			this.mnuPacketFlags.Text = "Packet flags";
 			this.mnuPacketFlags.Click += new System.EventHandler(this.mnuPacketFlags_Click);
-			//
+			// 
 			// openLogDialog
-			//
+			// 
 			this.openLogDialog.Multiselect = true;
-			//
+			// 
 			// saveLogDialog
-			//
+			// 
 			this.saveLogDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveLogDialog_FileOk);
-			//
+			// 
 			// mainFormTabs
-			//
+			// 
 			this.mainFormTabs.Controls.Add(this.instantParseTab);
 			this.mainFormTabs.Controls.Add(this.logInfoTab);
 			this.mainFormTabs.Controls.Add(this.logDataTab);
@@ -347,9 +389,9 @@ namespace PacketLogConverter
 			this.mainFormTabs.SelectedIndex = 0;
 			this.mainFormTabs.Size = new System.Drawing.Size(592, 373);
 			this.mainFormTabs.TabIndex = 0;
-			//
+			// 
 			// instantParseTab
-			//
+			// 
 			this.instantParseTab.Controls.Add(this.instantResultGroupBox1);
 			this.instantParseTab.Controls.Add(this.inputDataGroupBox);
 			this.instantParseTab.Location = new System.Drawing.Point(4, 22);
@@ -358,9 +400,9 @@ namespace PacketLogConverter
 			this.instantParseTab.TabIndex = 2;
 			this.instantParseTab.Text = "Instant parse";
 			this.instantParseTab.UseVisualStyleBackColor = true;
-			//
+			// 
 			// instantResultGroupBox1
-			//
+			// 
 			this.instantResultGroupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
@@ -371,9 +413,9 @@ namespace PacketLogConverter
 			this.instantResultGroupBox1.TabIndex = 2;
 			this.instantResultGroupBox1.TabStop = false;
 			this.instantResultGroupBox1.Text = "Instant result";
-			//
+			// 
 			// instantParseOut
-			//
+			// 
 			this.instantParseOut.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
@@ -385,9 +427,9 @@ namespace PacketLogConverter
 			this.instantParseOut.TabIndex = 0;
 			this.instantParseOut.Text = "";
 			this.instantParseOut.WordWrap = false;
-			//
+			// 
 			// inputDataGroupBox
-			//
+			// 
 			this.inputDataGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.inputDataGroupBox.Controls.Add(this.button1);
@@ -405,18 +447,18 @@ namespace PacketLogConverter
 			this.inputDataGroupBox.TabIndex = 1;
 			this.inputDataGroupBox.TabStop = false;
 			this.inputDataGroupBox.Text = "Input data";
-			//
+			// 
 			// button1
-			//
+			// 
 			this.button1.Location = new System.Drawing.Point(512, 23);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(64, 23);
 			this.button1.TabIndex = 8;
 			this.button1.Text = "Clear";
 			this.button1.Click += new System.EventHandler(this.button1_Click);
-			//
+			// 
 			// instantParseInput
-			//
+			// 
 			this.instantParseInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.instantParseInput.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -428,9 +470,9 @@ namespace PacketLogConverter
 			this.instantParseInput.TabIndex = 7;
 			this.instantParseInput.WordWrap = false;
 			this.instantParseInput.TextChanged += new System.EventHandler(this.InstantParseUpdateEvent);
-			//
+			// 
 			// instantServerToClient
-			//
+			// 
 			this.instantServerToClient.Checked = true;
 			this.instantServerToClient.Location = new System.Drawing.Point(312, 24);
 			this.instantServerToClient.Name = "instantServerToClient";
@@ -439,27 +481,27 @@ namespace PacketLogConverter
 			this.instantServerToClient.TabStop = true;
 			this.instantServerToClient.Text = "server to client";
 			this.instantServerToClient.CheckedChanged += new System.EventHandler(this.InstantParseUpdateEvent);
-			//
+			// 
 			// instantClientToServer
-			//
+			// 
 			this.instantClientToServer.Location = new System.Drawing.Point(416, 24);
 			this.instantClientToServer.Name = "instantClientToServer";
 			this.instantClientToServer.Size = new System.Drawing.Size(96, 20);
 			this.instantClientToServer.TabIndex = 5;
 			this.instantClientToServer.Text = "client to server";
 			this.instantClientToServer.CheckedChanged += new System.EventHandler(this.InstantParseUpdateEvent);
-			//
+			// 
 			// label6
-			//
+			// 
 			this.label6.Location = new System.Drawing.Point(248, 24);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(56, 20);
 			this.label6.TabIndex = 4;
 			this.label6.Text = "Direction:";
 			this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			//
+			// 
 			// instantCode
-			//
+			// 
 			this.instantCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
 			this.instantCode.Location = new System.Drawing.Point(176, 24);
 			this.instantCode.MaxLength = 10;
@@ -467,18 +509,18 @@ namespace PacketLogConverter
 			this.instantCode.Size = new System.Drawing.Size(64, 20);
 			this.instantCode.TabIndex = 3;
 			this.instantCode.TextChanged += new System.EventHandler(this.InstantParseUpdateEvent);
-			//
+			// 
 			// label5
-			//
+			// 
 			this.label5.Location = new System.Drawing.Point(128, 24);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(40, 20);
 			this.label5.TabIndex = 2;
 			this.label5.Text = "Code:";
 			this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			//
+			// 
 			// instantVersion
-			//
+			// 
 			this.instantVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
 			this.instantVersion.Location = new System.Drawing.Point(64, 24);
 			this.instantVersion.MaxLength = 10;
@@ -486,18 +528,18 @@ namespace PacketLogConverter
 			this.instantVersion.Size = new System.Drawing.Size(56, 20);
 			this.instantVersion.TabIndex = 1;
 			this.instantVersion.TextChanged += new System.EventHandler(this.InstantParseUpdateEvent);
-			//
+			// 
 			// label4
-			//
+			// 
 			this.label4.Location = new System.Drawing.Point(8, 24);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(48, 20);
 			this.label4.TabIndex = 0;
 			this.label4.Text = "Version:";
 			this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			//
+			// 
 			// logInfoTab
-			//
+			// 
 			this.logInfoTab.Controls.Add(this.li_openLogsGroupBox);
 			this.logInfoTab.Controls.Add(this.li_initialValuesGroupBox);
 			this.logInfoTab.Controls.Add(this.li_totalGroupBox);
@@ -507,9 +549,9 @@ namespace PacketLogConverter
 			this.logInfoTab.TabIndex = 0;
 			this.logInfoTab.Text = "Log info";
 			this.logInfoTab.UseVisualStyleBackColor = true;
-			//
+			// 
 			// li_openLogsGroupBox
-			//
+			// 
 			this.li_openLogsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
@@ -523,26 +565,26 @@ namespace PacketLogConverter
 			this.li_openLogsGroupBox.TabIndex = 13;
 			this.li_openLogsGroupBox.TabStop = false;
 			this.li_openLogsGroupBox.Text = "Open logs";
-			//
+			// 
 			// li_changesLabel
-			//
+			// 
 			this.li_changesLabel.Location = new System.Drawing.Point(6, 16);
 			this.li_changesLabel.Name = "li_changesLabel";
 			this.li_changesLabel.Size = new System.Drawing.Size(100, 23);
 			this.li_changesLabel.TabIndex = 5;
 			this.li_changesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			//
+			// 
 			// applyButton
-			//
+			// 
 			this.applyButton.Location = new System.Drawing.Point(110, 16);
 			this.applyButton.Name = "applyButton";
 			this.applyButton.Size = new System.Drawing.Size(100, 23);
 			this.applyButton.TabIndex = 3;
 			this.applyButton.Text = "Apply";
 			this.applyButton.Click += new System.EventHandler(this.li_applyButton_Click);
-			//
+			// 
 			// label3
-			//
+			// 
 			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.label3.Location = new System.Drawing.Point(230, 11);
@@ -551,9 +593,9 @@ namespace PacketLogConverter
 			this.label3.TabIndex = 4;
 			this.label3.Text = "Parse only changed logs again using current values.";
 			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			//
+			// 
 			// li_initialValuesGroupBox
-			//
+			// 
 			this.li_initialValuesGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.li_initialValuesGroupBox.Controls.Add(this.label1);
@@ -566,26 +608,26 @@ namespace PacketLogConverter
 			this.li_initialValuesGroupBox.TabIndex = 12;
 			this.li_initialValuesGroupBox.TabStop = false;
 			this.li_initialValuesGroupBox.Text = "Initial values";
-			//
+			// 
 			// label1
-			//
+			// 
 			this.label1.Location = new System.Drawing.Point(6, 16);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(100, 24);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Log version:";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			//
+			// 
 			// li_clientVersion
-			//
+			// 
 			this.li_clientVersion.Location = new System.Drawing.Point(110, 18);
 			this.li_clientVersion.MaxLength = 10;
 			this.li_clientVersion.Name = "li_clientVersion";
 			this.li_clientVersion.Size = new System.Drawing.Size(100, 20);
 			this.li_clientVersion.TabIndex = 1;
-			//
+			// 
 			// label2
-			//
+			// 
 			this.label2.Location = new System.Drawing.Point(230, 12);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(208, 32);
@@ -593,17 +635,17 @@ namespace PacketLogConverter
 			this.label2.Text = "Can be set explicitly if no version info is in the log else it will be overwriten" +
 				".";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			//
+			// 
 			// li_ignoreVersionChanges
-			//
+			// 
 			this.li_ignoreVersionChanges.Location = new System.Drawing.Point(446, 12);
 			this.li_ignoreVersionChanges.Name = "li_ignoreVersionChanges";
 			this.li_ignoreVersionChanges.Size = new System.Drawing.Size(116, 32);
 			this.li_ignoreVersionChanges.TabIndex = 9;
 			this.li_ignoreVersionChanges.Text = "Ignore version packets";
-			//
+			// 
 			// li_totalGroupBox
-			//
+			// 
 			this.li_totalGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.li_totalGroupBox.Controls.Add(this.label7);
@@ -618,63 +660,63 @@ namespace PacketLogConverter
 			this.li_totalGroupBox.TabIndex = 11;
 			this.li_totalGroupBox.TabStop = false;
 			this.li_totalGroupBox.Text = "Total";
-			//
+			// 
 			// label7
-			//
+			// 
 			this.label7.Location = new System.Drawing.Point(230, 12);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(332, 32);
 			this.label7.TabIndex = 2;
 			this.label7.Text = "The count of successfully parsed packets.";
 			this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			//
+			// 
 			// label8
-			//
+			// 
 			this.label8.Location = new System.Drawing.Point(6, 16);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(100, 24);
 			this.label8.TabIndex = 0;
 			this.label8.Text = "Packets count:";
 			this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			//
+			// 
 			// li_packetsCount
-			//
+			// 
 			this.li_packetsCount.Location = new System.Drawing.Point(110, 18);
 			this.li_packetsCount.MaxLength = 10;
 			this.li_packetsCount.Name = "li_packetsCount";
 			this.li_packetsCount.ReadOnly = true;
 			this.li_packetsCount.Size = new System.Drawing.Size(100, 20);
 			this.li_packetsCount.TabIndex = 1;
-			//
+			// 
 			// label9
-			//
+			// 
 			this.label9.Location = new System.Drawing.Point(230, 46);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(332, 32);
 			this.label9.TabIndex = 8;
 			this.label9.Text = "The count of unknown packets in logs.";
 			this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			//
+			// 
 			// label10
-			//
+			// 
 			this.label10.Location = new System.Drawing.Point(6, 50);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(100, 24);
 			this.label10.TabIndex = 6;
 			this.label10.Text = "Unknown packets:";
 			this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			//
+			// 
 			// li_unknownPacketsCount
-			//
+			// 
 			this.li_unknownPacketsCount.Location = new System.Drawing.Point(110, 52);
 			this.li_unknownPacketsCount.MaxLength = 10;
 			this.li_unknownPacketsCount.Name = "li_unknownPacketsCount";
 			this.li_unknownPacketsCount.ReadOnly = true;
 			this.li_unknownPacketsCount.Size = new System.Drawing.Size(100, 20);
 			this.li_unknownPacketsCount.TabIndex = 7;
-			//
+			// 
 			// logDataTab
-			//
+			// 
 			this.logDataTab.Controls.Add(this.logDataCountLogDataSizeheckBox);
 			this.logDataTab.Controls.Add(this.logDataDisableUpdatesCheckBox);
 			this.logDataTab.Controls.Add(this.logDataFindButton);
@@ -686,9 +728,9 @@ namespace PacketLogConverter
 			this.logDataTab.TabIndex = 1;
 			this.logDataTab.Text = "Log data";
 			this.logDataTab.UseVisualStyleBackColor = true;
-			//
+			// 
 			// logDataCountLogDataSizeheckBox
-			//
+			// 
 			this.logDataCountLogDataSizeheckBox.AutoSize = true;
 			this.logDataCountLogDataSizeheckBox.Checked = true;
 			this.logDataCountLogDataSizeheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -698,36 +740,36 @@ namespace PacketLogConverter
 			this.logDataCountLogDataSizeheckBox.TabIndex = 4;
 			this.logDataCountLogDataSizeheckBox.Text = "Count log data size before buffer allocation";
 			this.logDataCountLogDataSizeheckBox.UseVisualStyleBackColor = true;
-			//
+			// 
 			// logDataDisableUpdatesCheckBox
-			//
+			// 
 			this.logDataDisableUpdatesCheckBox.Location = new System.Drawing.Point(16, 8);
 			this.logDataDisableUpdatesCheckBox.Name = "logDataDisableUpdatesCheckBox";
 			this.logDataDisableUpdatesCheckBox.Size = new System.Drawing.Size(104, 24);
 			this.logDataDisableUpdatesCheckBox.TabIndex = 3;
 			this.logDataDisableUpdatesCheckBox.Text = "disable updates";
 			this.logDataDisableUpdatesCheckBox.CheckedChanged += new System.EventHandler(this.logDataDisableUpdatesCheckBox_CheckedChanged);
-			//
+			// 
 			// logDataFindButton
-			//
+			// 
 			this.logDataFindButton.Location = new System.Drawing.Point(8, 40);
 			this.logDataFindButton.Name = "logDataFindButton";
 			this.logDataFindButton.Size = new System.Drawing.Size(75, 23);
 			this.logDataFindButton.TabIndex = 2;
 			this.logDataFindButton.Text = "&Find";
 			this.logDataFindButton.Click += new System.EventHandler(this.logDataFindButton_Click);
-			//
+			// 
 			// logDataFindTextBox
-			//
+			// 
 			this.logDataFindTextBox.Location = new System.Drawing.Point(88, 40);
 			this.logDataFindTextBox.Name = "logDataFindTextBox";
 			this.logDataFindTextBox.Size = new System.Drawing.Size(488, 20);
 			this.logDataFindTextBox.TabIndex = 1;
 			this.logDataFindTextBox.WordWrap = false;
 			this.logDataFindTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.logDataFindText_KeyPress);
-			//
+			// 
 			// logDataText
-			//
+			// 
 			this.logDataText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
@@ -740,66 +782,25 @@ namespace PacketLogConverter
 			this.logDataText.TabIndex = 0;
 			this.logDataText.Text = "";
 			this.logDataText.WordWrap = false;
+			this.logDataText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.logDataText_KeyDown);
 			this.logDataText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.logDataFindText_KeyPress);
-			//
+			// 
 			// openAnotherLogDialog
-			//
+			// 
 			this.openAnotherLogDialog.Multiselect = true;
-			//
+			// 
 			// openFilterDialog
-			//
+			// 
 			this.openFilterDialog.Filter = "Filters (*.flt)|*.flt";
 			this.openFilterDialog.RestoreDirectory = true;
-			//
+			// 
 			// saveFilterDialog
-			//
+			// 
 			this.saveFilterDialog.Filter = "Filters (*.flt)|*.flt";
 			this.saveFilterDialog.RestoreDirectory = true;
-			//
-			// openLogsBindingSource
-			//
-			this.openLogsBindingSource.DataSource = typeof(PacketLogConverter.PacketLog);
-			//
-			// streamNameDataGridViewTextBoxColumn
-			//
-			this.streamNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.streamNameDataGridViewTextBoxColumn.DataPropertyName = "StreamName";
-			this.streamNameDataGridViewTextBoxColumn.HeaderText = "File";
-			this.streamNameDataGridViewTextBoxColumn.Name = "streamNameDataGridViewTextBoxColumn";
-			this.streamNameDataGridViewTextBoxColumn.ReadOnly = true;
-			//
-			// countDataGridViewTextBoxColumn
-			//
-			this.countDataGridViewTextBoxColumn.DataPropertyName = "Count";
-			this.countDataGridViewTextBoxColumn.HeaderText = "Packets total";
-			this.countDataGridViewTextBoxColumn.Name = "countDataGridViewTextBoxColumn";
-			this.countDataGridViewTextBoxColumn.ReadOnly = true;
-			this.countDataGridViewTextBoxColumn.Width = 94;
-			//
-			// unknownPacketsCountDataGridViewTextBoxColumn
-			//
-			this.unknownPacketsCountDataGridViewTextBoxColumn.DataPropertyName = "UnknownPacketsCount";
-			this.unknownPacketsCountDataGridViewTextBoxColumn.HeaderText = "Packets unknown";
-			this.unknownPacketsCountDataGridViewTextBoxColumn.Name = "unknownPacketsCountDataGridViewTextBoxColumn";
-			this.unknownPacketsCountDataGridViewTextBoxColumn.ReadOnly = true;
-			this.unknownPacketsCountDataGridViewTextBoxColumn.Width = 108;
-			//
-			// versionDataGridViewTextBoxColumn
-			//
-			this.versionDataGridViewTextBoxColumn.DataPropertyName = "Version";
-			this.versionDataGridViewTextBoxColumn.HeaderText = "Version";
-			this.versionDataGridViewTextBoxColumn.Name = "versionDataGridViewTextBoxColumn";
-			this.versionDataGridViewTextBoxColumn.Width = 67;
-			//
-			// IgnoreVersionChanges
-			//
-			this.IgnoreVersionChanges.DataPropertyName = "IgnoreVersionChanges";
-			this.IgnoreVersionChanges.HeaderText = "Ignore version changes";
-			this.IgnoreVersionChanges.Name = "IgnoreVersionChanges";
-			this.IgnoreVersionChanges.Width = 112;
-			//
+			// 
 			// MainForm
-			//
+			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(592, 373);
 			this.Controls.Add(this.mainFormTabs);
@@ -810,6 +811,7 @@ namespace PacketLogConverter
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			((System.ComponentModel.ISupportInitialize)(this.openLogsDataGridView)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.openLogsBindingSource)).EndInit();
 			this.mainFormTabs.ResumeLayout(false);
 			this.instantParseTab.ResumeLayout(false);
 			this.instantResultGroupBox1.ResumeLayout(false);
@@ -823,7 +825,6 @@ namespace PacketLogConverter
 			this.li_totalGroupBox.PerformLayout();
 			this.logDataTab.ResumeLayout(false);
 			this.logDataTab.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.openLogsBindingSource)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -1386,6 +1387,9 @@ namespace PacketLogConverter
 			LogReaderDelegate e = FilesLoaded;
 			if (e != null)
 				e(data.Reader);
+
+			// Clear stored positions
+			ClearLogPositions();
 		}
 
 		private void menuOpenAnother_Click(object sender, System.EventArgs e)
@@ -1796,7 +1800,6 @@ namespace PacketLogConverter
 				bool showPacketSequence = mnuPacketSequence.Checked;
 				TimeSpan baseTime = TimeSpan.Zero;
 				LogDataStatistics stats = LogDataStatistics.Zero;
-//				StringBuilder text = new StringBuilder();
 
 				//
 				// Calculate the size of string buffer
@@ -1808,12 +1811,19 @@ namespace PacketLogConverter
 					FilterManager.LogFilteringStarted(this);
 					try
 					{
-						foreach (PacketLog log in logs)
+						MemoryStream ms = new MemoryStream();
+						using (StreamWriter text = new StreamWriter(ms))
 						{
-							foreach (Packet pak in log)
+							foreach (PacketLog log in logs)
 							{
-								
-								logSize += AppendPacketData(pak, ref stats, showPacketSequence, logSize, ref baseTime, timeDiff).Length;
+								foreach (Packet pak in log)
+								{
+#warning TODO: Sum of bytes here is not equal to what is shown in text box?
+									AppendPacketData(text, pak, logSize, ref stats, showPacketSequence, ref baseTime, timeDiff);
+									text.Flush();
+									logSize += (int)ms.Position;
+									ms.Position = 0;
+								}
 							}
 						}
 					}
@@ -1830,34 +1840,46 @@ namespace PacketLogConverter
 				// Notify filter manager that log filtering starts
 				FilterManager.LogFilteringStarted(this);
 
-	 			using (MemoryStream ms = new MemoryStream())
+				// Decide which initiali buffer size is used
+				int capacity = 0;
+				if (logDataCountLogDataSizeheckBox.Checked)
 				{
-	 				if (logDataCountLogDataSizeheckBox.Checked)
-						ms.Capacity = logSize;
- 					logSize = 0;
-					FilterManager.LogFilteringStarted(this);
+					capacity = logSize;
+				}
 
-					foreach (PacketLog log in logs)
+				FilterManager.LogFilteringStarted(this);
+				try
+				{
+					MemoryStream ms = new MemoryStream(capacity);
+					using (StreamWriter text = new StreamWriter(ms))
 					{
-						foreach (Packet pak in log)
+						foreach (PacketLog log in logs)
 						{
-							string text = AppendPacketData(pak, ref stats, showPacketSequence, logSize, ref baseTime, timeDiff);
-							if (text.Length > 0)
+							foreach (Packet pak in log)
 							{
-					            ms.Write(Encoding.Default.GetBytes(text.ToString()), 0, text.Length);
-					            logSize += text.Length;
+								text.Flush();
+								int index = (int)ms.Position;
+								AppendPacketData(text, pak, index, ref stats, showPacketSequence, ref baseTime, timeDiff);
 							}
 						}
+
+						newTabName = string.Format("{0} ({1}{2:N0} packets)", newTabName, (timeDiff ? "time diff, " : ""), stats.PacketsCount);
+						logDataTab.Text = newTabName;
+
+						// Load text to richbox from the very beginning
+						ms.Position = 0;
+						logDataText.SelectionIndent = 4;
+						logDataText.LoadFile(ms, RichTextBoxStreamType.PlainText);
 					}
-					ms.Position = 0;
-
-					newTabName = string.Format("{0} ({1}{2:N0} packets)", newTabName, (timeDiff ? "time diff, " : ""), stats.PacketsCount);
-					logDataTab.Text = newTabName;
-
-					logDataText.SelectionIndent = 4;
-	       	    	logDataText.LoadFile(ms, RichTextBoxStreamType.PlainText);
+					ms = null;
+					GC.Collect();
 				}
-				GC.Collect();
+				finally
+				{
+					// Notify filter manager that filtering is finished
+					FilterManager.LogFilteringStopped(this);
+//					this.logDataText.ResumeLayout(); // it need really ?
+				}
 
 				// Restore previously selected packet if it is visible
 				int restoreIndex = -1;
@@ -1875,26 +1897,20 @@ namespace PacketLogConverter
 			{
 				Log.Error("updating data tab", e);
 			}
-			finally
-			{
-				// Notify filter manager that filtering is finished
-				FilterManager.LogFilteringStopped(this);
-//				this.logDataText.ResumeLayout();
-			}
 		}
 
 		/// <summary>
 		/// Appends the packet data.
 		/// </summary>
+		/// <param name="text">The text to append packet data to.</param>
 		/// <param name="pak">The paket.</param>
+		/// <param name="index">The index of beginning of packet data.</param>
 		/// <param name="stats">The current stats.</param>
 		/// <param name="showPacketSequence">If set to <c>true</c> shows packet sequences.</param>
-		/// <param name="text">The buffer to append packet data to.</param>
 		/// <param name="baseTime">The base time.</param>
 		/// <param name="timeDiff">If set to <c>true</c> shows packet time delta.</param>
-		private string AppendPacketData(Packet pak, ref LogDataStatistics stats, bool showPacketSequence, int logTextIndex, ref TimeSpan baseTime, bool timeDiff)
+		private void AppendPacketData(TextWriter text, Packet pak, int index, ref LogDataStatistics stats, bool showPacketSequence, ref TimeSpan baseTime, bool timeDiff)
 		{
-			string text = string.Empty;
 			int pakIndex = 0;
 			if (showPacketSequence)
 			{
@@ -1920,28 +1936,39 @@ namespace PacketLogConverter
 						pakIndex = ++stats.PacketsCountInUDP;
 					}
 				}
+				else
+				{
+					throw new ArgumentException("Unknown packet protocol: " + (int) pak.Protocol);
+				}
 			}
 			if (FilterManager.IsPacketIgnored(pak))
 			{
 				pak.LogTextIndex = -1;
-				return string.Empty;
 			}
-			pak.LogTextIndex = logTextIndex;
-			++stats.PacketsCount;
-
-			if (showPacketSequence)
+			else
 			{
-				text += string.Format("{0}:{1,-5} ", pak.Protocol, pakIndex);
-			}
+				pak.LogTextIndex = index;
+				++stats.PacketsCount;
 
-			// main description
-			text += pak.ToHumanReadableString(baseTime, mnuPacketFlags.Checked);
-			text += '\n';
-			if (timeDiff)
-			{
-				baseTime = pak.Time;
+				if (showPacketSequence)
+				{
+					text.Write(pak.Protocol.ToString());
+					text.Write(':');
+					text.Write(pakIndex.ToString("-5"));
+				}
+
+				// main description
+				pak.ToHumanReadableString(text, baseTime, mnuPacketFlags.Checked);
+				// if use WriteLine as \n\r then packets will have not correctly index in stream.
+				// becouse after stream will be loaded in RichTextBox it will have lines delemiter as setted in RichTextBox
+				// Maybe need set stream.NewLine
+//				text.WriteLine();
+				text.Write('\n');
+				if (timeDiff)
+				{
+					baseTime = pak.Time;
+				}
 			}
-			return text;
 		}
 
 		private void logDataFindButton_Click(object sender, EventArgs e)
@@ -2033,6 +2060,91 @@ namespace PacketLogConverter
 			mnuPacketSequence.Checked = !mnuPacketSequence.Checked;
 			UpdateLogDataTab();
 		}
+
+		#region Save/Load view position
+
+		private readonly PacketLocation[] m_selectedLogPositions = new PacketLocation[10];
+
+		/// <summary>
+		/// Clears the log positions.
+		/// </summary>
+		private void ClearLogPositions()
+		{
+			// Clear LocationPosition
+			for (int i = 0; i < m_selectedLogPositions.Length; i++)
+			{
+				m_selectedLogPositions[i] = PacketLocation.UNKNOWN;
+			}
+		}
+
+		/// <summary>
+		/// Saves the log position.
+		/// </summary>
+		/// <param name="index">The index.</param>
+		public void SaveLogPosition(int index)
+		{
+			m_selectedLogPositions[index] = PacketLocation.UNKNOWN;
+			if (logDataText.TextLength > 0)
+			{
+				m_selectedLogPositions[index] = LogManager.GetPacketIndexByTextIndex(logDataText.SelectionStart);
+			}
+		}
+
+		/// <summary>
+		/// Restores the position in log.
+		/// </summary>
+		/// <param name="index">The index.</param>
+		public void RestoreLogPosition(int index)
+		{
+			PacketLocation savedLoc = Util.GetObjectByIndexSafe(m_selectedLogPositions, index, PacketLocation.UNKNOWN);
+
+			// Check that packet location is stored
+			if (savedLoc != PacketLocation.UNKNOWN)
+			{
+				// Get selected packet
+				Packet restorePacket = LogManager.GetPacket(savedLoc);
+
+				int restoreIndex = -1;
+				if (restorePacket != null)
+				{
+					restoreIndex = restorePacket.LogTextIndex;
+				}
+
+				if (restoreIndex >= 0)
+				{
+					logDataText.SelectionLength = 0;
+					logDataText.SelectionStart = restoreIndex;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Handles the KeyDown event of the logDataText control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="T:System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
+		private void logDataText_KeyDown(object sender, KeyEventArgs e)
+		{
+			int numberEntered = -1;
+
+			if (e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
+				numberEntered = e.KeyCode - Keys.D0;
+			else if (e.KeyCode >= Keys.NumPad0 && e.KeyCode <= Keys.NumPad9)
+				numberEntered = e.KeyCode - Keys.NumPad0;
+			if (numberEntered < 0 || numberEntered > 9)
+				return;
+			if (e.Control && !e.Alt && !e.Shift)
+			{
+				RestoreLogPosition(numberEntered);
+			}
+			else if (!e.Control && e.Alt && !e.Shift)
+			{
+				SaveLogPosition(numberEntered);
+			}
+		}
+
+
+		#endregion
 
 		#endregion
 
@@ -2257,10 +2369,16 @@ namespace PacketLogConverter
 				result.AppendFormat("\n(pak.PositionAfterInit > pak.Length !)");
 			}
 
-			string notInitialized = pak.GetNotInitializedData();
-			if (notInitialized.Length > 0)
+//			string notInitialized = pak.GetNotInitializedData();
+//			if (notInitialized.Length > 0)
+//			{
+//				result.AppendFormat("\n\nnot initialized:\n{0}", notInitialized);
+//			}
+			using (StringWriter sw = new StringWriter())
 			{
-				result.AppendFormat("\n\nnot initialized:\n{0}", notInitialized);
+				pak.AppendNotInitializedData(sw);
+				if (sw.ToString().Length > 0)
+					result.AppendFormat("\n\nnot initialized:\n{0}", sw.ToString());
 			}
 
 			result.Append('\n');

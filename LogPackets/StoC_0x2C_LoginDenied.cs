@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -45,14 +46,10 @@ namespace PacketLogConverter.LogPackets
 		};
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("errorCode:{0}({5}) isSI:0x{1:X2} majorVersion:{2} minorVersion:{3} build:{4}",
+			text.Write("errorCode:{0}({5}) isSI:0x{1:X2} majorVersion:{2} minorVersion:{3} build:{4}",
 			                 errorCode, isSI, majorVersion, minorVersion, build, (eLoginError)errorCode);
-
-			return str.ToString();
 		}
 
 		/// <summary>

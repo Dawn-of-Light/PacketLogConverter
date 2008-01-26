@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xDF, -1, ePacketDirection.ServerToClient, "Assist ground target")]
@@ -15,9 +17,9 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			return string.Format("x:{0:X8} y:{1:X8} z:0x{2:X8}", x, y, z);
+			text.Write("x:{0:X8} y:{1:X8} z:0x{2:X8}", x, y, z);
 		}
 
 		/// <summary>

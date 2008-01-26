@@ -335,93 +335,94 @@ namespace PacketLogConverter
 			}
 		}
 
-		public virtual string ToHumanReadableString(TimeSpan baseTime, bool flagsDescription)
+		public virtual void ToHumanReadableString(TextWriter text, TimeSpan baseTime, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder(512);
-
 			TimeSpan time = Time - baseTime;
 			if (time.Ticks < 0)
 			{
-				str.Append('-');
+				text.Write('-');
 				time = time.Negate();
 			}
 			else if (baseTime.Ticks != 0)
-				str.Append('+');
+				text.Write('+');
 
 			if (time.Days > 0)
-				str.Append(time.Days).Append('d');
-			str.Append(time.Hours.ToString("D2")).Append(':');
-			str.Append(time.Minutes.ToString("D2")).Append(':');
-			str.Append(time.Seconds.ToString("D2")).Append('.');
-			str.Append(time.Milliseconds.ToString("D3"));
-			str.Append(' ');
+			{
+				text.Write(time.Days);
+				text.Write('d');
+			}
+			text.Write(time.Hours.ToString("D2"));		text.Write(':');
+			text.Write(time.Minutes.ToString("D2"));	text.Write(':');
+			text.Write(time.Seconds.ToString("D2"));	text.Write('.');
+			text.Write(time.Milliseconds.ToString("D3"));
+			text.Write(' ');
 			switch (Direction)
 			{
-				case ePacketDirection.ClientToServer: str.Append("S<=C"); break;
-				case ePacketDirection.ServerToClient: str.Append("S=>C"); break;
-				default: str.Append(Direction); break;
+				case ePacketDirection.ClientToServer: text.Write("S<=C"); break;
+				case ePacketDirection.ServerToClient: text.Write("S=>C"); break;
+				default: text.Write(Direction.ToString()); break;
 			}
 			if (PositionAfterInit > Length)
 			{
-				str.Append("(PositionAfterInit > PacketLength !)");
+				text.Write("(PositionAfterInit > PacketLength !)");
 			}
-			str.AppendFormat(" 0x{0:X2} {1}", Code, Description);
+			text.Write(" 0x{0} {1}", Code.ToString("X2"), Description);
 
-			string packetData = string.Empty;
+
+			text.Write(" (");
 			if (!Initialized)
 			{
-				packetData = "PACKET NOT INITIALIZED. Most likely errors during Init(). "+this.GetType().Name+"\n";
+				text.Write("PACKET NOT INITIALIZED. Most likely errors during Init(). ");
+				text.Write(this.GetType().Name);
+				text.Write('\n');
 				if (InitException != null)
-					packetData += InitException.ToString() + "\n";
+				{
+					text.Write(InitException.ToString());
+					text.Write('\n');
+				}
 			}
 			try
 			{
-				packetData += GetPacketDataString(flagsDescription);
+				GetPacketDataString(text, flagsDescription);
 			}
 			catch (Exception e)
 			{
-				packetData += string.Format("{0}: {1}", e.GetType().ToString(), e.Message);
+				text.Write(e.GetType().ToString());
+				text.Write(": ");
+				text.Write(e.Message);
 			}
 
-			if (packetData.Length > 0)
-			{
-				str.AppendFormat(" ({0})", packetData);
-			}
+			text.Write(")");
 
-			string notInitData = GetNotInitializedData();
-			if (notInitData.Length > 0)
-			{
-				str.AppendFormat(" not initialized data from pos {0} ({1}): ({2})", PositionAfterInit, Length - PositionAfterInit, notInitData);
-			}
-
-			return str.ToString();
+			AppendNotInitializedData(text);
 		}
 
-		public virtual string GetNotInitializedData()
+		public virtual void AppendNotInitializedData(TextWriter text)
 		{
-			if (PositionAfterInit >= Length || GetType().Equals(typeof(Packet)))
-				return "";
-
-			StringBuilder str = new StringBuilder();
-
-			Position = PositionAfterInit;
-			str.Append("0x").Append(ReadByte().ToString("X2"));
-			while (Position < Length)
+			if (PositionAfterInit < Length && !GetType().Equals(typeof(Packet)))
 			{
-				str.Append(",0x").Append(ReadByte().ToString("X2"));
-			}
+				text.Write(" not initialized data from pos {0} ({1}): (", PositionAfterInit.ToString(), (Length - PositionAfterInit).ToString());
 
-			return str.ToString();
+				Position = PositionAfterInit;
+				text.Write("0x");
+				text.Write(ReadByte().ToString("X2"));
+				while (Position < Length)
+				{
+					text.Write(",0x");
+					text.Write(ReadByte().ToString("X2"));
+				}
+
+				text.Write(')');
+			}
 		}
 
 		/// <summary>
-		/// Gets all the packet data as a human readable string
+		/// Gets all the packet data as a human readable string.
 		/// </summary>
-		/// <param name="flagsDescription">Include flags description in output</param> 
-		/// <returns></returns>
-		public virtual string GetPacketDataString(bool flagsDescription)
+		/// <param name="text">Buffer to write to.</param>
+		/// <param name="flagsDescription">Include flags description in output.</param> 
+		public virtual void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			return string.Empty;
 		}
 
 		public override string ToString()
@@ -469,6 +470,25 @@ namespace PacketLogConverter
 		/// <param name="log"></param>
 		public virtual void InitLog(PacketLog log)
 		{
+		}
+
+#warning TODO: Remove some day - requires convertion of actions to new system
+		public string ToHumanReadableString(TimeSpan baseTime, bool flagsDescription)
+		{
+			using (StringWriter sw = new StringWriter())
+			{
+				ToHumanReadableString(sw, baseTime, flagsDescription);
+				return sw.ToString();
+			}
+		}
+
+		public string GetPacketDataString(bool flagsDescription)
+		{
+			using (StringWriter sw = new StringWriter())
+			{
+				GetPacketDataString(sw, flagsDescription);
+				return sw.ToString();
+			}
 		}
 	}
 }

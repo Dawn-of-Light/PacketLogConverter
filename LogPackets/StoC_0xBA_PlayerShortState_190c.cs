@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -15,11 +16,10 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("sessionId:0x{0:X4} heading:0x{1:X4} flags:0x{2:X2} health:{3,3}% unk1:0x{5:X2} unk2:0x{6:X4} state:{4} mana:{7,3}% endurance:{8,3}%",
+			text.Write("sessionId:0x{0:X4} heading:0x{1:X4} flags:0x{2:X2} health:{3,3}% unk1:0x{5:X2} unk2:0x{6:X4} state:{4} mana:{7,3}% endurance:{8,3}%",
 				sessionId, heading, flags, health & 0x7F, state, unk1, unk2, manaPercent, endurancePercent);
 			if (flagsDescription)
 			{
@@ -43,9 +43,8 @@ namespace PacketLogConverter.LogPackets
 				if ((health & 0x80) == 0x80)
 					status += ",Combat";
 				if (status.Length > 0)
-					str.AppendFormat(" ({0})", status);
+					text.Write(" ({0})", status);
 			}
-			return str.ToString();
 		}
 
 		/// <summary>

@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x8D, -1, ePacketDirection.ServerToClient, "Player model change (wireframe)")]
@@ -30,9 +32,9 @@ namespace PacketLogConverter.LogPackets
 			Unstealthed = 2,
 			Stealth = 3
 		}
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			return string.Format("oid:0x{0:X4} flag:0x{1:X2}{3} unk1:0x{2:X2}", oid, flag, unk1,
+			text.Write("oid:0x{0:X4} flag:0x{1:X2}{3} unk1:0x{2:X2}", oid, flag, unk1,
 				flagsDescription ? "(" + (eFlagType)flag + ")" : "");
 		}
 

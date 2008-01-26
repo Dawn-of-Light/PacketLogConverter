@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -50,32 +51,30 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("oid:0x{0:X4} speed:{1,-4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} speedZ:{6,-4} model:0x{7:X4} size:{8,-3} level:{9,-3} flags:0x{10:X2} maxStick:{11,-3} name:\"{12}\" guild:\"{13}\" unk1:{14}",
+			text.Write("oid:0x{0:X4} speed:{1,-4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} speedZ:{6,-4} model:0x{7:X4} size:{8,-3} level:{9,-3} flags:0x{10:X2} maxStick:{11,-3} name:\"{12}\" guild:\"{13}\" unk1:{14}",
 			                 oid, speed, heading, x, y, z, speedZ, model, size, level, flags, maxStick, name, guildName, unk1);
 			if (flagsDescription)
 			{
-				str.AppendFormat(" (realm:{0}", (flags >> 6) & 3);
+				text.Write(" (realm:{0}", (flags >> 6) & 3);
 				if ((flags & 0x01) == 0x01)
-					str.Append(",Ghost");
+					text.Write(",Ghost");
 				if ((flags & 0x02) == 0x02)
-					str.Append(",Inventory");
+					text.Write(",Inventory");
 				if ((flags & 0x04) == 0x04)
-					str.Append(",UNK_0x04");
+					text.Write(",UNK_0x04");
 				if ((flags & 0x08) == 0x08)
-					str.Append(",LongRangeVisible"); // ~5550
+					text.Write(",LongRangeVisible"); // ~5550
 				if ((flags & 0x10) == 0x10)
-					str.Append(",Peace");
+					text.Write(",Peace");
 				if ((flags & 0x20) == 0x20)
-					str.Append(",Fly");
+					text.Write(",Fly");
 				if ((model & 0x8000) == 0x8000)
-					str.Append(",Underwater");
-				str.Append(')');
+					text.Write(",Underwater");
+				text.Write(')');
 			}
-			return str.ToString();
 		}
 
 		/// <summary>

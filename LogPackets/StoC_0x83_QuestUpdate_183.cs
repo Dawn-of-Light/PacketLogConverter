@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -40,13 +41,13 @@ namespace PacketLogConverter.LogPackets
 					desc = pak.ReadString(lenDesc);
 				}
 			}
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				str.AppendFormat("index:{0,-2} NameLen:{1,-3} descLen:{2,-3} unk1:{3}", index, lenName, lenDesc, unk1);
+				text.Write("index:{0,-2} NameLen:{1,-3} descLen:{2,-3} unk1:{3}", index, lenName, lenDesc, unk1);
 
 				if (lenName == 0 && lenDesc == 0)
 					return;
-				str.AppendFormat("\n\tname: \"{0}\"\n\tdesc: \"{1}\"", name, desc);
+				text.Write("\n\tname: \"{0}\"\n\tdesc: \"{1}\"", name, desc);
 			}
 		}
 		/// <summary>

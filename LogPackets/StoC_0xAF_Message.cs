@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -24,30 +25,27 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.Append("sid:0x").Append(sessionId.ToString("X4"));
-			str.Append(" 0x").Append(type.ToString("X2"));
+			text.Write("sid:0x{0:X4} 0x{1:X2}", sessionId, type);
 
 			if (flagsDescription)
-				str.AppendFormat(" unk1:0x{0:X4} unk2:0x{1:X2} unk3:0x{2:X4}", unk1, unk2, unk3);
-			string s = text;
+				text.Write(" unk1:0x{0:X4} unk2:0x{1:X2} unk3:0x{2:X4}", unk1, unk2, unk3);
+			string s = Text;
 			if (s.StartsWith("@@"))
 			{
-				str.Append(", chat");
+				text.Write(", chat");
 				s = s.Substring(2);
 			}
 			else if (s.StartsWith("##"))
 			{
-				str.Append(",popup");
+				text.Write(",popup");
 				s = s.Substring(2);
 			}
 
-			str.Append(": \"").Append(s).Append('"');
+			text.Write(": \"{0}\"", s);
 
-			return str.ToString();
 		}
 
 		/// <summary>

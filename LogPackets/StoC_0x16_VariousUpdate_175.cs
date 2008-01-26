@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -25,10 +26,10 @@ namespace PacketLogConverter.LogPackets
 				newTitle = pak.ReadPascalString();
 			}
 
-			public override void MakeString(StringBuilder str, bool flagsDescription)
+			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				base.MakeString(str, flagsDescription);
-				str.AppendFormat("\n\tnew in 1.75: newTitle:\"{0}\" unk6:{1}", newTitle, unk6);
+				base.MakeString(text, flagsDescription);
+				text.Write("\n\tnew in 1.75: newTitle:\"{0}\" unk6:{1}", newTitle, unk6);
 			}
 		}
 

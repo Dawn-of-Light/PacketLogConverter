@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -15,22 +16,20 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("count:{0}", count);
+			text.Write("count:{0}", count);
 			for (int i = 0; i < count; i++)
 			{
-				WritePlayerInfo(i, str);
+				WritePlayerInfo(i, text);
 			}
-			return str.ToString();
 		}
 
-		protected virtual void WritePlayerInfo(int i, StringBuilder str)
+		protected virtual void WritePlayerInfo(int i, TextWriter text)
 		{
 			Player player = (Player)players[i];
-			str.AppendFormat("\n\t\tindex:{0,-2} level:{1,-2} class:{2,4} zoneId:{3,-3} duration:0x{4:X2} objective:0x{5:X2} Unk1:{6} Unk2:{7} flagGrp:{8} Unk3:{9} name:{10}",
+			text.Write("\n\t\tindex:{0,-2} level:{1,-2} class:{2,4} zoneId:{3,-3} duration:0x{4:X2} objective:0x{5:X2} Unk1:{6} Unk2:{7} flagGrp:{8} Unk3:{9} name:{10}",
 				player.index, player.level, player.className, player.zone, player.duration, player.objective, player.unk1, player.unk2, player.flagGrp, player.unk3, player.name);
 		}
 

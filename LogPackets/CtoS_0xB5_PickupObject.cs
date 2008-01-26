@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -20,13 +21,10 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.AppendFormat("sessionId:0x{0:X4} playerX:{1,-6} playerY:{2,-6} unk1:{3:X4}",
+			text.Write("sessionId:0x{0:X4} playerX:{1,-6} playerY:{2,-6} unk1:{3:X4}",
 					sessionId, playerX, playerY, unk1);
-
-			return str.ToString();
 		}
 
 		/// <summary>

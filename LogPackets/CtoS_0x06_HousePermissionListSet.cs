@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -33,18 +34,14 @@ namespace PacketLogConverter.LogPackets
 			Remove = 100
 		}
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
 			string levelDescription = "";
 			if (flagsDescription)
 			{
 				levelDescription = "("+(eLevelType)level+")";
 			}
-			str.AppendFormat("index:{0,-2} level:{1}{3} houseOid:0x{2:X4}", index, level, houseOid, levelDescription);
-
-			return str.ToString();
+			text.Write("index:{0,-2} level:{1}{3} houseOid:0x{2:X4}", index, level, houseOid, levelDescription);
 		}
 
 		/// <summary>

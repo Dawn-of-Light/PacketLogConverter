@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -8,12 +9,17 @@ namespace PacketLogConverter.LogPackets
 		protected uint VedioVendorId1;
 		protected uint VedioVendorId2;
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			string str = base.GetPacketDataString(flagsDescription);
+			base.GetPacketDataString(text, flagsDescription);
 			if (flag > 0)
-				str += "\n\tnew in 1.80 VideoCard VendorId:0x" + VedioVendorId1.ToString("X8") + "(0x" + VedioVendorId2.ToString("X8") + ")";
-			return str;
+			{
+				text.Write("\n\tnew in 1.80 VideoCard VendorId:0x");
+				text.Write(VedioVendorId1.ToString("X8"));
+				text.Write("(0x");
+				text.Write(VedioVendorId2.ToString("X8"));
+				text.Write(")");
+			}
 		}
 
 		/// <summary>

@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0xFC, 177, ePacketDirection.ClientToServer, "Character overview request v177")]
@@ -6,9 +8,15 @@ namespace PacketLogConverter.LogPackets
 
 		protected uint unk2;
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			return (flagsDescription ? string.Format("unk1:0x{0:X8} unk2:0x{1:X8} ", unk1, unk2) : "") + "clientAccountName:\"" + clientAccountName + '"';
+			if (flagsDescription)
+			{
+				text.Write("unk1:0x{0:X8} unk2:0x{1:X8} ", unk1, unk2);
+			}
+			text.Write("clientAccountName:\"");
+			text.Write(clientAccountName);
+			text.Write('"');
 		}
 
 		/// <summary>

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -22,17 +23,15 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("\n\tcount:{0,-2} page:{1} pages:{2} unk1:0x{3:X2}", itemCount, page, maxPages, unk1);
+			text.Write("\n\tcount:{0,-2} page:{1} pages:{2} unk1:0x{3:X2}", itemCount, page, maxPages, unk1);
 			if (itemCount > 0)
 			{
 				for (int i = 0; i < itemCount; i++)
 				{
 					MerchantItem item = items[i];
-					str.AppendFormat("\n\tindex:{0,-2} level:{1,-2} value1:{2,-3} value2:{3,-3} hand:0x{4:X2} damageAndObjectType:0x{5:X2} canUse:{6} weigh:{7,-4} condition:{8,3} durability:{9,3} quality:{10,3} bonus:{11,2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X4} lot:0x{15:X4} price:{16,-8} name:\"{17}\"",
+					text.Write("\n\tindex:{0,-2} level:{1,-2} value1:{2,-3} value2:{3,-3} hand:0x{4:X2} damageAndObjectType:0x{5:X2} canUse:{6} weigh:{7,-4} condition:{8,3} durability:{9,3} quality:{10,3} bonus:{11,2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X4} lot:0x{15:X4} price:{16,-8} name:\"{17}\"",
 						item.index,
 						item.level,
 						item.value1,
@@ -52,11 +51,9 @@ namespace PacketLogConverter.LogPackets
 						item.price,
 						item.name);
 					if (flagsDescription)
-						str.AppendFormat(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)(item.damageAndObjectType & 0x3F));
+						text.Write(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)(item.damageAndObjectType & 0x3F));
 				}
 			}
-
-			return str.ToString();
 		}
 
 		/// <summary>

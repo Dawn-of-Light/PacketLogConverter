@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -36,11 +37,9 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("dBslot:{0,-2} flagOption:{1}", slot, flag);
+			text.Write("dBslot:{0,-2} flagOption:{1}", slot, flag);
 			if (flag > 0)
 			{
 				int optionsBIT = options;
@@ -54,11 +53,11 @@ namespace PacketLogConverter.LogPackets
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x2000); // Water Options
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x4000); // Water Options
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x8000); // Dynamic Shadow
-				str.AppendFormat(" resolutions:0x{0:X4} options:0x{1:X4}(0x{10:X4}) figureVersion:0x{2:X8}{3:X2} memory:{4,2}({9,-2}) unk1:0x{5:X6} skin:0x{6:X2} genderRace:0x{7:X2}(race:{11, -2} gender:{12}) regionExpantions:0x{8:X2}",
+				text.Write(" resolutions:0x{0:X4} options:0x{1:X4}(0x{10:X4}) figureVersion:0x{2:X8}{3:X2} memory:{4,2}({9,-2}) unk1:0x{5:X6} skin:0x{6:X2} genderRace:0x{7:X2}(race:{11, -2} gender:{12}) regionExpantions:0x{8:X2}",
 					resolution, options, figureVersion, figureVersion1, unk1 >> 24, unk1 & 0xFFFFFF, skin, genderRace, regionExpantions, (unk1 >> 24) * 64, optionsBIT, race, gender);
 				if (flagsDescription)
 				{
-					str.Append("\n\tExpantions:");
+					text.Write("\n\tExpantions:");
 					byte uRegionregionExpantions = regionExpantions;
 					if (regionExpantions > 0)
 					{
@@ -69,15 +68,15 @@ namespace PacketLogConverter.LogPackets
 							{
 								uRegionregionExpantions ^= (byte)eReg;
 								if (i++ == 0)
-									str.Append(" ");
+									text.Write(" ");
 								else
-									str.Append(", ");
-								str.Append(eReg.ToString());
+									text.Write(", ");
+								text.Write(eReg.ToString());
 							}
 						}
 					}
 					if (uRegionregionExpantions > 0)
-						str.AppendFormat("\n\tUnknown (regionExpantions:0x{0:X2})", uRegionregionExpantions);
+						text.Write("\n\tUnknown (regionExpantions:0x{0:X2})", uRegionregionExpantions);
 
 //					str.Append(", Shrouded Isles");
 //					str.Append(", Trials of Atlantis");
@@ -115,11 +114,10 @@ namespace PacketLogConverter.LogPackets
 						description += ", Skin: ?" + skin.ToString();
 					if ((options & 0x1000) == 0x1000)
 						description += ", RuningSecondDaoc";
-					str.Append(description);
+					text.Write(description);
 				}
 			}
 
-			return str.ToString();
 		}
 
 		/// <summary>

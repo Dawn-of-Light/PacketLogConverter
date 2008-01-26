@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -31,14 +32,12 @@ namespace PacketLogConverter.LogPackets
 			Player = 2,
 		}
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("oid:0x{0:X4} objectType:{1}", oid, objectType);
+			text.Write("oid:0x{0:X4} objectType:{1}", oid, objectType);
 			if (flagsDescription)
-				str.AppendFormat("({0})", (eObjectType)objectType);
-			return str.ToString();
+				text.Write("({0})", (eObjectType)objectType);
 		}
 
 		/// <summary>

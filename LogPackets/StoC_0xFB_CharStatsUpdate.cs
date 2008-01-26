@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -47,18 +48,16 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.Append("\n\t      stat |str|dex|con|qui|int|pie|emp|chr|");
-			str.AppendFormat("\n\tbase       |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}",
+			text.Write("\n\t      stat |str|dex|con|qui|int|pie|emp|chr|");
+			text.Write("\n\tbase       |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}",
 				baseStr, baseDex, baseCon, baseQui, baseInt, basePie, baseEmp, baseChr);
-			str.AppendFormat("\n\tbuf        |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}",
+			text.Write("\n\tbuf        |{0,-3}|{1,-3}|{2,-3}|{3,-3}|{4,-3}|{5,-3}|{6,-3}|{7,-3}",
 				bonusStr, bonusDex, bonusCon, bonusQui, bonusInt, bonusPie, bonusEmp, bonusChr);
-			str.AppendFormat("\n\tmaxHealth:{0,-4} unk1:{1} (0x{2:X4})", maxHealth, unk1, unk1);
+			text.Write("\n\tmaxHealth:{0,-4} unk1:{1} (0x{2:X4})", maxHealth, unk1, unk1);
 
-			return str.ToString();
 		}
 
 		/// <summary>

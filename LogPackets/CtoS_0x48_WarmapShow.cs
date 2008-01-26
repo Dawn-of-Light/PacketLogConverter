@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -26,13 +27,9 @@ namespace PacketLogConverter.LogPackets
 //			WindowClose = 0x65,
 		}
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("realm:{1} unk2:0x{2:X4} windowFlag:0x{0:X2}({3})", unk1, realm, unk2, (eWindowFlag)unk1);
-
-			return str.ToString();
+			text.Write("realm:{1} unk2:0x{2:X4} windowFlag:0x{0:X2}({3})", unk1, realm, unk2, (eWindowFlag)unk1);
 		}
 
 		/// <summary>

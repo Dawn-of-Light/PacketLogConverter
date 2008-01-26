@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -41,13 +42,11 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("templesBitMask:0x{0:X4} AlbStr:0x{1:X2} MidStr:0x{2:X2} HibStr:0x{3:X2} AlbPow:0x{4:X2} MidPow:0x{5:X2} HibPow:0x{6:X2}",
+			text.Write("templesBitMask:0x{0:X4} AlbStr:0x{1:X2} MidStr:0x{2:X2} HibStr:0x{3:X2} AlbPow:0x{4:X2} MidPow:0x{5:X2} HibPow:0x{6:X2}",
 				templeBitMask, r1, r2, r3, r4, r5, r6);
-			str.AppendFormat(" keeps:{0} towers:{1,-2}", countKeep, countTower);
+			text.Write(" keeps:{0} towers:{1,-2}", countKeep, countTower);
 
 			for (int i = 0; i < countKeep + countTower; i++)
 			{
@@ -59,11 +58,9 @@ namespace PacketLogConverter.LogPackets
 				if ((keep.flag & 0x4) == 0x4) flags_desc+=",claimed";
 				if ((keep.flag & 0x8) == 0x8) flags_desc+=",under siege";
 				if ((keep.flag & 0x10) == 0x10) flags_desc+=",TP";
-				str.AppendFormat("\n\tid:0x{0:X2}(map:{3},index:{4},tower:{5},keepId=0x{6:X4}) flag:0x{1:X2}(realm:{7}) guild:\"{2}\"{8}",
+				text.Write("\n\tid:0x{0:X2}(map:{3},index:{4},tower:{5},keepId=0x{6:X4}) flag:0x{1:X2}(realm:{7}) guild:\"{2}\"{8}",
 					keep.id, keep.flag, keep.guild, keepRealmMap, keepIndexOnMap, keepTower, (keepRealmMap*25) + 25+ keepIndexOnMap + (keepTower << 8), keep.flag & 0x3, flags_desc);
 			}
-
-			return str.ToString();
 		}
 
 		/// <summary>

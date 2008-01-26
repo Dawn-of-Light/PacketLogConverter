@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -98,9 +99,8 @@ namespace PacketLogConverter.LogPackets
 			Accept = 1
 		}
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 			string template = "data1:0x{0:X4} data2:0x{1:X4} data3:0x{2:X4} dialogCode:0x{3:X4}({5}) response:{4}";
 
 			switch((eDialogCode)dialogCode)
@@ -121,11 +121,10 @@ namespace PacketLogConverter.LogPackets
 					template = "questID:0x{0:X4} oid:0x{1:X4} data3:0x{2:X4} dialogCode:0x{3:X4}({5}) response:{4}";
 					break;
 			}
-			str.AppendFormat(template, data1, data2, data3, dialogCode, response, (eDialogCode)dialogCode);
+			text.Write(template, data1, data2, data3, dialogCode, response, (eDialogCode)dialogCode);
 
 			if(flagsDescription && dialogCode != (byte)eDialogCode.ML)
-				str.AppendFormat("({0})", (eResponseType)response);
-			return str.ToString();
+				text.Write("({0})", (eResponseType)response);
 		}
 
 		/// <summary>

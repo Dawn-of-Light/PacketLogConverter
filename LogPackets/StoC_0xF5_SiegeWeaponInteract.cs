@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -46,9 +47,8 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 			string actionType;
 			switch (action)
 			{
@@ -73,17 +73,16 @@ namespace PacketLogConverter.LogPackets
 					actionType = "unknown";
 					break;
 			}
-			str.AppendFormat("menuButtons:0x{0:X2} canMove:{1} unk2:0x{2:X4} timer:{3,-3} externalAmmoCount:{4} action:{5}({6}) currentAmmo?:0x{7:X2} effect:0x{8:X4} unk6:0x{9:X4} unk7:0x{10:X4} oid:0x{11:X4} name:\"{12}\"",
+			text.Write("menuButtons:0x{0:X2} canMove:{1} unk2:0x{2:X4} timer:{3,-3} externalAmmoCount:{4} action:{5}({6}) currentAmmo?:0x{7:X2} effect:0x{8:X4} unk6:0x{9:X4} unk7:0x{10:X4} oid:0x{11:X4} name:\"{12}\"",
 				siegeMenu, canMove, unk2, timer , ammoCount, action, actionType, unk4, effect, unk6, unk7, oid, name);
 
 			for (int i = 0; i < ammoCount; i++)
 			{
 				Item item = (Item)Items[i];
-				str.AppendFormat("\n\tindex:{0,-2} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} unk1:0x{4:X2} objectType:0x{5:X2} unk2:0x{6:X2} count:{7,-2} condition:{8,-3} durability?:{9,-3} quality?:{10,-3} bonus?:{11,-2} model:0x{12:X4} extension?:{13} effect?:0x{14:X4} color?:0x{15:X4} name:\"{16}\"",
+				text.Write("\n\tindex:{0,-2} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} unk1:0x{4:X2} objectType:0x{5:X2} unk2:0x{6:X2} count:{7,-2} condition:{8,-3} durability?:{9,-3} quality?:{10,-3} bonus?:{11,-2} model:0x{12:X4} extension?:{13} effect?:0x{14:X4} color?:0x{15:X4} name:\"{16}\"",
 	                 item.index, item.level, item.value1, item.value2, item.unk1, item.objectType, item.unk2, item.count, item.condition, item.durability, item.quality, item.bonus, item.model, item.extension, item.unk3, item.unk4, item.name);
 			}
 
-			return str.ToString();
 		}
 
 		/// <summary>

@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -15,15 +16,11 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("currentTime:0x{0:X8} dayIncrement:{1}", currentTime, dayIncrement);
+			text.Write("currentTime:0x{0:X8} dayIncrement:{1}", currentTime, dayIncrement);
 			if (flagsDescription)
-				str.AppendFormat(" (dif:0x{0:X8} {1}", currentTime / dayIncrement, currentTime / dayIncrement);
-
-			return str.ToString();
+				text.Write(" (dif:0x{0:X8} {1}", currentTime / dayIncrement, currentTime / dayIncrement);
 		}
 
 		/// <summary>

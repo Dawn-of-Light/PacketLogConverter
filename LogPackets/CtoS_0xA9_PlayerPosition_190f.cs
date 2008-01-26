@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -15,20 +16,19 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 			int zSpeed = speed & 0xFFF;
 			if ((speed & 0x1000) == 0x1000)
 				zSpeed *= -1;
-			str.AppendFormat("sessionId:0x{0:X4} status:0x{1:X2} speed:{2,-3} heading:0x{3:X4}(0x{12:X2}) currentZone({4,-3}): ({5,-6} {6,-6} {7,-5}) flyFlags:0x{8:X2} speedZ:{9,-5} flags:0x{10:X2} health:{11,3}%",
+			text.Write("sessionId:0x{0:X4} status:0x{1:X2} speed:{2,-3} heading:0x{3:X4}(0x{12:X2}) currentZone({4,-3}): ({5,-6} {6,-6} {7,-5}) flyFlags:0x{8:X2} speedZ:{9,-5} flags:0x{10:X2} health:{11,3}%",
 				sessionId, (status & 0x1FF ^ status) >> 8 ,status & 0x1FF, heading & 0xFFF, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, (speed & 0x7FF ^ speed) >> 8, zSpeed, flag, health & 0x7F, (heading & 0xFFF ^ heading) >> 8);
-			str.AppendFormat(" unk2:0x{0:X4}", unk2);
-			str.AppendFormat(" unk190_1:0x{0:X2} unk190_2:0x{1:X2}",unk190_1, unk190_2);
+			text.Write(" unk2:0x{0:X4}", unk2);
+			text.Write(" unk190_1:0x{0:X2} unk190_2:0x{1:X2}", unk190_1, unk190_2);
 			if (flagsDescription)
 			{
 				for (int i = 0; i < 8; i++)
-					str.AppendFormat(" {0:X8}", u_unk1[i]);
+					text.Write(" {0:X8}", u_unk1[i]);
 				byte plrState = (byte)((status >> 10) & 7);
 				string flags = plrState > 0 ? ((PlrState)plrState).ToString() : "";
 				if ((status & 0x200) == 0x200)
@@ -64,9 +64,8 @@ namespace PacketLogConverter.LogPackets
 				if ((speed & 0x2000) == 0x2000)
 					flags += ",speed_UNK_0x2000";
 				if (flags.Length > 0)
-					str.Append(" ("+flags+")");
+					text.Write(" (" + flags + ")");
 			}
-			return str.ToString();
 		}
 		/// <summary>
 		/// Initializes the packet. All data parsing must be done here.

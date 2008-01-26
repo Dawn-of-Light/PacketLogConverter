@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -17,12 +18,10 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.Append(base.GetPacketDataString(flagsDescription));
-			str.AppendFormat(" exp:{0, -12} expNextLevel:{1, -12} champExp:{2,-8} champExpNextLevel:{3}", experience, expNextLevel, champExp, champExpNextLevel);
-			return str.ToString();
+			base.GetPacketDataString(text, flagsDescription);
+			text.Write(" exp:{0, -12} expNextLevel:{1, -12} champExp:{2,-8} champExpNextLevel:{3}", experience, expNextLevel, champExp, champExpNextLevel);
 		}
 
 		/// <summary>

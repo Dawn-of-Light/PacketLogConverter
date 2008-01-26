@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -48,14 +49,12 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("houseOid:0x{0:X4} heading:0x{1:X4} x:{2,-6} y:{3,-6} z:{4,-5} ownerName:\"{17}\"\n\ttentColor:0x{5:X4} unk1:0x{6:X2} modelPorch:{7,-2} emblem:0x{8:X4} modelHouse:{9,-2} roofMaterial:{10} wallMaterial:{11} doorMaterial:{12} woodColor:{13} porchMaterial:{14} shutterMaterial:{15,-3} unk2:0x{16:X2}",
+			text.Write("houseOid:0x{0:X4} heading:0x{1:X4} x:{2,-6} y:{3,-6} z:{4,-5} ownerName:\"{17}\"\n\ttentColor:0x{5:X4} unk1:0x{6:X2} modelPorch:{7,-2} emblem:0x{8:X4} modelHouse:{9,-2} roofMaterial:{10} wallMaterial:{11} doorMaterial:{12} woodColor:{13} porchMaterial:{14} shutterMaterial:{15,-3} unk2:0x{16:X2}",
 				houseOid, heading, x, y, z, colorPorch, unk1, modelPorch, emblem, modelHouse, modelRoof, modelWall, modelDoor, modelTruss, materialPorch, materialShutter, unk2, name);
 
-			return str.ToString();
 		}
 
 		/// <summary>

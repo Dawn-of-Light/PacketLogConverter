@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -37,11 +38,9 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("sessionId:0x{0:X4} heading:0x{1:X4} flags:0x{2:X2} health:{3,3}% unk1:0x{5:X2} unk2:0x{6:X4} state:{4}",
+			text.Write("sessionId:0x{0:X4} heading:0x{1:X4} flags:0x{2:X2} health:{3,3}% unk1:0x{5:X2} unk2:0x{6:X4} state:{4}",
 				sessionId, heading, flags, health & 0x7F, state, unk1, unk2);
 			if (flagsDescription)
 			{
@@ -65,9 +64,8 @@ namespace PacketLogConverter.LogPackets
 				if ((health & 0x80) == 0x80)
 					status += ",Combat";
 				if (status.Length > 0)
-					str.AppendFormat(" ({0})", status);
+					text.Write(" ({0})", status);
 			}
-			return str.ToString();
 		}
 
 		/// <summary>
@@ -86,6 +84,23 @@ namespace PacketLogConverter.LogPackets
 			state = ReadByte();
 		}
 
+		/// <summary>
+		/// Set all log variables from the packet here
+		/// </summary>
+		/// <param name="log"></param>
+		public override void InitLog(PacketLog log)
+		{
+			// Reinit only on for 190 version and subversion lower 190.1
+			if (!log.IgnoreVersionChanges && log.Version >= 190 && log.Version < 190.1f)
+			{
+				if (Length == 12)
+				{
+					log.Version = 190.1f;
+					log.SubversionReinit = true;
+//					log.IgnoreVersionChanges = true;
+				}
+			}
+		}
 		/// <summary>
 		/// Constructs new instance with given capacity
 		/// </summary>

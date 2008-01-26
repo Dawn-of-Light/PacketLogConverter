@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -17,14 +18,10 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("keeps:{0} relics:0x{1:X2}(power:{3} strength:{4}) DFownerRealm:{2}",
+			text.Write("keeps:{0} relics:0x{1:X2}(power:{3} strength:{4}) DFownerRealm:{2}",
 				keeps, relics, ownerDFrealm, relics >> 4, relics & 0xF);
-
-			return str.ToString();
 		}
 
 		/// <summary>

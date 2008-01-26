@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -38,27 +39,25 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.AppendFormat("keepId:0x{0:X4} realm:{1} level:{2} count:{3}",
+			text.Write("keepId:0x{0:X4} realm:{1} level:{2} count:{3}",
 				keepId, realm, level, count);
 			if (count > 0)
 			{
-				str.Append("  component flags:(");
+				text.Write("  component flags:(");
 				for (int i = 0; i < count; i++)
 				{
 					byte component = components[i];
 					if (i > 0)
-						str.Append(',');
-					str.AppendFormat("0x{0:X2}", component);
+						text.Write(',');
+					text.Write("0x{0:X2}", component);
 				}
-				str.Append(")");
+				text.Write(")");
 			}
-			str.AppendFormat(" unk1:{0:X2}", unk1);
+			text.Write(" unk1:{0:X2}", unk1);
 //			if (flagsDescription)
 //				str.AppendFormat("({0})", (eAction)unk1);
-			return str.ToString();
 		}
 
 		public override void Init()

@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 namespace PacketLogConverter.LogPackets
 {
@@ -16,11 +17,9 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.AppendFormat("regionIP:\"{0}\" PortFrom:{1} unk1:0x{2:X8}", ip, port, unk1);
-			return str.ToString();
+			text.Write("regionIP:\"{0}\" PortFrom:{1} unk1:0x{2:X8}", ip, port, unk1);
 		}
 
 		/// <summary>

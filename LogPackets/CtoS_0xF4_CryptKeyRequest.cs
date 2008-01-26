@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -30,23 +31,19 @@ namespace PacketLogConverter.LogPackets
 			DarknessRising = 5,
 			Labyrinth = 6,
 		}
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("rc4Enabled:{0} clientTypeAndAddons:0x{1:X2} clientVersion:{2}.{3}.{4}",
+			text.Write("rc4Enabled:{0} clientTypeAndAddons:0x{1:X2} clientVersion:{2}.{3}.{4}",
 				rc4Enabled, clientTypeAndAddons, clientVersionMajor, clientVersionMinor, clientVersionBuild);
 			if (flagsDescription)
 			{
-				str.AppendFormat("\n\tclient:{0}", (eClientType)(clientTypeAndAddons & 0x0F));
-				str.Append(" expantions:");
+				text.Write("\n\tclient:{0}", (eClientType)(clientTypeAndAddons & 0x0F));
+				text.Write(" expantions:");
 				if ((clientTypeAndAddons & 0x80) == 0x80)
-					str.Append(", NewFrontiers");
+					text.Write(", NewFrontiers");
 				if ((clientTypeAndAddons & 0x40) == 0x40)
-					str.Append(", Foundations(Housing)");
+					text.Write(", Foundations(Housing)");
 			}
-
-			return str.ToString();
 		}
 
 		/// <summary>
@@ -73,6 +70,8 @@ namespace PacketLogConverter.LogPackets
 		/// <param name="log"></param>
 		public override void InitLog(PacketLog log)
 		{
+			if (log.SubversionReinit)
+				return;
 			Position = 2;
 			int major = ReadByte();
 			int minor = ReadByte();

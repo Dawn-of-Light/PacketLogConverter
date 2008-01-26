@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -19,20 +20,17 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("sessionId:0x{0:X4} oid:0x{1:X4} model:0x{2:X4} zoneId:{3,-3} zoneLoc:({4,-5} {5,-5} {6,-5}) heading:0x{7:X4} eyeSize:0x{8:X2} lipSize:0x{9:X2} eyeColor:0x{10:X2} level:{11,-2} hairColor:0x{12:X2} faceType:0x{13:X2} moodType:0x{20:X2} hairStyle:0x{14:X2} flags:0x{15:X2} name:\"{16}\" guild:\"{17}\" lastName:\"{18}\" prefixName:\"{19}\" unk1_174:{21} newTitle:\"{22}\"",
+			text.Write("sessionId:0x{0:X4} oid:0x{1:X4} model:0x{2:X4} zoneId:{3,-3} zoneLoc:({4,-5} {5,-5} {6,-5}) heading:0x{7:X4} eyeSize:0x{8:X2} lipSize:0x{9:X2} eyeColor:0x{10:X2} level:{11,-2} hairColor:0x{12:X2} faceType:0x{13:X2} moodType:0x{20:X2} hairStyle:0x{14:X2} flags:0x{15:X2} name:\"{16}\" guild:\"{17}\" lastName:\"{18}\" prefixName:\"{19}\" unk1_174:{21} newTitle:\"{22}\"",
 				sessionId, oid, model, zoneId, zoneX, zoneY, zoneZ, heading, eyeSize, lipSize, eyeColor, level, hairColor, faceType, hairStyle, flags, name, guildName, lastName, prefixName, moodType, unk1_174, realmMissionTitle);
 
 			if (flagsDescription && flags != 0)
 			{
-				str.AppendFormat("\n\trealm:{0}", (flags >> 2) & 3);
-				str.AppendFormat(" face:{0} playerSize:{1} model:0x{2:X4}", model >> 13, (model >> 11) & 3, model & 0x7FF);
-				str.AppendFormat("{0}{1}{2}{3}{4}", ((flags & 1) == 1) ? ", DEAD" : "", ((flags & 2) == 2) ? ", Underwater" : "", ((flags & 0x10) == 0x10) ? ", Stealth" : "", ((flags & 0x20) == 0x20) ? ", Wireframe" : "", ((flags & 0x40) == 0x40) ? ", Vampiire" : "", ((flags & 0x80) != 0) ? ", UNK:0x"+(flags & 0x80).ToString("X2") : "");
+				text.Write("\n\trealm:{0}", (flags >> 2) & 3);
+				text.Write(" face:{0} playerSize:{1} model:0x{2:X4}", model >> 13, (model >> 11) & 3, model & 0x7FF);
+				text.Write("{0}{1}{2}{3}{4}", ((flags & 1) == 1) ? ", DEAD" : "", ((flags & 2) == 2) ? ", Underwater" : "", ((flags & 0x10) == 0x10) ? ", Stealth" : "", ((flags & 0x20) == 0x20) ? ", Wireframe" : "", ((flags & 0x40) == 0x40) ? ", Vampiire" : "", ((flags & 0x80) != 0) ? ", UNK:0x" + (flags & 0x80).ToString("X2") : "");
 			}
-			return str.ToString();
 		}
 
 		/// <summary>

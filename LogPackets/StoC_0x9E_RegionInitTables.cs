@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -14,20 +15,19 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
 			for (int i = 0; i < regions.Length; i++)
 			{
 				RegionEntry region = (RegionEntry)regions[i];
 				if (region.num == 0) continue;
-				if (i > 0) str.Append("; ");
-				str.AppendFormat("num:{0,-3} id:{1,-3} name:{2} fromPort:{3} toPort:{4} ip:{5,-15}",
+				if (i > 0)
+					text.Write("; ");
+				text.Write("num:{0,-3} id:{1,-3} name:{2} fromPort:{3} toPort:{4} ip:{5,-15}",
 					region.num, region.id, region.name, region.fromPort, region.toPort, region.ip);
 			}
 
-			return str.ToString();
 		}
 
 		/// <summary>

@@ -8,7 +8,7 @@ namespace PacketLogConverter
 	/// <summary>
 	/// Holds all the log data and all information about it
 	/// </summary>
-	public class PacketLog : IEnumerable
+	public class PacketLog : IEnumerable<Packet>, IIndexedContainer<Packet>
 	{
 		private bool m_isDirty = true;
 
@@ -112,6 +112,13 @@ namespace PacketLogConverter
 			set { m_reinitRequired = value; }
 		}
 
+		private bool m_subversionReinit = false;
+		public bool SubversionReinit
+		{
+			get { return m_subversionReinit; }
+			set { m_subversionReinit = value; }
+		}
+
 		/// <summary>
 		/// Loads the packet parsers based on current log version.
 		/// </summary>
@@ -137,6 +144,7 @@ namespace PacketLogConverter
 					callback(workDone, workTotal);
 
 				Packet packet = (Packet)m_packets[i];
+//				LogWriters.Logger.Say("maxRepeat:{0} IsDirty:{1} ver:{2} reinit:{3} [{4}]:{5}", maxRepeat, IsDirty, Version, ReinitRequired, i, packet.GetType().ToString());
 				if (packet.AllowClassChange)
 					packet = PacketManager.ChangePacketClass(packet, Version);
 				packet.InitLog(this);
@@ -196,7 +204,26 @@ namespace PacketLogConverter
 
 		#region IEnumerable Members
 
-		public IEnumerator GetEnumerator()
+		/// <summary>
+		/// Returns an enumerator that iterates through the collection.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used to iterate through the collection.
+		/// </returns>
+		public IEnumerator<Packet> GetEnumerator()
+		{
+			return m_packets.GetEnumerator();
+		}
+
+		///<summary>
+		///Returns an enumerator that iterates through a collection.
+		///</summary>
+		///
+		///<returns>
+		///An <see cref="T:System.Collections.IEnumerator"></see> object that can be used to iterate through the collection.
+		///</returns>
+		///<filterpriority>2</filterpriority>
+		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return m_packets.GetEnumerator();
 		}

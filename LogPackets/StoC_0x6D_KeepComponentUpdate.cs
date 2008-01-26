@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -32,17 +33,15 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.AppendFormat("keepId:0x{0:X4} componentId:{1,-3} height:{2,-3} health:{3,3}% status:0x{4:X2} flags:0x{5:X2}",
+			text.Write("keepId:0x{0:X4} componentId:{1,-3} height:{2,-3} health:{3,3}% status:0x{4:X2} flags:0x{5:X2}",
 				keepId, componentId, height, health, status, flags);
 			if (flagsDescription)
 			{
 				if (status > 0)
-					str.AppendFormat(" ({0})", (StoC_0x6C_KeepComponentOverview.eKeepComponentStatus)status);
+					text.Write(" ({0})", (StoC_0x6C_KeepComponentOverview.eKeepComponentStatus)status);
 			}
-			return str.ToString();
 		}
 
 		/// <summary>

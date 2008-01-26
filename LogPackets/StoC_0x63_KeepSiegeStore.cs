@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -38,21 +39,19 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.AppendFormat("keepId:0x{0:X4} componentId:0x{1:X4} hookPointId:0x{2:X4} buyMoney:{3} buyBP:{4} buyGBP:{5} count:{6} unk1:{7} unk2:{8}",
+			text.Write("keepId:0x{0:X4} componentId:0x{1:X4} hookPointId:0x{2:X4} buyMoney:{3} buyBP:{4} buyGBP:{5} count:{6} unk1:{7} unk2:{8}",
 				keepId, componentId, hookPointId, flag1, flag2, flag3, itemCount, unk1, unk2);
 
 			for (int i = 0; i < itemCount; i++)
 			{
 				StoC_0x17_MerchantWindow.MerchantItem item = items[i];
-				str.AppendFormat("\n\tindex:{0,-2} level:{1,-2} value1:{2,-3} value2:{3,-3} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} canUse:{7} weight:{8,-4} price:{9,-8} model:0x{10:X4} name:\"{11}\"",
+				text.Write("\n\tindex:{0,-2} level:{1,-2} value1:{2,-3} value2:{3,-3} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} canUse:{7} weight:{8,-4} price:{9,-8} model:0x{10:X4} name:\"{11}\"",
 					item.index, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.canUse, item.weight, item.price, item.model, item.name);
 				if (flagsDescription)
-					str.AppendFormat(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
+					text.Write(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
 			}
-			return str.ToString();
 		}
 
 		public override void Init()

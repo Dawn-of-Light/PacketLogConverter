@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -48,18 +49,16 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.AppendFormat(" oid:0x{0:X4} unk1:0x{1:X4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} model:0x{6:X4} flags:0x{7:X4} emblem:0x{8:X4} unk2-4:0x{9:X4}{10:X4}{11:X4} name:\"{12}\" unk5:{13}",
+			text.Write(" oid:0x{0:X4} unk1:0x{1:X4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} model:0x{6:X4} flags:0x{7:X4} emblem:0x{8:X4} unk2-4:0x{9:X4}{10:X4}{11:X4} name:\"{12}\" unk5:{13}",
 				objectOid, unk1, heading, x, y, z, model, flags, emblem, unk2, unk3, unk4, name, unk5/*, (flags >> 10) & 7, (flags >> 4) & 7, flags & 0xE38F*/);
 			if (flagsDescription)
 			{
-				str.AppendFormat(" (level:{0,2} realm:{1})", flags >> 9, ((flags & 0x40) == 0x40 ? 3 : (flags >> 4) & 3));
+				text.Write(" (level:{0,2} realm:{1})", flags >> 9, ((flags & 0x40) == 0x40 ? 3 : (flags >> 4) & 3));
 				if (emblem != 0)
-				  str.AppendFormat(" logo:{0,-3} pattern:{1} primaryColor:{2,-2} secondaryColor:{3}", ((unk4 & 1) << 7) | (emblem >> 9), (emblem >> 7) & 2, (emblem >> 3) & 0x0F, emblem & 7);
+					text.Write(" logo:{0,-3} pattern:{1} primaryColor:{2,-2} secondaryColor:{3}", ((unk4 & 1) << 7) | (emblem >> 9), (emblem >> 7) & 2, (emblem >> 3) & 0x0F, emblem & 7);
 			}
-			return str.ToString();
 		}
 
 		/// <summary>

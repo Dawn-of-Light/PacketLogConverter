@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -31,16 +32,14 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 			if (trailingByte == 0xFF)
-				str.AppendFormat("oid:0x{0:X4} level:{1,-3} trailingByte:0x{2:X2}", oid, level, trailingByte);
+				text.Write("oid:0x{0:X4} level:{1,-3} trailingByte:0x{2:X2}", oid, level, trailingByte);
 			else
-				str.AppendFormat("oid:0x{0:X4} level:{1,-3} guildName:\"{2}\" name:\"{3}\" trailingByte:0x{4:X2}",
+				text.Write("oid:0x{0:X4} level:{1,-3} guildName:\"{2}\" name:\"{3}\" trailingByte:0x{4:X2}",
 			                 oid, level, guildName, name, trailingByte);
 
-			return str.ToString();
 		}
 
 		/// <summary>

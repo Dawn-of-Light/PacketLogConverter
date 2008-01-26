@@ -12,7 +12,6 @@ namespace PacketLogConverter.LogActions
 	public class ShowObjectKnownInfoAction : ILogAction
 	{
 
-		TimeSpan zeroTimeSpan = new TimeSpan(0);
 		#region ILogAction Members
 
 		/// <summary>
@@ -105,8 +104,11 @@ namespace PacketLogConverter.LogActions
 			bool flagPacketPet = false;
 			bool flagPacketDialog = false;
 			bool flagVisualEffect = false;
+			bool flagPacketMobCreate = false;
 			CtoS_0xA9_PlayerPosition lastSelfCoords = null;
 			LocalCoords lastObjectCoords = null;
+			LocalCoords regionGlobalCoords = null;
+			LocalCoords firstSelfCoords = null;
 //			Packet lastObjectCoords = null;
 			string objectType = "";
 			for (int i = selectedIndex; i >= 0; i--)
@@ -119,13 +121,14 @@ namespace PacketLogConverter.LogActions
 					if ((pak as StoC_0x20_PlayerPositionAndObjectID).PlayerOid == objectId)
 						objectType = " (Self)";
 //					str.Insert(0, pak.ToHumanReadableString(TimeSpan(0), true) + '\n');
+					regionGlobalCoords = new LocalCoords((pak as StoC_0x20_PlayerPositionAndObjectID).X, (pak as StoC_0x20_PlayerPositionAndObjectID).Y, (pak as StoC_0x20_PlayerPositionAndObjectID).Z);
 					break;
 				}
 				else if (!fullInfoFound && pak is StoC_0xD4_PlayerCreate)
 				{
 					if ((pak as StoC_0xD4_PlayerCreate).Oid == objectId)
 					{
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 						objectType = " (player)";
 						fullInfoFound = true;
 						if (lastObjectCoords == null)
@@ -136,7 +139,7 @@ namespace PacketLogConverter.LogActions
 				{
 					if ((pak as StoC_0x4B_PlayerCreate_172).Oid == objectId)
 					{
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 						objectType = " (player)";
 						fullInfoFound = true;
 						if (lastObjectCoords == null)
@@ -145,18 +148,21 @@ namespace PacketLogConverter.LogActions
 				}
 				else if (!fullInfoFound && pak is StoC_0xDA_NpcCreate)
 				{
-					if ((pak as StoC_0xDA_NpcCreate).Oid == objectId)
+					if (!flagPacketMobCreate && (pak as StoC_0xDA_NpcCreate).Oid == objectId)
 					{
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						flagPacketMobCreate = false;
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 						objectType = " (NPC)";
-						fullInfoFound = true;
+						if (lastObjectCoords == null)
+							lastObjectCoords = new LocalCoords((pak as StoC_0xDA_NpcCreate).X, (pak as StoC_0xDA_NpcCreate).Y, (pak as StoC_0xDA_NpcCreate).Z);
+//						fullInfoFound = true; // need find 0x20 for get gloc region
 					}
 				}
 				else if (!fullInfoFound && pak is StoC_0x6C_KeepComponentOverview)
 				{
 					if ((pak as StoC_0x6C_KeepComponentOverview).Uid == objectId)
 					{
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 						objectType = " (KeepComponent)";
 						fullInfoFound = true;
 					}
@@ -165,16 +171,21 @@ namespace PacketLogConverter.LogActions
 				{
 					if ((pak as StoC_0xD9_ItemDoorCreate).Oid == objectId)
 					{
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
-						objectType = " (Object)";
-						fullInfoFound = true;
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
+						if ((pak as StoC_0xD9_ItemDoorCreate).ExtraBytes == 4)
+							objectType = " (Door)";
+						else
+							objectType = " (Object)";
+						if (lastObjectCoords == null)
+							lastObjectCoords = new LocalCoords((pak as StoC_0xD9_ItemDoorCreate).X, (pak as StoC_0xD9_ItemDoorCreate).Y, (pak as StoC_0xD9_ItemDoorCreate).Z);
+//						fullInfoFound = true; // need find 0x20 for get gloc region
 					}
 				}
 				else if (!fullInfoFound && pak is StoC_0x12_CreateMovingObject)
 				{
 					if ((pak as StoC_0x12_CreateMovingObject).ObjectOid == objectId)
 					{
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 						objectType = " (MovingObject)";
 						fullInfoFound = true;
 					}
@@ -184,11 +195,11 @@ namespace PacketLogConverter.LogActions
 					if (!flagPacketRide && (pak as StoC_0xC8_PlayerRide).RiderOid == objectId)
 					{
 						flagPacketRide = true;
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}
 					else if ((pak as StoC_0xC8_PlayerRide).MountOid == objectId)
 					{
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}
 				}
 				else if (!fullInfoFound && pak is StoC_0x15_EquipmentUpdate)
@@ -196,14 +207,14 @@ namespace PacketLogConverter.LogActions
 					if (!flagPacketEquip && (pak as StoC_0x15_EquipmentUpdate).Oid == objectId)
 					{
 						flagPacketEquip = true;
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}
 				}
 				else if (!fullInfoFound && pak is StoC_0xEE_NpcChangeProperties)
 				{
 					if ((pak as StoC_0xEE_NpcChangeProperties).Oid == objectId)
 					{
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}
 				}
 				else if (!fullInfoFound && pak is StoC_0xDE_SetObjectGuildId)
@@ -211,7 +222,7 @@ namespace PacketLogConverter.LogActions
 					if (!flagPacketGuild && (pak as StoC_0xDE_SetObjectGuildId).Oid == objectId)
 					{
 						flagPacketGuild = true;
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}
 				}
 				else if (!fullInfoFound && pak is StoC_0xA1_NpcUpdate)
@@ -219,8 +230,9 @@ namespace PacketLogConverter.LogActions
 					if (!flagPacketMove && (pak as StoC_0xA1_NpcUpdate).NpcOid == objectId)
 					{
 						flagPacketMove = true;
-						lastObjectCoords = new LocalCoords((pak as StoC_0xA1_NpcUpdate).CurrentZoneX, (pak as StoC_0xA1_NpcUpdate).CurrentZoneY, (pak as StoC_0xA1_NpcUpdate).CurrentZoneZ, (pak as StoC_0xA1_NpcUpdate).CurrentZoneId);
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						if (lastObjectCoords == null)
+							lastObjectCoords = new LocalCoords((pak as StoC_0xA1_NpcUpdate).CurrentZoneX, (pak as StoC_0xA1_NpcUpdate).CurrentZoneY, (pak as StoC_0xA1_NpcUpdate).CurrentZoneZ, (pak as StoC_0xA1_NpcUpdate).CurrentZoneId);
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}
 				}
 				else if (!fullInfoFound && pak is StoC_0x81_ShowDialog)
@@ -228,7 +240,7 @@ namespace PacketLogConverter.LogActions
 					if (!flagPacketDialog && (pak as StoC_0x81_ShowDialog).ObjectIds != null && (pak as StoC_0x81_ShowDialog).ObjectIds.Length > 0 && (pak as StoC_0x81_ShowDialog).ObjectIds[0] == objectId)
 					{
 						flagPacketDialog = true;
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}
 				}
 				else if (!fullInfoFound && pak is StoC_0xA9_PlayerPosition)
@@ -238,7 +250,7 @@ namespace PacketLogConverter.LogActions
 						flagPacketMove = true;
 						if (lastObjectCoords == null)
 							lastObjectCoords = new LocalCoords((pak as StoC_0xA9_PlayerPosition).CurrentZoneX, (pak as StoC_0xA9_PlayerPosition).CurrentZoneY, (pak as StoC_0xA9_PlayerPosition).CurrentZoneZ, (pak as StoC_0xA9_PlayerPosition).CurrentZoneId);
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}
 				}
 				else if (!fullInfoFound && pak is StoC_0x88_PetWindowUpdate)
@@ -246,7 +258,7 @@ namespace PacketLogConverter.LogActions
 					if (!flagPacketPet && (pak as StoC_0x88_PetWindowUpdate).PetId == objectId)
 					{
 						flagPacketPet = true;
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}
 				}
 				else if (!fullInfoFound && pak is StoC_0x4C_VisualEffect)
@@ -254,11 +266,22 @@ namespace PacketLogConverter.LogActions
 					if (!flagVisualEffect && (pak as StoC_0x4C_VisualEffect).Oid == objectId)
 					{
 						flagVisualEffect = true;
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}
 				}
 				else if (pak is CtoS_0xA9_PlayerPosition)
 				{
+					if (firstSelfCoords == null)
+					{
+						firstSelfCoords = new LocalCoords((pak as CtoS_0xA9_PlayerPosition).CurrentZoneX, (pak as CtoS_0xA9_PlayerPosition).CurrentZoneY, (pak as CtoS_0xA9_PlayerPosition).CurrentZoneZ, 0xFFFF);
+					}
+					else
+					{
+						firstSelfCoords.CurrentZoneX = (pak as CtoS_0xA9_PlayerPosition).CurrentZoneX;
+						firstSelfCoords.CurrentZoneY = (pak as CtoS_0xA9_PlayerPosition).CurrentZoneY;
+						firstSelfCoords.CurrentZoneZ = (pak as CtoS_0xA9_PlayerPosition).CurrentZoneZ;
+					}
+
 					if (lastSelfCoords == null)
 					{
 						lastSelfCoords = pak as CtoS_0xA9_PlayerPosition;
@@ -278,7 +301,24 @@ namespace PacketLogConverter.LogActions
 				int ydiff = lastSelfCoords.CurrentZoneY - lastObjectCoords.CurrentZoneY;
 				int zdiff = lastSelfCoords.CurrentZoneZ - lastObjectCoords.CurrentZoneZ;
 				int range = (int)Math.Sqrt(xdiff * xdiff + ydiff * ydiff + zdiff * zdiff);
-				str.Insert(0, string.Format("range from you:{0}\n", range));
+				str.Insert(0, string.Format("range from you:{0} (loc)\n", range));
+			}
+			else if (lastSelfCoords != null && lastObjectCoords != null && lastObjectCoords.CurrentZoneId == 0xFFFF && regionGlobalCoords != null && firstSelfCoords != null) /* gloc Object */
+			{
+				int xdiff = regionGlobalCoords.CurrentZoneX - firstSelfCoords.CurrentZoneX + lastSelfCoords.CurrentZoneX - lastObjectCoords.CurrentZoneX;
+				int ydiff = regionGlobalCoords.CurrentZoneY - firstSelfCoords.CurrentZoneY + lastSelfCoords.CurrentZoneY - lastObjectCoords.CurrentZoneY;
+				int zdiff = lastSelfCoords.CurrentZoneZ - lastObjectCoords.CurrentZoneZ;
+				int range = (int)Math.Sqrt(xdiff * xdiff + ydiff * ydiff + zdiff * zdiff);
+				str.Insert(0, string.Format("range from you:{0} (gloc)\n", range));
+//				str.Insert(0, string.Format("Your gloc:(x:{0} y:{1})\n", regionGlobalCoords.CurrentZoneX - firstSelfCoords.CurrentZoneX + lastSelfCoords.CurrentZoneX, regionGlobalCoords.CurrentZoneY - firstSelfCoords.CurrentZoneY + lastSelfCoords.CurrentZoneY));
+			}
+			else if (regionGlobalCoords != null && lastObjectCoords != null && lastObjectCoords.CurrentZoneId == 0xFFFF) /* gloc Object */
+			{
+				int xdiff = regionGlobalCoords.CurrentZoneX - lastObjectCoords.CurrentZoneX;
+				int ydiff = regionGlobalCoords.CurrentZoneY - lastObjectCoords.CurrentZoneY;
+				int zdiff = regionGlobalCoords.CurrentZoneZ - lastObjectCoords.CurrentZoneZ;
+				int range = (int)Math.Sqrt(xdiff * xdiff + ydiff * ydiff + zdiff * zdiff);
+				str.Insert(0, string.Format("range from you:{0} (gloc)\n", range));
 			}
 			str.Insert(0, string.Format("\nobjectId:0x{0:X4}{1}\n", objectId, objectType));
 			return str.ToString();
@@ -354,7 +394,7 @@ namespace PacketLogConverter.LogActions
 				{
 					if ((pak as StoC_0xD1_HouseCreate).HouseId == houseId)
 					{
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 						break;
 					}
 				}
@@ -363,7 +403,7 @@ namespace PacketLogConverter.LogActions
 					if (!flagExteriorFound && (pak as StoC_0xD2_HouseUpdate).HouseId == houseId && (pak as StoC_0xD2_HouseUpdate).UpdateCode == 0x80)
 					{
 						flagExteriorFound = true;
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}
 				}
 				else if (pak is StoC_0x09_HouseDecorationUpdate)
@@ -371,7 +411,7 @@ namespace PacketLogConverter.LogActions
 					if (!flagInteriorFound && (pak as StoC_0x09_HouseDecorationUpdate).HouseId == houseId && (pak as StoC_0x09_HouseDecorationUpdate).DecorationCode == 0x80)
 					{
 						flagInteriorFound = true;
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}
 				}
 				else if (pak is StoC_0x08_HouseInsideUpdate)
@@ -379,7 +419,7 @@ namespace PacketLogConverter.LogActions
 					if (!flagInsideUpdateFound && (pak as StoC_0x08_HouseInsideUpdate).HouseId == houseId)
 					{
 						flagInsideUpdateFound = true;
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}
 				}
 			}
@@ -401,7 +441,7 @@ namespace PacketLogConverter.LogActions
 				{
 					if ((pak as StoC_0x69_KeepOverview).KeepId == keepId)
 					{
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 						break;
 					}
 				}
@@ -409,7 +449,7 @@ namespace PacketLogConverter.LogActions
 				{
 					if ((pak as StoC_0x6C_KeepComponentOverview).KeepId == keepId)
 					{
-						str.Insert(0, pak.ToHumanReadableString(zeroTimeSpan, true) + '\n');
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}
 				}
 			}
@@ -429,6 +469,13 @@ namespace PacketLogConverter.LogActions
 				CurrentZoneY = y;
 				CurrentZoneZ = z;
 				CurrentZoneId = zoneId;
+			}
+			public LocalCoords(uint x, uint y, ushort z)
+			{
+				CurrentZoneX = (int)x;
+				CurrentZoneY = (int)y;
+				CurrentZoneZ = z;
+				CurrentZoneId = 0xFFFF;
 			}
 		}
 	}

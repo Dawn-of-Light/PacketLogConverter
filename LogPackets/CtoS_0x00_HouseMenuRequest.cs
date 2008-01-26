@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -18,9 +19,8 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 			string code_type;
 			switch (code)
 			{
@@ -55,10 +55,8 @@ namespace PacketLogConverter.LogPackets
 					code_type = "UNKNOWN";
 					break;
 			}
-			str.AppendFormat("houseId:0x{0:X4} code:{1}({3}) unk1:0x{2:X2}",
+			text.Write("houseId:0x{0:X4} code:{1}({3}) unk1:0x{2:X2}",
 				houseId, code, unk1, code_type);
-
-			return str.ToString();
 		}
 
 		/// <summary>

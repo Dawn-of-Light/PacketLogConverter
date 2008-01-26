@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -13,19 +14,16 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.AppendFormat("objectType:0x{0:X4} objectId:0x{1:X4} unk1:0x{2:X8}", objectType, objectId, unk1);
+			text.Write("objectType:0x{0:X4} objectId:0x{1:X4} unk1:0x{2:X8}", objectType, objectId, unk1);
 			if (flagsDescription)
 			{
 				if (objectType == 19)
-					str.AppendFormat(" (questId:0x{0:X4} slot:{1})", ((unk1 & 0x0F) << 12) + (objectId  >> 4), objectId & 0x0F);
+					text.Write(" (questId:0x{0:X4} slot:{1})", ((unk1 & 0x0F) << 12) + (objectId >> 4), objectId & 0x0F);
 				if (objectType >= 150)
-					str.AppendFormat(" (CL IdLine:{0} SkillIndex:{1} index:{2})", objectType - 150, objectId >> 8, objectId & 0xFF);
+					text.Write(" (CL IdLine:{0} SkillIndex:{1} index:{2})", objectType - 150, objectId >> 8, objectId & 0xFF);
 			}
-
-			return str.ToString();
 		}
 
 		/// <summary>

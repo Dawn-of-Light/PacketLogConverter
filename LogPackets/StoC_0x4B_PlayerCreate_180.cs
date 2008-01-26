@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -21,14 +22,13 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			string str = base.GetPacketDataString(flagsDescription);
-			str += string.Format(" horseId:{0}", horseId);
+			base.GetPacketDataString(text, flagsDescription);
+			text.Write(" horseId:{0}", horseId);
 			if (horseId != 0)
-				str += string.Format(" horseBoot:{0,-2} BootColor:0x{1:X4} horseSaddle:{2,-2} SaddleColor:0x{3:X2}",
+				text.Write(" horseBoot:{0,-2} BootColor:0x{1:X4} horseSaddle:{2,-2} SaddleColor:0x{3:X2}",
 					horseBoot, horseBootColor, horseSaddle, horseSaddleColor);
-			return str;
 		}
 
 		/// <summary>

@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x2B, -1, ePacketDirection.ServerToClient, "Player world initialize response")]
@@ -11,9 +13,10 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			return "mobs sended:" + count.ToString();
+			text.Write("mobs sended:");
+			text.Write(count.ToString());
 		}
 
 		/// <summary>

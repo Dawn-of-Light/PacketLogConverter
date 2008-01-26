@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -17,13 +18,11 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
 
-			str.AppendFormat("charName:\"{0}\" login:\"{1}\" code:{2}({3})", charName, loginName, code, (code == 0 ? "bad" : "good"));
+			text.Write("charName:\"{0}\" login:\"{1}\" code:{2}({3})", charName, loginName, code, (code == 0 ? "bad" : "good"));
 
-			return str.ToString();
 		}
 
 		/// <summary>

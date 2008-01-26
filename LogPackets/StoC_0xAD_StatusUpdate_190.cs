@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -25,15 +26,13 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.Append(base.GetPacketDataString(flagsDescription));
+			base.GetPacketDataString(text, flagsDescription);
 
-			str.AppendFormat(" health:{0}/{1} power:{2}/{3} endurance:{4}/{5} concentration:{6}/{7}",
+			text.Write(" health:{0}/{1} power:{2}/{3} endurance:{4}/{5} concentration:{6}/{7}",
 				health, maxHealth, power, maxPower, endurance, maxEndurance, concentration, maxConcentration);
 
-			return str.ToString();
 		}
 
 		/// <summary>

@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -36,14 +37,10 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("keepId:0x{0:X4} componentId:{1,-2} hookPointId:0x{2:X2} itemSlot:0x{3:X4} payType?:0x{4:X2} unk1:0x{5:X4} unk2:0x{6:X4} unk3:0x{7:X4}",
+			text.Write("keepId:0x{0:X4} componentId:{1,-2} hookPointId:0x{2:X2} itemSlot:0x{3:X4} payType?:0x{4:X2} unk1:0x{5:X4} unk2:0x{6:X4} unk3:0x{7:X4}",
 				keepId, componentId, hookPointId, itemSlot, payType, unk1, unk2, unk3);
-
-			return str.ToString();
 		}
 
 		/// <summary>

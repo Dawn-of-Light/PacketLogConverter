@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -39,14 +40,12 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.AppendFormat("oid:0x{0:X4} horseId:{1,-2} horseBoot:{2,-2} BootColor:0x{3:X4} horseSaddle:{4,-2} SaddleColor:0x{5:X2}",
+			text.Write("oid:0x{0:X4} horseId:{1,-2} horseBoot:{2,-2} BootColor:0x{3:X4} horseSaddle:{4,-2} SaddleColor:0x{5:X2}",
 				oid, horseId, horseBoot, horseBootColor, horseSaddle, horseSaddleColor);
 			if (oid == 0 && horseId != 0)
-				str.AppendFormat(" slots:{0} weight:{1} name:\"{2}\"", horseSlots, horseArmor, horseName);
-			return str.ToString();
+				text.Write(" slots:{0} weight:{1} name:\"{2}\"", horseSlots, horseArmor, horseName);
 		}
 
 		/// <summary>

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -25,12 +26,15 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			string str = "oid:0x" + npcOid.ToString("X4");
-			if(flagsDescription)
-				str += string.Format(" unk1:0x{0:X4}", unk1);
-			return str;
+			text.Write("oid:0x");
+			text.Write(npcOid.ToString("X4"));
+			if (flagsDescription)
+			{
+				text.Write(" unk1:0x");
+				text.Write(unk1.ToString("X4"));
+			}
 		}
 
 		/// <summary>

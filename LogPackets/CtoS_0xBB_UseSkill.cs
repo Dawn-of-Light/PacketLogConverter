@@ -1,3 +1,4 @@
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -17,11 +18,9 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-
-			str.AppendFormat("flagSpeedData:0x{0:X4} index:{1,-2} type:{2}", flagSpeedData, index, type);
+			text.Write("flagSpeedData:0x{0:X4} index:{1,-2} type:{2}", flagSpeedData, index, type);
 			if (flagsDescription)
 			{
 				string speed = (flagSpeedData & 0x1FF).ToString();
@@ -39,10 +38,9 @@ namespace PacketLogConverter.LogPackets
 					speed += ",Strafe";// Swim under water
 				if ((flagSpeedData & 0x8000) == 0x8000)
 					speed += ",TargetInView";
-				str.AppendFormat(" (speed:{0})", speed);
+				text.Write(" (speed:{0})", speed);
 			}
 
-			return str.ToString();
 		}
 
 		/// <summary>

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -53,24 +54,23 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
-		public override string GetPacketDataString(bool flagsDescription)
+		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			StringBuilder str = new StringBuilder();
-			str.AppendFormat("oid:0x{0:X4} speed:{1,-4} speedZ:{2,-4}({15,-4}) heading:0x{3:X4} currentZone({4,-3}): ({5,-6} {6,-6} {7,-5}) walkToZone({8,-3}): ({9,-6} {10,-6} {11,-5}) health:{12,3}% targetOID:0x{13:X4} flags:0x{14:X2}",
+			text.Write("oid:0x{0:X4} speed:{1,-4} speedZ:{2,-4}({15,-4}) heading:0x{3:X4} currentZone({4,-3}): ({5,-6} {6,-6} {7,-5}) walkToZone({8,-3}): ({9,-6} {10,-6} {11,-5}) health:{12,3}% targetOID:0x{13:X4} flags:0x{14:X2}",
 				npcOID, speed, speedZ, heading, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, targetZoneId, targetZoneX, targetZoneY, targetZoneZ, healthPercent, targetOID, flags, speedZ * 4);
 			if (flagsDescription)
 			{
-				str.AppendFormat(" (realm:{0}", (flags >> 6) & 3);
+				text.Write(" (realm:{0}", (flags >> 6) & 3);
 				if ((flags & 0x01) == 0x01)
-					str.Append(",-DOR");
+					text.Write(",-DOR");
 				if ((flags & 0x02) == 0x02)
-					str.Append(",-NON");
+					text.Write(",-NON");
 				// 0x04 - zone bit 0x100 , 0x08 - targetZone bit 0x100
 				if ((flags & 0x10) == 0x10)
-					str.Append(",Underwater");
+					text.Write(",Underwater");
 				if ((flags & 0x20) == 0x20)
-					str.Append(",Fly");
-				str.Append(')');
+					text.Write(",Fly");
+				text.Write(')');
 /* 				if (targetZoneX != 0 || targetZoneY !=0 || targetZoneZ !=0)
 				{
 					int diffZ = (targetZoneZ - currentZoneZ);
@@ -80,10 +80,9 @@ namespace PacketLogConverter.LogPackets
 					double zSpeed = speed * diffZ / range;
 					if (speed == 0)
 						zSpeed = diffZ;
-					str.AppendFormat("\n\tcalced zSpeed:{0}({1}) diffX:{2} diffY:{3} diffZ:{4} range:{5} speed:{6}", (int)zSpeed/4, (int)zSpeed, diffX, diffY, diffZ, range, speed);
+					text.Write("\n\tcalced zSpeed:{0}({1}) diffX:{2} diffY:{3} diffZ:{4} range:{5} speed:{6}", (int)zSpeed/4, (int)zSpeed, diffX, diffY, diffZ, range, speed);
 				}*/
 			}
-			return str.ToString();
 		}
 
 		/// <summary>
