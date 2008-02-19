@@ -17,15 +17,12 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-
 			for (int i = 0; i < regions.Length; i++)
 			{
 				RegionEntry region = (RegionEntry)regions[i];
-				if (region.num == 0) continue;
-				if (i > 0)
-					text.Write("; ");
-				text.Write("num:{0,-3} id:{1,-3} name:{2} fromPort:{3} toPort:{4} ip:{5,-15}",
-					region.num, region.id, region.name, region.fromPort, region.toPort, region.ip);
+				if (region.regionIndex == 0) continue;
+				text.Write("\n\tregionIndex:{0,-3} regionId:{1,-3} name:{2} fromPort:{3} toPort:{4} ip:{5,-15}",
+					region.regionIndex, region.region, region.name, region.fromPort, region.toPort, region.ip);
 			}
 
 		}
@@ -43,8 +40,8 @@ namespace PacketLogConverter.LogPackets
 			{
 				RegionEntry reg = new RegionEntry();
 
-				reg.num = ReadByte();
-				reg.id = ReadByte();
+				reg.regionIndex = ReadByte();
+				reg.region = ReadByte();
 				reg.name = ReadString(20);
 				reg.fromPort = ReadString(5);
 				reg.toPort = ReadString(5);
@@ -56,8 +53,8 @@ namespace PacketLogConverter.LogPackets
 
 		public struct RegionEntry
 		{
-			public int num;
-			public int id;
+			public int regionIndex;
+			public int region;
 			public string name;
 			public string fromPort;
 			public string toPort;

@@ -56,8 +56,11 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("oid:0x{0:X4} speed:{1,-4} speedZ:{2,-4}({15,-4}) heading:0x{3:X4} currentZone({4,-3}): ({5,-6} {6,-6} {7,-5}) walkToZone({8,-3}): ({9,-6} {10,-6} {11,-5}) health:{12,3}% targetOID:0x{13:X4} flags:0x{14:X2}",
-				npcOID, speed, speedZ, heading, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, targetZoneId, targetZoneX, targetZoneY, targetZoneZ, healthPercent, targetOID, flags, speedZ * 4);
+			text.Write("oid:0x{0:X4} speed:{1,-4} speedZ:{2,-4}", npcOID, speed, speedZ);
+			if (flagsDescription)
+				text.Write("({0,-4})", speedZ * 4); // real ZSpeed
+			text.Write(" heading:0x{0:X4} currentZone({1,-3}): ({2,-6} {3,-6} {4,-5}) walkToZone({5,-3}): ({6,-6} {7,-6} {8,-5}) health:{9,3}% targetOID:0x{10:X4} flags:0x{11:X2}",
+				heading, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, targetZoneId, targetZoneX, targetZoneY, targetZoneZ, healthPercent, targetOID, flags);
 			if (flagsDescription)
 			{
 				text.Write(" (realm:{0}", (flags >> 6) & 3);

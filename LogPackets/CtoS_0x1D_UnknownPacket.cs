@@ -3,7 +3,7 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0x1D, -1, ePacketDirection.ClientToServer, "Unknown packet")]
+	[LogPacket(0x1D, -1, ePacketDirection.ClientToServer, "close window ?")] // possible it send info about closing special windows
 	public class CtoS_0x1D_UnknownPacket: Packet
 	{
 		protected ushort unk1;
@@ -28,8 +28,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			unk1 = ReadShort();
-			unk2 = ReadShort();
+			unk1 = ReadShortLowEndian();
+			unk2 = ReadShortLowEndian();
 		}
 
 		/// <summary>

@@ -15,25 +15,26 @@ namespace PacketLogConverter.LogPackets
 
 		#region public access properties
 
-		public int SlotsCount { get { return m_slotsCount; } }
-		public int Bits { get { return m_bits; } }
-		public int VisibleSlots { get { return m_visibleSlots; } }
-		public int PreAction { get { return m_preAction; } }
+		public byte SlotsCount { get { return m_slotsCount; } }
+		public byte Bits { get { return m_bits; } }
+		public byte VisibleSlots { get { return m_visibleSlots; } }
+		public byte PreAction { get { return m_preAction; } }
 		public Item[] Items { get { return m_items; } }
 
 		#endregion
 
 		public enum ePreActionType: byte
 		{
+			UpdateLastOpened = 0,
 			InitPaperdoll = 1,
 			InitBackpack = 2,
 			InitVaultKeeper = 3,
 			InitHouseVault = 4,
-			InitConsigmentMerchant = 5,
-			InitMarketConsigmentMerchant = 6,
+			InitOwnConsigmentMerchant = 5, // have SetPrice,Withdrow
+			InitConsigmentMerchant = 6,// have Buy
 			HorseBags = 7,
 			ContinueConsigmentMerchant = 15,
-			ContinueMarketConsigmentMerchant = 16,
+			ContinueOtherConsigmentMerchant = 16,
 		}
 
 		public enum eObjectType: byte
@@ -125,7 +126,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			text.Write("slots:{0} bits:0x{1:X2} visibleSlots:0x{2:X2} preAction:0x{3:X2}", SlotsCount, Bits, VisibleSlots, PreAction);
 			if (flagsDescription)
-				text.Write("({0})", (ePreActionType)PreAction);
+				text.Write("({0}{1})", (ePreActionType)PreAction, (PreAction == (byte)ePreActionType.InitHouseVault) ? VisibleSlots.ToString() : "");
 
 			for (int i = 0; i < m_slotsCount; i++)
 			{

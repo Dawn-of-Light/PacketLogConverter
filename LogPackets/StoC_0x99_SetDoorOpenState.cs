@@ -8,22 +8,41 @@ namespace PacketLogConverter.LogPackets
 	{
 		protected uint doorId;
 		protected byte openState;
-		protected byte unk1;
+		protected byte doorSoundId;
 		protected ushort unk2;
 
 		#region public access properties
 
 		public uint DoorId { get { return doorId; } }
 		public byte OpenState { get { return openState; } }
-		public byte Unk1 { get { return unk1; } }
+		public byte SoundId { get { return doorSoundId; } }
 		public ushort Unk2 { get { return unk2; } }
 
 		#endregion
 
+		public enum eDoorSoundId: byte
+		{
+			metalHingedDoorOneSecond = 1,
+			metalHingedDoorTwoSeconds = 2,
+			metalHingedGateTwoSeconds = 3,
+			metalHingedGateThreeSeconds = 4,
+			metalPortcullisThreeSeconds = 5,
+			metalHingedGate6ThreeSeconds = 6,
+			thickVineRootsGateThreeSeconds = 7,
+			templeOfKingsDoor = 8,
+			minotaurDoorsInVolcanus = 9,
+			playersDestroyBridgeInVolcanusEncounters = 10,
+			playersDestroyBridge2InVolcanusEncounters = 11,
+			openingSmallChest = 12,
+			openingMediumChest = 13,
+			openingLargeChest = 14,
+			largeCrocodileStatueTurnsHeadToTheSideFourSeconds = 15,
+			slowTurnRelicPlatformInTheKeepTowers = 16,
+		}
+
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-
-			text.Write("doorId:0x{0:X8} openState:{1} unk1:0x{2:X2} unk2:0x{3:X4}", doorId, openState, unk1, unk2);
+			text.Write("doorId:0x{0:X8} openState:{1} soundId:{2} unk2:0x{3:X4}", doorId, openState, doorSoundId, unk2);
 			if (flagsDescription)
 			{
 				uint doorType = doorId / 100000000;
@@ -50,8 +69,9 @@ namespace PacketLogConverter.LogPackets
 					fixturePiece = fixturePiece - fixture * 100;
 					text.Write(" (zone:{0} fixture:{1} fixturePeace:{2})", zoneDoor, fixture, fixturePiece);
 				}
+				if (doorSoundId > 0)
+					text.Write(" soundDoor:{0}", (eDoorSoundId)doorSoundId);
 			}
-
 		}
 
 		/// <summary>
@@ -63,7 +83,7 @@ namespace PacketLogConverter.LogPackets
 
 			doorId = ReadInt();
 			openState = ReadByte();
-			unk1 = ReadByte();
+			doorSoundId = ReadByte();
 			unk2 = ReadShort();
 		}
 

@@ -143,6 +143,7 @@
     </Compile>
     <Compile Include="LogActions\ShowObjectKnownInfoAction.cs" />
     <Compile Include="LogActions\ShowObjectSamePacketsAction.cs" />
+    <Compile Include="LogActions\ShowPlayerCalculates.cs"/>
     <Compile Include="LogActions\ShowPlayerCombatAction.cs">
       <SubType>Code</SubType>
     </Compile>

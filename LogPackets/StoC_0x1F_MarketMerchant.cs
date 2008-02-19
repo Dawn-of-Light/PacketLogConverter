@@ -31,7 +31,7 @@ namespace PacketLogConverter.LogPackets
 				for (int i = 0; i < itemCount; i++)
 				{
 					MerchantItem item = items[i];
-					text.Write("\n\tindex:{0,-2} level:{1,-2} value1:{2,-3} value2:{3,-3} hand:0x{4:X2} damageAndObjectType:0x{5:X2} canUse:{6} weigh:{7,-4} condition:{8,3} durability:{9,3} quality:{10,3} bonus:{11,2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X4} lot:0x{15:X4} price:{16,-8} name:\"{17}\"",
+					text.Write("\n\tindex:{0,-2} level:{1,-2} value1:{2,-3} value2:{3,-3} hand:0x{4:X2} damageAndObjectType:0x{5:X2} canUse:{6} weigh:{7,-4} condition:{8,3} durability:{9,3} quality:{10,3} bonus:{11,2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X4} lot:0x{15:X4} price:{16,-9} name:\"{17}\"",
 						item.index,
 						item.level,
 						item.value1,

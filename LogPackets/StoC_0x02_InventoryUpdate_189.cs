@@ -21,7 +21,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			text.Write("slots:{0} unk1:0x{4:X2} helmAndCloakVisibile:0x{5:X2} bits:0x{1:X2} visibleSlots:0x{2:X2} preAction:0x{3:X2}", SlotsCount, Bits, VisibleSlots, PreAction, unk1, m_helmAndCloakVisibile);
 			if (flagsDescription)
-				text.Write("({0})", (ePreActionType)PreAction);
+				text.Write("({0}{1})", (ePreActionType)PreAction, (PreAction == (byte)ePreActionType.InitHouseVault) ? VisibleSlots.ToString() : "");
 
 			for (int i = 0; i < m_slotsCount; i++)
 			{

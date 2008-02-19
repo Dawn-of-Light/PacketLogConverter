@@ -1952,9 +1952,7 @@ namespace PacketLogConverter
 
 				if (showPacketSequence)
 				{
-					text.Write(pak.Protocol.ToString());
-					text.Write(':');
-					text.Write(pakIndex.ToString("-5"));
+					text.Write("{0}:{1,-5} ", pak.Protocol, pakIndex);
 				}
 
 				// main description
@@ -1978,7 +1976,7 @@ namespace PacketLogConverter
 
 		private void LogDataFindText()
 		{
-			int start = logDataText.SelectionStart+1;
+			int start = logDataText.SelectionStart + 1;
 			if (start >= logDataText.TextLength || start < 0)
 				start = 0;
 			logDataText.Find(logDataFindTextBox.Text, start, RichTextBoxFinds.None);
@@ -2015,7 +2013,6 @@ namespace PacketLogConverter
 				ContextMenu actionsMenu = CreateMenuActions(m_actionMenuItemsByPriority, m_actionByPriority, m_logDataClickPacketLocation);
 				if (actionsMenu != null)
 				{
-//					Log.Error(string.Format("x:{0} y:{1} pos:{2}", e.X, e.Y, m_logDataClickPacketLocation));
 					actionsMenu.Show(logDataText, clickPoint);
 				}
 			}
@@ -2135,10 +2132,12 @@ namespace PacketLogConverter
 				return;
 			if (e.Control && !e.Alt && !e.Shift)
 			{
+				e.Handled = true;
 				RestoreLogPosition(numberEntered);
 			}
 			else if (!e.Control && e.Alt && !e.Shift)
 			{
+				e.Handled = true;
 				SaveLogPosition(numberEntered);
 			}
 		}

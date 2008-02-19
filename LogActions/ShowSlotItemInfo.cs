@@ -9,7 +9,7 @@ namespace PacketLogConverter.LogActions
 	/// <summary>
 	/// Shows use skill info
 	/// </summary>
-	[LogAction("Show slot item info", Priority=980)]
+	[LogAction("Show slot item info", Priority=998)]
 	public class ShowMoveItemInfoAction : ILogAction
 	{
 		#region ILogAction Members
@@ -38,7 +38,7 @@ namespace PacketLogConverter.LogActions
 		/// <returns><c>true</c> if log data tab should be updated.</returns>
 		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
 		{
-			PacketLog log = context.LogManager.Logs[selectedPacket.LogIndex];
+			PacketLog log = context.LogManager.GetPacketLog(selectedPacket.LogIndex);
 			int selectedIndex = selectedPacket.PacketIndex;
 
 			Packet originalPak = log[selectedIndex];

@@ -7,19 +7,21 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0xD9, 171, ePacketDirection.ServerToClient, "Item/door create v171")]
 	public class StoC_0xD9_ItemDoorCreate_171 : StoC_0xD9_ItemDoorCreate
 	{
-		protected uint unk1_171;
+		protected byte staticFlag; // 1 byte +
+		protected uint unk1_171; // 3 bytes
 
 		#region public access properties
 
 		public uint Unk1_171 { get { return unk1_171; } }
+		public uint StaticFlag { get { return staticFlag; } }
 
 		#endregion
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 
-			text.Write("oid:0x{0:X4} emblem:0x{1:X4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} model:0x{6:X4} health:{7,3}% flags:0x{8:X2}(realm:{12}) extraBytes:{9} unk1_171:0x{10:X8} name:\"{11}\"",
-				oid, emblem, heading, x, y, z, model, hp, flags, extraBytes, unk1_171, name, (flags & 0x30)>>4);
+			text.Write("oid:0x{0:X4} emblem:0x{1:X4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} model:0x{6:X4} health:{7,3}% flags:0x{8:X2}(realm:{13}) extraBytes:{9} staticFlag:{10} unk1_171:0x{11:X6} name:\"{12}\"",
+				oid, emblem, heading, x, y, z, model, hp, flags, extraBytes, staticFlag, unk1_171, name, (flags & 0x30)>>4);
 			if (flagsDescription)
 			{
 				string flag = "";
@@ -36,19 +38,18 @@ namespace PacketLogConverter.LogPackets
 					flag += ",OnShipHookPoint";
 				if ((flags & 0x80) == 0x80)
 					flag += ",UNK_0x80";
-				uint flag_171 = unk1_171 >> 24;
-				if ((flag_171 & 0x01) == 0x01)
+				if ((staticFlag & 0x01) == 0x01)
 					flag += ",-DOR";
-				if ((flag_171 & 0x02) == 0x02)
+				if ((staticFlag & 0x02) == 0x02)
 					flag += ",Guild176Emblem";
-				if ((flag_171 & 0xFC) > 0)
-					flag += ",UNKNOWN_171";
+				if ((staticFlag & 0xFC) > 0)
+					flag += ",UNKNOWN_171_STATICFLAG";
 				if(flag != "")
 					text.Write(" ({0})", flag);
 			}
 			if (extraBytes == 4)
 			{
-				text.Write(" doorId:0x{0:X4}", internalId);
+				text.Write(" doorId:0x{0:X8}", internalId);
 				if (flagsDescription)
 				{
 					uint doorType = internalId / 100000000;
@@ -79,7 +80,8 @@ namespace PacketLogConverter.LogPackets
 			}
 			if (flagsDescription)
 			{
-				uint guildLogo = (((unk1_171 & 0x2000000) >> 25) << 7) + (uint)(emblem >> 9);
+//				uint guildLogo = (((unk1_171 & 0x2000000) >> 25) << 7) + (uint)(emblem >> 9);
+				uint guildLogo = ((((uint)(staticFlag & 0x02) >> 1)) << 7) + (uint)(emblem >> 9);
 				if (guildLogo != 0)
 					text.Write(" guildLogo:{0,-3} pattern:{1} primaryColor:{2,-2} secondaryColor:{3}", guildLogo, (emblem >> 7) & 2, (emblem >> 3) & 0x0F, emblem & 7);
 			}
@@ -101,12 +103,13 @@ namespace PacketLogConverter.LogPackets
 			model = ReadShort();
 			hp = ReadByte();
 			flags = ReadByte();
-			unk1_171 = ReadInt();
+			uint tunk_171 = ReadInt();
+			unk1_171 = tunk_171 & 0xFFFFFF;
+			staticFlag = (byte)(tunk_171 >> 24);
 			name = ReadPascalString();
 			extraBytes = ReadByte();
-			if ((flags & 0x40) == 0x40)
-				flagOnShipHookPoint = 1;
-
+			if ((flags & 0x40) == 0x40)// x = moving object oid, y = hookpoint
+				flagOnShipHookPoint = true;
 			if (extraBytes == 4)
 				internalId = ReadInt();
 			else if (extraBytes != 0)

@@ -23,7 +23,7 @@ namespace PacketLogConverter.LogActions
 		{
 			int currentRegion;
 			int currentZone;
-			PacketLog log = context.LogManager.Logs[selectedPacket.LogIndex];
+			PacketLog log = context.LogManager.GetPacketLog(selectedPacket.LogIndex);
 			SortedList oidInfo = MakeOidList(selectedPacket.PacketIndex, log, out currentRegion, out currentZone);
 
 			StringBuilder str = new StringBuilder();

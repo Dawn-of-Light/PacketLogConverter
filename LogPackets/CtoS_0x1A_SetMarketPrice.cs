@@ -8,7 +8,7 @@ namespace PacketLogConverter.LogPackets
 	{
 		protected byte slot;
 		protected byte unk1;
-		protected ushort unk2;
+		protected ushort unk2; // = CtoS_0x1D.Unk2
 		protected uint price;
 
 		#region public access properties
@@ -22,7 +22,7 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("slot:{0,2} price:{1,-7} unk1:0x{2:X2} unk2:0x{3:X4}", slot, price, unk1, unk2);
+			text.Write("slot:{0,2} price:{1,-9} unk1:0x{2:X2} unk2:0x{3:X4}", slot, price, unk1, unk2);
 		}
 
 		/// <summary>

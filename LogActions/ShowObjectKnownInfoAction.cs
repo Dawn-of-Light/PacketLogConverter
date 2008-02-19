@@ -44,7 +44,7 @@ namespace PacketLogConverter.LogActions
 		/// <returns><c>true</c> if log data tab should be updated.</returns>
 		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
 		{
-			PacketLog log = context.LogManager.Logs[selectedPacket.LogIndex];
+			PacketLog log = context.LogManager.GetPacketLog(selectedPacket.LogIndex);
 			int selectedIndex = selectedPacket.PacketIndex;
 
 			ushort sessionId = 0;
@@ -73,13 +73,14 @@ namespace PacketLogConverter.LogActions
 			{
 				for (int i = 0; i < objectIds.Length; i++)
 					if (objectIds[i] > 0)
-						str.Append(MakeOidInfo(log, selectedIndex, objectIds[i], 0));
+						str.Append(MakeOidInfo(log, selectedIndex, objectIds[i], 0, 0));
 			}
 			if (keepIds != null && keepIds.Length > 0)
 			{
 				for (int i = 0; i < keepIds.Length; i++)
 					if (keepIds[i] > 0)
-					str.Append(MakeKidInfo(log, selectedIndex, keepIds[i]));
+						str.Append(MakeOidInfo(log, selectedIndex, 0xFFFF, 0, keepIds[i]));
+//						str.Append(MakeKidInfo(log, selectedIndex, keepIds[i]));
 			}
 			InfoWindowForm infoWindow = new InfoWindowForm();
 			infoWindow.Text = "Show info about Objects (right click to close)";
@@ -92,12 +93,13 @@ namespace PacketLogConverter.LogActions
 
 		#endregion
 
-		private string MakeOidInfo(PacketLog log, int selectedIndex, ushort objectId, ushort sessionId)
+		private string MakeOidInfo(PacketLog log, int selectedIndex, ushort objectId, ushort sessionId, ushort keepId)
 		{
 			StringBuilder str = new StringBuilder();
-			int maxPacketsLookBackForGetCoords = 50; // look back in log max 30 packets for find coords after found obejct creation packet
+			int maxPacketsLookBackForGetCoords = 100000; // look back in log max 30 packets for find coords after found obejct creation packet
 			bool fullInfoFound = false;
 			bool flagPacketMove = false;
+			bool flagPacketItem = false;
 			bool flagPacketRide = false;
 			bool flagPacketEquip = false;
 			bool flagPacketGuild = false;
@@ -105,6 +107,8 @@ namespace PacketLogConverter.LogActions
 			bool flagPacketDialog = false;
 			bool flagVisualEffect = false;
 			bool flagPacketMobCreate = false;
+			bool flagAllowGetFirstSelfCoords = true;
+			ushort selfId = 0;
 			CtoS_0xA9_PlayerPosition lastSelfCoords = null;
 			LocalCoords lastObjectCoords = null;
 			LocalCoords regionGlobalCoords = null;
@@ -121,8 +125,20 @@ namespace PacketLogConverter.LogActions
 					if ((pak as StoC_0x20_PlayerPositionAndObjectID).PlayerOid == objectId)
 						objectType = " (Self)";
 //					str.Insert(0, pak.ToHumanReadableString(TimeSpan(0), true) + '\n');
-					regionGlobalCoords = new LocalCoords((pak as StoC_0x20_PlayerPositionAndObjectID).X, (pak as StoC_0x20_PlayerPositionAndObjectID).Y, (pak as StoC_0x20_PlayerPositionAndObjectID).Z);
+					if (regionGlobalCoords == null) // skip if gloc Jump
+						regionGlobalCoords = new LocalCoords((pak as StoC_0x20_PlayerPositionAndObjectID).X, (pak as StoC_0x20_PlayerPositionAndObjectID).Y, (pak as StoC_0x20_PlayerPositionAndObjectID).Z);
+					flagAllowGetFirstSelfCoords = false;
 					break;
+				}
+				else if (pak is StoC_0x04_CharacterJump)
+				{
+#warning TODO: Rewrite for find self Oid
+					if ((pak as StoC_0x04_CharacterJump).PlayerOid == selfId)
+					{
+						regionGlobalCoords = new LocalCoords((pak as StoC_0x04_CharacterJump).X, (pak as StoC_0x04_CharacterJump).Y, (pak as StoC_0x04_CharacterJump).Z);
+						flagAllowGetFirstSelfCoords = false;
+//						break;
+					}
 				}
 				else if (!fullInfoFound && pak is StoC_0xD4_PlayerCreate)
 				{
@@ -150,7 +166,7 @@ namespace PacketLogConverter.LogActions
 				{
 					if (!flagPacketMobCreate && (pak as StoC_0xDA_NpcCreate).Oid == objectId)
 					{
-						flagPacketMobCreate = false;
+						flagPacketMobCreate = true;
 						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 						objectType = " (NPC)";
 						if (lastObjectCoords == null)
@@ -158,19 +174,11 @@ namespace PacketLogConverter.LogActions
 //						fullInfoFound = true; // need find 0x20 for get gloc region
 					}
 				}
-				else if (!fullInfoFound && pak is StoC_0x6C_KeepComponentOverview)
-				{
-					if ((pak as StoC_0x6C_KeepComponentOverview).Uid == objectId)
-					{
-						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
-						objectType = " (KeepComponent)";
-						fullInfoFound = true;
-					}
-				}
 				else if (!fullInfoFound && pak is StoC_0xD9_ItemDoorCreate)
 				{
-					if ((pak as StoC_0xD9_ItemDoorCreate).Oid == objectId)
+					if (!flagPacketItem && (pak as StoC_0xD9_ItemDoorCreate).Oid == objectId)
 					{
+						flagPacketItem = true;
 						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 						if ((pak as StoC_0xD9_ItemDoorCreate).ExtraBytes == 4)
 							objectType = " (Door)";
@@ -271,15 +279,18 @@ namespace PacketLogConverter.LogActions
 				}
 				else if (pak is CtoS_0xA9_PlayerPosition)
 				{
-					if (firstSelfCoords == null)
+					if (flagAllowGetFirstSelfCoords)
 					{
-						firstSelfCoords = new LocalCoords((pak as CtoS_0xA9_PlayerPosition).CurrentZoneX, (pak as CtoS_0xA9_PlayerPosition).CurrentZoneY, (pak as CtoS_0xA9_PlayerPosition).CurrentZoneZ, 0xFFFF);
-					}
-					else
-					{
-						firstSelfCoords.CurrentZoneX = (pak as CtoS_0xA9_PlayerPosition).CurrentZoneX;
-						firstSelfCoords.CurrentZoneY = (pak as CtoS_0xA9_PlayerPosition).CurrentZoneY;
-						firstSelfCoords.CurrentZoneZ = (pak as CtoS_0xA9_PlayerPosition).CurrentZoneZ;
+						if (firstSelfCoords == null)
+						{
+							firstSelfCoords = new LocalCoords((pak as CtoS_0xA9_PlayerPosition).CurrentZoneX, (pak as CtoS_0xA9_PlayerPosition).CurrentZoneY, (pak as CtoS_0xA9_PlayerPosition).CurrentZoneZ, 0xFFFF);
+						}
+						else
+						{
+							firstSelfCoords.CurrentZoneX = (pak as CtoS_0xA9_PlayerPosition).CurrentZoneX;
+							firstSelfCoords.CurrentZoneY = (pak as CtoS_0xA9_PlayerPosition).CurrentZoneY;
+							firstSelfCoords.CurrentZoneZ = (pak as CtoS_0xA9_PlayerPosition).CurrentZoneZ;
+						}
 					}
 
 					if (lastSelfCoords == null)
@@ -287,40 +298,88 @@ namespace PacketLogConverter.LogActions
 						lastSelfCoords = pak as CtoS_0xA9_PlayerPosition;
 					}
 				}
+				else if (pak is StoC_0x69_KeepOverview)
+				{
+					if ((pak as StoC_0x69_KeepOverview).KeepId == keepId)
+					{
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
+						if (lastObjectCoords == null)
+							lastObjectCoords = new LocalCoords((pak as StoC_0x69_KeepOverview).KeepX, (pak as StoC_0x69_KeepOverview).KeepY);
+					}
+				}
+				else if (!fullInfoFound && pak is StoC_0x61_KeepRepair)
+				{
+					if ((pak as StoC_0x61_KeepRepair).KeepId == keepId)
+					{
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
+					}
+				}
+				else if (!fullInfoFound && pak is StoC_0x62_KeepClaim)
+				{
+					if ((pak as StoC_0x62_KeepClaim).KeepId == keepId)
+					{
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
+					}
+				}
+				else if (!fullInfoFound && pak is StoC_0x67_KeepUpdate)
+				{
+					if ((pak as StoC_0x67_KeepUpdate).KeepId == keepId)
+					{
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
+					}
+				}
+				else if (!fullInfoFound && pak is StoC_0x6C_KeepComponentOverview)
+				{
+					if ((pak as StoC_0x6C_KeepComponentOverview).Uid == objectId)
+					{
+						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
+						objectType = " (KeepComponent)";
+						fullInfoFound = true;
+					}
+				}
 				// if we found object creation packets and both coords (self and object) then break;
 				// if we found object creation packets but not find any coords break after maxPacketsLookBackForGetCoords look back
 				if (fullInfoFound && ((lastObjectCoords != null && lastSelfCoords != null) || maxPacketsLookBackForGetCoords <= 0))
 					break;
 			}
-			if (!fullInfoFound)
-				str.Insert(0, "No more info found\n");
+//			if (!fullInfoFound)
+//				str.Insert(0, "No more info found\n");
 			// TODO add zone checks... (mb recalc in global coords if zones is different ?)
 			if (lastSelfCoords != null && lastObjectCoords != null && lastSelfCoords.CurrentZoneId == lastObjectCoords.CurrentZoneId)
 			{
-				int xdiff = lastSelfCoords.CurrentZoneX - lastObjectCoords.CurrentZoneX;
-				int ydiff = lastSelfCoords.CurrentZoneY - lastObjectCoords.CurrentZoneY;
-				int zdiff = lastSelfCoords.CurrentZoneZ - lastObjectCoords.CurrentZoneZ;
+				long xdiff = (long)lastSelfCoords.CurrentZoneX - lastObjectCoords.CurrentZoneX;
+				long ydiff = (long)lastSelfCoords.CurrentZoneY - lastObjectCoords.CurrentZoneY;
+				long zdiff = (long)lastSelfCoords.CurrentZoneZ - lastObjectCoords.CurrentZoneZ;
 				int range = (int)Math.Sqrt(xdiff * xdiff + ydiff * ydiff + zdiff * zdiff);
-				str.Insert(0, string.Format("range from you:{0} (loc)\n", range));
+				str.Insert(0, string.Format("range from you:{0} (loc/loc)\n", range));
 			}
 			else if (lastSelfCoords != null && lastObjectCoords != null && lastObjectCoords.CurrentZoneId == 0xFFFF && regionGlobalCoords != null && firstSelfCoords != null) /* gloc Object */
 			{
-				int xdiff = regionGlobalCoords.CurrentZoneX - firstSelfCoords.CurrentZoneX + lastSelfCoords.CurrentZoneX - lastObjectCoords.CurrentZoneX;
-				int ydiff = regionGlobalCoords.CurrentZoneY - firstSelfCoords.CurrentZoneY + lastSelfCoords.CurrentZoneY - lastObjectCoords.CurrentZoneY;
-				int zdiff = lastSelfCoords.CurrentZoneZ - lastObjectCoords.CurrentZoneZ;
+				long xdiff = (long)regionGlobalCoords.CurrentZoneX - firstSelfCoords.CurrentZoneX + lastSelfCoords.CurrentZoneX - lastObjectCoords.CurrentZoneX;
+				long ydiff = (long)regionGlobalCoords.CurrentZoneY - firstSelfCoords.CurrentZoneY + lastSelfCoords.CurrentZoneY - lastObjectCoords.CurrentZoneY;
+				long zdiff = 0;
+				if (lastObjectCoords.CurrentZoneZ != 0xFFFF)
+				{
+					zdiff = (long)lastSelfCoords.CurrentZoneZ - lastObjectCoords.CurrentZoneZ;
+				}
 				int range = (int)Math.Sqrt(xdiff * xdiff + ydiff * ydiff + zdiff * zdiff);
-				str.Insert(0, string.Format("range from you:{0} (gloc)\n", range));
-//				str.Insert(0, string.Format("Your gloc:(x:{0} y:{1})\n", regionGlobalCoords.CurrentZoneX - firstSelfCoords.CurrentZoneX + lastSelfCoords.CurrentZoneX, regionGlobalCoords.CurrentZoneY - firstSelfCoords.CurrentZoneY + lastSelfCoords.CurrentZoneY));
+				str.Insert(0, string.Format("range from you:{0} (loc/gloc)\n", range));
+				str.Insert(0, string.Format("Your gloc:(x:{0} y:{1})\n", regionGlobalCoords.CurrentZoneX - firstSelfCoords.CurrentZoneX + lastSelfCoords.CurrentZoneX, regionGlobalCoords.CurrentZoneY - firstSelfCoords.CurrentZoneY + lastSelfCoords.CurrentZoneY));
 			}
 			else if (regionGlobalCoords != null && lastObjectCoords != null && lastObjectCoords.CurrentZoneId == 0xFFFF) /* gloc Object */
 			{
-				int xdiff = regionGlobalCoords.CurrentZoneX - lastObjectCoords.CurrentZoneX;
-				int ydiff = regionGlobalCoords.CurrentZoneY - lastObjectCoords.CurrentZoneY;
-				int zdiff = regionGlobalCoords.CurrentZoneZ - lastObjectCoords.CurrentZoneZ;
+				long xdiff = (long)regionGlobalCoords.CurrentZoneX - lastObjectCoords.CurrentZoneX;
+				long ydiff = (long)regionGlobalCoords.CurrentZoneY - lastObjectCoords.CurrentZoneY;
+				long zdiff = 0;
+				if (lastObjectCoords.CurrentZoneZ != 0xFFFF)
+				{
+					zdiff = (long)regionGlobalCoords.CurrentZoneZ - lastObjectCoords.CurrentZoneZ;
+				}
 				int range = (int)Math.Sqrt(xdiff * xdiff + ydiff * ydiff + zdiff * zdiff);
-				str.Insert(0, string.Format("range from you:{0} (gloc)\n", range));
+				str.Insert(0, string.Format("range from you:{0} (gloc/gloc)\n", range));
 			}
-			str.Insert(0, string.Format("\nobjectId:0x{0:X4}{1}\n", objectId, objectType));
+			if (objectId != 0xFFFF)
+				str.Insert(0, string.Format("\nobjectId:0x{0:X4}{1}\n", objectId, objectType));
 			return str.ToString();
 		}
 
@@ -342,7 +401,7 @@ namespace PacketLogConverter.LogActions
 					if ((pak as StoC_0xD4_PlayerCreate).SessionId == sessionId)
 					{
 						fullInfoFound = true;
-						str.Append(MakeOidInfo(log, selectedIndex, (pak as StoC_0xD4_PlayerCreate).Oid, sessionId));
+						str.Append(MakeOidInfo(log, selectedIndex, (pak as StoC_0xD4_PlayerCreate).Oid, sessionId, 0));
 						break;
 					}
 				}
@@ -351,7 +410,7 @@ namespace PacketLogConverter.LogActions
 					if ((pak as StoC_0x4B_PlayerCreate_172).SessionId == sessionId)
 					{
 						fullInfoFound = true;
-						str.Append(MakeOidInfo(log, selectedIndex, (pak as StoC_0x4B_PlayerCreate_172).Oid, sessionId));
+						str.Append(MakeOidInfo(log, selectedIndex, (pak as StoC_0x4B_PlayerCreate_172).Oid, sessionId, 0));
 						break;
 					}
 				}
@@ -475,6 +534,13 @@ namespace PacketLogConverter.LogActions
 				CurrentZoneX = (int)x;
 				CurrentZoneY = (int)y;
 				CurrentZoneZ = z;
+				CurrentZoneId = 0xFFFF;
+			}
+			public LocalCoords(uint x, uint y)
+			{
+				CurrentZoneX = (int)x;
+				CurrentZoneY = (int)y;
+				CurrentZoneZ = 0xFFFF;
 				CurrentZoneId = 0xFFFF;
 			}
 		}

@@ -8,17 +8,23 @@ namespace PacketLogConverter.LogActions
 	/// Show the raw packet data
 	/// </summary>
 	[LogAction("Show prev same packet", Priority=500)]
-	public class ShowPrevSamePacket : AbstractEnabledAction
+	public class ShowPrevSamePacket : ILogAction
 	{
+		public bool IsEnabled(IExecutionContext context, PacketLocation selectedPacket)
+		{
+			if (context.LogManager.GetPacket(selectedPacket) == null)
+				return false;
+			return true;
+		}
 		/// <summary>
 		/// Activates a log action.
 		/// </summary>
 		/// <param name="context">The context.</param>
 		/// <param name="selectedPacket">The selected packet.</param>
 		/// <returns><c>true</c> if log data tab should be updated.</returns>
-		public override bool Activate(IExecutionContext context, PacketLocation selectedPacket)
+		public bool Activate(IExecutionContext context, PacketLocation selectedPacket)
 		{
-			PacketLog log = context.LogManager.Logs[selectedPacket.LogIndex];
+			PacketLog log = context.LogManager.GetPacketLog(selectedPacket.LogIndex);
 			int selectedIndex = selectedPacket.PacketIndex;
 
 			Packet originalPak = log[selectedIndex];

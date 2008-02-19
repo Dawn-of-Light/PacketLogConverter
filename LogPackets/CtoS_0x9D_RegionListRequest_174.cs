@@ -10,6 +10,8 @@ namespace PacketLogConverter.LogPackets
 		protected byte classId;
 		protected byte expantions;
 
+		public byte ClassId { get { return classId; } }
+
 		public enum eExpantions: byte
 		{
 			Tutorial = 0x04,

@@ -19,7 +19,7 @@ namespace PacketLogConverter.LogPackets
 		protected string name;
 		protected byte extraBytes;
 		protected uint internalId;
-		protected byte flagOnShipHookPoint;
+		protected bool flagOnShipHookPoint = false;
 
 		/// <summary>
 		/// Gets the object ids of the packet.
@@ -29,7 +29,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			get
 			{
-				if (flagOnShipHookPoint == 1)
+				if (flagOnShipHookPoint)
 					return new ushort[] { oid, (ushort)x };// x = moving object oid, y = hookpoint
 				else
 					return new ushort[] { oid };
@@ -50,7 +50,6 @@ namespace PacketLogConverter.LogPackets
 		public string Name { get { return name; } }
 		public byte ExtraBytes { get { return extraBytes; } }
 		public uint InternalId { get { return internalId; } }
-		public byte FlagOnShipHookPoint { get { return flagOnShipHookPoint; } }
 
 		#endregion
 
@@ -80,7 +79,7 @@ namespace PacketLogConverter.LogPackets
 			}
 			if (extraBytes == 4)
 			{
-				text.Write(" doorId:0x{0:X4}", internalId);
+				text.Write(" doorId:0x{0:X8}", internalId);
 				if (flagsDescription)
 				{
 					uint doorType = internalId / 100000000;
@@ -136,11 +135,10 @@ namespace PacketLogConverter.LogPackets
 			flags = ReadByte();
 			name = ReadPascalString();
 			extraBytes = ReadByte();
-			if ((flags & 0x40) == 0x40)
-				flagOnShipHookPoint = 1;
-
 			if (extraBytes == 4)
 				internalId = ReadInt();
+			if ((flags & 0x40) == 0x40)// x = moving object oid, y = hookpoint
+				flagOnShipHookPoint = true;
 			else if (extraBytes != 0)
 				throw new Exception("unknown extra bytes count.");
 		}

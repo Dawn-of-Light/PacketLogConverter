@@ -64,6 +64,7 @@ namespace PacketLogConverter.LogPackets
 		public byte AutoWrapText { get { return autoWrapText; } }
 		public ASubData SubData { get { return subData; } }
 
+		public DialogUpdate InDialogUpdate { get { return subData as DialogUpdate; } }
 		#endregion
 
 		public enum eDialogCode: byte
