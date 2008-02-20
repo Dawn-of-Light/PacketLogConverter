@@ -151,6 +151,7 @@
     <Compile Include="LogActions\ShowPlayerInfoAction.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogActions\ShowPlayerInventory.cs" />
     <Compile Include="LogActions\ShowPlayerWeapon.cs" />
     <Compile Include="LogActions\ShowPrevSamePacket.cs" />
     <Compile Include="LogActions\ShowRawData.cs">
