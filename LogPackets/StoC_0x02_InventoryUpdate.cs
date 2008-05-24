@@ -181,7 +181,7 @@ namespace PacketLogConverter.LogPackets
 			}
 		}
 
-		public struct Item
+		public class Item
 		{
 			public byte slot;
 			public byte level;

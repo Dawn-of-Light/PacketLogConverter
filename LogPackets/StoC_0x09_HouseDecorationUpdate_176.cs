@@ -57,6 +57,11 @@ namespace PacketLogConverter.LogPackets
 						furniture.size = ReadByte();
 					furniture.surface = ReadByte();
 					furniture.place = ReadByte();
+					if (furniture.model == 0 && furniture.type == 0) // Remove
+					{
+						furniture.flagRemove = true;
+						Skip(4);
+					}
 				}
 				else
 				{

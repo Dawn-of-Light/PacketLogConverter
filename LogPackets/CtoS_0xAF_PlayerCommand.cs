@@ -11,6 +11,7 @@ namespace PacketLogConverter.LogPackets
 		protected ushort unk2;
 		protected ushort unk3;
 		protected string command;
+		protected short flag;
 
 		#region public access properties
 
@@ -19,12 +20,18 @@ namespace PacketLogConverter.LogPackets
 		public ushort Unk2 { get { return unk2; } }
 		public ushort Unk3 { get { return unk3; } }
 		public string Command { get { return command; } }
+		public short Flag { get { return flag; } }
 
 		#endregion
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("sid:0x{0:X4} \"{1}\" unk1:0x{2:X4} unk2:0x{3:X4} unk3:0x{4:X4}", sessionId, command, unk1, unk2, unk3);
+			text.Write("sid:0x{0:X4}", sessionId);
+			if (flagsDescription)
+				text.Write(" unk1:0x{0:X4} unk2:0x{1:X4} unk3:0x{2:X4}", unk1, unk2, unk3);
+			text.Write(" \"{0}\"", command);
+			if (flagsDescription && (flag >= 0))
+				text.Write(" flag:0x{0:X2}", flag);
 		}
 
 		/// <summary>
@@ -33,12 +40,16 @@ namespace PacketLogConverter.LogPackets
 		public override void Init()
 		{
 			Position = 0;
+			flag = -1;
 
 			sessionId = ReadShort();
 			unk1 = ReadShort();
 			unk2 = ReadShort();
 			unk3 = ReadShort();
-			command = ReadString(255);
+//			command = ReadString(255);
+			command = ReadString();
+			if (Position < Length)
+				flag = ReadByte();
 		}
 
 		/// <summary>

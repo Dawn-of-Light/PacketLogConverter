@@ -10,21 +10,21 @@ namespace PacketLogConverter.LogPackets
 		protected uint playerX;
 		protected uint playerY;
 		protected ushort sessionId;
-		protected ushort unk1;
+		protected ushort flag; // MUST be '1'
 
 		#region public access properties
 
 		public uint PlayerX { get { return playerX; } }
 		public uint PlayerY { get { return playerY; } }
 		public ushort SessionId { get { return sessionId; } }
-		public ushort Unk1 { get { return unk1; } }
+		public ushort Flag { get { return flag; } }
 
 		#endregion
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("sessionId:0x{0:X4} playerX:{1,-6} playerY:{2,-6} unk1:{3:X4}",
-					sessionId, playerX, playerY, unk1);
+			text.Write("sessionId:0x{0:X4} playerX:{1,-6} playerY:{2,-6} flag:{3:X4}",
+					sessionId, playerX, playerY, flag);
 		}
 
 		/// <summary>
@@ -37,7 +37,7 @@ namespace PacketLogConverter.LogPackets
 			playerX = ReadInt();
 			playerY = ReadInt();
 			sessionId = ReadShort();
-			unk1 = ReadShort();
+			flag = ReadShort();
 		}
 
 		/// <summary>

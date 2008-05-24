@@ -182,30 +182,30 @@ namespace PacketLogConverter.LogWriters
 								styleIcons.Clear();
 								if (log.Version < 186)
 								{
-									styleIcons.Add((ushort) 0x01F4, "Bow prepare");
-									styleIcons.Add((ushort) 0x01F5, "Lefthand hit");
-									styleIcons.Add((ushort) 0x01F6, "Bothhands hit");
-									styleIcons.Add((ushort) 0x01F7, "Bow shoot");
+									styleIcons.Add((ushort)0x01F4, "Bow prepare");
+									styleIcons.Add((ushort)0x01F5, "Lefthand hit");
+									styleIcons.Add((ushort)0x01F6, "Bothhands hit");
+									styleIcons.Add((ushort)0x01F7, "Bow shoot");
 //									styleIcons.Add((ushort)0x01F9, "Volley aim ?");
 //									styleIcons.Add((ushort)0x01FA, "Volley ready ?");
 //									styleIcons.Add((ushort)0x01FB, "Volley shoot ?");
 								}
 								else
 								{
-									styleIcons.Add((ushort) 0x3E80, "Bow prepare");
-									styleIcons.Add((ushort) 0x3E81, "Lefthand hit");
-									styleIcons.Add((ushort) 0x3E82, "Bothhands hit");
-									styleIcons.Add((ushort) 0x3E83, "Bow shoot");
-//									styleIcons.Add(0x3E85, "Volley aim ?");
-//									styleIcons.Add(0x3E86, "Volley ready ?");
-//									styleIcons.Add(0x3E87, "Volley shoot ?");
+									styleIcons.Add((ushort)0x3E80, "Bow prepare");
+									styleIcons.Add((ushort)0x3E81, "Lefthand hit");
+									styleIcons.Add((ushort)0x3E82, "Bothhands hit");
+									styleIcons.Add((ushort)0x3E83, "Bow shoot");
+//									styleIcons.Add((ushort)0x3E85, "Volley aim ?");
+//									styleIcons.Add((ushort)0x3E86, "Volley ready ?");
+//									styleIcons.Add((ushort)0x3E87, "Volley shoot ?");
 								}
 								foreach (StoC_0x16_VariousUpdate.Skill skill in subData.data)
 								{
 									if (skill.page == StoC_0x16_VariousUpdate.eSkillPage.Styles)
 									{
 										styleIcons[skill.icon] = skill.name;
-										//									s.WriteLine("{0, -16} 0x16:1 icon:0x{1:X4} name:{2}", pak.Time.ToString(), skill.icon, styleIcons[skill.icon]);
+//										s.WriteLine("{0, -16} 0x16:1 icon:0x{1:X4} name:{2}", pak.Time.ToString(), skill.icon, styleIcons[skill.icon]);
 									}
 								}
 /* 								foreach (DictionaryEntry entry in styleIcons)

@@ -73,12 +73,12 @@ namespace PacketLogConverter.LogPackets
 		#endregion
 		#region Filter Helpers
 		
-		public SkillsUpdate			InSkillsUpdate			{ get { return subData as SkillsUpdate; } }
-		public SpellsListUpdate		InSpellsListUpdate		{ get { return subData as SpellsListUpdate; } }
-		public PlayerUpdate			InPlayerUpdate			{ get { return subData as PlayerUpdate; } }
-		public PlayerStateUpdate	InPlayerStateUpdate		{ get { return subData as PlayerStateUpdate; } }
-		public PlayerGroupUpdate	InPlayerGroupUpdate		{ get { return subData as PlayerGroupUpdate; } }
-		public CraftingSkillsUpdate	InCraftingSkillsUpdate	{ get { return subData as CraftingSkillsUpdate; } }
+		public SkillsUpdate         InSkillsUpdate         { get { return subData as SkillsUpdate; } }
+		public SpellsListUpdate     InSpellsListUpdate     { get { return subData as SpellsListUpdate; } }
+		public PlayerUpdate         InPlayerUpdate         { get { return subData as PlayerUpdate; } }
+		public PlayerStateUpdate    InPlayerStateUpdate    { get { return subData as PlayerStateUpdate; } }
+		public PlayerGroupUpdate    InPlayerGroupUpdate    { get { return subData as PlayerGroupUpdate; } }
+		public CraftingSkillsUpdate InCraftingSkillsUpdate { get { return subData as CraftingSkillsUpdate; } }
 		
 		#endregion
 
@@ -177,14 +177,19 @@ namespace PacketLogConverter.LogPackets
 				int index = -1;
 				foreach (Skill skill in data)
 				{
-					text.Write("\n\t");
+					text.Write("\n");
+					text.Write("\t");
 					if (flagsDescription)
 					{
+//						if (skill.page == eSkillPage.Styles && skill.stlOpen >= 0x6400) // 0x6400 = 100 << 8
+//						{
+//							text.Write("*({0,-2})", (skill.stlOpen >> 8) - 100);
+//						}
 					 	if((int)skill.page > 0)
 							index++;
 						text.Write("[{0,-2}] ", index);
 					}
-					text.Write("level:{0,-2} type:{1}({2,-14}) stlOpen:0x{3:X4} bonus:{4,-2} icon:0x{5:X4} name:\"{6}\"",
+					text.Write("level:{0,-2} type:{1}({2,-14}) stlOpen:0x{3:X4} bonus:{4,-3} icon:0x{5:X4} name:\"{6}\"",
 						skill.level, (int)skill.page, skill.page.ToString().ToLower(), skill.stlOpen, skill.bonus, skill.icon, skill.name);
 				}
 			}

@@ -147,15 +147,16 @@ namespace PacketLogConverter.LogActions
 					}
 				}
 			}
-
 			if (searchInSpellEffects)
 			{
-				bool effectFound = false;
+				bool spellEffectFound = false;
+				bool concEffectFound = false;
 				for (int i = selectedIndex; i < log.Count ; i++)
 				{
 					Packet pak = log[i];
 					if (pak is StoC_0x7F_UpdateIcons)
 					{
+						if (spellEffectFound) continue;
 						StoC_0x7F_UpdateIcons effectsPak = (pak as StoC_0x7F_UpdateIcons);
 						if (effectsPak != null)
 						{
@@ -169,12 +170,38 @@ namespace PacketLogConverter.LogActions
 									str.Append('\n');
 									spellIcon = effect.icon;
 									additionStringCount += (2 + effectsPak.EffectsCount);
-									effectFound = true;
+									spellEffectFound = true;
 									break;
 								}
 							}
-							if (effectFound)
+							if (spellEffectFound && concEffectFound)
 								break;
+						}
+					}
+					else if (pak is StoC_0x75_SetConcentrationList)
+					{
+						if (concEffectFound) continue;
+						if (spellIcon != 0xFFFF)
+						{
+							StoC_0x75_SetConcentrationList concPak = (pak as StoC_0x75_SetConcentrationList);
+							if (concPak != null)
+							{
+								for (int j = 0; j < concPak.EffectsCount; j++)
+								{
+									if (concPak.Effects[j].icon == spellIcon)
+									{
+//										if (concPak.Effects[j].effectName.Substring(10) != spellName.Substring(10)) continue;
+										StoC_0x75_SetConcentrationList.ConcentrationEffect effect = concPak.Effects[j];
+										str.AppendFormat("\nCONC index:{0,-2} conc:{1,-2} icon:0x{2:X4} ownerName:\"{3}\" effectName:\"{4}\"", effect.index, effect.concentration, effect.icon, effect.ownerName, effect.effectName);
+										str.Append('\n');
+										additionStringCount += (2 + concPak.EffectsCount);
+										concEffectFound = true;
+										break;
+									}
+								}
+								if (/*spellEffectFound && */concEffectFound) // conc packet always after effect packet, so we can break on conc packet
+									break;
+							}
 						}
 					}
 				}

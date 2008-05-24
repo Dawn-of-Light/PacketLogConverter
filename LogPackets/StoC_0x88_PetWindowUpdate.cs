@@ -95,14 +95,14 @@ namespace PacketLogConverter.LogPackets
 
 			if (petEffects.Length > 0)
 			{
-				text.Write(" pet effects:(");
+				text.Write(")");
+				text.Write("\n\tpet effects:(");
 				for (int i = 0; i < petEffects.Length; i++)
 				{
 					if (i > 0)
 						text.Write(',');
 					text.Write("0x{0:X4}", petEffects[i]);
 				}
-				text.Write(")");
 			}
 
 		}

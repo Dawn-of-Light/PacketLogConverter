@@ -14,9 +14,7 @@ namespace PacketLogConverter.LogPackets
 		protected byte currency;
 		protected byte unk3;
 		protected ushort unk4;
-		protected byte type; // 00 - buy item from store, 01-choose shippoint, 02-choose shopShipPoint
-		protected byte unk5;
-		protected ushort unk6;
+		protected uint type; // 00 - buy item from store, 01-choose shippoint, 02-choose shopShipPoint
 
 		/// <summary>
 		/// Gets the object ids of the packet.
@@ -27,7 +25,7 @@ namespace PacketLogConverter.LogPackets
 			get { return new ushort[] { objectOid }; }
 		}
 
-		public enum eType: byte
+		public enum eType: uint
 		{
 			SwitchToSeat = 1,
 			ShipStore = 2,
@@ -39,14 +37,14 @@ namespace PacketLogConverter.LogPackets
 		public byte Slot { get { return slot; } }
 		public byte Flag { get { return flag; } }
 		public byte Currency { get { return currency; } }
-		public byte Type { get { return type; } }
+		public uint Type { get { return type; } }
 
 		#endregion
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("unk1:0x{0:X4} objectOid:0x{1:X4} unk2:0x{2:X4} slot:{3,-2} flag:{4} currency:{5} unk3:0x{6:X2} unk4:0x{7:X4} type:{8}{11} unk5:0x{9:X2} unk6:0x{10:X4}",
-				unk1, objectOid, unk2, slot, flag, currency, unk3, unk4, type, unk5, unk6, flagsDescription ? "(" + (eType)type + ")" : "");
+			text.Write("unk1:0x{0:X4} objectOid:0x{1:X4} unk2:0x{2:X4} slot:{3,-2} flag:{4} currency:{5} unk3:0x{6:X2} unk4:0x{7:X4} type:{8}{9}",
+				unk1, objectOid, unk2, slot, flag, currency, unk3, unk4, type, flagsDescription ? "(" + (eType)type + ")" : "");
 		}
 
 		/// <summary>
@@ -63,9 +61,9 @@ namespace PacketLogConverter.LogPackets
 			currency = ReadByte();
 			unk3 = ReadByte();
 			unk4 = ReadShort();
-			type = ReadByte();
-			unk5 = ReadByte();
-			unk6 = ReadShort();
+			type = ReadIntLowEndian();
+//			unk5 = ReadByte();
+//			unk6 = ReadShort();
 		}
 
 		/// <summary>

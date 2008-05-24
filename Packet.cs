@@ -49,7 +49,6 @@ namespace PacketLogConverter
 		private bool               m_initialized;
 		private bool               m_allowClassChange = true;
 		private long               m_positionAfterInit;
-		private int                m_logTextIndex = -1;
 		private Exception          m_initException;
 
 		public Packet(int capacity) : base(capacity)
@@ -102,12 +101,6 @@ namespace PacketLogConverter
 		{
 			get { return m_positionAfterInit; }
 			set { m_positionAfterInit = value; }
-		}
-
-		public int LogTextIndex
-		{
-			get { return m_logTextIndex; }
-			set { m_logTextIndex = value; }
 		}
 
 		public Exception InitException
@@ -374,11 +367,12 @@ namespace PacketLogConverter
 			{
 				text.Write("PACKET NOT INITIALIZED. Most likely errors during Init(). ");
 				text.Write(this.GetType().Name);
-				text.Write('\n');
+				text.WriteLine();
 				if (InitException != null)
 				{
+					// Replace new line in exceptions with correct new line chars
 					text.Write(InitException.ToString());
-					text.Write('\n');
+					text.WriteLine();
 				}
 			}
 			try

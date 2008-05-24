@@ -15,12 +15,12 @@ namespace PacketLogConverter.LogActions
 
 		private enum eWindowType: byte
 		{
-	        Unknown = 0,
-	        Horse = 1,
-    	    Weapon = 2,
-    	    Quiver = 3,
-    	    Doll = 4,
-    	    Backpack = 5,
+			Unknown = 0,
+			Horse = 1,
+			Weapon = 2,
+			Quiver = 3,
+			Doll = 4,
+			Backpack = 5,
 		}
 		/// <summary>
 		/// Activates a log action.

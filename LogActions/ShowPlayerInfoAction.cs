@@ -259,6 +259,8 @@ namespace PacketLogConverter.LogActions
 				else if (pak is StoC_0x04_CharacterJump)
 				{
 					StoC_0x04_CharacterJump plrJump = (StoC_0x04_CharacterJump)pak;
+					if (plrJump.X == 0 && plrJump.Y == 0 && plrJump.Z == 0) // skip /faceloc
+						continue;
 					objectId = plrJump.PlayerOid;
 					glocX = (int)plrJump.X;
 					glocY = (int)plrJump.Y;

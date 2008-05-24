@@ -5,7 +5,7 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x83, -1, ePacketDirection.ServerToClient, "Quest update")]
 	public class StoC_0x83_QuestUpdate: Packet
 	{
-		public byte subCode;
+		protected byte subCode;
 		protected ASubData subData;
 
 		#region public access properties

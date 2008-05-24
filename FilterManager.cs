@@ -263,6 +263,11 @@ namespace PacketLogConverter
 		/// <param name="path">The path.</param>
 		public void SaveFilters(string path)
 		{
+/*			using (TextWriter writer = new StreamWriter("test.xml"))
+			{
+				System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(this.GetType());
+				x.Serialize(writer, this);
+			}*/
 			using (FilterWriter writer = new FilterWriter(path))
 			{
 				try

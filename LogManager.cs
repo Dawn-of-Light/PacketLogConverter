@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using PacketLogConverter.Utils;
 
 namespace PacketLogConverter
 {
@@ -14,6 +15,7 @@ namespace PacketLogConverter
 		public event LogManagerUpdate OnPacketLogsChanged;
 
 		private IList<PacketLog> m_logs = new List<PacketLog>(0).AsReadOnly();
+		private readonly PacketTextLocationManager m_packetTextLocations = new PacketTextLocationManager();
 
 		/// <summary>
 		/// Gets the logs.
@@ -37,6 +39,9 @@ namespace PacketLogConverter
 
 			// Fire event
 			FirePacketLogsChangedEvent();
+
+			// Add packets change event handler
+			packetLog.OnPacketsChanged += packetLog_OnPacketsChanged;
 		}
 
 		/// <summary>
@@ -52,6 +57,12 @@ namespace PacketLogConverter
 
 			// Fire event
 			FirePacketLogsChangedEvent();
+
+			// Add packets change event handler
+			foreach (PacketLog log in packetLogs)
+			{
+				log.OnPacketsChanged += packetLog_OnPacketsChanged;
+			}
 		}
 
 		/// <summary>
@@ -74,6 +85,8 @@ namespace PacketLogConverter
 		/// </summary>
 		private void FirePacketLogsChangedEvent()
 		{
+			OnPacketsCountChange();
+
 			LogManagerUpdate evnt = OnPacketLogsChanged;
 			if (evnt != null)
 			{
@@ -101,29 +114,6 @@ namespace PacketLogConverter
 		}
 
 		/// <summary>
-		/// Gets the index of the packet index by text.
-		/// </summary>
-		/// <param name="textIndex">Index of the text.</param>
-		public PacketLocation GetPacketIndexByTextIndex(int textIndex)
-		{
-			PacketLocation ret = PacketLocation.UNKNOWN;
-
-			int currentLogIndex = 0;
-			foreach (PacketLog log in m_logs)
-			{
-				int index = log.GetPacketIndexByTextIndex(textIndex);
-				if (index >= 0)
-				{
-					ret.LogIndex = currentLogIndex;
-					ret.PacketIndex = index;
-				}
-				currentLogIndex++;
-			}
-
-			return ret;
-		}
-
-		/// <summary>
 		/// Initializes all the logs.
 		/// </summary>
 		/// <param name="depth">The depth.</param>
@@ -146,6 +136,12 @@ namespace PacketLogConverter
 		/// </summary>
 		public void ClearLogs()
 		{
+			// Remove event handlers from logs
+			foreach (PacketLog log in m_logs)
+			{
+				log.OnPacketsChanged -= packetLog_OnPacketsChanged;
+			}
+
 			m_logs = new List<PacketLog>(0).AsReadOnly();
 
 			FirePacketLogsChangedEvent();
@@ -200,5 +196,66 @@ namespace PacketLogConverter
 
 			return ret;
 		}
+
+		#region PacketTextLocation
+
+		/// <summary>
+		/// Packets the log_ on packets changed.
+		/// </summary>
+		/// <param name="logManager">The log manager.</param>
+		void packetLog_OnPacketsChanged(PacketLog logManager)
+		{
+			OnPacketsCountChange();
+		}
+
+		/// <summary>
+		/// Called when count of packets changes.
+		/// </summary>
+		private void OnPacketsCountChange()
+		{
+			int newPacketsCount = CountPackets();
+			m_packetTextLocations.Capacity = newPacketsCount;
+		}
+
+		/// <summary>
+		/// Sets the visible packets count.
+		/// </summary>
+		/// <param name="newCount">The new count.</param>
+		public void SetVisiblePacketsCount(int newCount)
+		{
+			m_packetTextLocations.VisiblePacketsCount = newCount;
+		}
+
+		/// <summary>
+		/// Sets the visible packet.
+		/// </summary>
+		/// <param name="index">The index.</param>
+		/// <param name="packetInfo">The packet info.</param>
+		public void SetVisiblePacket(int index, PacketInfo packetInfo)
+		{
+			m_packetTextLocations.SetVisiblePacket(index, packetInfo);
+		}
+
+		/// <summary>
+		/// Finds the text index by packet.
+		/// </summary>
+		/// <param name="packet">The packet.</param>
+		/// <returns></returns>
+		public int FindTextIndexByPacket(Packet packet)
+		{
+			return m_packetTextLocations.FindTextIndexByPacket(packet);
+		}
+		/// <summary>
+		/// Finds the index of the packet by text.
+		/// </summary>
+		/// <param name="textIndex">Index of the text.</param>
+		/// <returns>Found <see cref="PacketInfo"/> or <see cref="PacketInfo.UNKNOWN"/>.</returns>
+		public PacketInfo FindPacketInfoByTextIndex(int textIndex)
+		{
+			return m_packetTextLocations.FindPacketInfoByTextIndex(textIndex);
+		}
+
+		#endregion
+
 	}
 }

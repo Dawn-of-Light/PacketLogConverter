@@ -455,7 +455,7 @@ namespace PacketLogConverter.LogPackets
 			public override void Init(StoC_0x4C_VisualEffect pak)
 			{
 				flag = pak.ReadByte();
-				effect = pak.ReadInt();
+				effect = pak.ReadInt(); // from moneffectsets.csv
 			}
 
 			public override void MakeString(TextWriter text, bool flagsDescription)

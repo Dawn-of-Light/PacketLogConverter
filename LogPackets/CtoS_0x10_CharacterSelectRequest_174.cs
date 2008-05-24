@@ -23,7 +23,6 @@ namespace PacketLogConverter.LogPackets
 			text.Write(serverId.ToString("X2"));
 			text.Write(temp);
 			text.Write(" ");
-//			((Packet) this).GetPacketDataString(text, flagsDescription); // this crash program
 			base.GetPacketDataString(text, flagsDescription);
 		}
 

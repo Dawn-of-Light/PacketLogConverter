@@ -53,7 +53,7 @@ namespace PacketLogConverter
 			// progressBar
 			// 
 			this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.progressBar.Location = new System.Drawing.Point(8, 32);
+			this.progressBar.Location = new System.Drawing.Point(8, 48);
 			this.progressBar.Name = "progressBar";
 			this.progressBar.Size = new System.Drawing.Size(376, 23);
 			this.progressBar.TabIndex = 0;
@@ -61,7 +61,7 @@ namespace PacketLogConverter
 			// workProgressLabel
 			// 
 			this.workProgressLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.workProgressLabel.Location = new System.Drawing.Point(392, 32);
+			this.workProgressLabel.Location = new System.Drawing.Point(392, 48);
 			this.workProgressLabel.Name = "workProgressLabel";
 			this.workProgressLabel.Size = new System.Drawing.Size(120, 23);
 			this.workProgressLabel.TabIndex = 2;
@@ -71,14 +71,14 @@ namespace PacketLogConverter
 			// 
 			this.descriptionLabel.Location = new System.Drawing.Point(8, 8);
 			this.descriptionLabel.Name = "descriptionLabel";
-			this.descriptionLabel.Size = new System.Drawing.Size(504, 16);
+			this.descriptionLabel.Size = new System.Drawing.Size(504, 37);
 			this.descriptionLabel.TabIndex = 3;
 			this.descriptionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// ProgressForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(522, 63);
+			this.ClientSize = new System.Drawing.Size(522, 79);
 			this.ControlBox = false;
 			this.Controls.Add(this.descriptionLabel);
 			this.Controls.Add(this.workProgressLabel);

@@ -1,16 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace PacketLogConverter
 {
+	public delegate void PacketLogUpdate(PacketLog logManager);
+
 	/// <summary>
 	/// Holds all the log data and all information about it
 	/// </summary>
 	public class PacketLog : IEnumerable<Packet>, IIndexedContainer<Packet>
 	{
 		private bool m_isDirty = true;
+		private string m_streamName = string.Empty;
+		private int m_unknownPacketsCount;
+		private float m_version;
+		private bool m_reinitRequired;
+		private bool m_ignoreVersionChanges;
+		private bool m_subversionReinit = false;
+
+		private readonly List<Packet> m_packets = new List<Packet>();
+
+		public event PacketLogUpdate OnPacketsChanged;
 
 		public bool IsDirty
 		{
@@ -18,54 +29,82 @@ namespace PacketLogConverter
 			set { m_isDirty = value; }
 		}
 
-		private string m_streamName = string.Empty;
-
 		public string StreamName
 		{
 			get { return m_streamName; }
 			set { m_streamName = value; }
 		}
 
-		private List<Packet> m_packets = new List<Packet>();
-
+		/// <summary>
+		/// Gets the <see cref="T:Packet"/> at the specified index.
+		/// </summary>
+		/// <value></value>
 		public Packet this[int index]
 		{
 			get { return m_packets[index]; }
 		}
 
+		/// <summary>
+		/// Adds the packet.
+		/// </summary>
+		/// <param name="pak">The pak.</param>
 		public void AddPacket(Packet pak)
 		{
 			if (pak == null)
 				throw new ArgumentNullException("pak");
 			m_packets.Add(pak);
+
+			FirePacketLogsChangedEvent();
 		}
 
+		/// <summary>
+		/// Inserts the packet.
+		/// </summary>
+		/// <param name="position">The position.</param>
+		/// <param name="pak">The pak.</param>
+		public void InsertPacket(int position, Packet pak)
+		{
+			if (pak == null)
+				throw new ArgumentNullException("pak");
+			m_packets.Insert(position, pak);
+
+			FirePacketLogsChangedEvent();
+		}
+
+		/// <summary>
+		/// Adds the range.
+		/// </summary>
+		/// <param name="collection">The collection.</param>
 		public void AddRange(ICollection<Packet> collection)
 		{
 			m_packets.AddRange(collection);
+
+			FirePacketLogsChangedEvent();
 		}
 
 		public List<Packet> GetRange(int startIndex, int endIndex)
 		{
-			List<Packet> ret = m_packets.GetRange(startIndex, endIndex - startIndex);
+			List<Packet> ret = m_packets.GetRange(startIndex, endIndex - startIndex); // need there + 1 ?
 			return ret;
 		}
 
+		/// <summary>
+		/// Gets the count of objects contained in the container.
+		/// </summary>
+		/// <value>The count.</value>
 		public int Count
 		{
 			get { return m_packets.Count; }
 		}
 
-		private int m_unknownPacketsCount;
-
+		/// <summary>
+		/// Gets the unknown packets count.
+		/// </summary>
+		/// <value>The unknown packets count.</value>
 		public int UnknownPacketsCount
 		{
 			get { return m_unknownPacketsCount; }
 		}
-
-		private float m_version;
-		private bool m_reinitRequired;
-		private bool m_ignoreVersionChanges;
 
 		/// <summary>
 		/// Gets or sets the version.
@@ -112,7 +151,6 @@ namespace PacketLogConverter
 			set { m_reinitRequired = value; }
 		}
 
-		private bool m_subversionReinit = false;
 		public bool SubversionReinit
 		{
 			get { return m_subversionReinit; }
@@ -188,18 +226,16 @@ namespace PacketLogConverter
 			}
 		}
 
-		public int GetPacketIndexByTextIndex(int textIndex)
+		/// <summary>
+		/// Fires the packet logs changed event.
+		/// </summary>
+		private void FirePacketLogsChangedEvent()
 		{
-			int pakIndex = m_packets.Count;
-			while(--pakIndex >= 0)
+			PacketLogUpdate evnt = OnPacketsChanged;
+			if (evnt != null)
 			{
-				Packet pak = (Packet)m_packets[pakIndex];
-				if (pak.LogTextIndex < 0) continue;
-				if (pak.LogTextIndex > textIndex) continue;
-
-				return pakIndex;
+				evnt(this);
 			}
-			return -1;
 		}
 
 		#region IEnumerable Members

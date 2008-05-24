@@ -33,7 +33,7 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 			slot = ReadByte();
 			unk1 = ReadByte();
-			unk2 = ReadShort();
+			unk2 = ReadShortLowEndian();
 			price = ReadInt();
 		}
 

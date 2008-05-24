@@ -1,4 +1,9 @@
 ------------------------------------------------------------------------------
+Noret (24.May.2008):
+- Update from Tiv
+- Fixed bug with new line characters in exceptions and packet messages preventing proper packet location by text index
+- Fixed problem with incorrect packet text indexes in "packet context" windows
+------------------------------------------------------------------------------
 Noret (26.Jan.2008):
 Code from Tiv:
 - Log positions can be saved/restored using ALT/CTRL + number from 0 to 9

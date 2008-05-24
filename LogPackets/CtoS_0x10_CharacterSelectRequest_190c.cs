@@ -16,7 +16,6 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-//			((Packet) this).GetPacketDataString(text, flagsDescription); // this crash program
 			base.GetPacketDataString(text, flagsDescription);
 			text.Write(" lng:");
 			text.Write(language);

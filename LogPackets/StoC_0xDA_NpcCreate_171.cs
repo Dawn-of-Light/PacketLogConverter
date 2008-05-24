@@ -55,9 +55,9 @@ namespace PacketLogConverter.LogPackets
 				if ((flag2 & 0x08) == 0x08)
 					text.Write(",Quest");
 				if ((flag2 & 0x10) == 0x10)
-					text.Write(",F2_UNK_0x10");//waiting Finish new Quest ?
+					text.Write(",FinishQuest");//waiting Finish new Quest ?
 				if ((flag2 & 0x20) == 0x20)
-					text.Write(",F2_UNK_0x20");//mb see Underwater creature from water outside ?
+					text.Write(",WaterMob");//mb see Underwater creature from water outside ?
 				if ((flag2 & 0x40) == 0x40)
 					text.Write(",F2_UNK_0x40");
 				if ((flag2 & 0x80) == 0x80)

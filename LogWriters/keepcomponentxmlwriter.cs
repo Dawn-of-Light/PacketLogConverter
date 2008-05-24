@@ -46,7 +46,8 @@ namespace PacketLogConverter.LogWriters
 						StoC_0x6C_KeepComponentOverview partCreate = log[i] as StoC_0x6C_KeepComponentOverview;
 						if (partCreate == null) continue;
 						if (region != 163) continue;
-						if (partCreate.KeepId < 256) continue;
+//						if (partCreate.KeepId < 256) continue;
+						if (partCreate.KeepId >= 256) continue;
 						string key = "KEEPID-" + partCreate.KeepId + "-WALLID-" + partCreate.ComponentId;
 						if (keeps.ContainsKey(key)) continue;
 						keeps[key] = partCreate;

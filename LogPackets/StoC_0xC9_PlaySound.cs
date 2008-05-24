@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 
@@ -12,6 +13,19 @@ namespace PacketLogConverter.LogPackets
 		protected ushort y;
 		protected ushort z;
 		protected ushort radius;
+
+		public enum eSoundType: ushort
+		{
+			Relic_PickUp = 15,
+			Relic_PutDown = 17,
+			Relic_Lose = 48,
+			Relic_PulseStrength_Low = 24,
+			Relic_PulseStrength_Medium = 33,
+			Relic_PulseStrength_High = 43,
+			Relic_Hunger = 44,
+			ObeliskTeleporter_Idle = 45,
+			ObeliskTeleporter_Teleport = 46,
+		}
 
 		#region public access properties
 
@@ -29,7 +43,8 @@ namespace PacketLogConverter.LogPackets
 
 			text.Write("soundId:0x{0:X4} zoneId:{1,-3} x:{2,-5} y:{3,-5} z:{4,-5} radius:{5}",
 				soundId, zoneId, x, y, z, radius);
-
+			if (flagsDescription && Enum.IsDefined(typeof(eSoundType), soundId))
+				text.Write(" ({0})", (eSoundType)soundId);
 		}
 
 		/// <summary>
