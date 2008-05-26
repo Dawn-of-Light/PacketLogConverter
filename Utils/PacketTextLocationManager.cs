@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -110,7 +111,8 @@ namespace PacketLogConverter.Utils
 		/// <returns>Found <see cref="PacketInfo"/> or <see cref="PacketInfo.UNKNOWN"/>.</returns>
 		public PacketInfo FindPacketInfoByTextIndex(int textIndex)
 		{
-			return FindPacketInfoByTextIndexLinear(textIndex);
+//			return FindPacketInfoByTextIndexLinear(textIndex);
+			return FindPacketInfoByTextIndexBinarySearch(textIndex);
 		}
 
 		/// <summary>
@@ -121,18 +123,42 @@ namespace PacketLogConverter.Utils
 		private PacketInfo FindPacketInfoByTextIndexLinear(int textIndex)
 		{
 			int index = 0;
+			bool flagFound = false;
 			// Limit by visible packets count
 			for (; visiblePacketsCount > index && m_packetInfos.Length > index; index++)
 			{
 				// Is text index of current packet greater than requested?
 				if (m_packetInfos[index].TextEndIndex > textIndex)
 				{
+					flagFound = true;
 					break;
 				}
 			}
 
-			PacketInfo ret = (0 < index ? m_packetInfos[index - 1] : PacketInfo.UNKNOWN);
+//			PacketInfo ret = (0 < index ? m_packetInfos[index - 1] : PacketInfo.UNKNOWN); // why [index - 1] if we hold TextEndIndex (not TextBeginIndex) ?
+			PacketInfo ret = (flagFound ? m_packetInfos[index] : PacketInfo.UNKNOWN);
 			return ret;
+		}
+
+		internal class TextIndexComparer: IComparer
+		{
+			public int Compare(object x, object y)
+			{
+				return ((PacketInfo)x).TextEndIndex - (int)y;
+			}
+		}
+
+		/// <summary>
+		/// Finds the packet by text index binary search method.
+		/// </summary>
+		/// <param name="textIndex">Index of the text.</param>
+		/// <returns>Found <see cref="PacketInfo"/> or <see cref="PacketInfo.UNKNOWN"/>.</returns>
+		private PacketInfo FindPacketInfoByTextIndexBinarySearch(int textIndex)
+		{
+			if (visiblePacketsCount <= 0)
+				return PacketInfo.UNKNOWN;
+			int index = Array.BinarySearch(m_packetInfos, textIndex + 1, new TextIndexComparer()); // textIndex + 1 becouse last symbol is \n. and it showed as on next line
+			return (index >= 0 ? m_packetInfos[index] : m_packetInfos[~index]);
 		}
 
 		/// <summary>

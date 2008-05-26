@@ -1153,9 +1153,6 @@
     <Compile Include="LogWriters\Logger.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LogWriters\newtestsh.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="LogWriters\NpcUpdateUnkSpeedBitsWriter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1166,9 +1163,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogWriters\SkillsWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LogWriters\testsh.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainForm.cs">
