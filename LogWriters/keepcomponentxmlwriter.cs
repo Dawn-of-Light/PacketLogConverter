@@ -31,37 +31,37 @@ namespace PacketLogConverter.LogWriters
 						if (callback != null && (i & 0xFFF) == 0) // update progress every 4096th packet
 							callback(i, log.Count - 1);
 
-						StoC_0x20_PlayerPositionAndObjectID_171 reg20 = log[i] as StoC_0x20_PlayerPositionAndObjectID_171;
-						if (reg20 != null)
+						Packet pak = log[i];
+						if (pak is StoC_0x20_PlayerPositionAndObjectID_171)
 						{
+							StoC_0x20_PlayerPositionAndObjectID_171 reg20 = (StoC_0x20_PlayerPositionAndObjectID_171)pak;
 							region = reg20.Region;
-							continue;
 						}
-						StoC_0xB7_RegionChange regB7 = log[i] as StoC_0xB7_RegionChange;
-						if (regB7 != null)
+						else if (pak is StoC_0xB7_RegionChange)
 						{
+							StoC_0xB7_RegionChange regB7 = (StoC_0xB7_RegionChange)pak;
 							region = regB7.RegionId;
-							continue;
 						}
-						StoC_0x6C_KeepComponentOverview partCreate = log[i] as StoC_0x6C_KeepComponentOverview;
-						if (partCreate == null) continue;
-						if (region != 163) continue;
-//						if (partCreate.KeepId < 256) continue;
-						if (partCreate.KeepId >= 256) continue;
-						string key = "KEEPID-" + partCreate.KeepId + "-WALLID-" + partCreate.ComponentId;
-						if (keeps.ContainsKey(key)) continue;
-						keeps[key] = partCreate;
-						s.WriteLine("  <KeepComponent>");
-						s.WriteLine(string.Format("    <KeepComponent_ID>{0}</KeepComponent_ID>", key));
-						s.WriteLine(string.Format("    <X>{0}</X>", partCreate.X));
-						s.WriteLine(string.Format("    <Y>{0}</Y>", partCreate.Y));
-						s.WriteLine(string.Format("    <Heading>{0}</Heading>", partCreate.Heading));
-						s.WriteLine(string.Format("    <Height>{0}</Height>", partCreate.Height));
-						s.WriteLine(string.Format("    <Health>{0}</Health>", partCreate.Health));
-						s.WriteLine(string.Format("    <Skin>{0}</Skin>", partCreate.Skin));
-						s.WriteLine(string.Format("    <KeepID>{0}</KeepID>", partCreate.KeepId));
-						s.WriteLine(string.Format("    <ID>{0}</ID>", partCreate.ComponentId));
-						s.WriteLine("  </KeepComponent>");
+						else if (pak is StoC_0x6C_KeepComponentOverview)
+						{
+							StoC_0x6C_KeepComponentOverview partCreate = (StoC_0x6C_KeepComponentOverview)pak;
+//							if (region != 163) continue;
+//							if (partCreate.KeepId < 256) continue;
+							string key = "KEEPID-" + partCreate.KeepId + "-WALLID-" + partCreate.ComponentId;
+							if (keeps.ContainsKey(key)) continue;
+							keeps[key] = partCreate;
+							s.WriteLine("  <KeepComponent>");
+							s.WriteLine(string.Format("    <KeepComponent_ID>{0}</KeepComponent_ID>", key));
+							s.WriteLine(string.Format("    <X>{0}</X>", (sbyte)partCreate.X));
+							s.WriteLine(string.Format("    <Y>{0}</Y>", (sbyte)partCreate.Y));
+							s.WriteLine(string.Format("    <Heading>{0}</Heading>", partCreate.Heading));
+//							s.WriteLine(string.Format("    <Height>{0}</Height>", partCreate.Height)); // in DOL height calced depended on keep level
+							s.WriteLine(string.Format("    <Health>{0}</Health>", /*partCreate.Health*/100));
+							s.WriteLine(string.Format("    <Skin>{0}</Skin>", partCreate.Skin));
+							s.WriteLine(string.Format("    <KeepID>{0}</KeepID>", partCreate.KeepId));
+							s.WriteLine(string.Format("    <ID>{0}</ID>", partCreate.ComponentId));
+							s.WriteLine("  </KeepComponent>");
+						}
 					}
 				}
 				s.WriteLine("</KeepComponent>");

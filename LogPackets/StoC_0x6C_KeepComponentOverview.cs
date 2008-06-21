@@ -89,7 +89,7 @@ namespace PacketLogConverter.LogPackets
 		}
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("keepId:0x{0:X4} componentId:{1,-3} unk1:0x{2:X4} uid:0x{3:X4} wallSkinId:{4,-3} x:{5,-3} y:{6,-3} rotate:{7} height:{8} health:{9,3}% status:0x{10:X2} flag:0x{11:X2}",
+			text.Write("keepId:0x{0:X4} componentId:{1,-2} unk1:0x{2:X4} uid:0x{3:X4} wallSkinId:{4,-3} x:{5,-3} y:{6,-3} rotate:{7} height:{8} health:{9,3}% status:0x{10:X2} flag:0x{11:X2}",
 				keepId, componentId, unk1, uid, skin, (sbyte)x, (sbyte)y, heading, height, health, status, flag);
 			if (flagsDescription)
 			{

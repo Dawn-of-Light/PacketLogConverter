@@ -90,12 +90,14 @@ namespace PacketLogConverter.Utils
 				// Is packet found?
 				if (pair.Packet == packet)
 				{
-					ret = pair.TextEndIndex;
+					ret = count > 0 ? m_packetInfos[count - 1].TextEndIndex : 0;
+//					ret = pair.TextEndIndex;
 					break;
 				}
 
 				// Limit by visible packets count
-				if (visiblePacketsCount >= ++count)
+//				if (visiblePacketsCount >= ++count) // ??
+				if (visiblePacketsCount <= ++count)
 				{
 					break;
 				}
@@ -111,8 +113,8 @@ namespace PacketLogConverter.Utils
 		/// <returns>Found <see cref="PacketInfo"/> or <see cref="PacketInfo.UNKNOWN"/>.</returns>
 		public PacketInfo FindPacketInfoByTextIndex(int textIndex)
 		{
-//			return FindPacketInfoByTextIndexLinear(textIndex);
-			return FindPacketInfoByTextIndexBinarySearch(textIndex);
+			return FindPacketInfoByTextIndexLinear(textIndex);
+//			return FindPacketInfoByTextIndexBinarySearch(textIndex);
 		}
 
 		/// <summary>
@@ -155,9 +157,13 @@ namespace PacketLogConverter.Utils
 		/// <returns>Found <see cref="PacketInfo"/> or <see cref="PacketInfo.UNKNOWN"/>.</returns>
 		private PacketInfo FindPacketInfoByTextIndexBinarySearch(int textIndex)
 		{
-			if (visiblePacketsCount <= 0)
+			if (m_packetInfos.Length <= 0 || textIndex >= m_packetInfos[m_packetInfos.Length - 1].TextEndIndex)
+			{
+//				PacketLogConverter.LogWriters.Logger.Say(string.Format("not found at {0}, Length:{1}", textIndex, m_packetInfos.Length));
 				return PacketInfo.UNKNOWN;
-			int index = Array.BinarySearch(m_packetInfos, textIndex + 1, new TextIndexComparer()); // textIndex + 1 becouse last symbol is \n. and it showed as on next line
+			}
+			int index = Array.BinarySearch(m_packetInfos, textIndex + 1, new TextIndexComparer()); // textIndex + 1 becouse last symbol is '\n' and it showed on next line
+//			PacketLogConverter.LogWriters.Logger.Say(string.Format("textIndex:{0} index:{1} maxTextIndex:{2}", textIndex, index >= 0 ? index : ~index, m_packetInfos[m_packetInfos.Length - 1].TextEndIndex));
 			return (index >= 0 ? m_packetInfos[index] : m_packetInfos[~index]);
 		}
 

@@ -78,7 +78,7 @@ namespace PacketLogConverter.LogPackets
 				{
 					int diffZ = (targetZoneZ - currentZoneZ);
 					int diffX = (currentZoneX - targetZoneX);
-	                int diffY = (currentZoneY - targetZoneY);
+					int diffY = (currentZoneY - targetZoneY);
 					int range = (int)Math.Sqrt(diffX*diffX + diffY*diffY);
 					double zSpeed = speed * diffZ / range;
 					if (speed == 0)

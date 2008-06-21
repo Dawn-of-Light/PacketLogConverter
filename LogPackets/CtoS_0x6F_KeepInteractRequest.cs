@@ -48,7 +48,7 @@ namespace PacketLogConverter.LogPackets
 					break;
 			}
 
-			text.Write("keepId:0x{0:X4} componentId:{1} request:0x{2:X4}({3}) hookPointId:0x{4:X4}", keepId, componentId, request, type, hpIndex);
+			text.Write("keepId:0x{0:X4} componentId:{1,-2} request:0x{2:X4}({3}) hookPointId:0x{4:X4}", keepId, componentId, request, type, hpIndex);
 		}
 
 		/// <summary>

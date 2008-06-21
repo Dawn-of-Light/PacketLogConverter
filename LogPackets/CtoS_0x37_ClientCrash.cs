@@ -98,12 +98,41 @@ namespace PacketLogConverter.LogPackets
 			WIN2003 = 8,
 		}
 
+		public enum eOptionFlags: int
+		{
+			WindowedMode = 0x01,
+			SecondCopyDaoc = 0x02,
+			UseAtlantisTerrain = 0x04, // OldTerrainFlag
+			PerfOpt_OldTerrainFlag = 0x08, //?
+			PerfOpt_AtlantisTreeFlag = 0x10, // Atlantis TreeFlag ?
+			CustomSkin = 0x20, // Custom Skin ?
+		}
+
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 			text.Write("module:{0} version:{1} errorCode:0x{2:X8} CS=0x{3:X8} EIP=0x{4:X8}",
 				module, version, errorCode, cs, eip);
-			text.Write("\n\tOS:{0} region:{1,-3} uptime:{2}s codeError:0x{3:X2}(windowMode:{4}{5} error:{6})",
-				osType, region, uptime, options, options & 0x1, ((options & 0x02) == 0x02) ? ", SecondCopyDaoc" : "", options >> 2);
+			text.Write("\n\tOS:{0} region:{1,-3} uptime:{2}s gameOptions:0x{3:X2}",
+				osType, region, uptime, options);
+			if (flagsDescription && options > 0)
+			{
+				text.Write('(');
+				uint uOptionFlags = options;
+				byte i = 0;
+				foreach(eOptionFlags eOption in Enum.GetValues(typeof(eOptionFlags)))
+				{
+					if ((options & (uint)eOption) == (uint)eOption)
+					{
+						uOptionFlags ^= (uint)eOption;
+						if (i++ > 0)
+							text.Write(", ");
+						text.Write(eOption.ToString());
+					}
+				}
+				if (uOptionFlags > 0)
+					text.Write(" uOptionFlags:0x{0:X2})", uOptionFlags);
+				text.Write(')');
+			}
 			text.Write("\n\tstack:0x{0:X8} 0x{1:X8} 0x{2:X8} 0x{3:X8}", stack1, stack2, stack3, stack4);
 			if (flagsDescription)
 			{
@@ -125,21 +154,21 @@ namespace PacketLogConverter.LogPackets
 			version = ReadString(8);
 			errorCode = ReadInt();
 			cs = ReadInt();
-			eip= ReadInt();
-			options = ReadInt();
-			for(int i = 0; i < 16; i++)
-				gsxm[i] = ReadByte();
-			clnRegionExpantions = ReadByte();
-			clnType = ReadByte();
-			osType = ReadByte();
-			clnExpantions = ReadByte();
-			region = ReadShort();
-			unk1 = ReadShort();
-			uptime = ReadInt();
-			stack1 = ReadIntLowEndian();
-			stack2 = ReadIntLowEndian();
-			stack3 = ReadIntLowEndian();
-			stack4 = ReadIntLowEndian();
+			eip = ReadInt();
+			options = ReadInt(); // 0x34
+			for (int i = 0; i < 16; i++) // 0x38+
+				gsxm[i] = ReadByte(); // *(ebp + i * 4 - 0x40)
+			clnRegionExpantions = ReadByte(); // 0x48 hardcoded
+			clnType = ReadByte(); // 0x49 (3-7)
+			osType = ReadByte(); // 0x4A
+			clnExpantions = ReadByte(); // 0x4B
+			region = ReadShort(); // 0x4C
+			unk1 = ReadShort(); // always = 0
+			uptime = ReadInt(); // 0x50
+			stack1 = ReadIntLowEndian(); // 0x54
+			stack2 = ReadIntLowEndian(); // 0x58
+			stack3 = ReadIntLowEndian(); // 0x5c
+			stack4 = ReadIntLowEndian(); // 0x60
 		}
 
 		/// <summary>

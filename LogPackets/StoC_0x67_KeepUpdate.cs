@@ -22,10 +22,12 @@ namespace PacketLogConverter.LogPackets
 			get { return new ushort[] { keepId }; }
 		}
 
-		public enum eAction: byte
+		public enum eComponentFlag: byte
 		{
-			Update = 0,
-			Capture = 6,
+			RizedTower = 1, // only on towers
+			HeightUpdate = 2,
+			Broken = 4, // hole in wall
+			AllowClimb = 8
 		}
 
 		#region public access properties
@@ -43,6 +45,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			text.Write("keepId:0x{0:X4} realm:{1} level:{2} count:{3}",
 				keepId, realm, level, count);
+			bool flagHeightUpdate = false;
 			if (count > 0)
 			{
 				text.Write("  component flags:(");
@@ -52,12 +55,21 @@ namespace PacketLogConverter.LogPackets
 					if (i > 0)
 						text.Write(',');
 					text.Write("0x{0:X2}", component);
+					if (((component >> 4) & (int)eComponentFlag.HeightUpdate) == (int)eComponentFlag.HeightUpdate)
+						flagHeightUpdate = true;
+//					if (flagsDescription)
+//						str.AppendFormat("({0})", (eComponentFlag)(component >> 4));
 				}
 				text.Write(")");
 			}
-			text.Write(" unk1:{0:X2}", unk1);
-//			if (flagsDescription)
-//				str.AppendFormat("({0})", (eAction)unk1);
+			text.Write(" unk1:0x{0:X2}", unk1);
+			if (flagsDescription)
+			{
+				if (flagHeightUpdate)
+					text.Write(" (HeightUpdate)");
+				else
+					text.Write(" (Captured)");
+			}
 		}
 
 		public override void Init()
@@ -68,7 +80,7 @@ namespace PacketLogConverter.LogPackets
 			level = ReadByte();
 			count = ReadByte();
 			components = new byte[count];
-			for(int i=0;i<count;i++)
+			for (int i = 0; i < count; i++)
 			{
 				components[i] = ReadByte();
 			}

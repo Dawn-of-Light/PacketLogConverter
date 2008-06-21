@@ -25,7 +25,9 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("count:{0,-2} unk1:{1} unk2:{2} unk3:{3}", effectsCount, unk1, unk2, unk3);
+			text.Write("count:{0,-2}", effectsCount);
+			if (flagsDescription)
+				text.Write(" unk1:{0} unk2:{1} unk3:{2}", unk1, unk2, unk3);
 			for (int i = 0; i < effectsCount; i++)
 			{
 				WriteEffectInfo(i, text);
@@ -46,7 +48,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			effectsCount = ReadByte();
+			effectsCount = ReadByte(); // reverseInt ?
 			unk1 = ReadByte();
 			unk2 = ReadByte();
 			unk3 = ReadByte();

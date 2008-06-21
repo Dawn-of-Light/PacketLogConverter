@@ -41,7 +41,7 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("keepId:0x{0:X4} componentId:0x{1:X4} hookPointId:0x{2:X4} buyMoney:{3} buyBP:{4} buyGBP:{5} count:{6} unk1:{7} unk2:{8}",
+			text.Write("keepId:0x{0:X4} componentId:{1,-2} hookPointId:0x{2:X4} buyMoney:{3} buyBP:{4} buyGBP:{5} count:{6} unk1:{7} unk2:{8}",
 				keepId, componentId, hookPointId, flag1, flag2, flag3, itemCount, unk1, unk2);
 
 			for (int i = 0; i < itemCount; i++)

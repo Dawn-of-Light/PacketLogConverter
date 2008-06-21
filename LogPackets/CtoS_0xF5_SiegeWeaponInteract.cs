@@ -69,8 +69,16 @@ namespace PacketLogConverter.LogPackets
 					actionType = "unknown";
 					break;
 			}
-			text.Write("unk1:0x{0:X4} action:{1}({2}) ammo?:{3, -2} unk2:0x{4:X4} unk3:0x{5:X4} unk4:0x{6:X4} unk5:0x{7:X4} unk6:0x{8:X4} unk7:0x{9:X4}",
-				unk1, action, actionType, ammo, unk2, unk3, unk4, unk5, unk6, unk7);
+			if (flagsDescription)
+			{
+				text.Write("unk1:0x{0:X4} action:{1}({2}) ammo?:{3, -2} unk2:0x{4:X4} unk3:0x{5:X4} unk4:0x{6:X4} unk5:0x{7:X4} unk6:0x{8:X4} unk7:0x{9:X4}",
+					unk1, action, actionType, ammo, unk2, unk3, unk4, unk5, unk6, unk7);
+			}
+			else
+			{
+				text.Write("action:{0}({2}) ammo?:{1, -2}",
+					action, ammo, actionType);
+			}
 		}
 
 		/// <summary>

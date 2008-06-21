@@ -172,6 +172,9 @@
     <Compile Include="LogActions\ShowPlayerEffects.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogActions\ShowPlayerGroupInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LogActions\ShowPlayerInfoAction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -827,6 +830,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0x81_ShowDialog_186.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\StoC_0x81_ShowDialog_194.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0x83_QuestUpdate.cs">

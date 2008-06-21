@@ -42,7 +42,7 @@ if hook point count > 1
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("keepId:0x{0:X4} componentId:{1} HookPointCount:{2} selectedHookPointIndex:0x{3:X2}",
+			text.Write("keepId:0x{0:X4} componentId:{1,-2} HookPointCount:{2,-2} selectedHookPointIndex:0x{3:X2}",
 				keepId, componentId, hookPointCount, unk1);
 			string type;
 			if (hookPointCount != 0)

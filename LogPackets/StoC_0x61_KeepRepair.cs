@@ -56,7 +56,7 @@ namespace PacketLogConverter.LogPackets
 					break;
 			}
 
-			text.Write("keepId:0x{0:X4} realm:{1} HP:{2}% level:{3} to-level:{4} keepType:{5}({6}) guild:\"{7}\"",
+			text.Write("keepId:0x{0:X4} realm:{1} HP:{2,-3}% level:{3} to-level:{4} keepType:{5}({6}) guild:\"{7}\"",
 				keepId, realm, hp, level, targetLevel, keepType, type, guild);
 		}
 

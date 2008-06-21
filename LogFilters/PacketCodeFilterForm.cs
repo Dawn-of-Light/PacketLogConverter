@@ -111,6 +111,7 @@ namespace PacketLogConverter.LogFilters
 				stoc.SetItemChecked(0x65, true);
 				stoc.SetItemChecked(0x67, true);
 				stoc.SetItemChecked(0x69, true);
+				stoc.SetItemChecked(0x6B, true);
 				stoc.SetItemChecked(0x6C, true);
 				stoc.SetItemChecked(0x6D, true);
 				stoc.SetItemChecked(0x6E, true);

@@ -6,15 +6,17 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x48, -1, ePacketDirection.ClientToServer, "Show warmap request")]
 	public class CtoS_0x48_WarmapShowRequest: Packet
 	{
-		protected byte unk1;
+		protected byte requestType;
 		protected byte realm;
-		protected ushort unk2;
+		protected byte keepNumber;
+		protected byte unk1;
 
 		#region public access properties
 
-		public byte Unk1 { get { return unk1 ; } }
+		public byte RequestType { get { return requestType; } }
 		public byte Realm { get { return realm; } }
-		public ushort Unk2 { get { return unk2; } }
+		public byte KeepNumber { get { return keepNumber; } }
+		public byte Unk1 { get { return unk1 ; } }
 
 		#endregion
 
@@ -29,7 +31,9 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("realm:{1} unk2:0x{2:X4} windowFlag:0x{0:X2}({3})", unk1, realm, unk2, (eWindowFlag)unk1);
+			text.Write("realm:{0} keepNumber:0x{1:X2} unk1:0x{2:X2} windowFlag:0x{3:X2}", realm, keepNumber, unk1, requestType);
+			if (flagsDescription)
+				text.Write("({0})", (eWindowFlag)requestType);
 		}
 
 		/// <summary>
@@ -39,9 +43,10 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			unk1 = ReadByte();
+			requestType = ReadByte();
 			realm = ReadByte();
-			unk2 = ReadShort();
+			keepNumber = ReadByte();
+			unk1 = ReadByte();
 		}
 
 		/// <summary>

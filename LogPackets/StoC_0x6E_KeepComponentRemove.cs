@@ -27,7 +27,7 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("keepId:0x{0:X4} componentId:{1}", keepId, componentId);
+			text.Write("keepId:0x{0:X4} componentId:{1,-2}", keepId, componentId);
 		}
 
 		/// <summary>

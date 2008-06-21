@@ -38,6 +38,7 @@ namespace PacketLogConverter.LogPackets
 			openingLargeChest = 14,
 			largeCrocodileStatueTurnsHeadToTheSideFourSeconds = 15,
 			slowTurnRelicPlatformInTheKeepTowers = 16,
+			labyrinthSecretDoor = 17
 		}
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)

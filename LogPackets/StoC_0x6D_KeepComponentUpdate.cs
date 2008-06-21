@@ -35,7 +35,7 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("keepId:0x{0:X4} componentId:{1,-3} height:{2,-3} health:{3,3}% status:0x{4:X2} flags:0x{5:X2}",
+			text.Write("keepId:0x{0:X4} componentId:{1,-2} height:{2,-3} health:{3,3}% status:0x{4:X2} flags:0x{5:X2}",
 				keepId, componentId, height, health, status, flags);
 			if (flagsDescription)
 			{
