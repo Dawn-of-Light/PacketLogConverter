@@ -35,7 +35,9 @@ namespace PacketLogConverter.LogPackets
 			{
 				resolution = ReadShort();
 				options = ReadShort();
-				unk1 = ReadInt();
+				memory = ReadByte();
+				unk1 = ReadShort();
+				unk2 = ReadByte(); // unused
 				figureVersion = ReadInt();
 				figureVersion1 = ReadByte();
 				skin = ReadByte();

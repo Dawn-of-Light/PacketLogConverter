@@ -18,10 +18,10 @@ namespace PacketLogConverter.LogPackets
 
 		public enum eRelicType: byte
 		{
-			None = 0,
-			Yellow = 1,
-			Green = 2,
-			Red = 3,
+			None = 0, // group_location
+			Yellow = 1, // mino_relic_1
+			Green = 2, // mino_relic_2
+			Red = 3, // mino_relic_3
 		}
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)

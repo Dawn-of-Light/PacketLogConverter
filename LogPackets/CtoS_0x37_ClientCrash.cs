@@ -17,7 +17,7 @@ namespace PacketLogConverter.LogPackets
 		protected byte clnRegionExpantions;
 		protected byte clnType;
 		protected byte osType;
-		protected byte clnExpantions;
+		protected byte terrainOption;
 		protected ushort region;
 		protected ushort unk1;
 		protected uint uptime;
@@ -37,7 +37,7 @@ namespace PacketLogConverter.LogPackets
 		public byte ClnRegionExpantions { get { return clnRegionExpantions; } }
 		public byte ClnType { get { return clnType; } }
 		public byte OS { get { return osType; } }
-		public byte ClnExpantions { get { return clnExpantions; } }
+		public byte TerrainOption { get { return terrainOption; } }
 		public ushort Region { get { return region; } }
 		public ushort Unk1 { get { return unk1; } }
 		public uint Uptime { get { return uptime; } }
@@ -100,7 +100,7 @@ namespace PacketLogConverter.LogPackets
 
 		public enum eOptionFlags: int
 		{
-			WindowedMode = 0x01,
+			WindowMode = 0x01,
 			SecondCopyDaoc = 0x02,
 			UseAtlantisTerrain = 0x04, // OldTerrainFlag
 			PerfOpt_OldTerrainFlag = 0x08, //?
@@ -136,7 +136,7 @@ namespace PacketLogConverter.LogPackets
 			text.Write("\n\tstack:0x{0:X8} 0x{1:X8} 0x{2:X8} 0x{3:X8}", stack1, stack2, stack3, stack4);
 			if (flagsDescription)
 			{
-				text.Write("\n\tclnRegionExpantions:{0} clnType:{1}({4}) OS:{2}({5}) clnExpantions:{3}", clnRegionExpantions, clnType, osType, clnExpantions, (eClientType)clnType, (eOSType)osType);
+				text.Write("\n\tclnRegionExpantions:{0} clnType:{1}({4}) OS:{2}({5}) terrainOption:{3}", clnRegionExpantions, clnType, osType, terrainOption, (eClientType)clnType, (eOSType)osType);
 				text.Write("\n\t{0} caused {1} in module {2} at {3:X4}:{4:X8}.", "?", ((eErrorCode)errorCode).ToString().Replace("_", " "), module, cs, eip);
 				text.Write("\n\tGSXM:");
 				for(int i = 0; i < 16; i++)
@@ -150,18 +150,18 @@ namespace PacketLogConverter.LogPackets
 		public override void Init()
 		{
 			Position = 0;
-			module = ReadString(32);
-			version = ReadString(8);
-			errorCode = ReadInt();
-			cs = ReadInt();
-			eip = ReadInt();
+			module = ReadString(32); // 0x00
+			version = ReadString(8); // 0x20
+			errorCode = ReadInt();   // 0x28
+			cs = ReadInt();          // 0x2C
+			eip = ReadInt();         // 0x30
 			options = ReadInt(); // 0x34
 			for (int i = 0; i < 16; i++) // 0x38+
 				gsxm[i] = ReadByte(); // *(ebp + i * 4 - 0x40)
 			clnRegionExpantions = ReadByte(); // 0x48 hardcoded
 			clnType = ReadByte(); // 0x49 (3-7)
 			osType = ReadByte(); // 0x4A
-			clnExpantions = ReadByte(); // 0x4B
+			terrainOption = ReadByte(); // 0x4B
 			region = ReadShort(); // 0x4C
 			unk1 = ReadShort(); // always = 0
 			uptime = ReadInt(); // 0x50

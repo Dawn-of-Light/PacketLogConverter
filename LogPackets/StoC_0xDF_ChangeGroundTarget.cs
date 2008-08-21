@@ -28,9 +28,9 @@ namespace PacketLogConverter.LogPackets
 		public override void Init()
 		{
 			Position = 0;
-			x = ReadInt();
-			y = ReadInt();
-			z = ReadInt();
+			x = ReadInt(); // 0x00
+			y = ReadInt(); // 0x04
+			z = ReadInt(); // 0x08
 		}
 
 		/// <summary>

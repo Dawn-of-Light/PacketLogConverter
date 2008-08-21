@@ -21,7 +21,7 @@ namespace PacketLogConverter.LogPackets
 
 			public override void Init(StoC_0x81_ShowDialog pak)
 			{
-				questName = pak.ReadPascalString();
+				questName = pak.ReadPascalString(); // 0x0c
 				questDesc = pak.ReadPascalString();
 				dialogLen = pak.ReadShort();
 				message = pak.ReadString(dialogLen);

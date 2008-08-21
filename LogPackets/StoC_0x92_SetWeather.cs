@@ -38,12 +38,12 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			x = ReadInt();
-			width = ReadInt();
-			fogDiffusion = ReadShort();
-			speed = ReadShort();
-			intensity = ReadShort();
-			unk1 = ReadShort();
+			x = ReadInt();              // 0x00
+			width = ReadInt();          // 0x04
+			fogDiffusion = ReadShort(); // 0x08
+			speed = ReadShort();        // 0x0A
+			intensity = ReadShort();    // 0x0C
+			unk1 = ReadShort();         // 0x0E
 		}
 
 		/// <summary>

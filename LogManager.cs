@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using PacketLogConverter.Utils;
@@ -143,6 +144,36 @@ namespace PacketLogConverter
 			}
 
 			m_logs = new List<PacketLog>(0).AsReadOnly();
+
+			FirePacketLogsChangedEvent();
+		}
+
+		/// <summary>
+		/// Clears the log.
+		/// </summary>
+		/// <param name="packetLogs">The packet logs.</param>
+		public void ClearLogRange(ICollection<PacketLog> packetLogs)
+		{
+			List<PacketLog> logs = new List<PacketLog>(m_logs);
+			foreach (PacketLog log in packetLogs)
+			{
+				log.OnPacketsChanged -= packetLog_OnPacketsChanged;
+				logs.Remove(log);
+			}
+			m_logs = logs.AsReadOnly();
+			FirePacketLogsChangedEvent();
+		}
+
+		/// <summary>
+		/// Clears the log.
+		/// </summary>
+		/// <param name="packetLog">The packet log.</param>
+		public void ClearLog(PacketLog packetLog)
+		{
+			List<PacketLog> logs = new List<PacketLog>(m_logs);
+			packetLog.OnPacketsChanged -= packetLog_OnPacketsChanged;
+			logs.Remove(packetLog);
+			m_logs = logs.AsReadOnly();
 
 			FirePacketLogsChangedEvent();
 		}

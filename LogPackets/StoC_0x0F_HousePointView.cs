@@ -23,9 +23,9 @@ namespace PacketLogConverter.LogPackets
 			string code_type;
 			switch (code)
 			{
-//				case 2:
-//					code_type = "disable";
-//					break;
+				case 2:
+					code_type = "disable";
+					break;
 				case 3:
 					code_type = "enable";
 					break;

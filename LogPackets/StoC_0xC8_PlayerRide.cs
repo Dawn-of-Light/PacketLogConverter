@@ -46,11 +46,11 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			riderOid= ReadShort();
-			mountOid= ReadShort();
-			flag = ReadByte();
-			slot = ReadByte();
-			unk1 = ReadShort();
+			riderOid= ReadShort(); // 0x00
+			mountOid= ReadShort(); // 0x02
+			flag = ReadByte();     // 0x04
+			slot = ReadByte();     // 0x05
+			unk1 = ReadShort();    // 0x06
 		}
 
 		/// <summary>

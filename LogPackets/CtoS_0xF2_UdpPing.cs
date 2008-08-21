@@ -28,7 +28,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 			clientIp = ReadString(22);
-			port = ReadShort();
+			port = ReadShort(); // 0x16
 		}
 
 		/// <summary>

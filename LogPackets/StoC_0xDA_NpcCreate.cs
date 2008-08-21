@@ -54,8 +54,8 @@ namespace PacketLogConverter.LogPackets
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 
-			text.Write("oid:0x{0:X4} speed:{1,-4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} speedZ:{6,-4} model:0x{7:X4} size:{8,-3} level:{9,-3} flags:0x{10:X2} maxStick:{11,-3} name:\"{12}\" guild:\"{13}\" unk1:{14}",
-			                 oid, speed, heading, x, y, z, speedZ, model, size, level, flags, maxStick, name, guildName, unk1);
+			text.Write("oid:0x{0:X4} speed:{1,-4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} speedZ:{6,-4} model:0x{7:X4} size:{8,-3}({15,-3}) level:{9,-3} flags:0x{10:X2} maxStick:{11,-3} name:\"{12}\" guild:\"{13}\" unk1:{14}",
+			                 oid, speed, heading, x, y, z, speedZ, model & 0x3FFF, size, level, flags, maxStick, name, guildName, unk1, size * 2);
 			if (flagsDescription)
 			{
 				text.Write(" (realm:{0}", (flags >> 6) & 3);
@@ -71,6 +71,8 @@ namespace PacketLogConverter.LogPackets
 					text.Write(",Peace");
 				if ((flags & 0x20) == 0x20)
 					text.Write(",Fly");
+				if ((model & 0x4000) == 0x4000)
+					text.Write(",UNK_Model_0x4000");
 				if ((model & 0x8000) == 0x8000)
 					text.Write(",Underwater");
 				text.Write(')');
@@ -84,19 +86,19 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			oid = ReadShort();
-			speed = (short)ReadShort();
-			heading = ReadShort();
-			z = ReadShort();
-			x = ReadInt();
-			y = ReadInt();
-			speedZ = (short)ReadShort();
-			model = ReadShort();
-			size = ReadByte();
-			level = ReadByte();
-			flags = ReadByte();
-			maxStick = ReadByte();
-			name = ReadPascalString();
+			oid = ReadShort();          // 0x00
+			speed = (short)ReadShort(); // 0x02
+			heading = ReadShort();      // 0x04
+			z = ReadShort();            // 0x06
+			x = ReadInt();              // 0x08
+			y = ReadInt();              // 0x0C
+			speedZ = (short)ReadShort();// 0x10
+			model = ReadShort();        // 0x12
+			size = ReadByte();          // 0x14
+			level = ReadByte();         // 0x15
+			flags = ReadByte();         // 0x16
+			maxStick = ReadByte();      // 0x17
+			name = ReadPascalString();  // 0x18
 			guildName = ReadPascalString();
 			unk1 = ReadByte();
 		}

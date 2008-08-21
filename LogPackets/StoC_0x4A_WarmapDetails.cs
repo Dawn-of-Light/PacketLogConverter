@@ -66,18 +66,18 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			count = ReadByte();
-			countGroups = ReadByte();
+			count = ReadByte();       // 0x00
+			countGroups = ReadByte(); // 0x01
 			m_items = new Item[count + countGroups];
 
 			for (int i = 0; i < count + countGroups; i++)
 			{
 				Item item = new Item();
 
-				item.zone = ReadByte();
-				item.loc = ReadByte();
-				item.color = ReadByte();
-				item.type = ReadByte();
+				item.zone = ReadByte(); // 0x03+
+				item.loc = ReadByte();  // 0x04+
+				item.color = ReadByte();// 0x05+
+				item.type = ReadByte(); // 0x06+
 
 				m_items[i] = item;
 			}

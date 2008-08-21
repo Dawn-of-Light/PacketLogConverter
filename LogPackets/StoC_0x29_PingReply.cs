@@ -35,11 +35,11 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			timeStamp = ReadInt();
-			unk1 = ReadInt();
-			sequence = ReadShort();
-			unk2 = ReadInt();
-			unk3 = ReadShort();
+			timeStamp = ReadInt(); // 0x00
+			unk1 = ReadInt();      // 0x04
+			sequence = ReadShort();// 0x08
+			unk2 = ReadInt();      // 0x0A
+			unk3 = ReadShort();    // 0x0E
 		}
 
 		/// <summary>

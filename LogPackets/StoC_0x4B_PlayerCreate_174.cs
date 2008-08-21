@@ -27,6 +27,7 @@ namespace PacketLogConverter.LogPackets
 
 			if (flagsDescription && flags != 0)
 			{
+				// playerSize: 1(95%), 2(100%), 3(105%)
 				text.Write("\n\trealm:{0}", (flags >> 2) & 3);
 				text.Write(" face:{0} playerSize:{1} model:0x{2:X4}", model >> 13, (model >> 11) & 3, model & 0x7FF);
 				text.Write("{0}{1}{2}{3}{4}", ((flags & 1) == 1) ? ", DEAD" : "", ((flags & 2) == 2) ? ", Underwater" : "", ((flags & 0x10) == 0x10) ? ", Stealth" : "", ((flags & 0x20) == 0x20) ? ", Wireframe" : "", ((flags & 0x40) == 0x40) ? ", Vampiire" : "", ((flags & 0x80) != 0) ? ", UNK:0x" + (flags & 0x80).ToString("X2") : "");
@@ -40,25 +41,25 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			sessionId = ReadShort();
-			oid = ReadShort();
-			model = ReadShort();
-			zoneZ = ReadShort();
-			zoneId = ReadShort();
-			zoneX = ReadShort();
-			zoneY = ReadShort();
-			heading = ReadShort();
-			eyeSize = ReadByte();
-			lipSize = ReadByte();
-			moodType = ReadByte();
-			eyeColor = ReadByte();
-			level = ReadByte();
-			hairColor = ReadByte();
-			faceType = ReadByte();
-			hairStyle = ReadByte();
-			flags = ReadByte();
-			unk1_174 = ReadByte();
-			name = ReadPascalString();
+			sessionId = ReadShort(); // 0x00
+			oid = ReadShort();       // 0x02
+			model = ReadShort();     // 0x04
+			zoneZ = ReadShort();     // 0x06
+			zoneId = ReadShort();    // 0x08
+			zoneX = ReadShort();     // 0x0A
+			zoneY = ReadShort();     // 0x0C
+			heading = ReadShort();   // 0x0E
+			eyeSize = ReadByte();    // 0x10
+			lipSize = ReadByte();    // 0x11
+			moodType = ReadByte();   // 0x12
+			eyeColor = ReadByte();   // 0x13
+			level = ReadByte();      // 0x14
+			hairColor = ReadByte();  // 0x15
+			faceType = ReadByte();   // 0x16
+			hairStyle = ReadByte();  // 0x17
+			flags = ReadByte();      // 0x18
+			unk1_174 = ReadByte();   // 0x19
+			name = ReadPascalString(); // 0x1A+
 			guildName = ReadPascalString();
 			lastName = ReadPascalString();
 			prefixName = ReadPascalString();

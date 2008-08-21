@@ -35,12 +35,12 @@ namespace PacketLogConverter.LogPackets
 		{
 			public override void Init(StoC_0x83_QuestUpdate pak)
 			{
-				index = pak.ReadByte();
-				lenName = pak.ReadByte();
-				unk2 = pak.ReadShortLowEndian();
-				goalsCount = pak.ReadByte();
-				level = pak.ReadByte();
-				name = pak.ReadString(lenName);
+				index = pak.ReadByte();          // 0x00
+				lenName = pak.ReadByte();        // 0x01
+				unk2 = pak.ReadShortLowEndian(); // 0x02
+				goalsCount = pak.ReadByte();     // 0x04
+				level = pak.ReadByte();          // 0x05
+				name = pak.ReadString(lenName);  // 0x06
 				lenDesc = pak.ReadByte();
 				desc = pak.ReadString(lenDesc);
 				goals = new string[goalsCount];
@@ -126,7 +126,7 @@ namespace PacketLogConverter.LogPackets
  						questGoalInfo.zoneId2, questGoalInfo.XOff2, questGoalInfo.YOff2, questGoalInfo.unk2);
 					text.Write("\n\tzoneId1:{0,-3} @X1:{1,-5} @Y1:{2,-5} unk1:0x{3:X4}",
  						questGoalInfo.zoneId, questGoalInfo.XOff, questGoalInfo.YOff, questGoalInfo.unk1);
- 					
+
 					StoC_0x02_InventoryUpdate.Item item = goalItems[i];
 					if (item.slot > 0)
 					{

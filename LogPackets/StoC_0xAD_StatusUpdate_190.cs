@@ -42,21 +42,21 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			healthPercent = ReadByte();
-			manaPercent = ReadByte();
-			sitting = ReadByte();
-			endurancePercent = ReadByte();
-			concentrationPercent = ReadByte();
-			unk1 = ReadByte();
+			healthPercent = ReadByte();       // 0x00
+			manaPercent = ReadByte();         // 0x01
+			sitting = ReadByte();             // 0x02
+			endurancePercent = ReadByte();    // 0x03
+			concentrationPercent = ReadByte();// 0x04
+			unk1 = ReadByte();                // 0x05
 //			alive = ReadShort();
-			maxPower = ReadShort();
-			maxEndurance = ReadShort();
-			maxConcentration = ReadShort();
-			maxHealth = ReadShort();
-			health = ReadShort();
-			endurance = ReadShort();
-			power = ReadShort();
-			concentration = ReadShort();
+			maxPower = ReadShort();           // 0x06
+			maxEndurance = ReadShort();       // 0x08
+			maxConcentration = ReadShort();   // 0x0A
+			maxHealth = ReadShort();          // 0x0C
+			health = ReadShort();             // 0x0E
+			endurance = ReadShort();          // 0x10
+			power = ReadShort();              // 0x12
+			concentration = ReadShort();      // 0x14
 		}
 
 		/// <summary>

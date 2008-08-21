@@ -14,12 +14,19 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			petId = ReadShort();
+#if !SKIPUNUSEDINPACKET
 			unused1 = ReadShort();
-			windowAction = ReadByte(); //0-released, 1-normal, 2-just charmed? | Roach: 0-close window, 1-update window, 2-create window
+#else
+			Skip(2);
+#endif
+			windowAction = ReadByte(); // 0-close window, 1-update window, 2-create window
 			aggroLevel = ReadByte(); //1-aggressive, 2-defensive, 3-passive
 			walkState = ReadByte(); //1-follow, 2-stay, 3-goto, 4-here
-			unused2 = ReadByte();
-
+#if !SKIPUNUSEDINPACKET
+			unused1 = ReadShort();
+#else
+			Skip(1);
+#endif
 			ArrayList effects = new ArrayList(8);
 			int effectsCount = ReadByte();
 

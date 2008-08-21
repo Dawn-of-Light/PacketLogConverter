@@ -78,10 +78,10 @@ if hook point count > 1
 		public override void Init()
 		{
 			Position = 0;
-			keepId = ReadShort();
-			componentId = ReadShort();
-			hookPointCount = ReadByte();
-			unk1 = ReadByte();
+			keepId = ReadShort();        // 0x00
+			componentId = ReadShort();   // 0x02
+			hookPointCount = ReadByte(); // 0x04
+			unk1 = ReadByte();           // 0x05
 			if (hookPointCount != 0)
 			{
 				hookpoint = new byte[hookPointCount];

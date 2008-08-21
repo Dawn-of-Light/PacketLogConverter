@@ -33,11 +33,9 @@ namespace PacketLogConverter.LogActions
 			for (int i = selectedIndex - 1; i > 0; --i)
 			{
 				pak = log[i];
-				if (pak.Code == originalPak.Code && pak.Direction == originalPak.Direction && pak.Protocol == originalPak.Protocol)
-				{
-					found = true;
+				found = IsValidPacket(originalPak, pak);
+				if (found)
 					break;
-				}
 			}
 			if (!found)
 				return false;
@@ -100,6 +98,15 @@ namespace PacketLogConverter.LogActions
 				}
 				bytes.Clear();
 			}
+		}
+
+		protected virtual bool IsValidPacket(Packet originalPak, Packet pak)
+		{
+			if (pak.Code == originalPak.Code && pak.Direction == originalPak.Direction && pak.Protocol == originalPak.Protocol)
+			{
+				return true;
+			}
+			return false;
 		}
 	}
 }

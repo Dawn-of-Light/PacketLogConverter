@@ -84,81 +84,81 @@ namespace PacketLogConverter.LogPackets
 
 			Position = 0;
 
-			accountName = ReadString(24);
+			accountName = ReadString(24);                  // 0x00
 			byte cloakHoodUp;
 
 			while (Position + 184 < Length)
 			{
 				CharData_173 charData = new CharData_173();
 
-				charData.charName = ReadString(24);
+				charData.charName = ReadString(24);        // 0x18, 0x00
 
 				// new in 173
-				charData.customized = ReadByte();
-				charData.eyeSize = ReadByte();
-				charData.lipSize = ReadByte();
-				charData.eyeColor = ReadByte();
-				charData.hairColor = ReadByte();
-				charData.faceType = ReadByte();
-				charData.hairStyle = ReadByte();
-				cloakHoodUp = ReadByte();
+				charData.customized = ReadByte();          // 0x30, 0x18
+				charData.eyeSize = ReadByte();             // 0x31, 0x19
+				charData.lipSize = ReadByte();             // 0x32, 0x1A
+				charData.eyeColor = ReadByte();            // 0x33, 0x1B
+				charData.hairColor = ReadByte();           // 0x34, 0x1C
+				charData.faceType = ReadByte();            // 0x35, 0x1D
+				charData.hairStyle = ReadByte();           // 0x36, 0x1E
+				cloakHoodUp = ReadByte();                  // 0x37, 0x1F
 				charData.extensionBoots = (byte)(cloakHoodUp >> 4);
 				charData.extensionGloves = (byte)(cloakHoodUp & 0xF);
-				cloakHoodUp = ReadByte();
+				cloakHoodUp = ReadByte();                  // 0x38, 0x20
 				charData.cloakHoodUp = (byte)(cloakHoodUp & 0xF);
 				charData.extensionTorso = (byte)(cloakHoodUp >> 4);
-				charData.customizationStep = ReadByte();
-				charData.moodType = ReadByte();
-				charData.newGuildEmblem = ReadByte();
+				charData.customizationStep = ReadByte();   // 0x39, 0x21
+				charData.moodType = ReadByte();            // 0x3A, 0x22
+				charData.newGuildEmblem = ReadByte();      // 0x3B, 0x23
 				ArrayList tmp = new ArrayList(12);
 				for (byte j = 0; j < 12; j++)
-					tmp.Add(ReadByte());
+					tmp.Add(ReadByte());                   // 0x3C-0x47, 0x24-0x2F
 				charData.unk3 = (byte[])tmp.ToArray(typeof (byte));
-				charData.zoneDescription = ReadString(24);
-				charData.className = ReadString(24);
-				charData.raceName = ReadString(24);
-				charData.level = ReadByte();
-				charData.classID = ReadByte();
-				charData.realm = ReadByte();
-				charData.temp = ReadByte();
-				charData.gender = (byte)((charData.temp >> 4) & 1);
+				charData.zoneDescription = ReadString(24); // 0x48, 0x30
+				charData.className = ReadString(24);       // 0x60, 0x48
+				charData.raceName = ReadString(24);        // 0x78, 0x60
+				charData.level = ReadByte();               // 0x90, 0x78 (if = 200 not allow enter)
+				charData.classID = ReadByte();             // 0x91, 0x79
+				charData.realm = ReadByte();               // 0x92, 0x7A
+				charData.temp = ReadByte();                // 0x93, 0x7B
+				charData.gender = (byte)((charData.temp >> 4) & 3);
 				charData.race = (byte)((charData.temp & 0x0F) + ((charData.temp & 0x40) >> 2));
-				charData.siStartLocation = (byte)((charData.temp & 0x80) >> 7);
-				charData.model = ReadShortLowEndian();
-				charData.regionID = ReadByte();
-				charData.regionID2 = ReadByte();
-				charData.databaseId = ReadIntLowEndian();
-				charData.statStr = ReadByte();
-				charData.statDex = ReadByte();
-				charData.statCon = ReadByte();
-				charData.statQui = ReadByte();
-				charData.statInt = ReadByte();
-				charData.statPie = ReadByte();
-				charData.statEmp = ReadByte();
-				charData.statChr = ReadByte(); // 154th byte
+				charData.siStartLocation = (byte)(charData.temp >> 7);
+				charData.model = ReadShortLowEndian();     // 0x94, 0x7C
+				charData.regionID = ReadByte();            // 0x96, 0x7E
+				charData.regionID2 = ReadByte();           // 0x97, 0x7F
+				charData.databaseId = ReadIntLowEndian();  // 0x98, 0x80 // if level == 200 then this is time not allowed enter
+				charData.statStr = ReadByte();             // 0x9C, 0x84
+				charData.statDex = ReadByte();             // 0x9D, 0x85
+				charData.statCon = ReadByte();             // 0x9E, 0x86
+				charData.statQui = ReadByte();             // 0x9F, 0x87
+				charData.statInt = ReadByte();             // 0xA0, 0x88
+				charData.statPie = ReadByte();             // 0xA1, 0x89
+				charData.statEmp = ReadByte();             // 0xA2, 0x8A
+				charData.statChr = ReadByte(); // 154th byte  0xA3, 0x8B
 
 				charData.armorModelBySlot = new SortedList(0x1D-0x15);
-				for (int slot = 0x15; slot < 0x1D; slot++)
+				for (int slot = 0x15; slot < 0x1D; slot++) // 0xA4, 0x8C+
 				{
 					charData.armorModelBySlot.Add(slot, ReadShortLowEndian());
 				}
 
-				charData.armorColorBySlot = new SortedList(0x1D-0x15);
+				charData.armorColorBySlot = new SortedList(0x1D-0x15); // 0xB4, 0x9C+
 				for (int slot = 0x15; slot < 0x1D; slot++)
 				{
 					charData.armorColorBySlot.Add(slot, ReadShortLowEndian());
 				}
 
-				charData.weaponModelBySlot = new SortedList(0x0E-0x0A);
+				charData.weaponModelBySlot = new SortedList(0x0E-0x0A); // 0xC4, 0xAC+
 				for (int slot = 0x0A; slot < 0x0E; slot++)
 				{
 					charData.weaponModelBySlot.Add(slot, ReadShortLowEndian());
 				}
 
-				charData.activeRightSlot = ReadByte();
-				charData.activeLeftSlot = ReadByte();
-				charData.siZone = ReadByte();
-				charData.unk2 = ReadByte();
+				charData.activeRightSlot = ReadByte();     // 0xCC, 0xB4
+				charData.activeLeftSlot = ReadByte();      // 0xCD, 0xB5
+				charData.siZone = ReadByte();              // 0xCE, 0xB6
+				charData.unk2 = ReadByte();                // 0xCD, 0xB7
 
 				temp.Add(charData);
 			}

@@ -10,7 +10,7 @@ namespace PacketLogConverter.LogPackets
 		protected ushort houseOid;
 		protected ushort rotateAngle;
 		protected byte place;
-		protected byte unk1;
+		protected byte unk1; // unused
 
 		#region public access properties
 
@@ -35,11 +35,11 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			index = ReadShort();
-			houseOid = ReadShort();
-			rotateAngle = ReadShort();
-			place = ReadByte();
-			unk1 = ReadByte();
+			index = ReadShort();      // 0x00
+			houseOid = ReadShort();   // 0x02
+			rotateAngle = ReadShort();// 0x04
+			place = ReadByte();       // 0x06
+			unk1 = ReadByte();        // 0x07
 		}
 
 		/// <summary>

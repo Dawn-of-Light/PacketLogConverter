@@ -36,12 +36,12 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			playerX = ReadInt();
-			playerY = ReadInt();
-			idLine = ReadByte();
-			type = ReadByte();
-			row = ReadByte();
-			skillIndex = ReadByte();
+			playerX = ReadInt();    // 0x00
+			playerY = ReadInt();    // 0x04
+			idLine = ReadByte();    // 0x08
+			type = ReadByte();      // 0x09
+			row = ReadByte();       // 0x0A
+			skillIndex = ReadByte();// 0x0B
 		}
 
 		/// <summary>

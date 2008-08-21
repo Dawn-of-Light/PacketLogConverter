@@ -54,16 +54,16 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			keepId = ReadShort();
-			unk1 = ReadShort();
-			keepX = ReadInt();
-			keepY = ReadInt();
-			heading = ReadShort();
-			realm = ReadByte();
-			level = ReadByte();
-			unk2 = ReadShort();
-			model = ReadByte();
-			unk3 = ReadByte();
+			keepId = ReadShort(); // 0x00
+			unk1 = ReadShort();   // 0x02
+			keepX = ReadInt();    // 0x04
+			keepY = ReadInt();    // 0x08
+			heading = ReadShort();// 0x0C
+			realm = ReadByte();   // 0x0E
+			level = ReadByte();   // 0x0F
+			unk2 = ReadShort();   // 0x10
+			model = ReadByte();   // 0x12
+			unk3 = ReadByte();    // 0x13
 		}
 
 		/// <summary>

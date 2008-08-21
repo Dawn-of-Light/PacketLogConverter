@@ -17,6 +17,14 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
+		public enum eOperation: uint
+		{
+			Delete = 0x12345678,
+			Create = 0x23456789,
+			Customize = 0x3456789A,
+			Unknown = 0x456789AB,
+		}
+
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 			text.Write("account name: \"{0}\"\n", accountName);
@@ -27,7 +35,8 @@ namespace PacketLogConverter.LogPackets
 				text.Write("[{12}]\tname:\"{0}\" zone:\"{1}\" class:\"{2}\" race:\"{3}\" level:{4} classId:{5} realm:{6} gender:{7} race:{8} model:0x{9:X4} regId1:{10} databaseId:{11}",
 					ch.charName, ch.zoneDescription, ch.className, ch.raceName, ch.level, ch.classID, ch.realm, ch.gender, ch.race, ch.model, ch.regionID, ch.databaseId, i);
 				if (flagsDescription)
-					text.Write(" (model:0x{0:X4} face?:{1} size:{2})", ch.model & 0x7FF, ch.model >> 13, (ch.model >> 11) & 3);
+					text.Write(" (model:0x{0:X4} face:{1} size:{2})", ch.model & 0x7FF, ch.model >> 13, (ch.model >> 11) & 3);
+				// race + gender + face + hair style = icon (fig3tofigmain.csv)
 				text.Write("\n\tstr:{0} dex:{1} con:{2} qui:{3} int:{4} pie:{5} emp:{6} chr:{7}", ch.statStr, ch.statDex, ch.statCon, ch.statQui, ch.statInt, ch.statPie, ch.statEmp, ch.statChr);
 
 				text.Write("\n\tarmor models: (");
@@ -90,7 +99,7 @@ namespace PacketLogConverter.LogPackets
 				charData.charName = ReadString(24);
 				Skip(11); // 173 customize info
 				ArrayList tmp = new ArrayList(13);
-				for (byte j=0; j<13; j++)
+				for (byte j = 0; j < 13; j++)
 					tmp.Add(ReadByte());
 				charData.unk3 = (byte[])tmp.ToArray(typeof (byte));
 				charData.zoneDescription = ReadString(24);
@@ -178,6 +187,8 @@ namespace PacketLogConverter.LogPackets
 			public byte siZone;
 			public byte unk2;
 			public byte[] unk3;
+			public uint operation;
+			public byte unk4;
 		}
 
 		/// <summary>

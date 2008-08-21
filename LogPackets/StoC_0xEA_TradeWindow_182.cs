@@ -47,12 +47,12 @@ namespace PacketLogConverter.LogPackets
 			if ((item.flag & 0x08) == 0x08)
 			{
 				item.effectIcon = ReadShort();
-				item.effectName = ReadPascalString();
+				item.effectName = ReadPascalString(); // 0x7F length cap
 			}
 			if ((item.flag & 0x10) == 0x10)
 			{
 				item.effectIcon2 = ReadShort();
-				item.effectName2 = ReadPascalString();
+				item.effectName2 = ReadPascalString(); // 0x7F length cap
 			}
 			item.effect = ReadByte();
 			item.name = ReadPascalString();

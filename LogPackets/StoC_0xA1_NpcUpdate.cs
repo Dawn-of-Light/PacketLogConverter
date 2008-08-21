@@ -95,27 +95,27 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			temp = ReadShort();
+			temp = ReadShort();          // 0x00
 			speed = (short)(temp & 0x7FF);
 			if ((temp & 0x800) == 0x800)
 				speed = (short)-speed;
-			heading = ReadShort();
+			heading = ReadShort();       // 0x02
 			speedZ = (short)(((temp & 0x7000) >> 8) | (heading >> 12)); // ZSpeed in 0xA1 = 1/4 0xDA ZSpeed
 			if ((temp & 0x8000) == 0x8000)
 				speedZ = (short)-speedZ;
 			heading = (ushort)(heading & 0xFFF);
-			currentZoneX = ReadShort();
-			targetZoneX = ReadShort();
-			currentZoneY = ReadShort();
-			targetZoneY = ReadShort();
-			currentZoneZ = ReadShort();
-			targetZoneZ = ReadShort();
-			npcOID = ReadShort();
-			targetOID = ReadShort();
-			healthPercent = ReadByte();
-			flags = ReadByte();
-			currentZoneId = (ushort)(ReadByte() | ((flags & 0x04) << 6));
-			targetZoneId = (ushort)(ReadByte() | ((flags & 0x08) << 5));
+			currentZoneX = ReadShort();  // 0x04
+			targetZoneX = ReadShort();   // 0x06
+			currentZoneY = ReadShort();  // 0x08
+			targetZoneY = ReadShort();   // 0x0A
+			currentZoneZ = ReadShort();  // 0x0C
+			targetZoneZ = ReadShort();   // 0x0E
+			npcOID = ReadShort();        // 0x10
+			targetOID = ReadShort();     // 0x12
+			healthPercent = ReadByte();  // 0x14
+			flags = ReadByte();          // 0x15
+			currentZoneId = (ushort)(ReadByte() | ((flags & 0x04) << 6)); // 0x16
+			targetZoneId = (ushort)(ReadByte() | ((flags & 0x08) << 5));  // 0x17
 		}
 
 		/// <summary>

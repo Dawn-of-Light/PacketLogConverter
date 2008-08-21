@@ -7,8 +7,8 @@ namespace PacketLogConverter.LogPackets
 	public class StoC_0xB7_RegionChange_174: StoC_0xB7_RegionChange_173
 	{
 		protected byte serverId;
-		protected byte unk3_174;
-		protected ushort unk4_174;
+		protected byte unk3_174; // unused
+		protected ushort unk4_174; // unused
 
 		#region public access properties
 
@@ -21,7 +21,11 @@ namespace PacketLogConverter.LogPackets
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 			base.GetPacketDataString(text, flagsDescription);
-			text.Write(" serverId:0x{0:X2} unk3_174:0x{1:X2} unk3_174:0x{2:X4}", serverId, unk3_174, unk4_174);
+			text.Write(" serverId:0x{0:X2}", serverId);
+			if (flagsDescription)
+			{
+				text.Write(" unk3_174:0x{0:X2} unk3_174:0x{1:X4}", unk3_174, unk4_174);
+			}
 		}
 
 		/// <summary>

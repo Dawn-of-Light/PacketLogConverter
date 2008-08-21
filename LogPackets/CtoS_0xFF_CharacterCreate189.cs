@@ -53,6 +53,7 @@ namespace PacketLogConverter.LogPackets
 				text.Write("\n\textensionTorso:0x{0:X2} extensionGloves:0x{1:X2} extensionBoots:0x{2:X2}", ch.extensionTorso, ch.extensionGloves, ch.extensionBoots);
 				text.Write(")\n\tactiveRightSlot:0x{0:X2} activeLeftSlot:0x{1:X2} SIzone:0x{2:X2} clienTypeRequired:{3}\n", ch.activeRightSlot, ch.activeLeftSlot, ch.siZone, ch.regionID2);
 
+				text.Write("\toperation:0x{0:X8}({1})\n", ch.operation, (eOperation)ch.operation);
 				if (ch.unk3.Length > 0)
 				{
 					text.Write("\tunk3:(");
@@ -62,6 +63,7 @@ namespace PacketLogConverter.LogPackets
 							text.Write(',');
 						text.Write("0x{0:X2}", ch.unk3[j]);
 					}
+					text.Write(",0x{0:X2}", ch.unk4);
 					text.Write(")\n");
 				}
 			}

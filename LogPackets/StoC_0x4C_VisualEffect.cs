@@ -111,9 +111,9 @@ namespace PacketLogConverter.LogPackets
 
 			public override void Init(StoC_0x4C_VisualEffect pak)
 			{
-				flag = pak.ReadByte();
-				unk1 = pak.ReadShort();
-				unk2 = pak.ReadShort();
+				flag = pak.ReadByte();  // 0x03
+				unk1 = pak.ReadShort(); // 0x04
+				unk2 = pak.ReadShort(); // 0x06
 			}
 
 			public override void MakeString(TextWriter text, bool flagsDescription)
@@ -349,9 +349,9 @@ namespace PacketLogConverter.LogPackets
 
 			public override void Init(StoC_0x4C_VisualEffect pak)
 			{
-				flag = pak.ReadByte();
-				unk1 = pak.ReadShort();
-				time = (short)pak.ReadShort();
+				flag = pak.ReadByte();         // 0x03
+				unk1 = pak.ReadShort();        // 0x04
+				time = (short)pak.ReadShort(); // 0x06
 			}
 
 			public override void MakeString(TextWriter text, bool flagsDescription)

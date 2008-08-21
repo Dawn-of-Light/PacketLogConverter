@@ -25,7 +25,8 @@ namespace PacketLogConverter.LogActions
 			int selectedIndex = selectedPacket.PacketIndex;
 
 			StoC_0x7F_UpdateIcons.Effect[] effects = new StoC_0x7F_UpdateIcons.Effect[40];
-			for (int i = 0; i < selectedIndex; i++)
+			StoC_0x75_SetConcentrationList concPak = null;
+			for (int i = 0; i <= selectedIndex; i++)
 			{
 				Packet pak = log[i];
 				if (pak is StoC_0x7F_UpdateIcons)
@@ -33,6 +34,10 @@ namespace PacketLogConverter.LogActions
 					StoC_0x7F_UpdateIcons.Effect[] listeffects = (pak as StoC_0x7F_UpdateIcons).Effects;
 					for (int j = 0; j < listeffects.Length; j++)
 						effects[listeffects[j].iconIndex] = listeffects[j];
+				}
+				else if (pak is StoC_0x75_SetConcentrationList)
+				{
+					concPak = pak as StoC_0x75_SetConcentrationList;
 				}
 			}
 
@@ -43,6 +48,12 @@ namespace PacketLogConverter.LogActions
 				if (effect.name != null && effect.name != "")
 					str.AppendFormat("iconIndex:{0,-2} {6} immunity:0x{1:X2} icon:0x{2:X4} remainingTime:{3,-4} internalId:{4,-5} name:\"{5}\"\n",
 						effect.iconIndex, effect.immunity, effect.icon, (short)effect.remainingTime, effect.internalId, effect.name, effect.unk1 == 0xFF ? "SKL" : "SPL");
+			}
+			if (concPak != null && concPak.EffectsCount > 0)
+			{
+				str.Append("\n");
+				str.Append(concPak.ToString());
+				str.Append(concPak.GetPacketDataString(true));
 			}
 			StoC_0x16_VariousUpdate.Skill[] Skills = null;
 			for (int i = selectedIndex; i >= 0; i--)
@@ -68,6 +79,8 @@ namespace PacketLogConverter.LogActions
 			int index = -1;
 			if (effects.Length > 0)
 				str.Append("\n");
+			if (Skills != null)
+			{
 			if (Skills.Length > 0)
 				str.Append("Skills:");
 			foreach(StoC_0x16_VariousUpdate.Skill skill in Skills)
@@ -83,6 +96,7 @@ namespace PacketLogConverter.LogActions
 				str.AppendFormat("[{0,-2}] ", index);
 				str.AppendFormat("level:{0,-2} type:{1}({2,-14}) stlOpen:0x{3:X4} bonus:{4,-3} icon:0x{5:X4} name:\"{6}\"",
 						skill.level, (int)skill.page, skill.page.ToString().ToLower(), skill.stlOpen, skill.bonus, skill.icon, skill.name);
+				}
 			}
 			InfoWindowForm infoWindow = new InfoWindowForm();
 			infoWindow.Text = "Player effects info (right click to close)";

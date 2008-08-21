@@ -9,8 +9,9 @@ namespace PacketLogConverter.LogPackets
 	{
 		protected ushort oid;
 		protected ushort newModel;
-		protected ushort unk1;
-		protected ushort unk2;
+		protected byte size;
+		protected byte unk1; // unused
+		protected ushort unk2; // unused
 
 		/// <summary>
 		/// Gets the object ids of the packet.
@@ -25,7 +26,8 @@ namespace PacketLogConverter.LogPackets
 
 		public ushort Oid { get { return oid; } }
 		public ushort NewModel { get { return newModel; } }
-		public ushort Unk1 { get { return unk1; } }
+		public byte Size { get { return size; } }
+		public byte Unk1 { get { return unk1; } }
 		public ushort Unk2 { get { return unk2; } }
 
 		#endregion
@@ -33,7 +35,9 @@ namespace PacketLogConverter.LogPackets
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 
-			text.Write("oid:0x{0:X4} newModel:0x{1:X4} unk1:0x{2:X4} unk2:0x{3:X4}", oid, newModel, unk1, unk2);
+			text.Write("oid:0x{0:X4} newModel:0x{1:X4} size:{2,-2}({4,-3}) unk1:0x{3:X2}", oid, newModel, size, unk1, size * 2);
+			if (flagsDescription)
+				text.Write(" unk2:0x{0:X4}", unk2);
 
 		}
 
@@ -44,10 +48,11 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			oid = ReadShort();
-			newModel = ReadShort();
-			unk1 = ReadShort();
-			unk2 = ReadShort();
+			oid = ReadShort();     // 0x00
+			newModel = ReadShort();// 0x02
+			size = ReadByte();     // 0x04
+			unk1 = ReadByte();     // 0x05
+			unk2 = ReadShort();    // 0x06
 		}
 
 		/// <summary>

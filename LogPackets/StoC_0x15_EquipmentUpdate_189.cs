@@ -41,12 +41,12 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			oid = ReadShort();
-			visibleWeaponSlots = ReadByte();
-			speed = ReadByte();
-			m_helmAndCloakVisibile = ReadByte();
-			hoodUp = ReadByte();
-			count = ReadByte();
+			oid = ReadShort();                   // 0x00
+			visibleWeaponSlots = ReadByte();     // 0x02
+			speed = ReadByte();                  // 0x03
+			m_helmAndCloakVisibile = ReadByte(); // 0x04
+			hoodUp = ReadByte();                 // 0x05
+			count = ReadByte();                  // 0x06
 
 			items = new Item[count];
 
@@ -55,7 +55,7 @@ namespace PacketLogConverter.LogPackets
 				Item item = new Item();
 
 				item.guildBit_176 = false;
-				byte slot = ReadByte();
+				byte slot = ReadByte();          // 0x07
 				item.slot = (byte)(slot & 0x7F);
 				if (item.slot != slot)
 					item.guildBit_176 = true;

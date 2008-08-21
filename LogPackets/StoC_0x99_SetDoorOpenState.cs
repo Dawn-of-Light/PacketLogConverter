@@ -9,14 +9,14 @@ namespace PacketLogConverter.LogPackets
 		protected uint doorId;
 		protected byte openState;
 		protected byte doorSoundId;
-		protected ushort unk2;
+		protected byte unk1;
 
 		#region public access properties
 
 		public uint DoorId { get { return doorId; } }
 		public byte OpenState { get { return openState; } }
 		public byte SoundId { get { return doorSoundId; } }
-		public ushort Unk2 { get { return unk2; } }
+		public byte Unk1 { get { return unk1; } }
 
 		#endregion
 
@@ -43,7 +43,7 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("doorId:0x{0:X8} openState:{1} soundId:{2} unk2:0x{3:X4}", doorId, openState, doorSoundId, unk2);
+			text.Write("doorId:0x{0:X8} openState:{1} soundId:{2} unk1:0x{3:X2}", doorId, openState, doorSoundId, unk1);
 			if (flagsDescription)
 			{
 				uint doorType = doorId / 100000000;
@@ -82,10 +82,11 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			doorId = ReadInt();
-			openState = ReadByte();
-			doorSoundId = ReadByte();
-			unk2 = ReadShort();
+			doorId = ReadInt();      // 0x00
+			openState = ReadByte();  // 0x04
+			doorSoundId = ReadByte();// 0x05
+			unk1 = ReadByte();       // 0x06
+			Skip(1); // unused
 		}
 
 		/// <summary>

@@ -26,17 +26,17 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			playerOid = ReadShort(); //This is the player's objectid not Sessionid!!!
-			z = ReadShort();
-			x = ReadInt();
-			y = ReadInt();
-			heading = ReadShort();
-			flags = ReadByte();
-			unk1 = ReadByte();
-			zoneXOffset = ReadShort();
-			zoneYOffset = ReadShort();
-			region = ReadShort();
-			server = ReadPascalString();
+			playerOid = ReadShort();    // 0x00
+			z = ReadShort();            // 0x02
+			x = ReadInt();              // 0x04
+			y = ReadInt();              // 0x08
+			heading = ReadShort();      // 0x0C
+			flags = ReadByte();         // 0x0E
+			unk1 = ReadByte();          // 0x0F
+			zoneXOffset = ReadShort();  // 0x10
+			zoneYOffset = ReadShort();  // 0x12
+			region = ReadShort();       // 0x14
+			server = ReadPascalString();// 0x16
 			unk2 = ReadByte();
 		}
 

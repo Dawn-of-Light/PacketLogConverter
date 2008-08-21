@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-    <project name="Packetparser" default="debug" basedir=".">
+    <project name="Packetparser" default="release" basedir=".">
       
       <target name="clean" description="Delete all previously compiled binaries.">
           <delete>
@@ -24,7 +24,9 @@
       
       <target name="build">
         <delete dir="${configuration.name}" failonerror="false" />
-        <solution configuration="${configuration.name}" solutionfile="./packetlogconverter.sln">
-        </solution>
+   		<property name="msbuild.exe" value="C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\MSBuild.exe" overwrite="false" />
+   		<exec program="${msbuild.exe}">
+   			<arg value="./packetlogconverter.sln" />
+   		</exec>
       </target>
     </project>

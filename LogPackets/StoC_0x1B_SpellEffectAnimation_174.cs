@@ -20,12 +20,12 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			casterOid = ReadShort();
-			spellId = ReadShort();
-			targetOid = ReadShort();
-			boltTime = ReadShort();
-			noSound = ReadByte();
-			success = ReadByte();
+			casterOid = ReadShort(); // 0x00
+			spellId = ReadShort();   // 0x02
+			targetOid = ReadShort(); // 0x04
+			boltTime = ReadShort();  // 0x06
+			noSound = ReadByte();    // 0x08
+			success = ReadByte();    // 0x09
 		}
 
 		/// <summary>

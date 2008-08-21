@@ -36,7 +36,7 @@ namespace PacketLogConverter.LogPackets
 		// byte
 		// uint
 		// pascalString
-		
+
 
 		/// <summary>
 		/// Gets the object ids of the packet.
@@ -72,14 +72,14 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 		#region Filter Helpers
-		
+
 		public SkillsUpdate         InSkillsUpdate         { get { return subData as SkillsUpdate; } }
 		public SpellsListUpdate     InSpellsListUpdate     { get { return subData as SpellsListUpdate; } }
 		public PlayerUpdate         InPlayerUpdate         { get { return subData as PlayerUpdate; } }
 		public PlayerStateUpdate    InPlayerStateUpdate    { get { return subData as PlayerStateUpdate; } }
 		public PlayerGroupUpdate    InPlayerGroupUpdate    { get { return subData as PlayerGroupUpdate; } }
 		public CraftingSkillsUpdate InCraftingSkillsUpdate { get { return subData as CraftingSkillsUpdate; } }
-		
+
 		#endregion
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
@@ -138,7 +138,7 @@ namespace PacketLogConverter.LogPackets
 			Styles = 0x02,
 			Spells = 0x03,
 			Songs = 0x04,
-			SavageAbility = 0x05,
+			AbilitiesSpell = 0x05,
 			RealmAbilities = 0x06,
 		}
 

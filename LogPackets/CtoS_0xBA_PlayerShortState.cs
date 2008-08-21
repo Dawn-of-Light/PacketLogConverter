@@ -10,21 +10,10 @@ namespace PacketLogConverter.LogPackets
 		protected ushort heading;
 		protected byte unk1;
 		protected byte flags;
-		protected ushort unk2;
+		protected byte unk2;
+		protected byte rideSlot;
 		protected byte health;
 		protected byte state;
-
-		public enum PlrState : byte
-		{
-			Stand = 0,
-			Swim = 1,
-			Jump_land = 2,
-			Jump_rise = 3,
-			Sit = 4,
-			Dead = 5,
-			Ride = 6,
-			Climb = 7,
-		}
 
 		#region public access properties
 
@@ -32,7 +21,8 @@ namespace PacketLogConverter.LogPackets
 		public ushort Heading { get { return heading; } }
 		public byte Unk1 { get { return unk1; } }
 		public byte Flags { get { return flags ; } }
-		public ushort Unk2 { get { return unk2; } }
+		public byte Unk2 { get { return unk2; } }
+		public byte RideSlot { get { return rideSlot; } }
 		public byte Health { get { return health; } }
 		public byte State { get { return state; } }
 
@@ -40,13 +30,13 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("sessionId:0x{0:X4} heading:0x{1:X4} flags:0x{2:X2} health:{3,3}% unk1:0x{5:X2} unk2:0x{6:X4} state:{4}",
-				sessionId, heading, flags, health & 0x7F, state, unk1, unk2);
+			text.Write("sessionId:0x{0:X4} heading:0x{1:X4} flags:0x{2:X2} health:{3,3}% unk1:0x{5:X2} unk2:0x{6:X2} bSlot:0x{7:X2} state:{4}",
+				sessionId, heading, flags, health & 0x7F, state, unk1, unk2, rideSlot);
 			if (flagsDescription)
 			{
-				string status = state > 0 ? ((PlrState)state).ToString() : "";
+				string status = state > 0 ? ((StoC_0xBA_PlayerShortState.PlrState)state).ToString() : "";
 				if ((flags & 0x01) == 0x01)
-					status += ",UNKx01";
+					status += ",Wireframe";
 				if ((flags & 0x02) == 0x02)
 					status += ",Stealth";
 				if ((flags & 0x04) == 0x04)
@@ -79,7 +69,8 @@ namespace PacketLogConverter.LogPackets
 			heading = ReadShort();
 			unk1 = ReadByte();
 			flags = ReadByte();
-			unk2 = ReadShort();
+			unk2 = ReadByte();
+			rideSlot = ReadByte();
 			health = ReadByte();
 			state = ReadByte();
 		}

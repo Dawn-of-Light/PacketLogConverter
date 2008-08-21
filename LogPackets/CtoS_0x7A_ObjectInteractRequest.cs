@@ -42,10 +42,10 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			playerX = ReadInt();
-			playerY = ReadInt();
-			sessionId = ReadShort();
-			objectOid = ReadShort();
+			playerX = ReadInt();     // 0x00
+			playerY = ReadInt();     // 0x04
+			sessionId = ReadShort(); // 0x08
+			objectOid = ReadShort(); // 0x0A
 		}
 
 		/// <summary>

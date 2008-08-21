@@ -57,15 +57,15 @@ namespace PacketLogConverter.LogPackets
 		public override void Init()
 		{
 			Position = 0;
-			objectOid = ReadShort();
-			componentId = ReadShort();
-			hookPointId = ReadShort();
-			flag1 = ReadByte();
-			flag2 = ReadByte();
-			flag3 = ReadByte();
-			itemCount = ReadByte();
-			unk1 = ReadByte();
-			unk2 = ReadByte();
+			objectOid = ReadShort();   // 0x00
+			componentId = ReadShort(); // 0x02
+			hookPointId = ReadShort(); // 0x04
+			flag1 = ReadByte();        // 0x06
+			flag2 = ReadByte();        // 0x07
+			flag3 = ReadByte();        // 0x08
+			itemCount = ReadByte();    // 0x09
+			unk1 = ReadByte();         // 0x0A
+			unk2 = ReadByte();         // 0x0B
 
 			items = new StoC_0x17_MerchantWindow.MerchantItem[itemCount];
 

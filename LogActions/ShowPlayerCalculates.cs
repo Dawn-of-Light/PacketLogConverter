@@ -482,7 +482,12 @@ namespace PacketLogConverter.LogActions
 			for (int i = 0; i <= selectedIndex; i++)
 			{
 				Packet pak = log[i];
-				if (pak is StoC_0x02_InventoryUpdate)
+				if (pak is StoC_0x20_PlayerPositionAndObjectID_171)
+				{
+					VisibleSlots = 0xFF;
+					m_inventoryItems.Clear();
+				}
+				else if (pak is StoC_0x02_InventoryUpdate)
 				{
 					StoC_0x02_InventoryUpdate invPack = (StoC_0x02_InventoryUpdate)pak;
 					if ((invPack.PreAction >= 0 && invPack.PreAction <= 1) || (invPack.PreAction >= 10 && invPack.PreAction <= 11))

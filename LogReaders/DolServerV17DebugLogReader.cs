@@ -27,6 +27,7 @@ namespace PacketLogConverter.LogReaders
 
 			using(StreamReader s = new StreamReader(stream, Encoding.ASCII))
 			{
+				int indexOfPacketHandler;
 				while ((line = s.ReadLine()) != null)
 				{
 					try
@@ -36,39 +37,59 @@ namespace PacketLogConverter.LogReaders
 								(int)(stream.Length>>10));
 
 						if (line.Length < 1) continue;
-						if (line.IndexOf("PacketHandler.PacketProcessor - ===>") >= 0)
+						if ((indexOfPacketHandler = line.IndexOf("PacketHandler.PacketProcessor - ")) >= 0)
 						{
-							int code = line.IndexOf("> Packet 0x");
-							if (code >= 0 && Util.ParseHexFast(line, code+11, 2, out code))
+							line = line.Substring(indexOfPacketHandler + 32);
+							if (line.StartsWith("===>"))
 							{
-								data = ReadPacketData(s);
-								pak = new Packet(data.Length);
-								pak.Direction = ePacketDirection.ClientToServer;
-								pak.Protocol = ePacketProtocol.TCP;
-								pak.Code = (byte)code;
-								pak.Time = ParseTime(line);
-								pak.Write(data, 0, data.Length);
+								int code = line.IndexOf("> Packet 0x");
+								if (code >= 0 && Util.ParseHexFast(line, code + 11, 2, out code))
+								{
+									data = ReadPacketData(s);
+									pak = new Packet(data.Length);
+									pak.Direction = ePacketDirection.ClientToServer;
+									pak.Protocol = ePacketProtocol.TCP;
+									pak.Code = (byte)code;
+									pak.Time = ParseTime(line);
+									pak.Write(data, 0, data.Length);
+								}
 							}
-						}
-						else if (line.IndexOf("PacketHandler.PacketProcessor - <===") >= 0)
-						{
-							int code = line.IndexOf("> Packet 0x");
-							if (code >= 0 && Util.ParseHexFast(line, code+11, 2, out code))
+							else if (line.StartsWith("Sending packets longer than 2048"))
 							{
-								data = ReadPacketData(s);
-								if (data.Length < 3)
+								int code = line.IndexOf("Packet code: 0x");
+								if (code >= 0 && Util.ParseHexFast(line, code + 15, 2, out code))
+								{
+									data = ReadPacketData(s);
+									if (data.Length < 3)
+										continue;
+									pak = new Packet(data.Length - 3);
+									pak.Protocol = ePacketProtocol.TCP; // can't detect protocol
+									pak.Direction = ePacketDirection.ServerToClient;
+									pak.Code = (byte)code;
+									pak.Time = ParseTime(line);
+									pak.Write(data, 3, data.Length - 3);
+								}
+							}
+							else if (line.StartsWith("<==="))
+							{
+								int code = line.IndexOf("> Packet 0x");
+								if (code >= 0 && Util.ParseHexFast(line, code + 11, 2, out code))
+								{
+									data = ReadPacketData(s);
+									if (data.Length < 3)
+										continue;
+									pak = new Packet(data.Length - 3);
+									pak.Protocol = ePacketProtocol.TCP; // can't detect protocol
+									pak.Direction = ePacketDirection.ServerToClient;
+									pak.Code = (byte)code;
+									pak.Time = ParseTime(line);
+									pak.Write(data, 3, data.Length - 3);
+								}
+								else
+								{
+									badLines.Add("not GSPacketIn?  : " + line);
 									continue;
-								pak = new Packet(data.Length - 3);
-								pak.Protocol = ePacketProtocol.TCP; // can't detect protocol
-								pak.Direction = ePacketDirection.ServerToClient;
-								pak.Code = (byte)code;
-								pak.Time = ParseTime(line);
-								pak.Write(data, 3, data.Length - 3);
-							}
-							else
-							{
-								badLines.Add("not GSPacketIn?  : " + line);
-								continue;
+								}
 							}
 						}
 						else

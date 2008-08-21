@@ -75,10 +75,10 @@ namespace PacketLogConverter.LogPackets
 		public override void Init()
 		{
 			Position = 0;
-			keepId = ReadShort();
-			realm = ReadByte();
-			level = ReadByte();
-			count = ReadByte();
+			keepId = ReadShort();         // 0x00
+			realm = ReadByte();           // 0x02
+			level = ReadByte();           // 0x03
+			count = ReadByte();           // 0x04
 			components = new byte[count];
 			for (int i = 0; i < count; i++)
 			{

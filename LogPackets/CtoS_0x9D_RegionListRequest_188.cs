@@ -16,20 +16,22 @@ namespace PacketLogConverter.LogPackets
 			flag = ReadByte();
 			if (flag > 0)
 			{
-				resolution = ReadShort();
-				options = ReadShort();
-				unk1 = ReadInt();
-				figureVersion = ReadInt();
-				figureVersion1 = ReadByte();
-				skin = ReadByte();
-				genderRace = ReadByte();
-				regionExpantions = ReadByte();
-				classId = ReadByte();
-				expantions = ReadByte();
-				VedioVendorId1 = ReadIntLowEndian();
-				VedioVendorId2 = ReadIntLowEndian();
-				osType = ReadByte();
-				zero = ReadByte();
+				resolution = ReadShort();            // 0x00
+				options = ReadShort();               // 0x02
+				memory = ReadByte();                 // 0x04
+				unk1 = ReadShort();                  // 0x05
+				unk2 = ReadByte();                   // 0x07
+				figureVersion = ReadInt();           // 0x08
+				figureVersion1 = ReadByte();         // 0x0C
+				skin = ReadByte();                   // 0x0D
+				genderRace = ReadByte();             // 0x0E
+				regionExpantions = ReadByte();       // 0x0F
+				classId = ReadByte();                // 0x10
+				expantions = ReadByte();             // 0x11
+				VedioVendorId1 = ReadIntLowEndian(); // 0x12
+				VedioVendorId2 = ReadIntLowEndian(); // 0x16
+				osType = ReadByte();                 // 0x1A
+				zero = ReadByte();                   // 0x1B
 				if (genderRace > 150)
 				{
 					race = (byte)(genderRace - 150);

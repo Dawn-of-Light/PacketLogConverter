@@ -18,7 +18,7 @@ namespace PacketLogConverter.LogPackets
 		/// <value>The object ids.</value>
 		public ushort[] ObjectIds
 		{
-			get { return new ushort[] { playerOid }; }
+			get { return new ushort[] { playerOid, house}; }
 		}
 
 		#region public access properties
@@ -46,12 +46,12 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			x = ReadInt();
-			y = ReadInt();
-			playerOid = ReadShort(); //This is the player's objectid not Sessionid!!!
-			z = ReadShort();
-			heading = ReadShort();
-			house = ReadShort();
+			x = ReadInt();          // 0x00
+			y = ReadInt();          // 0x04
+			playerOid = ReadShort();// 0x08 //This is the player's objectid not Sessionid!!!
+			z = ReadShort();        // 0x0A
+			heading = ReadShort();  // 0x0C
+			house = ReadShort();    // 0x0E
 		}
 
 		/// <summary>

@@ -18,14 +18,14 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-
-			text.Write("sessionId:0x{0:X4} heading:0x{1:X4} flags:0x{2:X2} health:{3,3}% unk1:0x{5:X2} unk2:0x{6:X4} state:{4} mana:{7,3}% endurance:{8,3}%",
-				sessionId, heading, flags, health & 0x7F, state, unk1, unk2, manaPercent, endurancePercent);
+			bool isRaided = (state == (byte)PlrState.Ride);
+			text.Write("sessionId:0x{0:X4} {1}:0x{2:X4} flags:0x{3:X2} health:{4,3}% unk1:0x{6:X2} unk2:0x{7:X2} bSlot:0x{8:X2} state:{5} mana:{9,3}% endurance:{10,3}%",
+				sessionId, isRaided ? "mountId" : "heading", heading, flags, health & 0x7F, state, unk1, unk2, rideSlot, manaPercent, endurancePercent);
 			if (flagsDescription)
 			{
 				string status = state > 0 ? ((PlrState)state).ToString() : "";
 				if ((flags & 0x01) == 0x01)
-					status += ",UNKx01";
+					status += ",Wireframe";
 				if ((flags & 0x02) == 0x02)
 					status += ",Stealth";
 				if ((flags & 0x40) == 0x40)
@@ -58,7 +58,8 @@ namespace PacketLogConverter.LogPackets
 			heading = ReadShort();
 			unk1 = ReadByte();
 			flags = ReadByte();
-			unk2 = ReadShort();
+			unk2 = ReadByte();
+			rideSlot = ReadByte();
 			health = ReadByte();
 			state = ReadByte();
 			manaPercent = ReadByte();

@@ -89,35 +89,35 @@ namespace PacketLogConverter.LogFilters
 			this.Condition = new System.Windows.Forms.ComboBox();
 			this.filterScrollBar = new System.Windows.Forms.VScrollBar();
 			this.SuspendLayout();
-			// 
+			//
 			// label1
-			// 
+			//
 			this.label1.Location = new System.Drawing.Point(40, 8);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(64, 23);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Packet class:";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
+			//
 			// label2
-			// 
+			//
 			this.label2.Location = new System.Drawing.Point(6, 30);
 			this.label2.Name = "label2";
 			this.label2.TabIndex = 1;
 			this.label2.Text = "Class property:";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
+			//
 			// label3
-			// 
+			//
 			this.label3.Location = new System.Drawing.Point(6, 53);
 			this.label3.Name = "label3";
 			this.label3.TabIndex = 2;
 			this.label3.Text = "Property value:";
 			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
+			//
 			// packetClassComboBox
-			// 
-			this.packetClassComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			//
+			this.packetClassComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.packetClassComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.packetClassComboBox.Font = new System.Drawing.Font("Courier New", 8F);
@@ -128,10 +128,10 @@ namespace PacketLogConverter.LogFilters
 			this.packetClassComboBox.Sorted = true;
 			this.packetClassComboBox.TabIndex = 3;
 			this.packetClassComboBox.SelectedValueChanged += new System.EventHandler(this.packetClassComboBox_SelectedValueChanged);
-			// 
+			//
 			// classPropertyComboBox
-			// 
-			this.classPropertyComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			//
+			this.classPropertyComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.classPropertyComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.classPropertyComboBox.Font = new System.Drawing.Font("Courier New", 8F);
@@ -141,10 +141,10 @@ namespace PacketLogConverter.LogFilters
 			this.classPropertyComboBox.Name = "classPropertyComboBox";
 			this.classPropertyComboBox.Size = new System.Drawing.Size(511, 22);
 			this.classPropertyComboBox.TabIndex = 4;
-			// 
+			//
 			// propertyValueTextBox
-			// 
-			this.propertyValueTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			//
+			this.propertyValueTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.propertyValueTextBox.Location = new System.Drawing.Point(118, 54);
 			this.propertyValueTextBox.MaxLength = 256;
@@ -153,11 +153,11 @@ namespace PacketLogConverter.LogFilters
 			this.propertyValueTextBox.TabIndex = 5;
 			this.propertyValueTextBox.Text = "";
 			this.propertyValueTextBox.TextChanged += new System.EventHandler(this.propertyValueTextBox_TextChanged);
-			// 
+			//
 			// filtersListBox
-			// 
-			this.filtersListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
+			//
+			this.filtersListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+				| System.Windows.Forms.AnchorStyles.Left)
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.filtersListBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.filtersListBox.ItemHeight = 15;
@@ -166,54 +166,54 @@ namespace PacketLogConverter.LogFilters
 			this.filtersListBox.Size = new System.Drawing.Size(623, 184);
 			this.filtersListBox.TabIndex = 6;
 			this.filtersListBox.SelectedIndexChanged += new System.EventHandler(this.filtersListBox_SelectedIndexChanged);
-			// 
+			//
 			// addButton
-			// 
+			//
 			this.addButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.addButton.Location = new System.Drawing.Point(6, 269);
 			this.addButton.Name = "addButton";
 			this.addButton.TabIndex = 7;
 			this.addButton.Text = "&Add";
 			this.addButton.Click += new System.EventHandler(this.addButton_Click);
-			// 
+			//
 			// removeButton
-			// 
+			//
 			this.removeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.removeButton.Location = new System.Drawing.Point(81, 269);
 			this.removeButton.Name = "removeButton";
 			this.removeButton.TabIndex = 8;
 			this.removeButton.Text = "&Remove";
 			this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
-			// 
+			//
 			// clearButton
-			// 
+			//
 			this.clearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.clearButton.Location = new System.Drawing.Point(231, 269);
 			this.clearButton.Name = "clearButton";
 			this.clearButton.TabIndex = 9;
 			this.clearButton.Text = "&Clear";
 			this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
-			// 
+			//
 			// acceptButton
-			// 
+			//
 			this.acceptButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.acceptButton.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.acceptButton.Location = new System.Drawing.Point(554, 269);
 			this.acceptButton.Name = "acceptButton";
 			this.acceptButton.TabIndex = 10;
 			this.acceptButton.Text = "&Accept";
-			// 
+			//
 			// enableCheckBox
-			// 
+			//
 			this.enableCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.enableCheckBox.Location = new System.Drawing.Point(479, 273);
 			this.enableCheckBox.Name = "enableCheckBox";
 			this.enableCheckBox.Size = new System.Drawing.Size(59, 17);
 			this.enableCheckBox.TabIndex = 11;
 			this.enableCheckBox.Text = "&Enable";
-			// 
+			//
 			// propertyValueTypeTextBox
-			// 
+			//
 			this.propertyValueTypeTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.propertyValueTypeTextBox.Location = new System.Drawing.Point(557, 54);
 			this.propertyValueTypeTextBox.MaxLength = 16;
@@ -222,18 +222,18 @@ namespace PacketLogConverter.LogFilters
 			this.propertyValueTypeTextBox.Size = new System.Drawing.Size(72, 20);
 			this.propertyValueTypeTextBox.TabIndex = 12;
 			this.propertyValueTypeTextBox.Text = "";
-			// 
+			//
 			// modifyButton
-			// 
+			//
 			this.modifyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.modifyButton.Location = new System.Drawing.Point(156, 269);
 			this.modifyButton.Name = "modifyButton";
 			this.modifyButton.TabIndex = 13;
 			this.modifyButton.Text = "&Modify";
 			this.modifyButton.Click += new System.EventHandler(this.modifyButton_Click);
-			// 
+			//
 			// relationsList
-			// 
+			//
 			this.relationsList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.relationsList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.relationsList.Items.AddRange(new object[] {
@@ -249,9 +249,9 @@ namespace PacketLogConverter.LogFilters
 			this.relationsList.Size = new System.Drawing.Size(40, 21);
 			this.relationsList.TabIndex = 15;
 			this.relationsList.SelectedIndexChanged += new System.EventHandler(this.relationsList_SelectedIndexChanged);
-			// 
+			//
 			// Condition
-			// 
+			//
 			this.Condition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.Condition.Items.AddRange(new object[] {
 														   "OR",
@@ -263,9 +263,9 @@ namespace PacketLogConverter.LogFilters
 			this.Condition.TabIndex = 16;
 			this.Condition.Visible = false;
 			this.Condition.SelectedIndexChanged += new System.EventHandler(this.Condition_SelectedIndexChanged);
-			// 
+			//
 			// filterScrollBar
-			// 
+			//
 			this.filterScrollBar.LargeChange = 1;
 			this.filterScrollBar.Location = new System.Drawing.Point(8, 48);
 			this.filterScrollBar.Maximum = 1;
@@ -274,9 +274,9 @@ namespace PacketLogConverter.LogFilters
 			this.filterScrollBar.Size = new System.Drawing.Size(17, 23);
 			this.filterScrollBar.TabIndex = 17;
 			this.filterScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.filterScrollBar_Scroll);
-			// 
+			//
 			// PacketPropertyValueFilterForm
-			// 
+			//
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(641, 304);
 			this.ControlBox = false;
@@ -373,7 +373,6 @@ namespace PacketLogConverter.LogFilters
 				if (entry.packetClass.type == null || entry.packetClass.type.IsAssignableFrom(packet.GetType()))
 				{
 					state = entry.IsPacketIgnored(packet);
-//					PacketLogConverter.LogWriters.Logger.Say(string.Format("{0} {1} {2} {3} = Ignored:{4} (prevIgnored:{5}), {6} vs {7}", entry.condition, entry.classProperty, entry.relation, entry.valueToFind, state, packetIgnoreState, entry.packetClass.type, packet.GetType()));
 					if (entry.condition == "OR(")
 					{
 						if (!packetIgnoreState) // if previouse Subcheck from this packet is not ignored then packet pass
@@ -383,7 +382,6 @@ namespace PacketLogConverter.LogFilters
 					}
 					else if (flagBadAndCheck) // if previous AND check == false and this releation is not new Subcheck, then packets is ignored
 					{
-//						PacketLogConverter.LogWriters.Logger.Say(string.Format("Ignored packet last AND check {0}", packetIgnoreState));
 						return true;
 					}
 					if (i == 0)
@@ -399,10 +397,7 @@ namespace PacketLogConverter.LogFilters
 						flagBadAndCheck = true;
 					i++;
 				}
-//				else // skip not same packets if search value is in packet
-//					PacketLogConverter.LogWriters.Logger.Say(string.Format("skip {0} {1} {2} = {3},{4} vs {5}", entry.condition, entry.relation, entry.valueToFind, rc, entry.packetClass.type, packet.GetType()));
 			}
-//			PacketLogConverter.LogWriters.Logger.Say(string.Format("{0} {1}", packetIgnoreState, packet.GetType()));
 			return packetIgnoreState;
 		}
 

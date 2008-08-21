@@ -14,6 +14,7 @@ namespace PacketLogConverter.LogPackets
 
 		public enum eExpantions: byte
 		{
+			TrialOfAtlantis = 0x02, // ?
 			Tutorial = 0x04,
 			NewTowns = 0x10,
 			DarkRising = 0x20,
@@ -36,8 +37,8 @@ namespace PacketLogConverter.LogPackets
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x2000); // Water Options
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x4000); // Water Options
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x8000); // Dynamic Shadow
-				text.Write(" resolutions:0x{0:X4} options:0x{1:X4}(0x{12:X4}) figureVersion:0x{2:X8}{3:X2} memory:{4}({11,-2}) unk1:0x{5:X6} skin:0x{6:X2} genderRace:0x{7:X2}(race:{13, -2} gender:{14}) regionExpantions:0x{8:X2} classId:{9,-2} expantions:0x{10:X2}",
-					resolution, options, figureVersion, figureVersion1, unk1 >> 24, unk1 & 0xFFFFFF, skin, genderRace, regionExpantions, classId, expantions, (unk1 >> 24) * 64, optionsBIT, race, gender);
+				text.Write(" resolutions:0x{0:X4} options:0x{1:X4}(0x{12:X4}) figureVersion:0x{2:X8}{3:X2} memory:{4}({11,-2}) unk1:0x{5:X4} skin:0x{6:X2} genderRace:0x{7:X2}(race:{13, -2} gender:{14}) regionExpantions:0x{8:X2} classId:{9,-2} expantions:0x{10:X2}",
+					resolution, options, figureVersion, figureVersion1, memory, unk1, skin, genderRace, regionExpantions, classId, expantions, memory << 6, optionsBIT, race, gender);
 				if (flagsDescription)
 				{
 					text.Write("\n\tExpantions:");
@@ -118,7 +119,7 @@ namespace PacketLogConverter.LogPackets
 					// 0x0400 - Classic Water
 					// 0x0200 - Use Atlantis Terrain
 					// 0x0100 - Use Atlantis Trees
-					// 0x0080 - ?
+					// 0x0080 - Skin PreCache ?
 					// 0x0040 - Font Size: Normal (else Small)
 					// 0x0020 - Use Classic Name Font
 					// 0x001F - ?
@@ -141,7 +142,9 @@ namespace PacketLogConverter.LogPackets
 			{
 				resolution = ReadShort();
 				options = ReadShort();
-				unk1 = ReadInt();
+				memory = ReadByte();
+				unk1 = ReadShort();
+				unk2 = ReadByte(); // unused
 				figureVersion = ReadInt();
 				figureVersion1 = ReadByte();
 				skin = ReadByte();

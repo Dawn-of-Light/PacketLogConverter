@@ -111,18 +111,18 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			keepId = ReadShort();
-			componentId = ReadShort();
-			unk1 = ReadShort();
-			uid = ReadShort();
-			skin = ReadByte();
-			x = ReadByte();
-			y = ReadByte();
-			heading = ReadByte();
-			height = ReadByte();
-			health = ReadByte();
-			status = ReadByte();
-			flag = ReadByte();
+			keepId = ReadShort();     // 0x00
+			componentId = ReadShort();// 0x02
+			unk1 = ReadShort();       // 0x04
+			uid = ReadShort();        // 0x06
+			skin = ReadByte();        // 0x08
+			x = ReadByte();           // 0x09
+			y = ReadByte();           // 0x0A
+			heading = ReadByte();     // 0x0B
+			height = ReadByte();      // 0x0C
+			health = ReadByte();      // 0x0D
+			status = ReadByte();      // 0x0E
+			flag = ReadByte();        // 0x0F
 		}
 
 		/// <summary>

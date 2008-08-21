@@ -536,25 +536,24 @@ namespace PacketLogConverter.LogFilters
 							else if (fieldValue != null)
 							{
 								// Packet property string equals filter value
-								if (relation == "&&" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is byte || fieldValue is ushort || fieldValue is uint))
+								if (relation == "&&" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is long || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is ulong))
 								{
 									uint fieldValue2 = Convert.ToUInt32(fieldValue);
 									isIgnored = ((fieldValue2 & valueToFindInt) == 0); // same as !((a & b) != 0)
 								}
 								// Packet property string equals filter value
-								if (relation == "!&" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is byte || fieldValue is ushort || fieldValue is uint))
+								if (relation == "!&" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is long || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is ulong))
 								{
 									uint fieldValue2 = Convert.ToUInt32(fieldValue);
 									isIgnored = ((fieldValue2 & valueToFindInt) != 0); // same as !((a & b) == 0)
 								}
-								else if (relation == "&=" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is byte || fieldValue is ushort || fieldValue is uint))
+								else if (relation == "&=" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is long || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is ulong))
 								{
 									uint fieldValue2 = Convert.ToUInt32(fieldValue);
 									isIgnored = (fieldValue2 & valueToFindInt) != valueToFindInt; // same as !(a & b) == b
 								}
-								else if (canCompareAsDouble && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is double || fieldValue is float))
+								else if (canCompareAsDouble && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is long || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is ulong || fieldValue is double || fieldValue is float))
 								{
-//									PacketLogConverter.LogWriters.Logger.Say(string.Format("fieldValue:{0} valType:{1}", fieldValue, valType));
 									double fieldValue2 = Convert.ToDouble(fieldValue);
 									switch (relation)
 									{

@@ -137,13 +137,13 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			dialogCode = ReadShort();
-			data1 = ReadShort();
-			data2 = ReadShort();
-			data3 = ReadShort();
-			data4 = ReadShort();
-			dialogType = ReadByte();
-			autoWrapText = ReadByte();
+			dialogCode = ReadShort(); // 0x00
+			data1 = ReadShort();      // 0x02
+			data2 = ReadShort();      // 0x04
+			data3 = ReadShort();      // 0x06
+			data4 = ReadShort();      // 0x08
+			dialogType = ReadByte();  // 0x0A
+			autoWrapText = ReadByte();// 0x0B
 			InitSubcode(dialogCode);
 		}
 
@@ -181,7 +181,7 @@ namespace PacketLogConverter.LogPackets
 			public string message;
 			public override void Init(StoC_0x81_ShowDialog pak)
 			{
-				message = pak.ReadString();
+				message = pak.ReadString(); // 0x0C+
 			}
 
 			public override void MakeString(TextWriter text, bool flagsDescription)

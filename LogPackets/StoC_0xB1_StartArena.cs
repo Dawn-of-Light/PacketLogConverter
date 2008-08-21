@@ -42,13 +42,13 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			regionIndex = ReadByte();
-			region = ReadByte();
-			Skip(20); // unknown, always = 0
-			portFrom = ReadString(5);
-			portTo = ReadString(5);
+			regionIndex = ReadByte();                     // 0x00
+			region = ReadByte();                          // 0x01
+			Skip(20); // unknown, always = 0              // 0x02
+			portFrom = ReadString(5);                     // 0x16
+			portTo = ReadString(5);                       // 0x1B
 			long curPosition = Position;
-			serverIp = ReadString(16);
+			serverIp = ReadString(16);                    // 0x20
 			Position = curPosition + serverIp.Length + 1;
 			zoneInfo = ReadString(20 - serverIp.Length);
 //			zoneInfo = ReadString(4);

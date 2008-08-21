@@ -44,7 +44,7 @@ namespace PacketLogConverter.LogPackets
 					flag += ",Guild176Emblem";
 				if ((staticFlag & 0xFC) > 0)
 					flag += ",UNKNOWN_171_STATICFLAG";
-				if(flag != "")
+				if (flag != "")
 					text.Write(" ({0})", flag);
 			}
 			if (extraBytes == 4)
@@ -94,20 +94,20 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			oid = ReadShort();
-			emblem = ReadShort();
-			heading = ReadShort();
-			z = ReadShort();
-			x = ReadInt();
-			y = ReadInt();
-			model = ReadShort();
-			hp = ReadByte();
-			flags = ReadByte();
-			uint tunk_171 = ReadInt();
+			oid = ReadShort();          // 0x00
+			emblem = ReadShort();       // 0x02
+			heading = ReadShort();      // 0x04
+			z = ReadShort();            // 0x06
+			x = ReadInt();              // 0x08
+			y = ReadInt();              // 0x0C
+			model = ReadShort();        // 0x10
+			hp = ReadByte();            // 0x12
+			flags = ReadByte();         // 0x13
+			uint tunk_171 = ReadInt();  // 0x14
 			unk1_171 = tunk_171 & 0xFFFFFF;
-			staticFlag = (byte)(tunk_171 >> 24);
-			name = ReadPascalString();
-			extraBytes = ReadByte();
+			staticFlag = (byte)(tunk_171 >> 24); // 0x14
+			name = ReadPascalString();  // 0x18
+			extraBytes = ReadByte();    // ?
 			if ((flags & 0x40) == 0x40)// x = moving object oid, y = hookpoint
 				flagOnShipHookPoint = true;
 			if (extraBytes == 4)

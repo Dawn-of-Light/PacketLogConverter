@@ -51,12 +51,12 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			keepId = ReadShort();
-			componentId = ReadShort();
-			height = ReadByte();
-			health = ReadByte();
-			status = ReadByte();
-			flags = ReadByte();
+			keepId = ReadShort();     // 0x00
+			componentId = ReadShort();// 0x02
+			height = ReadByte();      // 0x04
+			health = ReadByte();      // 0x05
+			status = ReadByte();      // 0x06
+			flags = ReadByte();       // 0x07
 		}
 
 		/// <summary>

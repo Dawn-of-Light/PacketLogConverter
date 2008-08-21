@@ -85,6 +85,7 @@ namespace PacketLogConverter
 		private DataGridViewTextBoxColumn unknownPacketsCountDataGridViewTextBoxColumn;
 		private DataGridViewTextBoxColumn versionDataGridViewTextBoxColumn;
 		private DataGridViewCheckBoxColumn IgnoreVersionChanges;
+		private Button removeButton;
 		private Label label3;
 
 		public MainForm()
@@ -184,6 +185,7 @@ namespace PacketLogConverter
 			this.openFolderLogDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.openFilterDialog = new System.Windows.Forms.OpenFileDialog();
 			this.saveFilterDialog = new System.Windows.Forms.SaveFileDialog();
+            this.removeButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.openLogsDataGridView)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.openLogsBindingSource)).BeginInit();
 			this.mainFormTabs.SuspendLayout();
@@ -239,10 +241,10 @@ namespace PacketLogConverter
 			//
 			// selectedLogDataGridViewCheckBoxColumn
 			//
-			this.selectedLogDataGridViewCheckBoxColumn.DataPropertyName = "LogIgnored";
-			this.selectedLogDataGridViewCheckBoxColumn.HeaderText = "Ignored";
+            this.selectedLogDataGridViewCheckBoxColumn.DataPropertyName = "LogSelected";
+            this.selectedLogDataGridViewCheckBoxColumn.HeaderText = "Select";
 			this.selectedLogDataGridViewCheckBoxColumn.Name = "selectedLogDataGridViewCheckBoxColumn";
-			this.selectedLogDataGridViewCheckBoxColumn.Width = 10;
+            this.selectedLogDataGridViewCheckBoxColumn.Width = 49;
 			//
 			// streamNameDataGridViewTextBoxColumn
 			//
@@ -566,6 +568,7 @@ namespace PacketLogConverter
 			this.li_openLogsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
+            this.li_openLogsGroupBox.Controls.Add(this.removeButton);
 			this.li_openLogsGroupBox.Controls.Add(this.li_changesLabel);
 			this.li_openLogsGroupBox.Controls.Add(this.openLogsDataGridView);
 			this.li_openLogsGroupBox.Controls.Add(this.applyButton);
@@ -810,6 +813,16 @@ namespace PacketLogConverter
 			this.saveFilterDialog.Filter = "Filters (*.flt)|*.flt";
 			this.saveFilterDialog.RestoreDirectory = true;
 			//
+            // removeButton
+            //
+            this.removeButton.Location = new System.Drawing.Point(490, 16);
+            this.removeButton.Name = "removeButton";
+            this.removeButton.Size = new System.Drawing.Size(65, 23);
+            this.removeButton.TabIndex = 11;
+            this.removeButton.Text = "Remove";
+            this.removeButton.UseVisualStyleBackColor = true;
+            this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
+            //
 			// MainForm
 			//
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -1887,11 +1900,13 @@ namespace PacketLogConverter
 						for (int logIndex = 0; logs.Count > logIndex; logIndex++)
 						{
 							PacketLog log = logs[logIndex];
+							log.LogSelected = true;
 							for (int logPacketIndex = 0; log.Count > logPacketIndex; logPacketIndex++)
 							{
 								Packet pak = log[logPacketIndex];
 								if (!FilterManager.IsPacketIgnored(pak))
 								{
+									log.LogSelected = false;
 									AppendPacketData(text, pak, ref stats, showPacketSequence, ref baseTime, timeDiff);
 
 									text.Flush();
@@ -1917,6 +1932,8 @@ namespace PacketLogConverter
 				}
 				finally
 				{
+					// Notify filter manager that filtering is finished
+					FilterManager.LogFilteringStopped(this); // need this really ?
 //					this.logDataText.ResumeLayout(); // it need really ?
 					this.openLogsDataGridView.Invalidate();
 				}
@@ -2128,6 +2145,24 @@ namespace PacketLogConverter
 			if (logDataText.TextLength > 0)
 			{
 				m_selectedLogPositions[index] = LogManager.FindPacketInfoByTextIndex(logDataText.SelectionStart).PacketLocation;
+			}
+		}
+
+		public void RestoreLogPositionByPacket(Packet restorePacket)
+		{
+			if (restorePacket != null)
+			{
+				int restoreIndex = -1;
+				{
+					restoreIndex = LogManager.FindTextIndexByPacket(restorePacket);
+				}
+
+				if (restoreIndex >= 0)
+				{
+					logDataText.SelectionLength = 0;
+					logDataText.SelectionStart = restoreIndex;
+					logDataText.Focus();
+				}
 			}
 		}
 
@@ -2550,5 +2585,50 @@ namespace PacketLogConverter
 		}
 
 		#endregion
+
+		private void removeButton_Click(object sender, EventArgs e)
+		{
+			if (LogManager == null)
+			{
+				Log.Info("Nothing loaded.");
+				return;
+			}
+
+			List<PacketLog> selectedLogs = new List<PacketLog>();
+			int logIndex = 0;
+			foreach (PacketLog log in LogManager.Logs)
+			{
+				if (log.LogSelected)
+				{
+					selectedLogs.Add(log);
+					// Clear/Change stored positions
+					for (int i = 0; i < m_selectedLogPositions.Length; i++)
+					{
+						PacketLocation savedLoc = Util.GetObjectByIndexSafe(m_selectedLogPositions, i, PacketLocation.UNKNOWN);
+						// Check that packet location is stored
+						if (savedLoc != PacketLocation.UNKNOWN)
+						{
+							if (savedLoc.LogIndex == logIndex)
+							{
+								savedLoc = PacketLocation.UNKNOWN;
+							}
+							else if (savedLoc.LogIndex > logIndex)
+							{
+								if (--savedLoc.LogIndex < 0)
+									savedLoc = PacketLocation.UNKNOWN;
+							}
+							m_selectedLogPositions[i] = savedLoc;
+						}
+					}
+				}
+				logIndex++;
+			}
+			if (selectedLogs.Count > 0)
+			{
+				LogManager.ClearLogRange(selectedLogs);
+				// Clear stored positions
+//				ClearLogPositions();
+			}
+		}
 	}
 }

@@ -22,24 +22,24 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			houseOid = ReadShort();
-			z = ReadShort();
-			x = ReadInt();
-			y = ReadInt();
-			heading = ReadShort();
-			bannerShield = ReadShort();
-			emblem = ReadShort();
-			unk1 = ReadShort();
-			modelHouse = ReadByte();
-			unk2 = ReadShort();
-			unk3 = ReadByte();
-			firstCarpet = ReadByte();
-			secondCarpet = ReadByte();
-			thirdCarpet = ReadByte();
-			fourthCarpet = ReadByte();
-			scheduled = ReadShortLowEndian();
-			unk5 = ReadShort();
-			unk4 = ReadByte();
+			houseOid = ReadShort();         // 0x00
+			z = ReadShort();                // 0x02
+			x = ReadInt();                  // 0x04
+			y = ReadInt();                  // 0x08
+			heading = ReadShort();          // 0x0C
+			bannerShield = ReadShort();     // 0x0E
+			emblem = ReadShort();           // 0x10
+			unk1 = ReadShort();             // 0x12
+			modelHouse = ReadByte();        // 0x14
+			unk2 = ReadShort();             // 0x15
+			unk3 = ReadByte();              // 0x17
+			firstCarpet = ReadByte();       // 0x18
+			secondCarpet = ReadByte();      // 0x19
+			thirdCarpet = ReadByte();       // 0x1A
+			fourthCarpet = ReadByte();      // 0x1B
+			scheduled = ReadShortLowEndian();//0x1C
+			unk5 = ReadShort();             // 0x1E
+			unk4 = ReadByte();              // 0x20
 		}
 
 		/// <summary>

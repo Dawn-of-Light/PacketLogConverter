@@ -29,8 +29,8 @@ namespace PacketLogConverter.LogPackets
 		{
 			base.Init();
 
-			towers = ReadByte();
-			ownerDFtowers = ReadByte();
+			towers = ReadByte();        // 0x03
+			ownerDFtowers = ReadByte(); // 0x04
 		}
 
 		/// <summary>

@@ -67,14 +67,14 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			keepId = ReadShort();
-			realm = ReadByte();
-			hp = ReadByte();
-			level = ReadByte();
-			targetLevel = ReadByte();
-			keepType = ReadByte();
-			guild = ReadString(32);
-			unk1 = ReadByte();
+			keepId = ReadShort();    // 0x00
+			realm = ReadByte();      // 0x02
+			hp = ReadByte();         // 0x03
+			level = ReadByte();      // 0x04
+			targetLevel = ReadByte();// 0x05
+			keepType = ReadByte();   // 0x06
+			guild = ReadString(32);  // 0x07+
+			unk1 = ReadByte();       // 0x27
 		}
 
 		/// <summary>

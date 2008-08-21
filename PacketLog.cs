@@ -23,6 +23,14 @@ namespace PacketLogConverter
 
 		public event PacketLogUpdate OnPacketsChanged;
 
+		private bool m_logSelected;
+
+		public bool LogSelected
+		{
+			get { return m_logSelected; }
+			set { m_logSelected = value; }
+		}
+
 		public bool IsDirty
 		{
 			get { return m_isDirty; }

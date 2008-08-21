@@ -105,25 +105,25 @@ namespace PacketLogConverter.LogPackets
 
 			ArrayList tmp = new ArrayList(10);
 			for (byte i = 0; i < 10; i++)
-				tmp.Add(ReadByte());
+				tmp.Add(ReadByte());      // 0x00 - 0x09
 			slots = (byte[])tmp.ToArray(typeof (byte));
-			unk1 = ReadShort();
-			mithrilPlayer = ReadShort();
-			platinumPlayer = ReadShort();
-			goldPlayer = ReadShort();
-			silverPlayer = ReadShort();
-			copperPlayer = ReadShort();
-			unk2 = ReadShort();
-			mithrilPartner = ReadShort();
-			platinumPartner = ReadShort();
-			goldPartner = ReadShort();
-			silverPartner = ReadShort();
-			copperPartner = ReadShort();
-			unk3 = ReadShort();
-			itemCount = ReadByte();
-			tradeCode = ReadByte();
-			repair = ReadByte();
-			combine = ReadByte();
+			unk1 = ReadShort();           // 0x0A
+			mithrilPlayer = ReadShort();  // 0x0C
+			platinumPlayer = ReadShort(); // 0x0E
+			goldPlayer = ReadShort();     // 0x10
+			silverPlayer = ReadShort();   // 0x12
+			copperPlayer = ReadShort();   // 0x14
+			unk2 = ReadShort();           // 0x16
+			mithrilPartner = ReadShort(); // 0x18
+			platinumPartner = ReadShort();// 0x1A
+			goldPartner = ReadShort();    // 0x1C
+			silverPartner = ReadShort();  // 0x1E
+			copperPartner = ReadShort();  // 0x20
+			unk3 = ReadShort();           // 0x22
+			itemCount = ReadByte();       // 0x24
+			tradeCode = ReadByte();       // 0x25
+			repair = ReadByte();          // 0x26
+			combine = ReadByte();         // 0x27
 			items = new StoC_0x02_InventoryUpdate.Item[itemCount];
 
 			for (int i = 0; i < itemCount; i++)

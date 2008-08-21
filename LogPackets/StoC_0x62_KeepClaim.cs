@@ -59,11 +59,11 @@ namespace PacketLogConverter.LogPackets
 		public override void Init()
 		{
 			Position = 0;
-			keepId = ReadShort();
-			permission = ReadByte();
-			keepType = ReadByte();
-			targetLevel = ReadByte();
-			level = ReadByte();
+			keepId = ReadShort();    // 0x00
+			permission = ReadByte(); // 0x02
+			keepType = ReadByte();   // 0x03
+			targetLevel = ReadByte();// 0x04
+			level = ReadByte();      // 0x05
 		}
 
 		/// <summary>

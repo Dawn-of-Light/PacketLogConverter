@@ -10,7 +10,9 @@ namespace PacketLogConverter.LogPackets
 		protected byte slot;
 		protected ushort resolution;
 		protected ushort options;
-		protected uint unk1;
+		protected byte memory;
+		protected ushort unk1;
+		protected byte unk2; // unused
 		protected uint figureVersion;
 		protected byte figureVersion1;
 		protected byte skin;
@@ -24,9 +26,9 @@ namespace PacketLogConverter.LogPackets
 		{
 			FoundationsHousing = 0x01,
 			NewFrontiers = 0x02,
-//			ShroudedIsles = 0x08, ?
-//			TrialOfAtlantis = 0x10, ?
-//			DarknessRising = 0x20 or Catacombs = 0x20 ?
+			ShroudedIsles = 0x08,
+			TrialOfAtlantis = 0x10,
+			Catacombs = 0x20,
 		}
 
 		#region public access properties
@@ -53,8 +55,8 @@ namespace PacketLogConverter.LogPackets
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x2000); // Water Options
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x4000); // Water Options
 				optionsBIT = optionsBIT & (0xFFFF ^ 0x8000); // Dynamic Shadow
-				text.Write(" resolutions:0x{0:X4} options:0x{1:X4}(0x{10:X4}) figureVersion:0x{2:X8}{3:X2} memory:{4,2}({9,-2}) unk1:0x{5:X6} skin:0x{6:X2} genderRace:0x{7:X2}(race:{11, -2} gender:{12}) regionExpantions:0x{8:X2}",
-					resolution, options, figureVersion, figureVersion1, unk1 >> 24, unk1 & 0xFFFFFF, skin, genderRace, regionExpantions, (unk1 >> 24) * 64, optionsBIT, race, gender);
+				text.Write(" resolutions:0x{0:X4} options:0x{1:X4}(0x{10:X4}) figureVersion:0x{2:X8}{3:X2} memory:{4,2}({9,-2}) unk1:0x{5:X4} skin:0x{6:X2} genderRace:0x{7:X2}(race:{11, -2} gender:{12}) regionExpantions:0x{8:X2}",
+					resolution, options, figureVersion, figureVersion1, memory, unk1, skin, genderRace, regionExpantions, memory << 6, optionsBIT, race, gender);
 				if (flagsDescription)
 				{
 					text.Write("\n\tExpantions:");
@@ -133,7 +135,9 @@ namespace PacketLogConverter.LogPackets
 			{
 				resolution = ReadShort();
 				options = ReadShort();
-				unk1 = ReadInt();
+				memory = ReadByte();
+				unk1 = ReadShort();
+				unk2 = ReadByte();
 				figureVersion = ReadInt();
 				figureVersion1 = ReadByte();
 				skin = ReadByte();

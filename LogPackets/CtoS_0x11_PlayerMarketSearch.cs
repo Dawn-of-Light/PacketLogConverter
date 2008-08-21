@@ -61,24 +61,24 @@ namespace PacketLogConverter.LogPackets
 		public override void Init()
 		{
 			Position = 0;
-			filter = ReadString(64);
-			slot = (int)ReadInt();
-			skill = (int)ReadInt();
-			resist = (int)ReadInt();
-			bonus = (int)ReadInt();
-			hp = (int)ReadInt();
-			power = (int)ReadInt();
-			proc = (int)ReadInt();
-			qtyMin = (int)ReadInt();
-			qtyMax = (int)ReadInt();
-			levelMin = (int)ReadInt();
-			levelMax = (int)ReadInt();
-			priceMin = (int)ReadInt();
-			priceMax = (int)ReadInt();
-			visual = (int)ReadInt();
-			page = ReadByte();
-			unk1 = ReadByte();
-			unk2 = ReadShort();
+			filter = ReadString(64);  // 0x00
+			slot = (int)ReadInt();    // 0x40
+			skill = (int)ReadInt();   // 0x44
+			resist = (int)ReadInt();  // 0x48
+			bonus = (int)ReadInt();   // 0x4C
+			hp = (int)ReadInt();      // 0x50
+			power = (int)ReadInt();   // 0x54
+			proc = (int)ReadInt();    // 0x58
+			qtyMin = (int)ReadInt();  // 0x5C
+			qtyMax = (int)ReadInt();  // 0x60
+			levelMin = (int)ReadInt();// 0x64
+			levelMax = (int)ReadInt();// 0x68
+			priceMin = (int)ReadInt();// 0x6C
+			priceMax = (int)ReadInt();// 0x70
+			visual = (int)ReadInt();  // 0x74
+			page = ReadByte();        // 0x78
+			unk1 = ReadByte();        // 0x79
+			unk2 = ReadShort();       // 0x7A
 		}
 
 		/// <summary>

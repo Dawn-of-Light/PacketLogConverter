@@ -54,7 +54,7 @@ namespace PacketLogConverter.LogPackets
 				}
 				text.Write("\n\textensionTorso:0x{0:X2} extensionGloves:0x{1:X2} extensionBoots:0x{2:X2}", ch.extensionTorso, ch.extensionGloves, ch.extensionBoots);
 				text.Write(")\n\tactiveRightSlot:0x{0:X2} activeLeftSlot:0x{1:X2} SIzone:0x{2:X2} clienTypeRequired:{3}\n", ch.activeRightSlot, ch.activeLeftSlot, ch.siZone, ch.regionID2);
-				if (ch.unk3.Length > 0)
+				if (ch.unk3.Length > 1)
 				{
 					text.Write("\tunk3:(");
 					for (int j = 1; j < ch.unk3.Length ; j++)

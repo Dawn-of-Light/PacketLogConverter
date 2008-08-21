@@ -43,10 +43,10 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			itemCount = ReadByte();
-			windowType = ReadByte();
-			page = ReadByte();
-			unk1 = ReadByte();
+			itemCount = ReadByte();  // 0x00
+			windowType = ReadByte(); // 0x01
+			page = ReadByte();       // 0x02
+			unk1 = ReadByte();       // 0x03
 
 			items = new MerchantItem[itemCount];
 

@@ -31,9 +31,9 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			keeps = ReadByte();
-			relics = ReadByte();
-			ownerDFrealm = ReadByte();
+			keeps = ReadByte();       // 0x00
+			relics = ReadByte();      // 0x01
+			ownerDFrealm = ReadByte();// 0x02
 		}
 
 		/// <summary>

@@ -6,19 +6,18 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0x2A, 175, ePacketDirection.ServerToClient, "Login granted v175")]
 	public class StoC_0x2A_LoginGranted_175 : StoC_0x2A_LoginGranted
 	{
-		protected byte unk1_175;
+		protected byte serverExpantion;
 
 		#region public access properties
 
-		public byte Unk1_175 { get { return unk1_175; } }
+		public byte ServerExpantion { get { return serverExpantion; } }
 
 		#endregion
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 			base.GetPacketDataString(text, flagsDescription);
-			text.Write(" cluster?:");
-			text.Write(unk1_175);
+			text.Write(" serverExpantion:0x{0:X2}", serverExpantion);
 		}
 
 		/// <summary>
@@ -27,7 +26,7 @@ namespace PacketLogConverter.LogPackets
 		public override void Init()
 		{
 			base.Init();
-			unk1_175 = ReadByte();
+			serverExpantion = ReadByte();
 		}
 
 		/// <summary>

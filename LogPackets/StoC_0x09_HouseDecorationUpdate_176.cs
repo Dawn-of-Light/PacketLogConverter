@@ -30,15 +30,15 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			houseOid = ReadShort();
-			count = ReadByte();
-			decorationCode = ReadByte();
+			houseOid = ReadShort();        // 0x00
+			count = ReadByte();            // 0x02
+			decorationCode = ReadByte();   // 0x03
 			m_furnitures = new Furniture[count];
 			for (int i = 0; i < count; i++)
 			{
 				Furniture furniture = new Furniture();
 
-				furniture.index = ReadByte();
+				furniture.index = ReadByte(); // 0x04
 				furniture.flagRemove = false;
 				if ((Position + 1 )< Length)
 				{

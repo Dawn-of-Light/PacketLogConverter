@@ -64,7 +64,7 @@ namespace PacketLogConverter.LogPackets
 				if ((flags & 0x01) == 0x01)
 					flag += ",Underwater";// not let drop on ground ?
 				if ((flags & 0x02) == 0x02)
-					flag += ",UNK_0x02";
+					flag += ",MovingObject";
 				if ((flags & 0x04) == 0x04)
 					flag += ",Loot";
 				if ((flags & 0x08) == 0x08)
@@ -74,7 +74,7 @@ namespace PacketLogConverter.LogPackets
 					flag += ",OnShipHookPoint";// x = moving object oid, y = hookpoint
 				if ((flags & 0x80) == 0x80)
 					flag += ",UNK_0x80";
-				if(flag != "")
+				if (flag != "")
 					text.Write(" ({0})", flag);
 			}
 			if (extraBytes == 4)

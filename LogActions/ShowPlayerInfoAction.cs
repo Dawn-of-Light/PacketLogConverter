@@ -83,6 +83,7 @@ namespace PacketLogConverter.LogActions
 			string guildName = "None";
 			string guildRank = "";
 			string enterRegionName = "";
+			string petInfo = "";
 			int insideHouseId = 0;
 			Hashtable enterSubRegion = new Hashtable();
 
@@ -96,7 +97,7 @@ namespace PacketLogConverter.LogActions
 					CtoS_0xA9_PlayerPosition pos = (CtoS_0xA9_PlayerPosition)pak;
 					speed = pos.Status & 0x1FF;
 					byte plrState = (byte)((pos.Status >> 10) & 7);
-					state = plrState > 0 ? ((PlrState)plrState).ToString() : "";
+					state = plrState > 0 ? ((StoC_0xA9_PlayerPosition.PlrState)plrState).ToString() : "";
 					if ((pos.Status & 0x200) == 0x200)
 						state += ",Backward";
 					if ((pos.Status & 0x8000) == 0x8000)
@@ -130,7 +131,6 @@ namespace PacketLogConverter.LogActions
 						{
 							regionXOffset = glocX - pos.CurrentZoneX;
 							regionYOffset = glocY - pos.CurrentZoneY;
-//							PacketLogConverter.LogWriters.Logger.Say(string.Format("glocX:{0} glocY:{1} regXOffset:{2} regYOffset:{3} @X:{4} @Y:{5}", glocX, glocY, regionXOffset, regionYOffset, pos.CurrentZoneX, pos.CurrentZoneY));
 						}
 						flagAwait0xA9 = false;
 					}
@@ -247,6 +247,7 @@ namespace PacketLogConverter.LogActions
 					flagAwait0xA9 = true;
 					enterSubRegion.Clear();
 					enterRegionName = "";
+					insideHouseId = 0;
 				}
 				else if (pak is StoC_0xDE_SetObjectGuildId)
 				{
@@ -273,6 +274,13 @@ namespace PacketLogConverter.LogActions
 				{
 					StoC_0x88_PetWindowUpdate pet = (StoC_0x88_PetWindowUpdate)pak;
 					petId = pet.PetId;
+				}
+				else if (pak is StoC_0xDA_NpcCreate)
+				{
+					if (petId == -1) continue;
+					StoC_0xDA_NpcCreate npc = (StoC_0xDA_NpcCreate)pak;
+					if (npc.Oid != petId) continue;
+					petInfo = string.Format(" \"{0}\" level:{1} model:0x{2:X4}", npc.Name, npc.Level, npc.Model);
 				}
 				else if (pak is StoC_0xC8_PlayerRide)
 				{
@@ -318,7 +326,7 @@ namespace PacketLogConverter.LogActions
 			}
 			str.AppendFormat("session id: 0x{0}\n", ValueToString(sessionId, "X4"));
 			str.AppendFormat(" object id: 0x{0}\n", ValueToString(objectId, "X4"));
-			str.AppendFormat("    pet id: 0x{0}\n", ValueToString(petId, "X4"));
+			str.AppendFormat("    pet id: 0x{0}{1}\n", ValueToString(petId, "X4"), petInfo);
 			str.AppendFormat(" char name: {0}{1}\n", charName, lastName != "None" ? string.Format(" \"{0}\"", lastName) : "");
 			str.AppendFormat("     level: {0} {1}{2}\n", ValueToString(level), className, (raceName != "" ? " (" + raceName + ")" : ""));
 			if (guildName != "None")

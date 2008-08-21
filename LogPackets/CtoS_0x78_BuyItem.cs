@@ -13,7 +13,9 @@ namespace PacketLogConverter.LogPackets
 		protected ushort itemId;
 		protected byte quantity;
 		protected byte windowType; // currency ? =0(gold), 2(DF/seals, catacombs/aurulite)
+#if !SKIPUNUSEDINPACKET
 		protected ushort unk1;
+#endif
 
 		#region public access properties
 
@@ -23,7 +25,9 @@ namespace PacketLogConverter.LogPackets
 		public ushort ItemId { get { return itemId; } }
 		public byte Quantity { get { return quantity; } }
 		public byte WindowType { get { return windowType; } }
+#if !SKIPUNUSEDINPACKET
 		public ushort Unk1 { get { return unk1; } }
+#endif
 
 		#endregion
 
@@ -31,8 +35,13 @@ namespace PacketLogConverter.LogPackets
 		{
 			int page = itemId / 30;
 			int slot = itemId - page * 30;
-			text.Write("sessionId:0x{0:X4} playerX:{1,-6} playerY:{2,-6} itemId:0x{3:X4} (page:{4} slot:{5,2}) quantity:{6,-3} windowType:{7, -2} unk1:0x{8:X4}",
-				sessionId, playerX, playerY, itemId, page, slot, quantity, windowType, unk1);
+			text.Write("sessionId:0x{0:X4} playerX:{1,-6} playerY:{2,-6} itemId:0x{3:X4} (page:{4} slot:{5,2}) quantity:{6,-3}",
+				sessionId, playerX, playerY, itemId, page, slot, quantity);
+#if !SKIPUNUSEDINPACKET
+			if (flagsDescription)
+				text.Write(" unk1:0x{0:X4}", unk1);
+#endif
+			text.Write(" windowType:{0, -2}", windowType);
 			if (flagsDescription)
 				text.Write("({0})", (StoC_0x17_MerchantWindow.eMerchantWindowType)windowType);
 		}
@@ -50,7 +59,11 @@ namespace PacketLogConverter.LogPackets
 			itemId = ReadShort();
 			quantity = ReadByte();
 			windowType = ReadByte();
+#if !SKIPUNUSEDINPACKET
 			unk1 = ReadShort();
+#else
+			Skip(2);
+#endif
 		}
 
 		/// <summary>

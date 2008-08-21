@@ -30,11 +30,11 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			id = ReadIntLowEndian();
-			regionId = ReadIntLowEndian();
-			x = ReadIntLowEndian();
-			y = ReadIntLowEndian();
-			z = ReadIntLowEndian();
+			id = ReadIntLowEndian();      // 0x00
+			regionId = ReadIntLowEndian();// 0x04
+			x = ReadIntLowEndian();       // 0x08
+			y = ReadIntLowEndian();       // 0x0C
+			z = ReadIntLowEndian();       // 0x10
 		}
 
 		/// <summary>

@@ -34,17 +34,17 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			houseOid = ReadShort();
-			scheduled = ReadShort();
-			count = ReadByte();
-			code = ReadByte();
+			houseOid = ReadShort();    // 0x00
+			scheduled = ReadShort();   // 0x02
+			count = ReadByte();        // 0x04
+			code = ReadByte();         // 0x05
 			m_items = new Item[count];
 
 			for (int i = 0; i < count; i++)
 			{
 				Item item = new Item();
 
-				item.index = ReadByte();
+				item.index = ReadByte();// 0x06+
 				item.model = ReadShort();
 				item.place = ReadByte();
 				item.rotation = ReadByte();

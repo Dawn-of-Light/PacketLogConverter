@@ -8,11 +8,13 @@ namespace PacketLogConverter.LogPackets
 	public class StoC_0x88_PetWindowUpdate : Packet, IObjectIdPacket
 	{
 		protected ushort petId;
-		protected int unused1;
 		protected byte windowAction;
 		protected byte aggroLevel;
 		protected byte walkState;
+#if !SKIPUNUSEDINPACKET
+		protected ushort unused1;
 		protected byte unused2;
+#endif
 		protected ushort[] petEffects;
 
 		/// <summary>
@@ -27,72 +29,50 @@ namespace PacketLogConverter.LogPackets
 		#region public access properties
 
 		public ushort PetId { get { return petId; } }
-		public int Unused1 { get { return unused1; } }
 		public byte WindowAction { get { return windowAction; } }
 		public byte AggroLevel { get { return aggroLevel; } }
 		public byte WalkState { get { return walkState; } }
-		public byte Unused2 { get { return unused2; } }
 		public ushort[] PetEffects { get { return petEffects; } }
+#if !SKIPUNUSEDINPACKET
+		public ushort Unused1 { get { return unused1; } }
+		public byte Unused2 { get { return unused2; } }
+#endif
 
 		#endregion
+
+		public enum eWindowAction: byte
+		{
+			close = 0,
+			update = 1,
+			open = 2,
+		}
+
+		public enum eAggroMode: byte
+		{
+			Aggressive = 1,
+			Defencive = 2,
+			Passive = 3,
+		}
+
+		public enum eWalkMode: byte
+		{
+			Follow = 1,
+			Stay = 2,
+			Goto = 3,
+			Here = 4,
+		}
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 
-			text.Write("pet:0x{0:X4} ", petId);
-			switch (windowAction)
-			{
-				case 0:
-					text.Write(" (close)");
-					break;
-				case 1:
-					text.Write("(update)");
-					break;
-				case 2:
-					text.Write("  (open)");
-					break;
-				default:
-					text.Write("unk {0:X2}", windowAction);
-					break;
-			}
-			text.Write(" aggro:");
-			switch (aggroLevel)
-			{
-				case 1:
-					text.Write("aggr");
-					break;
-				case 2:
-					text.Write("def ");
-					break;
-				case 3:
-					text.Write("pass");
-					break;
-				default:
-					text.Write("? {0:X2}", aggroLevel);
-					break;
-			}
-			text.Write(" walk:");
-			switch (walkState)
-			{
-				case 1:
-					text.Write("follow");
-					break;
-				case 2:
-					text.Write("stay  ");
-					break;
-				case 3:
-					text.Write("goto  ");
-					break;
-				case 4:
-					text.Write("here  ");
-					break;
-				default:
-					text.Write("unk {0:X2}", walkState);
-					break;
-			}
-
-			text.Write("  unused1:0 unused2:1", unused1, unused2);
-
+			text.Write("pet:0x{0:X4}", petId);
+			text.Write(" windowAction:{0}({1,-6})", windowAction, (eWindowAction)windowAction);
+			text.Write(" aggro:{0}({1,-10})", aggroLevel, (eAggroMode)aggroLevel);
+			text.Write(" walk:{0}({1})", walkState, (eWalkMode)walkState);
+#if !SKIPUNUSEDINPACKET
+			if (flagsDescription)
+				text.Write(" unk1:0x{0:X4} unk2:0x{1:X2}", unused1, unused2);
+#endif
 			if (petEffects.Length > 0)
 			{
 				text.Write(")");
@@ -115,12 +95,19 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			petId = ReadShort();
+#if !SKIPUNUSEDINPACKET
 			unused1 = ReadShort();
-			windowAction = ReadByte(); //0-released, 1-normal, 2-just charmed? | Roach: 0-close window, 1-update window, 2-create window
-			aggroLevel = ReadByte(); //1-aggressive, 2-defensive, 3-passive
-			walkState = ReadByte(); //1-follow, 2-stay, 3-goto, 4-here
+#else
+			Skip(2);
+#endif
+			windowAction = ReadByte(); // 0-close window, 1-update window, 2-create window
+			aggroLevel = ReadByte(); // 1-aggressive, 2-defensive, 3-passive
+			walkState = ReadByte(); // 1-follow, 2-stay, 3-goto, 4-here
+#if !SKIPUNUSEDINPACKET
 			unused2 = ReadByte();
-
+#else
+			Skip(1);
+#endif
 			ArrayList effects = new ArrayList(8);
 
 			int stop = ReadByte();

@@ -13,6 +13,7 @@ namespace PacketLogConverter.LogActions
 	public class ShowPacketContextAction : AbstractEnabledAction
 	{
 		private static readonly int PACKET_CONTEXT_SIZE = 100;
+		public Packet savedPacket = null;
 
 		private readonly List<Thread> m_startedThreads = new List<Thread>();
 
@@ -27,6 +28,7 @@ namespace PacketLogConverter.LogActions
 			// Create log
 			PacketLog			log = new PacketLog();
 			ICollection<Packet>	packets = SelectPacketContext(context, selectedPacket);
+			savedPacket = context.LogManager.GetPacket(selectedPacket);
 			log.AddRange(packets);
 			PacketLog selectedLog = context.LogManager.GetPacketLog(selectedPacket.LogIndex);
 			log.StreamName				= "(packet context) " + selectedLog.StreamName;
@@ -58,7 +60,10 @@ namespace PacketLogConverter.LogActions
 				MainForm form = new MainForm();
 				form.LogManager.AddLog((PacketLog) log);
 				form.ShowDataTab();
-
+				if (savedPacket != null)
+				{
+					form.RestoreLogPositionByPacket(savedPacket);
+				}
 				Application.Run(form);
 			}
 			catch (Exception e)

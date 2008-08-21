@@ -79,7 +79,7 @@ namespace PacketLogConverter.LogPackets
 			targetHealthPercent = ReadByte();
 			styleId = styleLow;
 
-			if ((result&0x80) != 0)
+			if ((result & 0x80) != 0)
 				styleId = (ushort)(styleLow | 0x100);
 		}
 

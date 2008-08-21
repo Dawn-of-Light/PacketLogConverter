@@ -37,11 +37,11 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			copper = ReadByte();
-			silver = ReadByte();
-			gold = ReadShort();
-			mithril = ReadShort();
-			platinum = ReadShort();
+			copper = ReadByte();   // 0x00
+			silver = ReadByte();   // 0x01
+			gold = ReadShort();    // 0x02
+			mithril = ReadShort(); // 0x04
+			platinum = ReadShort();// 0x06
 		}
 
 		/// <summary>

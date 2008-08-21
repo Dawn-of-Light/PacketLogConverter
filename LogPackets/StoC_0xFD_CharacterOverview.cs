@@ -28,6 +28,7 @@ namespace PacketLogConverter.LogPackets
 
 				text.Write("[{13}]\tname:\"{0}\" zone:\"{1}\" class:\"{2}\" race:\"{3}\" level:{4} classId:{5} realm:{6} gender:{7} race:{8} model:0x{9:X4} regId1:{10} regId2:{11} databaseId:{12}",
 					ch.charName, ch.zoneDescription, ch.className, ch.raceName, ch.level, ch.classID, ch.realm, ch.gender, ch.race, ch.model, ch.regionID, ch.regionID2, ch.databaseId, i);
+				text.Write(" siStartLocation:{0}",ch.siStartLocation);
 				if (flagsDescription)
 					text.Write(" (model:0x{0:X4} face?:{1} size:{2})", ch.model & 0x7FF, ch.model >> 13, (ch.model >> 11) & 3);
 				text.Write("\n\tstr:{0} dex:{1} con:{2} qui:{3} int:{4} pie:{5} emp:{6} chr:{7}", ch.statStr, ch.statDex, ch.statCon, ch.statQui, ch.statInt, ch.statPie, ch.statEmp, ch.statChr);
@@ -105,9 +106,9 @@ namespace PacketLogConverter.LogPackets
 				charData.classID = ReadByte();
 				charData.realm = ReadByte();
 				charData.temp = ReadByte();
-				charData.gender = (byte)((charData.temp >> 4) & 1);
+				charData.gender = (byte)((charData.temp >> 4) & 3);
 				charData.race = (byte)((charData.temp & 0x0F) + ((charData.temp & 0x40) >> 2));
-				charData.siStartLocation = (byte)((charData.temp & 0x80) >> 7);
+				charData.siStartLocation = (byte)(charData.temp >> 7);
 				charData.model = ReadShortLowEndian();
 				charData.regionID = ReadByte();
 				charData.regionID2 = ReadByte();

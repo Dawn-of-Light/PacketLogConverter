@@ -70,15 +70,15 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			templeBitMask = ReadShort();
-			countKeep = ReadByte();
-			countTower = ReadByte();
-			r1 = ReadByte();
-			r2 = ReadByte();
-			r3 = ReadByte();
-			r4 = ReadByte();
-			r5 = ReadByte();
-			r6 = ReadByte();
+			templeBitMask = ReadShort(); // 0x00
+			countKeep = ReadByte();      // 0x02
+			countTower = ReadByte();     // 0x03
+			r1 = ReadByte();             // 0x04
+			r2 = ReadByte();             // 0x05
+			r3 = ReadByte();             // 0x06
+			r4 = ReadByte();             // 0x07
+			r5 = ReadByte();             // 0x08
+			r6 = ReadByte();             // 0x09
 			m_keeps = new Keep[countKeep + countTower];
 
 			ArrayList arr = new ArrayList(countKeep + countTower);
@@ -86,9 +86,9 @@ namespace PacketLogConverter.LogPackets
 			{
 				Keep keep = new Keep();
 
-				keep.id = ReadByte();
-				keep.flag = ReadByte();
-				keep.guild = ReadPascalString();
+				keep.id = ReadByte();             // 0x0A+
+				keep.flag = ReadByte();           // 0x0B+
+				keep.guild = ReadPascalString();  // 0x0C+
 
 				m_keeps[i] = keep;
 				int keepRealmMap = keep.id >> 6;

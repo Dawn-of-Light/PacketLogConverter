@@ -7,7 +7,7 @@ namespace PacketLogConverter.LogPackets
 	{
 		protected ushort oid;
 		protected byte type;
-		protected byte unk1;
+		protected byte unk1; // unused
 
 		/// <summary>
 		/// Gets the object ids of the packet.
@@ -24,11 +24,24 @@ namespace PacketLogConverter.LogPackets
 		public byte Type { get { return type; } }
 		public byte Unk1 { get { return unk1; } }
 
+		public enum eChangeTargetType: byte
+		{
+			SetTargetOidAssist = 0, // assist
+			SetCheckTargetOid = 1,
+			SetTargetOid = 2,
+			SetCombatMode = 3, // if !Combat
+		}
+
 		#endregion
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("oid:0x{0:X4} type:{1} unk1:0x{2:X2}", oid, type, unk1);
+			text.Write("oid:0x{0:X4} type:{1}", oid, type, unk1);
+			if (flagsDescription)
+			{
+				text.Write("({0})", (eChangeTargetType)type);
+//				text.Write(" unk1:0x{0:X2}", unk1);
+			}
 		}
 
 		/// <summary>
@@ -39,7 +52,7 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 			oid = ReadShort();
 			type = ReadByte();
-			unk1= ReadByte();
+			unk1 = ReadByte(); // unused
 		}
 
 		/// <summary>

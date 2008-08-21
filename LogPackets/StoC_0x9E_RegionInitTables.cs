@@ -40,12 +40,12 @@ namespace PacketLogConverter.LogPackets
 			{
 				RegionEntry reg = new RegionEntry();
 
-				reg.regionIndex = ReadByte();
-				reg.region = ReadByte();
-				reg.name = ReadString(20);
-				reg.fromPort = ReadString(5);
-				reg.toPort = ReadString(5);
-				reg.ip = ReadString(20);
+				reg.regionIndex = ReadByte(); // 0x00
+				reg.region = ReadByte();      // 0x01
+				reg.name = ReadString(20);    // 0x02
+				reg.fromPort = ReadString(5); // 0x22
+				reg.toPort = ReadString(5);   // 0x27
+				reg.ip = ReadString(20);      // 0x2C
 
 				regions[i] = reg;
 			}

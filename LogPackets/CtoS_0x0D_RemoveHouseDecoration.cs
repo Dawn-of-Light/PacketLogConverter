@@ -10,8 +10,8 @@ namespace PacketLogConverter.LogPackets
 		protected ushort index;
 		protected ushort houseOid;
 		protected byte place;
-		protected byte unk1;
-		protected ushort unk2;
+		protected byte unk1; // unused
+		protected ushort unk2; // unused
 
 		#region public access properties
 
@@ -25,8 +25,9 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("index:0x{0:X4} houseOid:0x{1:X4} place:{2}({5}) unk1:0x{3:X2} unk2:0x{4:X4}",
-				index, houseOid, place, unk1, unk2, (CtoS_0x0C_HouseItemPlacementRequest.ePlaceType)place);
+			text.Write("index:0x{0:X4} houseOid:0x{1:X4} place:{2}", index, houseOid, place);
+			if (flagsDescription)
+				text.Write(" ({2}) unk1:0x{0:X2} unk2:0x{1:X4}", unk1, unk2, (CtoS_0x0C_HouseItemPlacementRequest.ePlaceType)place);
 		}
 
 		/// <summary>

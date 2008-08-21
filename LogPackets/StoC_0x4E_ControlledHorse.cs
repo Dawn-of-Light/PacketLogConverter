@@ -55,17 +55,17 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			oid = ReadShort();
-			horseId = ReadByte();
-			horseBoot = ReadByte();
-			horseBootColor = ReadShort();
-			horseSaddle = ReadByte();
-			horseSaddleColor = ReadByte();
+			oid = ReadShort();            // 0x00
+			horseId = ReadByte();         // 0x02
+			horseBoot = ReadByte();       // 0x03
+			horseBootColor = ReadShort(); // 0x04
+			horseSaddle = ReadByte();     // 0x06
+			horseSaddleColor = ReadByte();// 0x07
 			if (oid == 0 && horseId != 0)
 			{
-				horseSlots = ReadByte();
-				horseArmor = ReadByte();
-				horseName = ReadPascalString();
+				horseSlots = ReadByte();  // 0x08
+				horseArmor = ReadByte();  // 0x09
+				horseName = ReadPascalString(); // 0x0A+
 			}
 		}
 

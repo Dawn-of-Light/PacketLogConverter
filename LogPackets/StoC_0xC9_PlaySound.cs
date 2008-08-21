@@ -54,12 +54,12 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			soundId = ReadShort();
-			zoneId = ReadShort();
-			x = ReadShort();
-			y = ReadShort();
-			z = ReadShort();
-			radius = ReadShort();
+			soundId = ReadShort();// 0x00
+			zoneId = ReadShort(); // 0x02
+			x = ReadShort();      // 0x04
+			y = ReadShort();      // 0x06
+			z = ReadShort();      // 0x08
+			radius = ReadShort(); // 0x0A
 		}
 
 		/// <summary>

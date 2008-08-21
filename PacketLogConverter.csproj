@@ -51,12 +51,12 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;SKIPUNUSEDINPACKET</DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
@@ -156,7 +156,9 @@
     <Compile Include="LogActions\ShowObjectKnownInfoAction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LogActions\ShowObjectMapAction.cs" />
+    <Compile Include="LogActions\ShowObjectMapAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LogActions\ShowObjectSamePacketsAction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -185,6 +187,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogActions\ShowPlayerWeapon.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogActions\ShowPrevSameObjectPacket.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogActions\ShowPrevSamePacket.cs">
@@ -778,6 +783,9 @@
     <Compile Include="LogPackets\StoC_0x69_KeepOverview.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x6A_KeepRealmUpdate.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LogPackets\StoC_0x6B_KeepRemove.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1180,7 +1188,9 @@
     <Compile Include="Packet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PacketInfo.cs" />
+    <Compile Include="PacketInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PacketLocation.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1202,7 +1212,9 @@
     <Compile Include="Util.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utils\CustomStreamWriter.cs" />
+    <Compile Include="Utils\CustomStreamWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Utils\FilterReader.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1212,13 +1224,14 @@
     <Compile Include="Utils\FilterWriter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utils\PacketTextLocationManager.cs" />
+    <Compile Include="Utils\PacketTextLocationManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Utils\StreamWrap.cs">
       <SubType>Code</SubType>
     </Compile>
     <EmbeddedResource Include="ErrorForm.resx">
       <DependentUpon>ErrorForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LogActions\InfoWindowForm.resx">
       <DependentUpon>InfoWindowForm.cs</DependentUpon>
@@ -1234,15 +1247,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressForm.resx">
       <DependentUpon>ProgressForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ReportForm.resx">
       <DependentUpon>ReportForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

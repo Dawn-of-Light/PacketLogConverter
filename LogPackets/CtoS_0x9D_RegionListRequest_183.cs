@@ -16,7 +16,7 @@ namespace PacketLogConverter.LogPackets
 				text.Write(" OS:");
 				text.Write(osType.ToString("D"));
 				if(flagsDescription)
-					text.Write("(" + (eOSType)osType + ")");
+					text.Write("(" + (CtoS_0x37_ClientCrash.eOSType)osType + ")");
 			}
 		}
 
@@ -33,7 +33,9 @@ namespace PacketLogConverter.LogPackets
 			{
 				resolution = ReadShort();
 				options = ReadShort();
-				unk1 = ReadInt();
+				memory = ReadByte();
+				unk1 = ReadShort();
+				unk2 = ReadByte(); // unused
 				figureVersion = ReadInt();
 				figureVersion1 = ReadByte();
 				skin = ReadByte();
@@ -53,18 +55,6 @@ namespace PacketLogConverter.LogPackets
 					gender = 1;
 				}
 			}
-		}
-
-		public enum eOSType : int
-		{
-			WIN95 = 1,
-			WIN98 = 2,
-			WindowsMe = 3,
-			NT351 = 4,
-			NT4 = 5,
-			WIN2000 = 6,
-			WINXP = 7,
-			WIN2003 = 8,
 		}
 
 		/// <summary>

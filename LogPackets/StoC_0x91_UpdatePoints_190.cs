@@ -31,16 +31,16 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			realmPoints = ReadInt();
-			levelPermill = ReadShort();
-			skillSpecPoints = ReadShort();
-			bountyPoints = ReadInt();
-			realmSpecPoints = ReadShort();
-			champLevelPermill = ReadShort();
-			experience = ReadLongLowEndian();
-			expNextLevel = ReadLongLowEndian();
-			champExp = ReadLongLowEndian();
-			champExpNextLevel = ReadLongLowEndian();
+			realmPoints = ReadInt();                 // 0x00
+			levelPermill = ReadShort();              // 0x04
+			skillSpecPoints = ReadShort();           // 0x06
+			bountyPoints = ReadInt();                // 0x08
+			realmSpecPoints = ReadShort();           // 0x0C
+			champLevelPermill = ReadShort();         // 0x0E
+			experience = ReadLongLowEndian();        // 0x10
+			expNextLevel = ReadLongLowEndian();      // 0x18
+			champExp = ReadLongLowEndian();          // 0x20
+			champExpNextLevel = ReadLongLowEndian(); // 0x28
 		}
 				
 		/// <summary>

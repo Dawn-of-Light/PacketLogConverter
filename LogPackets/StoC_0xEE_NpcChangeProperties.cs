@@ -48,10 +48,10 @@ namespace PacketLogConverter.LogPackets
 		public override void Init()
 		{
 			Position = 0;
-			oid = ReadShort();
-			level = ReadShort();
+			oid = ReadShort();   // 0x00
+			level = ReadShort(); // 0x02
 			long tempPosition = Position;
-			trailingByte = ReadByte();
+			trailingByte = ReadByte(); // 0x04
 			if (trailingByte == 0xFF)
 			{
 				guildName = "";

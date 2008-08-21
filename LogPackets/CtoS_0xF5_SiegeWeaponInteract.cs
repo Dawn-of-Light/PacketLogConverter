@@ -8,7 +8,7 @@ namespace PacketLogConverter.LogPackets
 	{
 		protected ushort unk1;
 		protected byte action;
-		protected byte ammo;
+		protected byte currentAmmoIndex;
 		protected ushort unk2;
 		protected ushort unk3;
 		protected ushort unk4;
@@ -20,7 +20,7 @@ namespace PacketLogConverter.LogPackets
 
 		public ushort Unk1 { get { return unk1; } }
 		public byte Action { get { return action; } }
-		public byte Ammo { get { return ammo; } }
+		public byte CurrentAmmoIndex { get { return currentAmmoIndex; } }
 		public ushort Unk2 { get { return unk2; } }
 		public ushort Unk3 { get { return unk3; } }
 		public ushort Unk4 { get { return unk4; } }
@@ -71,13 +71,13 @@ namespace PacketLogConverter.LogPackets
 			}
 			if (flagsDescription)
 			{
-				text.Write("unk1:0x{0:X4} action:{1}({2}) ammo?:{3, -2} unk2:0x{4:X4} unk3:0x{5:X4} unk4:0x{6:X4} unk5:0x{7:X4} unk6:0x{8:X4} unk7:0x{9:X4}",
-					unk1, action, actionType, ammo, unk2, unk3, unk4, unk5, unk6, unk7);
+				text.Write("unk1:0x{0:X4} action:{1}({2}) currentAmmoIndex:{3, -2} unk2:0x{4:X4} unk3:0x{5:X4} unk4:0x{6:X4} unk5:0x{7:X4} unk6:0x{8:X4} unk7:0x{9:X4}",
+					unk1, action, actionType, currentAmmoIndex, unk2, unk3, unk4, unk5, unk6, unk7);
 			}
 			else
 			{
-				text.Write("action:{0}({2}) ammo?:{1, -2}",
-					action, ammo, actionType);
+				text.Write("action:{0}({2}) currentAmmoIndex:{1, -2}",
+					action, currentAmmoIndex, actionType);
 			}
 		}
 
@@ -89,13 +89,13 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 			unk1 = ReadShort();
 			action = ReadByte();
-			ammo = ReadByte();
-			unk2 = ReadShort();
-			unk3 = ReadShort();
-			unk4 = ReadShort();
-			unk5 = ReadShort();
-			unk6 = ReadShort();
-			unk7 = ReadShort();
+			currentAmmoIndex = ReadByte();
+			unk2 = ReadShort(); // unused
+			unk3 = ReadShort(); // unused
+			unk4 = ReadShort(); // unused
+			unk5 = ReadShort(); // unused
+			unk6 = ReadShort(); // unused
+			unk7 = ReadShort(); // unused
 		}
 
 		/// <summary>

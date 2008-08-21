@@ -37,12 +37,12 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			x = ReadInt();
-			y = ReadInt();
-			z = ReadInt();
-			flag = ReadByte();
-			unk1 = ReadShort();
-			unk2 = ReadByte();
+			x = ReadInt();      // 0x00
+			y = ReadInt();      // 0x04
+			z = ReadInt();      // 0x08
+			flag = ReadByte();  // 0x0C
+			unk1 = ReadShort(); // 0x0D
+			unk2 = ReadByte();  // 0x0E
 		}
 
 		/// <summary>

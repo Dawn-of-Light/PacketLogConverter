@@ -57,9 +57,9 @@ namespace PacketLogConverter.LogPackets
 					flag += ",PetInView";
 				if ((flags & 0x1000) == 0x1000) // GT
 					flag += ",GTinView";
-				if ((flags & 0x2000) == 0x2000) // LOS
+				if ((flags & 0x2000) == 0x2000) // TargetInView
 					flag += ",CheckTargetInView";
-				if ((flags & 0x4000) == 0x4000) // LOS
+				if ((flags & 0x4000) == 0x4000) // CheckTargetInView
 					flag += ",TargetInView";
 				if ((flags & 0x8000) == 0x8000) // click mouse
 					flag += ",MouseClick";

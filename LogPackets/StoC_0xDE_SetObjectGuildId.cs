@@ -45,11 +45,11 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			oid = ReadShort();
-			guildId = ReadShort();
-			unk1 = ReadShort();
-			serverId = ReadByte();
-			unk2 = ReadByte();
+			oid = ReadShort();     // 0x00
+			guildId = ReadShort(); // 0x02
+			unk1 = ReadShort();    // 0x04
+			serverId = ReadByte(); // 0x06
+			unk2 = ReadByte();     // 0x07
 		}
 
 		/// <summary>

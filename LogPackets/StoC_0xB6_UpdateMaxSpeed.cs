@@ -32,9 +32,9 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			maxSpeedPercent = ReadShort();
-			turningEnabled = ReadByte();
-			waterMaxSpeedPercent = ReadByte();
+			maxSpeedPercent = ReadShort();    // 0x00
+			turningEnabled = ReadByte();      // 0x02
+			waterMaxSpeedPercent = ReadByte();// 0x03
 		}
 
 		/// <summary>

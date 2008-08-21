@@ -12,15 +12,15 @@ namespace PacketLogConverter.LogPackets
 		public override void Init()
 		{
 			Position = 0;
-			unk1 = ReadInt();
-			unk2 = ReadInt();
-			regionId = (short)ReadShort();
-			unk3 = ReadInt();
-			model = ReadShort();
-			unk4 = ReadByte();
-			slot = ReadByte();
-			unk5 = ReadShortLowEndian();
-			unk6 = ReadShortLowEndian();
+			unk1 = ReadInt();             // 0x00
+			unk2 = ReadInt();             // 0x04
+			regionId = (short)ReadShort();// 0x08
+			unk3 = ReadInt();             // 0x0A
+			model = ReadShort();          // 0x0E
+			unk4 = ReadByte();            // 0x10
+			slot = ReadByte();            // 0x11
+			unk5 = ReadShortLowEndian();  // 0x12
+			unk6 = ReadShortLowEndian();  // 0x14
 		}
 
 		/// <summary>

@@ -19,7 +19,7 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("slots:{0} unk1:0x{4:X2} helmAndCloakVisibile:0x{5:X2} bits:0x{1:X2} visibleSlots:0x{2:X2} preAction:0x{3:X2}", SlotsCount, Bits, VisibleSlots, PreAction, unk1, m_helmAndCloakVisibile);
+			text.Write("slots:{0,-2} unk1:0x{4:X2} helmAndCloakVisibile:0x{5:X2} bits:0x{1:X2} visibleSlots:0x{2:X2} preAction:0x{3:X2}", SlotsCount, Bits, VisibleSlots, PreAction, unk1, m_helmAndCloakVisibile);
 			if (flagsDescription)
 				text.Write("({0}{1})", (ePreActionType)PreAction, (PreAction == (byte)ePreActionType.InitHouseVault) ? VisibleSlots.ToString() : "");
 
@@ -30,7 +30,12 @@ namespace PacketLogConverter.LogPackets
 				text.Write("\n\tslot:{0,-3} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} \"{17}\"",
 					item.slot, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name);
 				if (flagsDescription && item.name != null && item.name != "")
-					text.Write(" ({0})", (eObjectType)item.objectType);
+				{
+					text.Write(" ({0}", (eObjectType)item.objectType);
+					if ((eObjectType)item.objectType == eObjectType.GardenObject)
+						text.Write(" {0}x{1}", item.value2, item.hand);
+					text.Write(')');
+				}
 				if ((item.flag & 0x08) == 0x08)
 					text.Write("\n\t\teffectIcon:0x{0:X4}  effectName:\"{1}\"",
 					item.effectIcon, item.effectName);
