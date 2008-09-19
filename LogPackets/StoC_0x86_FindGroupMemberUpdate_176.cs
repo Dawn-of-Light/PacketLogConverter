@@ -8,9 +8,9 @@ namespace PacketLogConverter.LogPackets
 		{
 
 			Player player = new Player();
-			player.index = ReadByte();
-			player.level = ReadByte();
-			player.name = ReadPascalString();
+			player.index = ReadByte();        // 0x00
+			player.level = ReadByte();        // 0x01
+			player.name = ReadPascalString(); // 0x02
 			player.className = ReadString(4);
 			player.zone = ReadShort();
 			player.duration = ReadByte();

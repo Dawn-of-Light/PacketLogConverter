@@ -22,7 +22,7 @@ namespace PacketLogConverter.LogPackets
 			if ((speed & 0x1000) == 0x1000)
 				zSpeed *= -1;
 			text.Write("sessionId:0x{0:X4} status:0x{1:X2} speed:{2,-3} heading:0x{3:X4}(0x{12:X1}) currentZone({4,-3}): ({5,-6} {6,-6} {7,-5}) flyFlags:0x{8:X2} speedZ:{9,-5} flags:0x{10:X2} health:{11,3}%",
-				sessionId, (status & 0x1FF ^ status) >> 8 ,status & 0x1FF, heading & 0xFFF, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, (speed & 0x7FF ^ speed) >> 8, zSpeed, flag, health & 0x7F, (heading & 0xFFF ^ heading) >> 13);
+				sessionId, (status & 0x1FF ^ status) >> 8 ,status & 0x1FF, heading & 0xFFF, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, (speed & 0xFFF ^ speed) >> 8, zSpeed, flag, health & 0x7F, (heading & 0xFFF ^ heading) >> 13);
 			text.Write(" unk2:0x{0:X4}", unk2);
 			text.Write(" unk190_1:0x{0:X2} unk190_2:0x{1:X2}", unk190_1, unk190_2);
 			if (flagsDescription)
@@ -88,10 +88,11 @@ namespace PacketLogConverter.LogPackets
 			health = ReadByte();        // 0x11
 			unk2 = ReadShort();         // 0x12
 //			Skip(32); // Unknown (i think it just rest buffer from recieved class name)
+// 0x28 ?
 			for (int i = 0; i < 8; i++)
 				u_unk1[i] = ReadIntLowEndian();
 			unk190_1 = ReadByte();      // 0x34
-			unk190_2 = ReadByte();      // 0x35
+			unk190_2 = ReadByte();      // 0x35 // 0xFC
 		}
 
 		/// <summary>

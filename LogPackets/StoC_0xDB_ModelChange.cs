@@ -10,7 +10,7 @@ namespace PacketLogConverter.LogPackets
 		protected ushort oid;
 		protected ushort newModel;
 		protected byte size;
-		protected byte unk1; // unused
+		protected byte unk1; // npc torchMode ?
 		protected ushort unk2; // unused
 
 		/// <summary>

@@ -238,7 +238,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LogFilters\PacketPropertyValueFilterHelpers.cs">
-      <SubType>Form</SubType>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogManager.cs">
       <SubType>Code</SubType>

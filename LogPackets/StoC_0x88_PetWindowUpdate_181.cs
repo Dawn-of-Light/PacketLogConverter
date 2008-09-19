@@ -23,14 +23,14 @@ namespace PacketLogConverter.LogPackets
 			aggroLevel = ReadByte(); //1-aggressive, 2-defensive, 3-passive
 			walkState = ReadByte(); //1-follow, 2-stay, 3-goto, 4-here
 #if !SKIPUNUSEDINPACKET
-			unused1 = ReadShort();
+			unused1 = ReadByte();
 #else
 			Skip(1);
 #endif
 			ArrayList effects = new ArrayList(8);
 			int effectsCount = ReadByte();
 
-			for(int i = 0; i < effectsCount; i++)
+			for (int i = 0; i < effectsCount; i++)
 			{
 				effects.Add(ReadShort());
 			}

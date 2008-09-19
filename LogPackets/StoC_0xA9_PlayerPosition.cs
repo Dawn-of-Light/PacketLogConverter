@@ -44,7 +44,7 @@ namespace PacketLogConverter.LogPackets
 		public ushort CurrentZoneId { get { return currentZoneId; } }
 		public byte Unk1 { get { return unk1; } }
 		public ushort Heading { get { return heading; } }
-		public byte InnerCounter { get { return (byte)(heading >> 12); } }
+		public byte InnerCounter { get { return (byte)(heading >> 13); } }
 		public ushort Speed { get { return speed; } }
 		public byte Flag { get { return flag; } }
 		public byte Health { get { return health; } }

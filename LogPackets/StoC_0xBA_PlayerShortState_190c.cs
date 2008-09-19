@@ -19,8 +19,8 @@ namespace PacketLogConverter.LogPackets
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 			bool isRaided = (state == (byte)PlrState.Ride);
-			text.Write("sessionId:0x{0:X4} {1}:0x{2:X4} flags:0x{3:X2} health:{4,3}% unk1:0x{6:X2} unk2:0x{7:X2} bSlot:0x{8:X2} state:{5} mana:{9,3}% endurance:{10,3}%",
-				sessionId, isRaided ? "mountId" : "heading", heading, flags, health & 0x7F, state, unk1, unk2, rideSlot, manaPercent, endurancePercent);
+			text.Write("sessionId:0x{0:X4} {1}:0x{2:X4} flags:0x{3:X2} health:{4,3}% unk1:0x{6:X2} innerCounter:0x{7:X2} bSlot:0x{8:X2} state:{5} mana:{9,3}% endurance:{10,3}%",
+				sessionId, isRaided ? "mountId" : "heading", heading, flags, health & 0x7F, state, unk1, innerCounter, rideSlot, manaPercent, endurancePercent);
 			if (flagsDescription)
 			{
 				string status = state > 0 ? ((PlrState)state).ToString() : "";
@@ -58,7 +58,7 @@ namespace PacketLogConverter.LogPackets
 			heading = ReadShort();
 			unk1 = ReadByte();
 			flags = ReadByte();
-			unk2 = ReadByte();
+			innerCounter = ReadByte();
 			rideSlot = ReadByte();
 			health = ReadByte();
 			state = ReadByte();

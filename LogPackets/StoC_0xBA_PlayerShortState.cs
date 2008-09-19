@@ -10,7 +10,7 @@ namespace PacketLogConverter.LogPackets
 		protected ushort heading;
 		protected byte unk1;
 		protected byte flags;
-		protected byte unk2;
+		protected byte innerCounter;
 		protected byte rideSlot;
 		protected byte health;
 		protected byte state;
@@ -44,7 +44,7 @@ namespace PacketLogConverter.LogPackets
 		public ushort Heading { get { return heading; } }
 		public byte Unk1 { get { return unk1; } }
 		public byte Flags { get { return flags ; } }
-		public byte Unk2 { get { return unk2; } }
+		public byte InnerCounter { get { return innerCounter; } }
 		public byte RideSlot { get { return rideSlot; } }
 		public byte Health { get { return health; } }
 		public byte State { get { return state; } }
@@ -54,8 +54,8 @@ namespace PacketLogConverter.LogPackets
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 			bool isRaided = (state == (byte)PlrState.Ride);
-			text.Write("sessionId:0x{0:X4} {1}:0x{2:X4} flags:0x{3:X2} health:{4,3}% unk1:0x{6:X2} unk2:0x{7:X2} bSlot:0x{8:X2} state:{5}",
-				sessionId, isRaided ? "mountId" : "heading", heading, flags, health & 0x7F, state, unk1, unk2, rideSlot);
+			text.Write("sessionId:0x{0:X4} {1}:0x{2:X4} flags:0x{3:X2} health:{4,3}% unk1:0x{6:X2} innerCounter:0x{7:X2} bSlot:0x{8:X2} state:{5}",
+				sessionId, isRaided ? "mountId" : "heading", heading, flags, health & 0x7F, state, unk1, innerCounter, rideSlot);
 			if (flagsDescription)
 			{
 				string status = state > 0 ? ((PlrState)state).ToString() : "";
@@ -93,7 +93,7 @@ namespace PacketLogConverter.LogPackets
 			heading = ReadShort();
 			unk1 = ReadByte();
 			flags = ReadByte();
-			unk2 = ReadByte();
+			innerCounter = ReadByte();
 			rideSlot = ReadByte();
 			health = ReadByte();
 			state = ReadByte();

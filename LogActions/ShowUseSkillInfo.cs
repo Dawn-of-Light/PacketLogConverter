@@ -86,7 +86,7 @@ namespace PacketLogConverter.LogActions
 						if (variousPak.SubCode == 1)
 						{
 							StoC_0x16_VariousUpdate.SkillsUpdate data = (variousPak.SubData as StoC_0x16_VariousUpdate.SkillsUpdate);
-							for (int j = variousPak.SubCount - 1; j >=0; j--)
+							for (int j = variousPak.SubCount - 1; j >= 0; j--)
 							{
 								StoC_0x16_VariousUpdate.Skill skill = data.data[j];
 								if ((originalPak as CtoS_0xBB_UseSkill).Type == 0 && (int)skill.page == 0)
@@ -97,13 +97,23 @@ namespace PacketLogConverter.LogActions
 							if (variousPak.StartIndex == 0)
 							{
 								int index = skillList.Count;
+								int lineIndex = -1;
+								string skillInfo = "";
 								foreach (StoC_0x16_VariousUpdate.Skill skill in skillList)
 								{
 									index--;
 									if (index == spellIndex)
 									{
-										str.Append("\n");
-										str.AppendFormat("level:{0,-2} type:{1}({2,-14}) stlOpen:0x{3:X4} bonus:{4,-2} icon:0x{5:X4} name:\"{6}\"\n",
+										if (skill.page == StoC_0x16_VariousUpdate.eSkillPage.Spells && skill.stlOpen != 0xFE)
+											lineIndex = skill.stlOpen;
+										if (log.Version >= 180)
+										{
+											if (skill.page == StoC_0x16_VariousUpdate.eSkillPage.Styles)
+											{
+												str.AppendFormat("\nSpec:\"{0}\"", GetSpecNameFromInternalIndex(skill.bonus));
+											}
+										}
+										skillInfo = string.Format("\nlevel:{0,-2} type:{1}({2,-14}) stlOpen:0x{3:X4} bonus:{4,-2} icon:0x{5:X4} name:\"{6}\"\n",
 											skill.level, (int)skill.page, skill.page.ToString().ToLower(), skill.stlOpen, skill.bonus, skill.icon, skill.name);
 										spellIcon = skill.icon;
 										spellName = skill.name;
@@ -112,6 +122,26 @@ namespace PacketLogConverter.LogActions
 										break;
 									}
 								}
+								if (lineIndex >= 0)
+								{
+									index = 0;
+									foreach (StoC_0x16_VariousUpdate.Skill skill in data.data)
+									{
+										if (skill.page == StoC_0x16_VariousUpdate.eSkillPage.Specialization)
+										{
+											if (index++ == lineIndex)
+											{
+												str.AppendFormat("\nSpec:\"{0}\"", skill.name);
+//												str.AppendFormat("\nlevel:{0,-2} type:{1}({2,-14}) stlOpen:0x{3:X4} bonus:{4,-2} icon:0x{5:X4} name:\"{6}\"\n",
+//													skill.level, (int)skill.page, skill.page.ToString().ToLower(), skill.stlOpen, skill.bonus, skill.icon, skill.name);
+												break;
+											}
+										}
+										else
+											break;
+									}
+								}
+								str.Append(skillInfo);
 								break;
 							}
 						}
@@ -221,7 +251,7 @@ namespace PacketLogConverter.LogActions
 		}
 
 		private int FormInfoString(PacketLog log, int selectedIndex, StringBuilder str, ushort icon, string spellName)
-        {
+		{
         	int additionStringCount = 0;
 			for (int i = selectedIndex; i < log.Count ; i++)
 			{
@@ -267,7 +297,103 @@ namespace PacketLogConverter.LogActions
 				}
 			}
 			return additionStringCount;
-        }
+		}
 		#endregion
+
+		public enum eSpecNameByInternalIndex: byte
+		{
+			Slash = 0x01,
+			Thrust = 0x02,
+			Parry = 0x08,
+			Sword = 0x0E,
+			Hammer = 0x10,
+			Axe = 0x11,
+			Left_Axe = 0x12,
+			Stealth = 0x13,
+			Spear = 0x1A,
+			Mending = 0x1D,
+			Augmentation = 0x1E,
+			Crush = 0x21,
+			Pacification = 0x22,
+//			Cave_Magic = 0x25,
+			Darkness = 0x26,
+			Suppression = 0x27,
+			Runecarving = 0x2A,
+			Shields = 0x2B,
+			Flexible = 0x2E,
+			Staff = 0x2F,
+			Summoning = 0x30,
+			Stormcalling = 0x32,
+			Beastcraft = 0x3E,
+			Polearms = 0x40,
+			Two_Handed = 0x41,
+			Fire_Magic = 0x42,
+			Wind_Magic = 0x43,
+			Cold_Magic = 0x44,
+			Earth_Magic = 0x45,
+			Light = 0x46,
+			Matter_Magic = 0x47,
+			Body_Magic = 0x48,
+			Spirit_Magic = 0x49,
+			Mind_Magic = 0x4A,
+			Void = 0x4B,
+			Mana = 0x4C,
+			Dual_Wield = 0x4D,
+			CompositeBow = 0x4E,
+			Battlesongs = 0x52,
+			Enhancement = 0x53,
+			Enchantments = 0x54,
+			Rejuvenation = 0x58,
+			Smite = 0x59,
+			Longbow = 0x5A,
+			Crossbow = 0x5B,
+			Chants = 0x61,
+			Instruments = 0x62,
+			Blades = 0x65,
+			Blunt = 0x66,
+			Piercing = 0x67,
+			Large_Weapons = 0x68,
+			Mentalism = 0x69,
+			Regrowth = 0x6A,
+			Nurture = 0x6B,
+			Nature = 0x6C,
+			Music = 0x6D,
+			Celtic_Dual = 0x6E,
+			Celtic_Spear = 0x70,
+			RecurveBow = 0x71,
+			Valor = 0x72,
+			Pathfinding = 0x74,
+			Envenom = 0x75,
+			Critical_Strike = 0x76,
+			Deathsight = 0x78,
+			Painworking = 0x79,
+			Death_Servant = 0x7A,
+			Soulrending = 0x7B,
+			HandToHand = 0x7C,
+			Scythe = 0x7D,
+//			Bone_Army = 0x7E,
+			Arboreal_Path = 0x7F,
+			Creeping_Path = 0x81,
+			Verdant_Path = 0x82,
+			OdinsWill = 0x85,
+			SpectralForce = 0x86, // Spectral Guard ?
+			PhantasmalWail = 0x87,
+			EtherealShriek = 0x88,
+			ShadowMastery = 0x89,
+			VampiiricEmbrace = 0x8A,
+			Dementia = 0x8B,
+			Witchcraft = 0x8C,
+			Cursing = 0x8D,
+			Hexing = 0x8E,
+			Fist_Wraps = 0x93,
+			Mauler_Staff = 0x94,
+			SpectralGuard = 0x95,
+			Archery  = 0x9B,
+		}
+
+		public static string GetSpecNameFromInternalIndex(int internalIndex)
+		{
+			return ((eSpecNameByInternalIndex)internalIndex).ToString();
+		}
 	}
 }

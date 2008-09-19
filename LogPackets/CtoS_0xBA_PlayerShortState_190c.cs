@@ -6,21 +6,21 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0xBA, 190.1f, ePacketDirection.ClientToServer, "Player Short State v190c")]
 	public class CtoS_0xBA_PlayerShortState_190c : CtoS_0xBA_PlayerShortState
 	{
-		protected ushort unk3;
+		protected ushort unk2;
 
 		#region public access properties
 
-		public ushort Unk3 { get { return unk3; } }
+		public ushort Unk2 { get { return unk2; } }
 
 		#endregion
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("sessionId:0x{0:X4} heading:0x{1:X4} flags:0x{2:X2} health:{3,3}% unk1:0x{5:X2} unk2:0x{6:X2} bSlot:0x{7:X2} state:{4} unk3:0x{8:X4}",
-				sessionId, heading, flags, health & 0x7F, state, unk1, unk2, rideSlot, unk3);
+			text.Write("sessionId:0x{0:X4} heading:0x{1:X4} flags:0x{2:X2} health:{3,3}% unk1:0x{5:X2} innerCounter:0x{6:X2} bSlot:0x{7:X2} state:{4} unk2:0x{8:X4}",
+				sessionId, heading, flags, health & 0x7F, state, unk1, innerCounter, rideSlot, unk2);
 			if (flagsDescription)
 			{
-				string status = state > 0 ? ((StoC_0xBA_PlayerShortState.PlrState)state).ToString() : "";
+				string status = state > 0 ? ((CtoS_0xA9_PlayerPosition.PlrState)state).ToString() : "";
 				if ((flags & 0x01) == 0x01)
 					status += ",Wireframe";
 				if ((flags & 0x02) == 0x02)
@@ -51,15 +51,15 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			sessionId = ReadShort(); // 0x00
-			heading = ReadShort();   // 0x02
-			unk1 = ReadByte();       // 0x04 (unused ?)
-			flags = ReadByte();      // 0x05
-			unk2 = ReadByte();       // 0x06
-			rideSlot = ReadByte();   // 0x07
-			health = ReadByte();     // 0x08
-			state = ReadByte();      // 0x09
-			unk3 = ReadShort();      // 0x0A (unused ?)
+			sessionId = ReadShort();  // 0x00
+			heading = ReadShort();    // 0x02
+			unk1 = ReadByte();        // 0x04 (unused ?)
+			flags = ReadByte();       // 0x05
+			innerCounter = ReadByte();// 0x06
+			rideSlot = ReadByte();    // 0x07
+			health = ReadByte();      // 0x08
+			state = ReadByte();       // 0x09
+			unk2 = ReadShort();       // 0x0A (unused ?)
 		}
 
 		/// <summary>

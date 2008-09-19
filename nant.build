@@ -24,7 +24,7 @@
       
       <target name="build">
         <delete dir="${configuration.name}" failonerror="false" />
-   		<property name="msbuild.exe" value="C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\MSBuild.exe" overwrite="false" />
+   		<property name="msbuild.exe" value="${environment::get-variable('WINDIR')}\Microsoft.NET\Framework\v2.0.50727\MSBuild.exe" overwrite="false" />
    		<exec program="${msbuild.exe}">
    			<arg value="./packetlogconverter.sln" />
    		</exec>

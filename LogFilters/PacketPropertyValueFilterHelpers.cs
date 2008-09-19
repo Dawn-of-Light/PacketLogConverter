@@ -542,7 +542,7 @@ namespace PacketLogConverter.LogFilters
 									isIgnored = ((fieldValue2 & valueToFindInt) == 0); // same as !((a & b) != 0)
 								}
 								// Packet property string equals filter value
-								if (relation == "!&" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is long || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is ulong))
+								else if (relation == "!&" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is long || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is ulong))
 								{
 									uint fieldValue2 = Convert.ToUInt32(fieldValue);
 									isIgnored = ((fieldValue2 & valueToFindInt) != 0); // same as !((a & b) == 0)
