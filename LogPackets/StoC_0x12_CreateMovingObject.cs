@@ -72,7 +72,7 @@ namespace PacketLogConverter.LogPackets
 				if ((flags & 0x04) == 0x04)
 					flag += ",Loot";
 				if ((flags & 0x08) == 0x08)
-					flag += ",StaticItem";//or Longrange ?
+					flag += ",LongRangeVisible";// 4000, 5500, 8000
 				if (flag != "")
 				text.Write(" ({0})", flag);
 				if (emblem != 0)

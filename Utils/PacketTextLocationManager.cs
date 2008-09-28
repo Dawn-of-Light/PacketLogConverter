@@ -155,8 +155,8 @@ namespace PacketLogConverter.Utils
 		/// <returns>Found <see cref="PacketInfo"/> or <see cref="PacketInfo.UNKNOWN"/>.</returns>
 		private PacketInfo FindPacketInfoByTextIndexBinarySearch(int textIndex)
 		{
-            int lastIndex = Math.Min(m_packetInfos.Length, visiblePacketsCount);
-            if (lastIndex <= 0 || textIndex >= m_packetInfos[lastIndex - 1].TextEndIndex)
+			int lastIndex = Math.Min(m_packetInfos.Length, visiblePacketsCount);
+			if (lastIndex <= 0 || textIndex >= m_packetInfos[lastIndex - 1].TextEndIndex)
 			{
 				return PacketInfo.UNKNOWN;
 			}

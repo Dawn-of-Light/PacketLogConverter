@@ -28,11 +28,11 @@ namespace PacketLogConverter.LogPackets
 				if ((flags & 0x01) == 0x01)
 					flag += ",Underwater";// not let drop on ground ?
 				if ((flags & 0x02) == 0x02)
-					flag += ",UNK_0x02";
+					flag += ",MovingObject";
 				if ((flags & 0x04) == 0x04)
 					flag += ",Loot";
 				if ((flags & 0x08) == 0x08)
-					flag += ",StaticItem";//or Longrange ?
+					flag += ",LongRangeVisible";// 4000, 5500, 8000
 				// flag 0x10, 0x20 hold realm
 				if ((flags & 0x40) == 0x40)// x = moving object oid, y = hookpoint
 					flag += ",OnShipHookPoint";

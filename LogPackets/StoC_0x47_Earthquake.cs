@@ -10,10 +10,10 @@ namespace PacketLogConverter.LogPackets
 		protected uint x;
 		protected uint y;
 		protected uint unk4;
-		protected uint unk5; // in client as unk5 * unk5
-		protected uint unk6;
-		protected uint unk7;
-		protected uint unk8;
+		protected float unk5; // radius ?
+		protected float unk6;
+		protected float unk7;
+		protected float unk8;
 
 		#region public access properties
 
@@ -21,16 +21,8 @@ namespace PacketLogConverter.LogPackets
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			if (!flagsDescription)
-			{
-				text.Write("unk1:{0} x:{1,-6} y:{2,-6} z?:0x{3,-6} unk5:0x{4:X2} unk6:0x{5:X2} unk7:0x{6:X2} unk8:0x{7:X2}",
-				(byte)unk1, x, y, (byte)unk4, (byte)unk5, (byte)unk6, (byte)unk7, (byte)unk8);
-			}
-			else
-			{
-				text.Write("unk1:0x{0:X8} x:{1,-6} y:{2,-6} z?:{3,-6} unk5:0x{4:X8} unk6:0x{5:X8} unk7:0x{6:X8} unk8:0x{7:X8}",
-				unk1, x, y, unk4, unk5, unk6, unk7, unk8);
-			}
+			text.Write("unk1:{0} x:{1,-6} y:{2,-6} z?:0x{3,-6} unk5:{4,-4} unk6:{5,-4} unk7:{6,-4} unk8:{7}",
+			unk1, x, y, unk4, unk5, unk6, unk7, unk8);
 		}
 
 		/// <summary>
@@ -44,10 +36,10 @@ namespace PacketLogConverter.LogPackets
 			x = ReadIntLowEndian();    // 0x04
 			y = ReadIntLowEndian();    // 0x08
 			unk4 = ReadIntLowEndian(); // 0x0C
-			unk5 = ReadInt();          // 0x10
-			unk6 = ReadInt();          // 0x14
-			unk7 = ReadInt();          // 0x18
-			unk8 = ReadInt();          // 0x1C
+			unk5 = ReadFloatLowEndian(); // 0x10
+			unk6 = ReadFloatLowEndian(); // 0x14
+			unk7 = ReadFloatLowEndian(); // 0x18
+			unk8 = ReadFloatLowEndian(); // 0x1C
 		}
 
 		/// <summary>

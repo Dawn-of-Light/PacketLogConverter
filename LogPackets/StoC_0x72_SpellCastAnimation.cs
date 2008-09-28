@@ -10,7 +10,7 @@ namespace PacketLogConverter.LogPackets
 		protected ushort casterOid;
 		protected ushort spellId;
 		protected ushort castingTime;
-		protected ushort unk1;
+		protected ushort unk1; // unused
 
 		/// <summary>
 		/// Gets the object ids of the packet.
@@ -45,7 +45,7 @@ namespace PacketLogConverter.LogPackets
 			casterOid = ReadShort();
 			spellId = ReadShort();
 			castingTime = ReadShort();
-			unk1 = ReadShort();
+			unk1 = ReadShort(); // unused
 		}
 
 		public StoC_0x72_SpellCastAnimation(int capacity) : base(capacity)

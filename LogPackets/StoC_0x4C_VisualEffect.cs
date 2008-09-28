@@ -173,7 +173,7 @@ namespace PacketLogConverter.LogPackets
 
 			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				text.Write("(HexEffects) effect1:0x{0:X2} effect2:{1:X2} effect3:{2:X2} effect4:{3:X2} effect5:{4:X2}",
+				text.Write("(HexEffects) effect1:0x{0:X2} effect2:0x{1:X2} effect3:0x{2:X2} effect4:0x{3:X2} effect5:0x{4:X2}",
 					effect1, effect2, effect3, effect4, effect5);
 			}
 		}

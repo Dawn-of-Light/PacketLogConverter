@@ -1849,7 +1849,7 @@ namespace PacketLogConverter
 							foreach (Packet pak in log)
 							{
 #warning TODO: Sum of bytes here is not equal to what is shown in text box?
-								
+
 								if (!FilterManager.IsPacketIgnored(pak))
 								{
 									visiblePacketsCount++;
@@ -1921,7 +1921,7 @@ namespace PacketLogConverter
 
 						newTabName = string.Format("{0} ({1}{2:N0} packets)", newTabName, (timeDiff ? "time diff, " : ""), stats.PacketsCount);
 						logDataTab.Text = newTabName;
-							
+
 						// Load text to richbox from the very beginning
 						ms.Position = 0;
 						logDataText.SelectionIndent = 4;

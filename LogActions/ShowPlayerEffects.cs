@@ -81,21 +81,21 @@ namespace PacketLogConverter.LogActions
 				str.Append("\n");
 			if (Skills != null)
 			{
-			if (Skills.Length > 0)
-				str.Append("Skills:");
-			foreach(StoC_0x16_VariousUpdate.Skill skill in Skills)
-			{
-				str.Append("\n");
-				if (skill.page == StoC_0x16_VariousUpdate.eSkillPage.Styles && skill.stlOpen >= 0x6400) // 0x6400 = 100 << 8
+				if (Skills.Length > 0)
+					str.Append("Skills:");
+				foreach(StoC_0x16_VariousUpdate.Skill skill in Skills)
 				{
-					str.AppendFormat("*({0,-2})", (skill.stlOpen >> 8) - 100);
-				}
-				str.Append("\t");
-			 	if((int)skill.page > 0)
-					index++;
-				str.AppendFormat("[{0,-2}] ", index);
-				str.AppendFormat("level:{0,-2} type:{1}({2,-14}) stlOpen:0x{3:X4} bonus:{4,-3} icon:0x{5:X4} name:\"{6}\"",
-						skill.level, (int)skill.page, skill.page.ToString().ToLower(), skill.stlOpen, skill.bonus, skill.icon, skill.name);
+					str.Append("\n");
+					if (skill.page == StoC_0x16_VariousUpdate.eSkillPage.Styles && skill.stlOpen >= 0x6400) // 0x6400 = 100 << 8
+					{
+						str.AppendFormat("*({0,-2})", (skill.stlOpen >> 8) - 100);
+					}
+					str.Append("\t");
+				 	if((int)skill.page > 0)
+						index++;
+					str.AppendFormat("[{0,-2}] ", index);
+					str.AppendFormat("level:{0,-2} type:{1}({2,-14}) stlOpen:0x{3:X4} bonus:{4,-3} icon:0x{5:X4} name:\"{6}\"",
+							skill.level, (int)skill.page, skill.page.ToString().ToLower(), skill.stlOpen, skill.bonus, skill.icon, skill.name);
 				}
 			}
 			InfoWindowForm infoWindow = new InfoWindowForm();

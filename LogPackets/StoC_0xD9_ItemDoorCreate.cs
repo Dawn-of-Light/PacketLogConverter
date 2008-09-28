@@ -68,7 +68,7 @@ namespace PacketLogConverter.LogPackets
 				if ((flags & 0x04) == 0x04)
 					flag += ",Loot";
 				if ((flags & 0x08) == 0x08)
-					flag += ",StaticItem";//or Longrange ?
+					flag += ",LongRangeVisible"; // 4000, 5500, 8000
 				// flag 0x10, 0x20 hold realm
 				if ((flags & 0x40) == 0x40)
 					flag += ",OnShipHookPoint";// x = moving object oid, y = hookpoint

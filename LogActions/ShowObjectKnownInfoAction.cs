@@ -232,9 +232,9 @@ namespace PacketLogConverter.LogActions
 						if (!ObjectsOnMount.ContainsKey((pak as StoC_0xC8_PlayerRide).Slot))
 						{
 							ObjectsOnMount.Add((pak as StoC_0xC8_PlayerRide).Slot, (ushort)(pak as StoC_0xC8_PlayerRide).RiderOid);
-						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
+							str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
+						}
 					}
-				}
 				}
 				else if (pak is StoC_0x15_EquipmentUpdate)
 				{
@@ -283,9 +283,9 @@ namespace PacketLogConverter.LogActions
 					{
 						if (!fullInfoFound)
 						{
-						flagPacketMove = true;
-						if (lastObjectCoords == null)
-							lastObjectCoords = new LocalCoords((pak as StoC_0xA9_PlayerPosition).CurrentZoneX, (pak as StoC_0xA9_PlayerPosition).CurrentZoneY, (pak as StoC_0xA9_PlayerPosition).CurrentZoneZ, (pak as StoC_0xA9_PlayerPosition).CurrentZoneId);
+							flagPacketMove = true;
+							if (lastObjectCoords == null)
+								lastObjectCoords = new LocalCoords((pak as StoC_0xA9_PlayerPosition).CurrentZoneX, (pak as StoC_0xA9_PlayerPosition).CurrentZoneY, (pak as StoC_0xA9_PlayerPosition).CurrentZoneZ, (pak as StoC_0xA9_PlayerPosition).CurrentZoneId);
 						}
 						str.Insert(0, pak.ToHumanReadableString(TimeSpan.Zero, true) + '\n');
 					}

@@ -70,7 +70,7 @@ namespace PacketLogConverter.LogActions
 					else if (invPack.PreAction == 7)
 					{
 						for (byte j = 80; j <= 95; j++)
-					{
+						{
 							if (m_inventoryItems.ContainsKey(j))
 								m_inventoryItems.Remove(j);
 						}
@@ -93,25 +93,24 @@ namespace PacketLogConverter.LogActions
 								m_inventoryItems.Remove(j);
 						}
 					}
-						for (int j = 0; j < invPack.SlotsCount; j++)
+					for (int j = 0; j < invPack.SlotsCount; j++)
+					{
+						StoC_0x02_InventoryUpdate.Item item = (StoC_0x02_InventoryUpdate.Item)invPack.Items[j];
+						if (item.name == null || item.name == "")
 						{
-							StoC_0x02_InventoryUpdate.Item item = (StoC_0x02_InventoryUpdate.Item)invPack.Items[j];
-							if (item.name == null || item.name == "")
-							{
-								if (m_inventoryItems.ContainsKey(item.slot))
-									m_inventoryItems.Remove(item.slot);
-							}
-							else
-							{
 							if (m_inventoryItems.ContainsKey(item.slot))
-									m_inventoryItems[item.slot] = item;
-								else
-									m_inventoryItems.Add(item.slot, item);
-							}
+								m_inventoryItems.Remove(item.slot);
 						}
+						else
+						{
+							if (m_inventoryItems.ContainsKey(item.slot))
+								m_inventoryItems[item.slot] = item;
+							else
+								m_inventoryItems.Add(item.slot, item);
+						}
+					}
 				}
 			}
-
 			StringBuilder str = new StringBuilder();
 			str.AppendFormat("VisibleSlots:0x{0:X2} last initialized preAction:{1}({2})\n", VisibleSlots, preAction, (StoC_0x02_InventoryUpdate.ePreActionType)preAction);
 			eWindowType prevWindowType = eWindowType.Unknown;

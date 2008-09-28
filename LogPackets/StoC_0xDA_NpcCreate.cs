@@ -64,9 +64,9 @@ namespace PacketLogConverter.LogPackets
 				if ((flags & 0x02) == 0x02)
 					text.Write(",Inventory");
 				if ((flags & 0x04) == 0x04)
-					text.Write(",UNK_0x04");
+					text.Write(",UNK_0x04"); // something like flag from monsters.csv for show special SKIN ?
 				if ((flags & 0x08) == 0x08)
-					text.Write(",LongRangeVisible"); // ~5550
+					text.Write(",LongRangeVisible"); // 4000, 5500, 8000
 				if ((flags & 0x10) == 0x10)
 					text.Write(",Peace");
 				if ((flags & 0x20) == 0x20)
