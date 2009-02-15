@@ -1108,7 +1108,7 @@ namespace PacketLogConverter
 								int position = -attr.Priority;
 								while (filters.ContainsKey(position))
 									++position;
-								filters.Add(position, Activator.CreateInstance(type));
+								filters.Add(position, Activator.CreateInstance(type, this));
 								filterMenuItems.Add(position, filterMenuItem);
 							}
 						}
@@ -2530,7 +2530,7 @@ namespace PacketLogConverter
 				int oldFilters = FilterManager.FiltersCount;
 
 				ILogFilter filter = (ILogFilter)m_logFilters[index];
-				update |= filter.ActivateFilter(this); // changes to the filter
+				update |= filter.ActivateFilter(); // changes to the filter
 
 				update |= oldFilters != FilterManager.FiltersCount;
 

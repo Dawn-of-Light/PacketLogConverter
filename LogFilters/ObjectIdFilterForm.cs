@@ -33,8 +33,17 @@ namespace PacketLogConverter.LogFilters
 		/// </summary>
 		private Container components = null;
 
+		private readonly IExecutionContext context;
+
 		public ObjectIdFilterForm()
+			: this(null)
 		{
+		}
+
+		public ObjectIdFilterForm(IExecutionContext context)
+		{
+			this.context = context;
+
 			InitializeComponent();
 			UpdateControls();
 		}
@@ -204,7 +213,7 @@ namespace PacketLogConverter.LogFilters
 		/// <returns>
 		/// 	<code>true</code> if filter has changed and log should be updated.
 		/// </returns>
-		public bool ActivateFilter(IExecutionContext context)
+		public bool ActivateFilter()
 		{
 			Initialize(context);
 
@@ -409,6 +418,20 @@ namespace PacketLogConverter.LogFilters
 		public bool IsFilterActive
 		{
 			get { return enableFilterCheckBox.Checked; }
+			set
+			{
+				if (value != IsFilterActive)
+				{
+					if (value)
+					{
+						context.FilterManager.AddFilter(this);
+					}
+					else
+					{
+						context.FilterManager.RemoveFilter(this);
+					}
+				}
+			}
 		}
 
 		/// <summary>

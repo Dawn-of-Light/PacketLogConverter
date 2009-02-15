@@ -160,75 +160,9 @@ namespace PacketLogConverter.Utils
 			{
 				return PacketInfo.UNKNOWN;
 			}
-			int index = Array.BinarySearch(m_packetInfos, 0, lastIndex, textIndex + 1, new TextIndexComparer()); // textIndex + 1 becouse last symbol is '\n' and it showed on next line
+			// textIndex + 1 because last symbol is '\n' and shown on next line
+			int index = Array.BinarySearch(m_packetInfos, 0, lastIndex, textIndex + 1, new TextIndexComparer());
 			return (index >= 0 ? m_packetInfos[index] : m_packetInfos[~index]);
-		}
-
-		/// <summary>
-		/// Finds the packet by text index binary. Binary search implementation.
-		/// </summary>
-		/// <param name="textIndex">Index of the text.</param>
-		/// <returns>Found <see cref="PacketInfo"/> or <see cref="PacketInfo.UNKNOWN"/>.</returns>
-		private PacketInfo FindPacketInfoByTextIndexBinary(int textIndex)
-		{
-			// TODO: Finish
-			int index = visiblePacketsCount/2, prevIndex = int.MinValue;
-			bool smallerFound = false, biggerFound = false;
-
-			// Do binary search - find closest (smaller) or equal value
-			for (;;)
-			{
-				if (m_packetInfos[index].TextEndIndex <= textIndex)
-				{
-					smallerFound = true;
-					if (biggerFound)
-					{
-						// Move left if bigger is already found - need to find smaller value
-						index = BinaryMoveLeft(index);
-					}
-					else
-					{
-						// Move right if smaller value is found - need to find bigger value
-						index = BinaryMoveRight(index);
-					}
-				}
-				else
-				{
-					biggerFound = true;
-				}
-
-				// Safety check
-				if (index == prevIndex)
-				{
-					throw new InvalidOperationException("index is equal to prev index - infinite loop");
-				}
-
-				prevIndex = index;
-			}
-
-			return PacketInfo.UNKNOWN;
-		}
-
-		/// <summary>
-		/// Moves current position to the left.
-		/// </summary>
-		/// <param name="index">The index.</param>
-		/// <returns>New index.</returns>
-		private int BinaryMoveLeft(int index)
-		{
-			index = index / 2;
-			return index;
-		}
-
-		/// <summary>
-		/// Move current position to the right.
-		/// </summary>
-		/// <param name="index">The index.</param>
-		/// <returns>New index.</returns>
-		private int BinaryMoveRight(int index)
-		{
-			index = index + (visiblePacketsCount - index) / 2;
-			return index;
 		}
 	}
 }

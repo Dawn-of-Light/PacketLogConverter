@@ -9,9 +9,9 @@ namespace PacketLogConverter.LogFilters
 	/// </summary>
 	public struct DynamicFilterHelper
 	{
-		public LogAction Start;
-		public LogAction Stop;
-		public PacketAction ProcessPacket;
+		public LogAction	Start;
+		public LogAction	Stop;
+		public PacketAction	ProcessPacket;
 
 		/// <summary>
 		/// Sets the events.
@@ -23,16 +23,16 @@ namespace PacketLogConverter.LogFilters
 			if (add)
 			{
 				// Add all events
-				context.FilterManager.FilteringStartedEvent += Start;
-				context.FilterManager.FilteringPacketEvent += ProcessPacket;
-				context.FilterManager.FilteringStoppedEvent += Stop;
+				context.FilterManager.FilteringStartedEvent	+= Start;
+				context.FilterManager.FilteringPacketEvent	+= ProcessPacket;
+				context.FilterManager.FilteringStoppedEvent	+= Stop;
 			}
 			else
 			{
 				// Remove all events
-				context.FilterManager.FilteringStoppedEvent -= Stop;
-				context.FilterManager.FilteringPacketEvent -= ProcessPacket;
-				context.FilterManager.FilteringStartedEvent -= Start;
+				context.FilterManager.FilteringStoppedEvent	-= Stop;
+				context.FilterManager.FilteringPacketEvent	-= ProcessPacket;
+				context.FilterManager.FilteringStartedEvent	-= Start;
 			}
 		}
 	}

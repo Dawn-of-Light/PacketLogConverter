@@ -12,6 +12,14 @@ namespace PacketLogConverter.LogFilters
 	public class SelfDynamicOidFilter : AbstractDynamicOIDFilter
 	{
 		/// <summary>
+		/// Initializes a new instance of the <see cref="T:SelfDynamicOidFilter"/> class.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		public SelfDynamicOidFilter(IExecutionContext context) : base(context)
+		{
+		}
+
+		/// <summary>
 		/// Reads information from all usefull packets.
 		/// </summary>
 		/// <param name="packet">The packet.</param>

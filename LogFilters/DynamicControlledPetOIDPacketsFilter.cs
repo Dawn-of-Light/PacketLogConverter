@@ -12,6 +12,14 @@ namespace PacketLogConverter.LogFilters
 	public class ControlledPetDynamicOidFilter : AbstractDynamicOIDFilter
 	{
 		/// <summary>
+		/// Initializes a new instance of the <see cref="T:ControlledPetDynamicOidFilter"/> class.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		public ControlledPetDynamicOidFilter(IExecutionContext context) : base(context)
+		{
+		}
+
+		/// <summary>
 		/// Reads information from all usefull packets.
 		/// </summary>
 		/// <param name="packet">The packet.</param>

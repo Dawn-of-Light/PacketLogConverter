@@ -8,24 +8,19 @@ namespace PacketLogConverter.LogFilters
 	/// <summary>
 	/// Encapsulates common logic for all OID filters.
 	/// </summary>
-	public abstract class AbstractDynamicOIDFilter : AbstractFilter
+	public abstract class AbstractDynamicOIDFilter : FilterManagerAwareFilter
 	{
 		protected static readonly ushort ID_NOT_SET = 0;
-		
-		private DynamicFilterHelper m_filterHelper;
+
 		private ushort m_oid;
 		private ushort m_sid;
-		private IExecutionContext m_context;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:AbstractDynamicOIDFilter"/> class.
 		/// </summary>
-		protected AbstractDynamicOIDFilter()
+		/// <param name="context">The context.</param>
+		public AbstractDynamicOIDFilter(IExecutionContext context) : base(context)
 		{
-			// Initialize helper class
-			m_filterHelper.Start			= FilterManager_OnFilteringStartedEvent;
-			m_filterHelper.Stop				= FilterManager_OnFilteringStoppedEvent;
-			m_filterHelper.ProcessPacket	= FilterManager_OnFilteringPacketEvent;
 		}
 
 		/// <summary>
@@ -54,25 +49,11 @@ namespace PacketLogConverter.LogFilters
 		/// Resets all variables when filtering starts.
 		/// </summary>
 		/// <param name="log">The log.</param>
-		protected virtual void FilterManager_OnFilteringStartedEvent(IExecutionContext log)
+		protected override void FilterManager_OnFilteringStartedEvent(IExecutionContext log)
 		{
 			m_oid = ID_NOT_SET;
 			m_sid = ID_NOT_SET;
 		}
-
-		/// <summary>
-		/// Resets all variables when filtering stops.
-		/// </summary>
-		/// <param name="log">The log.</param>
-		protected virtual void FilterManager_OnFilteringStoppedEvent(IExecutionContext log)
-		{
-		}
-
-		/// <summary>
-		/// Reads information from all usefull packets.
-		/// </summary>
-		/// <param name="packet">The packet.</param>
-		protected abstract void FilterManager_OnFilteringPacketEvent(Packet packet);
 
 		#endregion
 
@@ -118,34 +99,6 @@ namespace PacketLogConverter.LogFilters
 			}
 
 			return bRet;
-		}
-
-		/// <summary>
-		/// Activates the filter.
-		/// </summary>
-		/// <param name="context">The context.</param>
-		/// <returns>
-		/// 	<code>true</code> if filter has changed and log should be updated.
-		/// </returns>
-		public override bool ActivateFilter(IExecutionContext context)
-		{
-			m_context = context;
-			return base.ActivateFilter(context);
-		}
-
-		/// <summary>
-		/// Gets a value indicating whether this instance is active.
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if this instance is active; otherwise, <c>false</c>.
-		/// </value>
-		public override bool IsFilterActive
-		{
-			set
-			{
-				base.IsFilterActive = value;
-				m_filterHelper.SetEventHandlers(m_context, value);
-			}
 		}
 
 		#endregion

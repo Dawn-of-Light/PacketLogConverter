@@ -225,6 +225,10 @@ namespace PacketLogConverter
 			{
 				if (!m_filters.Contains(filter))
 					return false;
+
+				// Deactivate filter before it is removed from filter manager to allow it to unregister its event handlers
+				filter.IsFilterActive = false;
+
 				m_filters.Remove(filter);
 				RaiseFilterRemovedEvent(filter);
 				return true;
@@ -334,9 +338,12 @@ namespace PacketLogConverter
 				}
 
 				// Activate loaded filters
-				foreach (ILogFilter filter in loadedFilters)
+				if (null != loadedFilters)
 				{
-					AddFilter(filter);
+					foreach (ILogFilter filter in loadedFilters)
+					{
+						AddFilter(filter);
+					}
 				}
 			}
 			finally

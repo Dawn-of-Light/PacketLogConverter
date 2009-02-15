@@ -1,4 +1,10 @@
 ------------------------------------------------------------------------------
+Noret (coding), Tiv (testing and ideas) (15.Feb.2009):
+- Fixed loading of dynamic filters
+- Alpha version of variables in PacketPropertyValueFilter. Only equal/unequal (for variable and constant) is supported right now.
+  Variables are initialized/set by value of linked packet field(s) and can be used to compare to other packet field values
+  Use build 16 if stable filtering is of great importance to you.
+------------------------------------------------------------------------------
 Noret (24.May.2008):
 - Update from Tiv
 - Fixed bug with new line characters in exceptions and packet messages preventing proper packet location by text index

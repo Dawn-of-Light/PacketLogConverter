@@ -57,9 +57,11 @@ namespace PacketLogConverter.Utils
 		/// <param name="filters">Collection of <see cref="ILogFilter"/> objects to write.</param>
 		public virtual void WriteFilters(ICollection filters)
 		{
-			// Write count of filters
-			m_Writer.Write(filters.Count);
+			// Reserve space for "count"
+			long countPos = m_Writer.BaseStream.Position;
+			m_Writer.Write(-1);
 
+			int savedCount = 0;
 			foreach (ILogFilter filter in filters)
 			{
 				try
@@ -77,6 +79,8 @@ namespace PacketLogConverter.Utils
 						byte[] data = filterData.ToArray();
 						m_Writer.Write(data.Length);
 						m_Writer.Write(data, 0, data.Length);
+
+						++savedCount;
 					}
 				}
 				catch (Exception e)
@@ -84,6 +88,14 @@ namespace PacketLogConverter.Utils
 					Log.Error("Error writing filter '" + filter.GetType().FullName + "'", e);
 				}
 			}
+
+			// Save real count
+			long lastPos = m_Writer.BaseStream.Position;
+			m_Writer.BaseStream.Position = countPos;
+			m_Writer.Write(savedCount);
+
+			// Move back to the end of saved data
+			m_Writer.BaseStream.Position = lastPos;
 		}
 
 		#endregion

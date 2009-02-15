@@ -13,6 +13,14 @@ namespace PacketLogConverter.LogFilters
 		#region ILogFilter Members
 
 		/// <summary>
+		/// Initializes a new instance of the <see cref="T:KnownIncompletePacketsFilter"/> class.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		public KnownIncompletePacketsFilter(IExecutionContext context) : base(context)
+		{
+		}
+
+		/// <summary>
 		/// Determines whether the packet should be ignored.
 		/// </summary>
 		/// <param name="packet">The packet.</param>

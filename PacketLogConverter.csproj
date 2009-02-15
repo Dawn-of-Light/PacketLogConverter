@@ -210,6 +210,7 @@
     <Compile Include="LogFilterAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogFilters\FilterManagerAwareFilter.cs" />
     <Compile Include="LogFilters\AbstractDynamicOIDFilter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -231,14 +232,38 @@
     <Compile Include="LogFilters\ObjectIdFilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LogFilters\PacketCodeFilterForm.cs">
+    <Compile Include="LogFilters\PacketPropertyValueFilter\ValueCheckers\ObjectValueChecker.cs" />
+    <Compile Include="LogFilters\PacketPropertyValueFilter\ValueCheckers\IValueChecker.cs" />
+    <Compile Include="LogFilters\PacketPropertyValueFilter\ValueCheckers\ConstantValueChecker.cs" />
+    <Compile Include="LogFilters\PacketPropertyValueFilter\PacketCodeFilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LogFilters\PacketPropertyValueFilterForm.cs">
+    <Compile Include="LogFilters\PacketPropertyValueFilter\Filter.cs" />
+    <Compile Include="LogFilters\PacketPropertyValueFilter\PacketPropertyValueFilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LogFilters\PacketPropertyValueFilterHelpers.cs">
-      <SubType>Code</SubType>
+    <Compile Include="LogFilters\PacketPropertyValueFilter\PacketPropertyValueFilterHelpers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LogFilters\PacketPropertyValueFilter\PacketClass.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LogFilters\PacketPropertyValueFilter\FilterListEntry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LogFilters\PacketPropertyValueFilter\ClassMemberPath.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LogFilters\PacketPropertyValueFilter\PacketPropertyVariable.cs" />
+    <Compile Include="LogFilters\PacketPropertyValueFilter\PacketPropertyVariableLink.cs" />
+    <Compile Include="LogFilters\PacketPropertyValueFilter\PacketPropertyVariablesManager.cs" />
+    <Compile Include="LogFilters\PacketPropertyValueFilter\ValueCheckers\ValueCheckerBuilder.cs" />
+    <Compile Include="LogFilters\PacketPropertyValueFilter\ValueCheckers\PacketPropertyValueChecker.cs" />
+    <Compile Include="LogFilters\PacketPropertyValueFilter\VariableDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LogFilters\PacketPropertyValueFilter\VariableDetailsForm.Designer.cs">
+      <DependentUpon>VariableDetailsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LogManager.cs">
       <SubType>Code</SubType>
@@ -1224,14 +1249,19 @@
     <Compile Include="Utils\FilterWriter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utils\ObjectReflectionProcessor.cs" />
     <Compile Include="Utils\PacketTextLocationManager.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utils\Serialization\DeserializationHelper.cs" />
+    <Compile Include="Utils\Serialization\SerializationHelper.cs" />
     <Compile Include="Utils\StreamWrap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utils\UI\ListBoxHelpers.cs" />
     <EmbeddedResource Include="ErrorForm.resx">
       <DependentUpon>ErrorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LogActions\InfoWindowForm.resx">
       <DependentUpon>InfoWindowForm.cs</DependentUpon>
@@ -1239,20 +1269,29 @@
     <EmbeddedResource Include="LogFilters\ObjectIdFilterForm.resx">
       <DependentUpon>ObjectIdFilterForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LogFilters\PacketCodeFilterForm.resx">
+    <EmbeddedResource Include="LogFilters\PacketPropertyValueFilter\PacketCodeFilterForm.resx">
       <DependentUpon>PacketCodeFilterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="LogFilters\PacketPropertyValueFilterForm.resx">
+    <EmbeddedResource Include="LogFilters\PacketPropertyValueFilter\PacketPropertyValueFilterForm.resx">
       <DependentUpon>PacketPropertyValueFilterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogFilters\PacketPropertyValueFilter\VariableDetailsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VariableDetailsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressForm.resx">
       <DependentUpon>ProgressForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ReportForm.resx">
       <DependentUpon>ReportForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -7,27 +7,27 @@ namespace PacketLogConverter.LogFilters
 	/// </summary>
 	public abstract class AbstractFilter : ILogFilter
 	{
-		private bool m_active;
+		protected readonly	IExecutionContext	m_context;
+		private				bool				m_active;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="T:AbstractFilter"/> class.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		public AbstractFilter(IExecutionContext context)
+		{
+			this.m_context = context;
+		}
 
 		/// <summary>
 		/// Activates the filter.
 		/// </summary>
-		/// <param name="context">The context.</param>
 		/// <returns>
 		/// 	<code>true</code> if filter has changed and log should be updated.
 		/// </returns>
-		public virtual bool ActivateFilter(IExecutionContext context)
+		public virtual bool ActivateFilter()
 		{
 			IsFilterActive = !IsFilterActive;
-			if (IsFilterActive)
-			{
-				context.FilterManager.AddFilter(this);
-			}
-			else
-			{
-				context.FilterManager.RemoveFilter(this);
-			}
-			
 			return true;
 		}
 
@@ -49,7 +49,23 @@ namespace PacketLogConverter.LogFilters
 		public virtual bool IsFilterActive
 		{
 			get { return m_active; }
-			set { m_active = value; }
+			set
+			{
+				if (value != m_active)
+				{
+					// Deactivate before firing events
+					m_active = value;
+
+					if (value)
+					{
+						m_context.FilterManager.AddFilter(this);
+					}
+					else
+					{
+						m_context.FilterManager.RemoveFilter(this);
+					}
+				}
+			}
 		}
 
 		/// <summary>

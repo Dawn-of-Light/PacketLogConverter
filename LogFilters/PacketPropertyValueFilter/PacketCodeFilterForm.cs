@@ -41,8 +41,17 @@ namespace PacketLogConverter.LogFilters
 		/// </summary>
 		private int m_changes;
 
+		private readonly IExecutionContext m_context;
+
 		public PacketCodeFilterForm()
+			: this(null)
 		{
+		}
+
+		public PacketCodeFilterForm(IExecutionContext context)
+		{
+			m_context = context;
+
 			InitializeComponent();
 
 			stocCheckedListBox.Items.Clear();
@@ -568,11 +577,10 @@ namespace PacketLogConverter.LogFilters
 		/// <summary>
 		/// Activates the filter.
 		/// </summary>
-		/// <param name="context">The context.</param>
 		/// <returns>
 		/// 	<code>true</code> if filter has changed and log should be updated.
 		/// </returns>
-		public bool ActivateFilter(IExecutionContext context)
+		public bool ActivateFilter()
 		{
 			// save all check boxes, all allowed by default
 			BitArray stocSaved = new BitArray(Packet.MAX_CODE, true);
@@ -619,11 +627,11 @@ namespace PacketLogConverter.LogFilters
 
 			if (IsFilterActive)
 			{
-				context.FilterManager.AddFilter(this);
+				m_context.FilterManager.AddFilter(this);
 			}
 			else
 			{
-				context.FilterManager.RemoveFilter(this);
+				m_context.FilterManager.RemoveFilter(this);
 			}
 
 			return true;
@@ -647,6 +655,20 @@ namespace PacketLogConverter.LogFilters
 						return true;
 				}
 				return false;
+			}
+			set
+			{
+				if (value != IsFilterActive)
+				{
+					if (value)
+					{
+						m_context.FilterManager.AddFilter(this);
+					}
+					else
+					{
+						m_context.FilterManager.RemoveFilter(this);
+					}
+				}
 			}
 		}
 

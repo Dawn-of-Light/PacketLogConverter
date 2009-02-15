@@ -10,11 +10,10 @@ namespace PacketLogConverter
 		/// <summary>
 		/// Activates the filter.
 		/// </summary>
-		/// <param name="context">The context.</param>
 		/// <returns>
 		/// 	<code>true</code> if filter has changed and log should be updated.
 		/// </returns>
-		bool ActivateFilter(IExecutionContext context);
+		bool ActivateFilter();
 		
 		/// <summary>
 		/// Determines whether the packet should be ignored.
@@ -26,12 +25,12 @@ namespace PacketLogConverter
 		bool IsPacketIgnored(Packet packet);
 
 		/// <summary>
-		/// Gets a value indicating whether this instance is active.
+		/// Gets or sets a value indicating whether this instance is active.
 		/// </summary>
 		/// <value>
 		/// 	<c>true</c> if this instance is active; otherwise, <c>false</c>.
 		/// </value>
-		bool IsFilterActive { get; }
+		bool IsFilterActive { get; set; }
 		
 		/// <summary>
 		/// Serializes data of instance of this filter.
