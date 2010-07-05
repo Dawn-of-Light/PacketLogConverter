@@ -120,67 +120,67 @@ namespace PacketLogConverter.LogFilters.PacketPropertyValueFilter.ValueCheckers
 				isEqual = (null == fieldValue ? null == valueToFind : fieldValue.ToString().ToLowerInvariant().Equals(null == valueToFind ? string.Empty : valueToFind.ToString().ToLowerInvariant()));
 			}
 			// For "!=" condition we ignore only equal field values
-			isIgnored = (entry.relation == "!=" ? isEqual : !isEqual);
+//			isIgnored = (entry.relation == "!=" ? isEqual : !isEqual);
 
 
 #warning TODO: Implement decent solution
-			//string valueToFindStr = (valueToFind as string ?? string.Empty);
-			//if (fieldValue is string && valueToFindStr != ""
-			//    && ((entry.relation == "==" && ((string)fieldValue).ToLower().IndexOf(valueToFindStr) != -1)
-			//        || (entry.relation == "!=" && ((string)fieldValue).ToLower().IndexOf(valueToFindStr) == -1)))
-			//{
-			//    // Filter string is a sub-string of packet property
-			//    isIgnored = false;
-			//}
-			//else if (fieldValue != null)
-			//{
-			//    // Packet property string equals filter value
-			//    if (relation == "&&" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is long || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is ulong))
-			//    {
-			//        uint fieldValue2 = Convert.ToUInt32(fieldValue);
-			//        isIgnored = ((fieldValue2 & valueToFindInt) == 0); // same as !((a & b) != 0)
-			//    }
-			//    // Packet property string equals filter value
-			//    else if (relation == "!&" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is long || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is ulong))
-			//    {
-			//        uint fieldValue2 = Convert.ToUInt32(fieldValue);
-			//        isIgnored = ((fieldValue2 & valueToFindInt) != 0); // same as !((a & b) == 0)
-			//    }
-			//    else if (relation == "&=" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is long || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is ulong))
-			//    {
-			//        uint fieldValue2 = Convert.ToUInt32(fieldValue);
-			//        isIgnored = (fieldValue2 & valueToFindInt) != valueToFindInt; // same as !(a & b) == b
-			//    }
-			//    else if (canCompareAsDouble && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is long || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is ulong || fieldValue is double || fieldValue is float))
-			//    {
-			//        double fieldValue2 = Convert.ToDouble(fieldValue);
-			//        switch (relation)
-			//        {
-			//            case "==":
-			//                isIgnored = fieldValue2 != valueToFindDouble; // same as !(a == b)
-			//                break;
-			//            case ">":
-			//                isIgnored = fieldValue2 <= valueToFindDouble; // same as !(a > b)
-			//                break;
-			//            case "<":
-			//                isIgnored = fieldValue2 >= valueToFindDouble; // same as !(a < b)
-			//                break;
-			//            case "!=":
-			//                isIgnored = fieldValue2 == valueToFindDouble; // same as !(a != b)
-			//                break;
-			//            default:
-			//                break;
-			//        }
-			//    }
-			//    else
-			//    {
-			//        bool rc = fieldValue.ToString().ToLower().Equals(valueToFind);
-			//        if (rc && relation == "==")
-			//            isIgnored = false;
-			//        else if (!rc && relation == "!=")
-			//            isIgnored = false;
-			//    }
-			//}
+			string valueToFindStr = (valueToFind as string ?? string.Empty);
+			if (fieldValue is string && valueToFindStr != ""
+			    && ((entry.relation == "==" && ((string)fieldValue).ToLower().IndexOf(valueToFindStr) != -1)
+			        || (entry.relation == "!=" && ((string)fieldValue).ToLower().IndexOf(valueToFindStr) == -1)))
+			{
+			    // Filter string is a sub-string of packet property
+			    isIgnored = false;
+			}
+			else if (fieldValue != null)
+			{
+			    // Packet property string equals filter value
+			    if (entry.relation == "&&" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is long || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is ulong))
+			    {
+			        uint fieldValue2 = Convert.ToUInt32(fieldValue);
+			        isIgnored = ((fieldValue2 & valueToFindInt) == 0); // same as !((a & b) != 0)
+			    }
+			    // Packet property string equals filter value
+			    else if (entry.relation == "!&" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is long || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is ulong))
+			    {
+			        uint fieldValue2 = Convert.ToUInt32(fieldValue);
+			        isIgnored = ((fieldValue2 & valueToFindInt) != 0); // same as !((a & b) == 0)
+			    }
+			    else if (entry.relation == "&=" && canCompareAsInt && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is long || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is ulong))
+			    {
+			        uint fieldValue2 = Convert.ToUInt32(fieldValue);
+			        isIgnored = (fieldValue2 & valueToFindInt) != valueToFindInt; // same as !(a & b) == b
+			    }
+			    else if (canCompareAsDouble && (fieldValue is sbyte || fieldValue is short || fieldValue is int || fieldValue is long || fieldValue is byte || fieldValue is ushort || fieldValue is uint || fieldValue is ulong || fieldValue is double || fieldValue is float))
+			    {
+			        double fieldValue2 = Convert.ToDouble(fieldValue);
+			        switch (entry.relation)
+			        {
+			            case "==":
+			                isIgnored = fieldValue2 != valueToFindDouble; // same as !(a == b)
+			                break;
+			            case ">":
+			                isIgnored = fieldValue2 <= valueToFindDouble; // same as !(a > b)
+			                break;
+			            case "<":
+			                isIgnored = fieldValue2 >= valueToFindDouble; // same as !(a < b)
+			                break;
+			            case "!=":
+			                isIgnored = fieldValue2 == valueToFindDouble; // same as !(a != b)
+			                break;
+			            default:
+			                break;
+			        }
+			    }
+			    else
+			    {
+			        bool rc = fieldValue.ToString().ToLower().Equals(valueToFind);
+			        if (rc && entry.relation == "==")
+			            isIgnored = false;
+			        else if (!rc && entry.relation == "!=")
+			            isIgnored = false;
+			    }
+			}
 
 			return isIgnored;
 		}

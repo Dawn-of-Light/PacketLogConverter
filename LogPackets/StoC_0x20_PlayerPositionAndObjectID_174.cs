@@ -17,6 +17,15 @@ namespace PacketLogConverter.LogPackets
 		{
 			text.Write("oid:0x{0:X4} x:{1,-6} y:{2,-6} z:{3,-5} heading:0x{4:X4} region:{5,-3} zoneXOffset:{6,-2} zoneYOffset:{7,-2} flags:0x{8:X2} server:\"{10}\" instance:0x{9:X2} unk2:0x{11:X2}",
 				playerOid, x, y, z, heading, region, zoneXOffset, zoneYOffset, flags, unk1, server, unk2);
+			if (flagsDescription && (flags != 0))
+			{
+				string str = "";
+				if ((flags & 0x80) == 0x80)
+					str += "DivingEnable";
+				if ((flags & 0x01) == 0x01)
+					str += ",Underwater";
+				text.Write("({0})", str);
+			}
 		}
 
 		/// <summary>

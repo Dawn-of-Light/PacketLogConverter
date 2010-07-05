@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 
@@ -20,7 +21,8 @@ namespace PacketLogConverter.LogPackets
 		protected ushort unk3;
 		protected ushort unk4;
 		protected string name;
-		protected byte unk5; // Trailing 0 ?
+		protected byte extraBytes;
+		protected uint internalId;
 
 		/// <summary>
 		/// Gets the object ids of the packet.
@@ -47,7 +49,8 @@ namespace PacketLogConverter.LogPackets
 		public ushort Unk3 { get { return unk3; } }
 		public ushort Unk4 { get { return unk4; } }
 		public string Name { get { return name; } }
-		public byte Unk5 { get { return unk5; } }
+		public byte ExtraBytes { get { return extraBytes; } }
+		public uint InternalId { get { return internalId; } }
 
 		#endregion
 
@@ -60,8 +63,8 @@ namespace PacketLogConverter.LogPackets
 				realm = 2;
 			else if ((flags & 0x40) == 0x40)
 				realm = 3;
-			text.Write(" oid:0x{0:X4} unk1:0x{1:X4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} model:0x{6:X4} level:{7,-3} realm:{8} flags:0x{9:X4} emblem:0x{10:X4} unk2-4:0x{11:X4}{12:X4}{13:X4} name:\"{14}\" unk5:{15}",
-				objectOid, unk1, heading, x, y, z, model, level >> 1, realm, (((level & 1) << 8) + flags) & 0xFF8F /* (flags except realm bits)*/, emblem, unk2, unk3, unk4, name, unk5/*, (flags >> 10) & 7, (flags >> 4) & 7, flags & 0xE38F*/);
+			text.Write(" oid:0x{0:X4} unk1:0x{1:X4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} model:0x{6:X4} level:{7,-3} realm:{8} flags:0x{9:X4} emblem:0x{10:X4} unk2-4:0x{11:X4}{12:X4}{13:X4} extraBytes:{14} name:\"{15}\"",
+				objectOid, unk1, heading, x, y, z, model, level >> 1, realm, (((level & 1) << 8) + flags) & 0xFF8F /* (flags except realm bits)*/, emblem, unk2, unk3, unk4, extraBytes, name/*, (flags >> 10) & 7, (flags >> 4) & 7, flags & 0xE38F*/);
 			if (flagsDescription)
 			{
 				string flag = "";
@@ -77,6 +80,37 @@ namespace PacketLogConverter.LogPackets
 				text.Write(" ({0})", flag);
 				if (emblem != 0)
 					text.Write(" logo:{0,-3} pattern:{1} primaryColor:{2,-2} secondaryColor:{3}", ((unk4 & 1) << 7) | (emblem >> 9), (emblem >> 7) & 2, (emblem >> 3) & 0x0F, emblem & 7);
+			}
+			if (extraBytes == 4)
+			{
+				text.Write(" doorId:0x{0:X8}", internalId);
+				if (flagsDescription)
+				{
+					uint doorType = internalId / 100000000;
+					if (doorType == 7)
+					{
+						uint keepId = (internalId - 700000000) / 100000;
+						uint keepPiece = (internalId - 700000000 - keepId * 100000) / 10000;
+						uint componentId = (internalId - 700000000 - keepId * 100000 - keepPiece * 10000) / 100;
+						int doorIndex = (int)(internalId - 700000000 - keepId * 100000 - keepPiece * 10000 - componentId * 100);
+						text.Write(" (keepID:{0} componentId:{1} doorIndex:{2})", keepId + keepPiece * 256, componentId, doorIndex);
+					}
+					else if(doorType == 9)
+					{
+						doorType = internalId / 10000000;
+						uint doorIndex = internalId - doorType * 10000000;
+						text.Write(" (doorType:{0} houseDoorId:{1})", doorType, doorIndex);
+					}
+					else
+					{
+						int zoneDoor = (int)(internalId / 1000000);
+						int fixture = (int)(internalId - zoneDoor * 1000000);
+						int fixturePiece = fixture;
+						fixture /= 100;
+						fixturePiece = fixturePiece - fixture * 100;
+						text.Write(" (zone:{0} fixture:{1} fixturePeace:{2})", zoneDoor, fixture, fixturePiece);
+					}
+				}
 			}
 		}
 
@@ -101,7 +135,11 @@ namespace PacketLogConverter.LogPackets
 			unk3 = ReadShort();      // 0x18
 			unk4 = ReadShort();      // 0x1A
 			name = ReadPascalString(); // 0x1C
-			unk5 = ReadByte();       // ??
+			extraBytes = ReadByte();
+			if (extraBytes == 4)
+				internalId = ReadInt();
+			else if (extraBytes != 0)
+				throw new Exception("unknown extra bytes count.");
 		}
 
 		/// <summary>

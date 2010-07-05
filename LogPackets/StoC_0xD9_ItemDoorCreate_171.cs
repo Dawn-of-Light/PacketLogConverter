@@ -20,8 +20,13 @@ namespace PacketLogConverter.LogPackets
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 
-			text.Write("oid:0x{0:X4} emblem:0x{1:X4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} model:0x{6:X4} health:{7,3}% flags:0x{8:X2}(realm:{13}) extraBytes:{9} staticFlag:{10} unk1_171:0x{11:X6} name:\"{12}\"",
-				oid, emblem, heading, x, y, z, model, hp, flags, extraBytes, staticFlag, unk1_171, name, (flags & 0x30)>>4);
+			text.Write("oid:0x{0:X4} emblem:0x{1:X4} heading:0x{2:X4}", oid, emblem, heading);
+			if ((flags & 0x40) == 0x40)
+				text.Write(" ship:0x{0:X4} sl:{1,-2}", x, y);
+			else
+				text.Write(" x:{0,-6} y:{1,-6}", x, y);
+			text.Write(" z:{0,-5} model:0x{1:X4} health:{2,3}% flags:0x{3:X2}(realm:{8}) extraBytes:{4} staticFlag:{5} unk1_171:0x{6:X6} name:\"{7}\"",
+				z, model, hp, flags, extraBytes, staticFlag, unk1_171, name, (flags & 0x30) >> 4);
 			if (flagsDescription)
 			{
 				string flag = "";

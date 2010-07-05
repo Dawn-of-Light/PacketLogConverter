@@ -55,7 +55,7 @@ namespace PacketLogConverter.LogPackets
 		{
 
 			text.Write("oid:0x{0:X4} speed:{1,-4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} speedZ:{6,-4} model:0x{7:X4} size:{8,-3}({15,-3}) level:{9,-3} flags:0x{10:X2} maxStick:{11,-3} name:\"{12}\" guild:\"{13}\" unk1:{14}",
-			                 oid, speed, heading, x, y, z, speedZ, model & 0x3FFF, size, level, flags, maxStick, name, guildName, unk1, size * 2);
+			                 oid, speed, heading, x, y, z, speedZ, model & 0x3FFF, size, level, flags & 0x3F, maxStick, name, guildName, unk1, size * 2);
 			if (flagsDescription)
 			{
 				text.Write(" (realm:{0}", (flags >> 6) & 3);
@@ -64,7 +64,7 @@ namespace PacketLogConverter.LogPackets
 				if ((flags & 0x02) == 0x02)
 					text.Write(",Inventory");
 				if ((flags & 0x04) == 0x04)
-					text.Write(",UNK_0x04"); // something like flag from monsters.csv for show special SKIN ?
+					text.Write(",Torch");
 				if ((flags & 0x08) == 0x08)
 					text.Write(",LongRangeVisible"); // 4000, 5500, 8000
 				if ((flags & 0x10) == 0x10)

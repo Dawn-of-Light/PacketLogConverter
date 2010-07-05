@@ -61,6 +61,18 @@ namespace PacketLogConverter.LogPackets
 
 		#endregion
 
+		public enum eStatus: byte
+		{
+			Linkdead = 0x10, // *%s*
+			Dead = 0x01, // =%s=
+			Mezzed = 0x02, // !%s!
+			Diseased = 0x04, // -%s-
+			Poisoned = 0x08, // $%s$
+			Nearsighted = 0x40, // ^%s^
+			InAnotherRegion = 0x20, // [%s]
+			Normal = 0x00,
+		}
+
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 			for (int i = 0; i < updates.Length; i++)

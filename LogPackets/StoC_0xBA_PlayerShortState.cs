@@ -58,7 +58,7 @@ namespace PacketLogConverter.LogPackets
 				sessionId, isRaided ? "mountId" : "heading", heading, flags, health & 0x7F, state, unk1, innerCounter, rideSlot);
 			if (flagsDescription)
 			{
-				string status = state > 0 ? ((PlrState)state).ToString() : "";
+				string status = state > 0 ? ((CtoS_0xA9_PlayerPosition.PlrState)state).ToString() : "";
 				if ((flags & 0x01) == 0x01)
 					status += ",Wireframe";
 				if ((flags & 0x02) == 0x02)

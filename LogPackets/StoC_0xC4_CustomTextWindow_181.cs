@@ -7,18 +7,18 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0xC4, 181, ePacketDirection.ServerToClient, "Custom text window v181")]
 	public class StoC_0xC4_CustomTextWindow_181 : StoC_0xC4_CustomTextWindow_175
 	{
-		protected byte unk1;
+		protected byte isGlued;
 
 		#region public access properties
 
-		public byte Unk1 { get { return unk1; } }
+		public byte IsGlued { get { return isGlued; } }
 
 		#endregion
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 
-			text.Write("\n\tisTitle:{0} caption: \"{1}\" unk1_181:0x{2:X2}", flagAnswers, caption, unk1);
+			text.Write("\n\tisTitle:{0} caption: \"{1}\" isGlued:0x{2:X2}", flagAnswers, caption, isGlued);
 
 			for (int i = 0; i < lines.Length; i++)
 			{
@@ -46,7 +46,7 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			flagAnswers = ReadByte(); // new in 1.75
-			unk1 = ReadByte(); // new in 1.81
+			isGlued = ReadByte(); // new in 1.81
 			caption = ReadPascalString();
 			InitLines();
 		}

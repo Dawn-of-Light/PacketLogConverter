@@ -16,7 +16,7 @@ namespace PacketLogConverter.LogPackets
 		public ushort Unk2_171 { get { return unk2_171; } }
 
 		public byte Statue {get {return (byte)((level & 0x80) == 0x80 ? 1 : 0); } }
-		public byte Flag0x04 {get {return (byte)((flags & 0x04) == 0x04 ? 1 : 0); } }
+		public byte Torch {get {return (byte)((flags & 0x04) == 0x04 ? 1 : 0); } }
 		public byte LongRangeVisible {get {return (byte)((flags & 0x08) == 0x08 ? 1 : 0); } }
 		public byte HaveOwner {get {return (byte)((flag2 & 0x80) == 0x80 ? 1 : 0); } }// 1.87+
 
@@ -26,7 +26,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 			text.Write("oid:0x{0:X4} speed:{1,-4} heading:0x{2:X4} x:{3,-6} y:{4,-6} z:{5,-5} speedZ:{6, -4} model:0x{7:X4} size:{8,-3}({18,-3}) level:{9,-3} flags:0x{10:X2} maxStick:{11,-3} flag2:0x{12:X2} unk1_171:0x{13:X2} unk2_171:0x{14:X4} name:\"{15}\" guild:\"{16}\" unk1:{17}",
-			                 oid, speed, heading, x, y, z, speedZ, model, size, level & 0x7F, flags, maxStick, flag2, unk1_171, unk2_171, name, guildName, unk1, size * 2);
+			                 oid, speed, heading, x, y, z, speedZ, model, size, level & 0x7F, flags & 0x3F, maxStick, flag2, unk1_171, unk2_171, name, guildName, unk1, size * 2);
 			if (flagsDescription)
 			{
 				text.Write(" (realm:{0}", (flags >> 6) & 3);
@@ -35,7 +35,7 @@ namespace PacketLogConverter.LogPackets
 				if ((flags & 0x02) == 0x02)
 					text.Write(",Inventory");
 				if ((flags & 0x04) == 0x04)
-					text.Write(",UNK_0x04");
+					text.Write(",Torch");
 				if ((flags & 0x08) == 0x08)
 					text.Write(",LongRangeVisible"); // 4000, 5500, 8000
 				if ((flags & 0x10) == 0x10)

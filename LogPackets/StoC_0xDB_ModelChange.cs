@@ -10,8 +10,8 @@ namespace PacketLogConverter.LogPackets
 		protected ushort oid;
 		protected ushort newModel;
 		protected byte size;
-		protected byte unk1; // npc torchMode ?
-		protected ushort unk2; // unused
+		protected byte torch; // npc torchMode ?
+		protected ushort unk1; // unused
 
 		/// <summary>
 		/// Gets the object ids of the packet.
@@ -27,17 +27,17 @@ namespace PacketLogConverter.LogPackets
 		public ushort Oid { get { return oid; } }
 		public ushort NewModel { get { return newModel; } }
 		public byte Size { get { return size; } }
-		public byte Unk1 { get { return unk1; } }
-		public ushort Unk2 { get { return unk2; } }
+		public byte Torch { get { return torch ; } }
+		public ushort Unk1 { get { return unk1; } }
 
 		#endregion
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 
-			text.Write("oid:0x{0:X4} newModel:0x{1:X4} size:{2,-2}({4,-3}) unk1:0x{3:X2}", oid, newModel, size, unk1, size * 2);
+			text.Write("oid:0x{0:X4} newModel:0x{1:X4} size:{2,-2}({4,-3}) torch:0x{3:X2}", oid, newModel, size, torch, size * 2);
 			if (flagsDescription)
-				text.Write(" unk2:0x{0:X4}", unk2);
+				text.Write(" unk1:0x{0:X4}", unk1);
 
 		}
 
@@ -51,8 +51,8 @@ namespace PacketLogConverter.LogPackets
 			oid = ReadShort();     // 0x00
 			newModel = ReadShort();// 0x02
 			size = ReadByte();     // 0x04
-			unk1 = ReadByte();     // 0x05
-			unk2 = ReadShort();    // 0x06
+			torch = ReadByte();     // 0x05
+			unk1 = ReadShort();    // 0x06
 		}
 
 		/// <summary>

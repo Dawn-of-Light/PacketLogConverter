@@ -310,6 +310,9 @@
     <Compile Include="LogPackets\CtoS_0x10_CharacterSelectRequest_190c.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\CtoS_0x10_CharacterSelectRequest_204.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LogPackets\CtoS_0x11_PlayerMarketSearch.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -350,6 +353,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\CtoS_0x4F_QuestRemoveRequest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\CtoS_0x52_UnknownPacket.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\CtoS_0x64_KeepBuyHookPoint.cs">
@@ -454,6 +460,9 @@
     <Compile Include="LogPackets\CtoS_0xA7_LoginRequest_178.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\CtoS_0xA7_LoginRequest_204.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LogPackets\CtoS_0xA9_PlayerPosition.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -515,6 +524,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\CtoS_0xCB_CharacterNameDublicateCheck.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\CtoS_0xCB_CharacterNameDublicateCheck_204.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\CtoS_0xCD_CharacterCreationConfirm.cs">
@@ -596,6 +608,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\CtoS_0xFF_CharacterCreate189.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\CtoS_0xFF_CharacterCreate199.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\CtoS_0xFF_CharacterCreate199d.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\CtoS_0xFF_CharacterCreate_204.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\CtoS_0xXX_Template.cs">
@@ -773,6 +794,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0x4E_ControlledHorse.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\StoC_0x50_UnknownPacket.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\StoC_0x52_UnknownPacket.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0x59_UnknownPacket.cs">
@@ -1015,6 +1042,9 @@
     <Compile Include="LogPackets\StoC_0xCC_NameDublicateCheckResponse.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0xCC_NameDublicateCheckResponse_204.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LogPackets\StoC_0xD0_CheckLos.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1093,6 +1123,9 @@
     <Compile Include="LogPackets\StoC_0xF0_CharCreateReply.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0xF0_CharCreateReply_204.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LogPackets\StoC_0xF3_TimerWindow.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1124,6 +1157,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0xFD_CharacterOverview_189.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\StoC_0xFD_CharacterOverview_199.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\StoC_0xFD_CharacterOverview_204.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0xFE_SetRealm.cs">
