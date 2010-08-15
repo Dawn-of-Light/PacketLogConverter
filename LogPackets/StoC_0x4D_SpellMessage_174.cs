@@ -81,9 +81,13 @@ namespace PacketLogConverter.LogPackets
 				case 31: pattern="You get {0} bounty points!";break;
 				case 32: pattern="You feel more rested.";break;
 				case 33: pattern="You feel less rested.";break;
-				case 34: pattern="<str>";break;
 				case 35: pattern="You gain {0} bonus experience for adventuring in this area";break;
-				default:break;
+				case 36: pattern="This monster is worth Master Level experience.";break;
+				case 37: pattern="This monster is worth a little Master Level experience.";break;
+				case 38: pattern="You cannot earn realm points here.";break;
+				case 39: pattern="You earn fewer realm points here.";break;
+				case 40: pattern="You have reached the maximum realm level for this zone and can no longer earn realm points here.";break;
+				default: pattern="<str>";break;
 			}
 			if (flag!=0) pattern=string.Format(pattern,message);
 			text.Write("\n\tmessage:\"{0}\"", pattern);
