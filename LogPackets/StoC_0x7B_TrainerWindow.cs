@@ -260,7 +260,6 @@ namespace PacketLogConverter.LogPackets
 						skill.level = pak.ReadByte();
 						skill.icon  = pak.ReadShort();
 						skill.type  = pak.ReadByte();
-						LogWriters.Logger.Say("level:{0} icon:0x{1:X4} type:{2}", skill.level, skill.icon, skill.type);
 						if (skill.type == (byte)StoC_0x16_VariousUpdate.eSkillPage.Styles)
 						{
 							skill.internalId = skill.icon;
