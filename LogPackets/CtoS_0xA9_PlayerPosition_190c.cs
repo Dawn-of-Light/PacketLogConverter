@@ -7,12 +7,14 @@ namespace PacketLogConverter.LogPackets
 	public class CtoS_0xA9_PlayerPosition_190c : CtoS_0xA9_PlayerPosition_172
 	{
 		protected ushort unk2;
-		protected uint[] u_unk1 = new uint[8];
+		protected uint[] u_unk1 = new uint[4];
+		protected float[] u_unk2 = new float[4];
 
 		#region public access properties
 
 		public ushort Unk2 { get { return unk2; } }
 		public uint[] U_Unk1 { get { return u_unk1; } }
+		public float[] U_Unk2 { get { return u_unk2; } }
 
 		#endregion
 
@@ -26,47 +28,17 @@ namespace PacketLogConverter.LogPackets
 			text.Write(" unk2:0x{0:X4}", unk2);
 			if (flagsDescription)
 			{
-				for (int i = 0; i < 8; i++)
-					text.Write(" {0:X8}", u_unk1[i]);
-				byte plrState = (byte)((status >> 10) & 7);
-				string flags = plrState > 0 ? ((PlrState)plrState).ToString() : "";
-				if (((heading >> 12) & 1) == 1)
-					flags += ",OnGround";
-				if ((status & 0x200) == 0x200)
-					flags += ",Backward";
-				if ((status & 0x8000) == 0x8000)
-					flags += ",StrafeRight";
-				if ((status & 0x4000) == 0x4000)
-					flags += ",StrafeLeft";
-				if ((status & 0x2000) == 0x2000)
-					flags += "Move";
-				if ((flag & 0x02) == 0x02)
-					flags += ",Underwater";
-				if ((flag & 0x04) == 0x04)
-					flags += ",PetInView";
-				if ((flag & 0x08) == 0x08)
-					flags += ",GT";
-				if ((flag & 0x10) == 0x10)
-					flags += ",CheckTargetInView";
-				if ((flag & 0x20) == 0x20)
-					flags += ",TargetInView";
-				if ((flag & 0x40) == 0x40)
-					flags += ",MoveTo";
-				if ((flag & 0x80) == 0x80)
-					flags += ",Torch";
-				if ((health & 0x80) == 0x80)
-					flags+= ",Combat";
-				if ((flag & 0x01) == 0x01)
-					flags += ",UNKx01";
-				if ((speed & 0x8000) == 0x8000)
-					flags += ",FallDown";
-				if ((speed & 0x4000) == 0x4000)
-					flags += ",speed_UNK_0x4000";
-				if ((speed & 0x2000) == 0x2000)
-					flags += ",speed_UNK_0x2000";
-				if (flags.Length > 0)
-					text.Write(" (" + flags + ")");
+				AddDescription(text);
 			}
+		}
+
+		public override void AddDescription(TextWriter text)
+		{
+				for (int i = 0; i < 4; i++)
+					text.Write(" {0:X8}", u_unk1[i]);
+				for (int i = 0; i < 4; i++)
+					text.Write(" {0}", u_unk2[i]);
+				base.AddDescription(text);
 		}
 		/// <summary>
 		/// Initializes the packet. All data parsing must be done here.
@@ -86,8 +58,10 @@ namespace PacketLogConverter.LogPackets
 			flag = ReadByte();
 			health = ReadByte();
 			unk2 = ReadShort();
-			for (int i = 0; i < 8; i++)
+			for (int i = 0; i < 4; i++)
 				u_unk1[i] = ReadIntLowEndian();
+			for (int i = 0; i < 4; i++)
+				u_unk2[i] = ReadFloatLowEndian();
 		}
 
 		/// <summary>

@@ -214,6 +214,8 @@ namespace PacketLogConverter.LogPackets
 			public string effectName; // new 1.82
 			public ushort effectIcon2; // new 1.82
 			public string effectName2; // new 1.82
+			public byte unk1_1112; // new 1.11.2 ?
+			public byte unk2_1112; // new 1.11.2 ?
 		}
 
 		/// <summary>

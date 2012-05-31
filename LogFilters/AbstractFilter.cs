@@ -8,7 +8,7 @@ namespace PacketLogConverter.LogFilters
 	public abstract class AbstractFilter : ILogFilter
 	{
 		protected readonly	IExecutionContext	m_context;
-		private				bool				m_active;
+		private			bool			m_active;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:AbstractFilter"/> class.

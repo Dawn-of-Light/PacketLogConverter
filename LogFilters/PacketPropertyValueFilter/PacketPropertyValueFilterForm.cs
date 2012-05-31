@@ -1086,7 +1086,8 @@ namespace PacketLogConverter.LogFilters
 		/// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
 		private void filtersListBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			UpdateButtonsEnabledState();
+			filtersListBoxChanges();
+//			UpdateButtonsEnabledState();
 		}
 
 		/// <summary>

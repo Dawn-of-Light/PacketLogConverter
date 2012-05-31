@@ -12,7 +12,7 @@ namespace PacketLogConverter.LogFilters
 	/// Filters the log by packet codes
 	/// </summary>
 	[LogFilter("Packet code filter...", Shortcut.CtrlP, Priority=1000)]
-	public class PacketCodeFilterForm : Form, ILogFilter
+    public class PacketCodeFilterForm : Form, ILogFilter
 	{
 		private GroupBox stocGroupBox;
 		private GroupBox ctosGroupBox;

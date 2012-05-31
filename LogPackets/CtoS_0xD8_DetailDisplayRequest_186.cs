@@ -3,7 +3,7 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0xD8, 186, ePacketDirection.ClientToServer, "Detail display request 186")]
+	[LogPacket(0xD8, 186, ePacketDirection.ClientToServer, "Detail display request v186")]
 	public class CtoS_0xD8_DetailDisplayRequest_186 : CtoS_0xD8_DetailDisplayRequest
 	{
 		protected uint unk1;

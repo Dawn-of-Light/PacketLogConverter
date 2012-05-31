@@ -74,20 +74,28 @@ namespace PacketLogConverter.LogPackets
 				}
 				text.Write("unk1_199:{0}\n",ch.unk1_199);
 			}
-			text.Write("and 129 bytes more unused");
+			if (flagsDescription)
+			{
+				text.Write("unused:");
+				for (int i = 0; i < unused.Length; i++)
+				{
+					text.Write("{0:X2}", unused[i]);
+				}
+			}
+			else
+				text.Write("and {0} bytes more unused", unused.Length);
 
 		}
 
 		public override void Init()
 		{
 			Position = 0;
-
-			accountName = ReadString(24);                  // 0x00
-
+			accountName = ReadString(24);
 			ReadCharacters();
+			ReadUnused(90);
 		}
 
-		public virtual void ReadCharacters()
+		public override void ReadCharacters()
 		{
 			ArrayList temp = new ArrayList(10);
 			byte cloakHoodUp;
@@ -170,7 +178,6 @@ namespace PacketLogConverter.LogPackets
 
 			chars = (CharData_199[])temp.ToArray(typeof (CharData_199));
 
-			Skip(90);
 		}
 
 		public class CharData_199 : CharData_173

@@ -198,6 +198,7 @@ namespace PacketLogConverter.LogPackets
 		public struct Skill
 		{
 			public byte level;
+			public ushort index;
 			public eSkillPage page;
 			public ushort stlOpen;
 			public byte bonus;
@@ -249,7 +250,8 @@ namespace PacketLogConverter.LogPackets
 
 		public struct Spell
 		{
-			public byte level;
+			public ushort level;
+			public ushort index;
 			public ushort icon;
 			public string name;
 		}

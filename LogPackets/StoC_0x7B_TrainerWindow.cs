@@ -252,7 +252,8 @@ namespace PacketLogConverter.LogPackets
 				for (int j = 0; j < pak.count; j++)
 				{
 					int index = pak.ReadByte();
-					int skillsCount = pak.ReadShortLowEndian();
+					int skillsCount = pak.ReadByte();
+					pak.Skip(1); // TODO
 					List<SpecSkill> specList = new List<SpecSkill>(skillsCount);
 					for (int i = 0; i < skillsCount ; i++)
 					{
@@ -415,6 +416,9 @@ namespace PacketLogConverter.LogPackets
 			public ushort unk2;
 			public ushort unk3;
 			public string name;
+			public byte   unk1_1112;
+			public byte   unk2_1112;
+			public ushort unk3_1112;
 		}
 
 

@@ -66,8 +66,16 @@ namespace PacketLogConverter.LogPackets
 					text.Write(")\n");
 				}
 			}
-
-			text.Write("and 130 bytes more unused");
+			if (flagsDescription)
+			{
+				text.Write("unused:");
+				for (int i = 0; i < unused.Length; i++)
+				{
+					text.Write("{0:X2}", unused[i]);
+				}
+			}
+			else
+				text.Write("and {0} bytes more unused", unused.Length);
 
 		}
 

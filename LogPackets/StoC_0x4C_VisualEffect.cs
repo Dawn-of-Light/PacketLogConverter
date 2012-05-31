@@ -274,7 +274,7 @@ namespace PacketLogConverter.LogPackets
 
 			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
-				text.Write("(QuestEffect) flag:{0}({1})",
+				text.Write("(QuestEffect) flag:0x{0:X2}({1})",
 					flag, (flag == 0 ? "Disable" : "Enable"));
 				if (flagsDescription)
 					text.Write(" unk1:{0}", unk1);

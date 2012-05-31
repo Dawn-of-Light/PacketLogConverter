@@ -11,8 +11,8 @@ namespace PacketLogConverter.LogFilters.PacketPropertyValueFilter.ValueCheckers
 	/// </summary>
 	internal abstract class ObjectValueChecker : IValueChecker<object>
 	{
-		[NonSerialized]
-		private object oldSearchValue;
+//		[NonSerialized]
+//		private object oldSearchValue;
 		[NonSerialized]
 		private double valueToFindDouble;
 		[NonSerialized]

@@ -9,11 +9,14 @@ namespace PacketLogConverter.LogPackets
 	{
 		protected string accountName;
 		protected CharData[] chars;
+		protected byte[] unused;
+
 
 		#region public access properties
 
 		public string AccountName { get { return accountName; } }
 		public CharData[] Chars { get { return chars; } }
+		public byte[] Unused { get {return unused; } }
 
 		#endregion
 
@@ -73,8 +76,16 @@ namespace PacketLogConverter.LogPackets
 					text.Write(")\n");
 				}
 			}
-
-			text.Write("and 104 bytes more unused");
+			if (flagsDescription)
+			{
+				text.Write("unused:");
+				for (int i = 0; i < unused.Length; i++)
+				{
+					text.Write("{0:X2}", unused[i]);
+				}
+			}
+			else
+				text.Write("and {0} bytes more unused", unused.Length);
 
 		}
 
@@ -83,11 +94,15 @@ namespace PacketLogConverter.LogPackets
 		/// </summary>
 		public override void Init()
 		{
-			ArrayList temp = new ArrayList();
-
 			Position = 0;
-
 			accountName = ReadString(24);
+			ReadCharacters();
+			ReadUnused(104);
+		}
+
+		public virtual void ReadCharacters()
+		{
+			ArrayList temp = new ArrayList();
 
 			while (Position + 184 < Length)
 			{
@@ -149,7 +164,14 @@ namespace PacketLogConverter.LogPackets
 			}
 
 			chars = (CharData[])temp.ToArray(typeof (CharData));
-			Skip(104);
+		}
+
+		public void ReadUnused(int unusedBytes)
+		{
+			ArrayList tmp = new ArrayList(unusedBytes);
+			for (byte i = 0; i < unusedBytes; i++)
+				tmp.Add(ReadByte());
+			unused = (byte[])tmp.ToArray(typeof (byte));
 		}
 
 		public class CharData

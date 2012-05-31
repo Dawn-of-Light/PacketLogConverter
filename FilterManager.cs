@@ -227,10 +227,11 @@ namespace PacketLogConverter
 					return false;
 
 				// Deactivate filter before it is removed from filter manager to allow it to unregister its event handlers
-				filter.IsFilterActive = false;
+# warning Removed becouse it loopback
+//                filter.IsFilterActive = false;
 
-				m_filters.Remove(filter);
-				RaiseFilterRemovedEvent(filter);
+                m_filters.Remove(filter);
+                RaiseFilterRemovedEvent(filter);
 				return true;
 			}
 		}

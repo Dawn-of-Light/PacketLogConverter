@@ -83,6 +83,12 @@ namespace PacketLogConverter.LogPackets
 				sessionId, (status & 0x1FF ^ status) >> 8 ,status & 0x1FF, isRaided ? "mountId" : "heading", isRaided ? heading : heading & 0xFFF, currentZoneId, currentZoneX, currentZoneY, currentZoneZ, (speed & 0x7FF ^ speed) >> 8, (isRaided ? "bSlot " : "SpeedZ") ,zSpeed, flag, health & 0x7F, isRaided ? 0 : (heading & 0xFFF ^ heading) >> 13);
 			if (flagsDescription)
 			{
+				AddDescription(text);
+			}
+		}
+
+		public virtual void AddDescription(TextWriter text)
+		{
 				byte plrState = (byte)((status >> 10) & 7);
 				string flags = plrState > 0 ? ((PlrState)plrState).ToString() : "";
 				if (((heading >> 12) & 1) == 1)
@@ -121,7 +127,6 @@ namespace PacketLogConverter.LogPackets
 					flags += ",speed_UNK_0x2000";
 				if (flags.Length > 0)
 					text.Write(" ("+flags+")");
-			}
 		}
 
 		/// <summary>

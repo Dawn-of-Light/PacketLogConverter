@@ -71,20 +71,32 @@ namespace PacketLogConverter.LogPackets
 				}
 			}
 
-			text.Write("and 130 bytes more unused");
+			if (flagsDescription)
+			{
+				text.Write("unused:");
+				for (int i = 0; i < unused.Length; i++)
+				{
+					text.Write("{0:X2}", unused[i]);
+				}
+			}
+			else
+				text.Write("and {0} bytes more unused", unused.Length);
 
 		}
 
+		public override void Init()
+		{
+			Position = 0;
+			accountName = ReadString(24);
+			ReadCharacters();
+			ReadUnused(130);
+		}
 		/// <summary>
 		/// Initializes the packet. All data parsing must be done here.
 		/// </summary>
-		public override void Init()
+		public override void ReadCharacters()
 		{
 			ArrayList temp = new ArrayList(10);
-
-			Position = 0;
-
-			accountName = ReadString(24);                  // 0x00
 			byte cloakHoodUp;
 
 			while (Position + 184 < Length)
@@ -164,7 +176,6 @@ namespace PacketLogConverter.LogPackets
 			}
 
 			chars = (CharData_173[])temp.ToArray(typeof (CharData_173));
-			Skip(130);
 		}
 
 		public class CharData_173 : CharData

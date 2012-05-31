@@ -40,8 +40,9 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 			unk1 = ReadInt();
 			unk2 = ReadInt();
-			regionId = (byte)ReadByte();
-			Skip(1);
+			regionId = (short)ReadShort();// 0x08
+//			regionId = (byte)ReadByte();
+//			Skip(1);
 			unk3 = ReadInt();
 			model = ReadShort();
 			unk4 = ReadByte();

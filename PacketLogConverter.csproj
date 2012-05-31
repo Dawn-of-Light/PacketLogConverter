@@ -310,7 +310,7 @@
     <Compile Include="LogPackets\CtoS_0x10_CharacterSelectRequest_190c.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LogPackets\CtoS_0x10_CharacterSelectRequest_204.cs">
+    <Compile Include="LogPackets\CtoS_0x10_CharacterSelectRequest_1104.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\CtoS_0x11_PlayerMarketSearch.cs">
@@ -460,7 +460,10 @@
     <Compile Include="LogPackets\CtoS_0xA7_LoginRequest_178.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LogPackets\CtoS_0xA7_LoginRequest_204.cs">
+    <Compile Include="LogPackets\CtoS_0xA7_LoginRequest_183.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\CtoS_0xA7_LoginRequest_1104.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\CtoS_0xA9_PlayerPosition.cs">
@@ -473,6 +476,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\CtoS_0xA9_PlayerPosition_190f.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\CtoS_0xA9_PlayerPosition_1112.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\CtoS_0xAC_PlayerResetCharacter.cs">
@@ -526,7 +532,7 @@
     <Compile Include="LogPackets\CtoS_0xCB_CharacterNameDublicateCheck.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LogPackets\CtoS_0xCB_CharacterNameDublicateCheck_204.cs">
+    <Compile Include="LogPackets\CtoS_0xCB_CharacterNameDublicateCheck_1104.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\CtoS_0xCD_CharacterCreationConfirm.cs">
@@ -548,6 +554,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\CtoS_0xD8_DetailDisplayRequest_186.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\CtoS_0xD8_DetailDisplayRequest_1112.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\CtoS_0xDC_MessageFilter.cs">
@@ -616,7 +625,7 @@
     <Compile Include="LogPackets\CtoS_0xFF_CharacterCreate199d.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LogPackets\CtoS_0xFF_CharacterCreate_204.cs">
+    <Compile Include="LogPackets\CtoS_0xFF_CharacterCreate_1104.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\CtoS_0xXX_Template.cs">
@@ -632,6 +641,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0x02_InventoryUpdate_189.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\StoC_0x02_InventoryUpdate_1112.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0x03_HousePermissionList.cs">
@@ -694,6 +706,9 @@
     <Compile Include="LogPackets\StoC_0x16_VariousUpdate_179.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x16_VariousUpdate_1112.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LogPackets\StoC_0x17_MerchantWindow.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -730,6 +745,9 @@
     <Compile Include="LogPackets\StoC_0x22_VersionAndCryptKey_186.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x22_VersionAndCryptKey_1111.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LogPackets\StoC_0x23_ClientDenied.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -746,6 +764,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0x2A_LoginGranted_175.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\StoC_0x2A_LoginGranted_1111.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0x2B_PlayerWorldInitializeResponse.cs">
@@ -874,6 +895,9 @@
     <Compile Include="LogPackets\StoC_0x7B_TrainerWindow.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x7B_TrainerWindow_1112.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LogPackets\StoC_0x7E_SetTime.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -893,6 +917,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0x81_ShowDialog_194.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\StoC_0x81_ShowDialog_1112.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0x83_QuestUpdate.cs">
@@ -973,6 +1000,9 @@
     <Compile Include="LogPackets\StoC_0xA9_PlayerPosition_190f.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0xA9_PlayerPosition_1112.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LogPackets\StoC_0xAD_StatusUpdate.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1042,7 +1072,7 @@
     <Compile Include="LogPackets\StoC_0xCC_NameDublicateCheckResponse.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LogPackets\StoC_0xCC_NameDublicateCheckResponse_204.cs">
+    <Compile Include="LogPackets\StoC_0xCC_NameDublicateCheckResponse_1104.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0xD0_CheckLos.cs">
@@ -1070,6 +1100,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0xD6_DisableSkill.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogPackets\StoC_0xD8_DetailDisplay.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0xD9_ItemDoorCreate.cs">
@@ -1114,6 +1147,9 @@
     <Compile Include="LogPackets\StoC_0xEA_TradeWindow_182.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0xEA_TradeWindow_1112.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LogPackets\StoC_0xEE_NpcChangeProperties.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1123,7 +1159,7 @@
     <Compile Include="LogPackets\StoC_0xF0_CharCreateReply.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LogPackets\StoC_0xF0_CharCreateReply_204.cs">
+    <Compile Include="LogPackets\StoC_0xF0_CharCreateReply_1104.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0xF3_TimerWindow.cs">
@@ -1162,7 +1198,7 @@
     <Compile Include="LogPackets\StoC_0xFD_CharacterOverview_199.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LogPackets\StoC_0xFD_CharacterOverview_204.cs">
+    <Compile Include="LogPackets\StoC_0xFD_CharacterOverview_1104.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogPackets\StoC_0xFE_SetRealm.cs">
@@ -1304,9 +1340,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LogActions\InfoWindowForm.resx">
       <DependentUpon>InfoWindowForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LogFilters\ObjectIdFilterForm.resx">
       <DependentUpon>ObjectIdFilterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LogFilters\PacketPropertyValueFilter\PacketCodeFilterForm.resx">
       <DependentUpon>PacketCodeFilterForm.cs</DependentUpon>
