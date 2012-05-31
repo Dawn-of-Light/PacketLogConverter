@@ -3,14 +3,14 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0x10, 204, ePacketDirection.ClientToServer, "Character select request v204")]
-	public class CtoS_0x10_CharacterSelectRequest_204 : CtoS_0x10_CharacterSelectRequest_190c
+	[LogPacket(0x10, 1104, ePacketDirection.ClientToServer, "Character select request v1104")]
+	public class CtoS_0x10_CharacterSelectRequest_1104 : CtoS_0x10_CharacterSelectRequest_190c
 	{
-		protected uint unk1_204;
+		protected uint unk1_1104;
 
 		#region public access properties
 
-		public uint Unk1_204 { get { return unk1_204; } }
+		public uint Unk1_1104 { get { return unk1_1104; } }
 
 		#endregion
 		
@@ -18,7 +18,7 @@ namespace PacketLogConverter.LogPackets
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 			base.GetPacketDataString(text, flagsDescription);
-			text.Write(" unk1_204:0x{0:X8}", unk1_204);
+			text.Write(" unk1_1104:0x{0:X8}", unk1_1104);
 		}
 
 		/// <summary>
@@ -37,7 +37,7 @@ namespace PacketLogConverter.LogPackets
 			unks1 = ReadByte();        // 0x1F
 			unk0 = ReadIntLowEndian(); // 0x20
 			loginName = ReadString(20);// 0x24
-			unk1_204 = ReadInt();
+			unk1_1104 = ReadInt();
 			u1 = ReadIntLowEndian();
 			u2 = ReadIntLowEndian();
 			u3 = ReadIntLowEndian();
@@ -55,7 +55,7 @@ namespace PacketLogConverter.LogPackets
 		/// Constructs new instance with given capacity
 		/// </summary>
 		/// <param name="capacity"></param>
-		public CtoS_0x10_CharacterSelectRequest_204(int capacity) : base(capacity)
+		public CtoS_0x10_CharacterSelectRequest_1104(int capacity) : base(capacity)
 		{
 		}
 	}

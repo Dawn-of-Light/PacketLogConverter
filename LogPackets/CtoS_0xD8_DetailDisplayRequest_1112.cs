@@ -3,22 +3,21 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0xCB, 204, ePacketDirection.ClientToServer, "Character name dublicate check v204")]
-	public class CtoS_0xCB_CharacterNameDublicateCheck_204: CtoS_0xCB_CharacterNameDublicateCheck
+	[LogPacket(0xD8, 1112, ePacketDirection.ClientToServer, "Detail display request v1112")]
+	public class CtoS_0xD8_DetailDisplayRequest_1112 : CtoS_0xD8_DetailDisplayRequest_186
 	{
-		protected uint unk1_204;
+		protected uint unk1_1112;
 
 		#region public access properties
 
-		public uint Unk1_204 { get { return unk1_204; } }
+		public uint Unk1_1112 { get { return unk1_1112; } }
 
 		#endregion
 
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
 			base.GetPacketDataString(text, flagsDescription);
-			if (flagsDescription)
-				text.Write(" unk1_204:0x{0:X8}", unk1_204);
+			text.Write(" unk1_1112:0x{0:X8}", unk1_1112);
 		}
 
 		/// <summary>
@@ -28,16 +27,17 @@ namespace PacketLogConverter.LogPackets
 		{
 			Position = 0;
 
-			charName = ReadString(30);
-			loginName = ReadString(24);
-			unk1_204 = ReadInt();
+			objectType = ReadShort();
+			unk1 = ReadInt();
+			objectId = ReadShort();
+			unk1_1112 = ReadInt();
 		}
 
 		/// <summary>
 		/// Constructs new instance with given capacity
 		/// </summary>
 		/// <param name="capacity"></param>
-		public CtoS_0xCB_CharacterNameDublicateCheck_204(int capacity) : base(capacity)
+		public CtoS_0xD8_DetailDisplayRequest_1112(int capacity) : base(capacity)
 		{
 		}
 	}

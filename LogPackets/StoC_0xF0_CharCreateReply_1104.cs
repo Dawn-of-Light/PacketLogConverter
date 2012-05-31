@@ -3,8 +3,8 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0xF0, 204, ePacketDirection.ServerToClient, "Char create reply v204")]
-	public class StoC_0xF0_CharCreateReply_204 : StoC_0xF0_CharCreateReply
+	[LogPacket(0xF0, 1104, ePacketDirection.ServerToClient, "Char create reply v1104")]
+	public class StoC_0xF0_CharCreateReply_1104 : StoC_0xF0_CharCreateReply
 	{
 		/// <summary>
 		/// Initializes the packet. All data parsing must be done here.
@@ -21,7 +21,7 @@ namespace PacketLogConverter.LogPackets
 		/// Constructs new instance with given capacity
 		/// </summary>
 		/// <param name="capacity"></param>
-		public StoC_0xF0_CharCreateReply_204(int capacity) : base(capacity)
+		public StoC_0xF0_CharCreateReply_1104(int capacity) : base(capacity)
 		{
 		}
 	}

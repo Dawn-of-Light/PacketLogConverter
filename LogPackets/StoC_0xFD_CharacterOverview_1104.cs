@@ -4,14 +4,14 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0xFD, 204, ePacketDirection.ServerToClient, "Character Overview v204")]
-	public class StoC_0xFD_CharacterOverview_204 : StoC_0xFD_CharacterOverview_199
+	[LogPacket(0xFD, 1104, ePacketDirection.ServerToClient, "Character Overview v1104")]
+	public class StoC_0xFD_CharacterOverview_1104 : StoC_0xFD_CharacterOverview_199
 	{
-		protected uint unk1_204;
+		protected uint unk1_1104;
 
 		#region public access properties
 
-		public uint Unk1_204 { get { return unk1_204; } }
+		public uint Unk1_1104 { get { return unk1_1104; } }
 
 		#endregion
 		
@@ -19,7 +19,7 @@ namespace PacketLogConverter.LogPackets
 		{
 			StringBuilder str = new StringBuilder(8192);
 
-			text.Write("account name: \"{0}\" unk1_204:0x{1:X8}\n", accountName, unk1_204);
+			text.Write("account name: \"{0}\" unk1_1104:0x{1:X8}\n", accountName, unk1_1104);
 			
 			GetPacketCharacters(text, flagsDescription);
 
@@ -30,15 +30,16 @@ namespace PacketLogConverter.LogPackets
 			Position = 0;
 
 			accountName = ReadString(24);                  // 0x00
-			unk1_204 = ReadInt();
+			unk1_1104 = ReadInt();
 			ReadCharacters();
+			ReadUnused(90);
 		}
 
 		/// <summary>
 		/// Constructs new instance with given capacity
 		/// </summary>
 		/// <param name="capacity"></param>
-		public StoC_0xFD_CharacterOverview_204(int capacity) : base(capacity)
+		public StoC_0xFD_CharacterOverview_1104(int capacity) : base(capacity)
 		{
 		}
 	}

@@ -3,8 +3,8 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0xCC, 204, ePacketDirection.ServerToClient, "Name dublicate check response v204")]
-	public class StoC_0xCC_NameDublicateCheckResponse_204: StoC_0xCC_NameDublicateCheckResponse
+	[LogPacket(0xCC, 1104, ePacketDirection.ServerToClient, "Name dublicate check response v1104")]
+	public class StoC_0xCC_NameDublicateCheckResponse_1104: StoC_0xCC_NameDublicateCheckResponse
 	{
 		/// <summary>
 		/// Initializes the packet. All data parsing must be done here.
@@ -23,7 +23,7 @@ namespace PacketLogConverter.LogPackets
 		/// Constructs new instance with given capacity
 		/// </summary>
 		/// <param name="capacity"></param>
-		public StoC_0xCC_NameDublicateCheckResponse_204(int capacity) : base(capacity)
+		public StoC_0xCC_NameDublicateCheckResponse_1104(int capacity) : base(capacity)
 		{
 		}
 	}

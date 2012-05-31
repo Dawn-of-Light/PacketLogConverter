@@ -4,8 +4,8 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0xFF, 204, ePacketDirection.ClientToServer, "Create Character v204")]
-	public class CtoS_0xFF_CreateCharacter_204 : CtoS_0xFF_CreateCharacter_199d
+	[LogPacket(0xFF, 1104, ePacketDirection.ClientToServer, "Create Character v1104")]
+	public class CtoS_0xFF_CreateCharacter_1104 : CtoS_0xFF_CreateCharacter_199d
 	{
 
 		/// <summary>
@@ -107,7 +107,7 @@ namespace PacketLogConverter.LogPackets
 		/// Constructs new instance with given capacity
 		/// </summary>
 		/// <param name="capacity"></param>
-		public CtoS_0xFF_CreateCharacter_204(int capacity) : base(capacity)
+		public CtoS_0xFF_CreateCharacter_1104(int capacity) : base(capacity)
 		{
 		}
 	}
