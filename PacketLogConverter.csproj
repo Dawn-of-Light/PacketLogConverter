@@ -459,6 +459,7 @@
     <Compile Include="LogPackets\CtoS_0xA7_LoginRequest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\CtoS_0xA7_LoginRequest_1115.cs" />
     <Compile Include="LogPackets\CtoS_0xA7_LoginRequest_174.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -636,6 +637,7 @@
     <Compile Include="LogPackets\CtoS_0xXX_Template.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0x02_InventoryUpdate_1115.cs" />
     <Compile Include="LogPackets\StoC_0xC4_CustomTextWindow_1113.cs" />
     <Compile Include="LogPackets\StoC_0x02_InventoryUpdate.cs">
       <SubType>Code</SubType>
