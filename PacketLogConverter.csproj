@@ -639,6 +639,7 @@
     </Compile>
     <Compile Include="LogPackets\StoC_0x02_InventoryUpdate_1115.cs" />
     <Compile Include="LogPackets\StoC_0x81_ShowDialog_1115.cs" />
+    <Compile Include="LogPackets\StoC_0x83_QuestUpdate_1109.cs" />
     <Compile Include="LogPackets\StoC_0x83_QuestUpdate_1115.cs" />
     <Compile Include="LogPackets\StoC_0xC4_CustomTextWindow_1113.cs" />
     <Compile Include="LogPackets\StoC_0x02_InventoryUpdate.cs">

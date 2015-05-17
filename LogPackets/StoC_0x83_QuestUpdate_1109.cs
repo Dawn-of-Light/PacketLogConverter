@@ -23,16 +23,16 @@ using System.Text;
 
 namespace PacketLogConverter.LogPackets
 {
-	[LogPacket(0x83, 1115, ePacketDirection.ServerToClient, "Quest update v1115")]
-	public class StoC_0x83_QuestUpdate_1115 : StoC_0x83_QuestUpdate_1109
+	[LogPacket(0x83, 1109, ePacketDirection.ServerToClient, "Quest update v1109")]
+	public class StoC_0x83_QuestUpdate_1109 : StoC_0x83_QuestUpdate_187
 	{
 		protected override void InitQuestUpdate()
 		{
-			subData = new QuestUpdate_1115();
+			subData = new QuestUpdate_1109();
 			subData.Init(this);
 		}
 
-		public class QuestUpdate_1115 : QuestUpdate_1109
+		public class QuestUpdate_1109 : QuestUpdate_187
 		{
 			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
@@ -46,11 +46,11 @@ namespace PacketLogConverter.LogPackets
 
 		protected override void InitNewQuestUpdate()
 		{
-			subData = new NewQuestUpdate_1115();
+			subData = new NewQuestUpdate_1109();
 			subData.Init(this);
 		}
 
-		public class NewQuestUpdate_1115 : NewQuestUpdate_1109
+		public class NewQuestUpdate_1109 : NewQuestUpdate_187
 		{
 			public override void Init(StoC_0x83_QuestUpdate pak)
 			{
@@ -92,7 +92,6 @@ namespace PacketLogConverter.LogPackets
 					item.slot = pak.ReadByte();
 					if (item.slot > 0)
 					{
-						item.unk1_1115 = pak.ReadShort();
 						item.level = pak.ReadByte();
 
 						item.value1 = pak.ReadByte();
@@ -108,7 +107,6 @@ namespace PacketLogConverter.LogPackets
 						item.durability = pak.ReadByte();
 						item.quality = pak.ReadByte();
 						item.bonus = pak.ReadByte();
-						item.unk2_1112 = pak.ReadByte();
 						item.model = pak.ReadShort();
 						item.extension = pak.ReadByte();
 						item.color = pak.ReadShort();
@@ -152,8 +150,8 @@ namespace PacketLogConverter.LogPackets
 					StoC_0x02_InventoryUpdate.Item item = goalItems[i];
 					if (item.slot > 0)
 					{
-						text.Write("\n\tslot:{0,-2} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} unk_1115:{18} \"{17}\"",
-							item.slot, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name, item.unk1_1115);
+						text.Write("\n\tslot:{0,-2} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} \"{17}\"",
+							item.slot, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name);
 						if (flagsDescription && item.name != null && item.name != "")
 							text.Write(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
 						if ((item.flag & 0x08) == 0x08)
@@ -171,7 +169,7 @@ namespace PacketLogConverter.LogPackets
 		/// Constructs new instance with given capacity
 		/// </summary>
 		/// <param name="capacity"></param>
-		public StoC_0x83_QuestUpdate_1115(int capacity) : base(capacity)
+		public StoC_0x83_QuestUpdate_1109(int capacity) : base(capacity)
 		{
 		}
 	}
