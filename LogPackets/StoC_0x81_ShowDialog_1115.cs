@@ -79,8 +79,8 @@ namespace PacketLogConverter.LogPackets
 					item.condition = pak.ReadByte();
 					item.durability = pak.ReadByte();
 					item.quality = pak.ReadByte();
-					item.unk2_1112 = pak.ReadByte();
 					item.bonus = pak.ReadByte();
+					item.unk2_1112 = pak.ReadByte();
 					item.model = pak.ReadShort();
 					item.extension = pak.ReadByte();
 					item.color = pak.ReadShort();
@@ -105,6 +105,7 @@ namespace PacketLogConverter.LogPackets
 				for (int i = 0; i < optionalRewardsCount; i++)
 				{
 					StoC_0x02_InventoryUpdate.Item item = new StoC_0x02_InventoryUpdate.Item();
+					item.unk1_1115 = pak.ReadShort();
 					item.level = pak.ReadByte();
 
 					item.value1 = pak.ReadByte();
@@ -119,8 +120,8 @@ namespace PacketLogConverter.LogPackets
 					item.condition = pak.ReadByte();
 					item.durability = pak.ReadByte();
 					item.quality = pak.ReadByte();
-					item.unk2_1112 = pak.ReadByte();
 					item.bonus = pak.ReadByte();
+					item.unk2_1112 = pak.ReadByte();
 					item.model = pak.ReadShort();
 					item.extension = pak.ReadByte();
 					item.color = pak.ReadShort();
