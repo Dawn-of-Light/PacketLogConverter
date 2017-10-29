@@ -26,6 +26,7 @@ namespace PacketLogConverter.LogPackets
 			public string[] goals;
 			public byte questLevel;
 			public byte rewardGold;
+            public uint moneyReward;
 			public byte rewardExp;
 			public byte baseRewardsCount;
 			public byte optionalRewardsCount;

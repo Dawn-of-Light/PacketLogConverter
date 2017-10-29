@@ -38,10 +38,9 @@ namespace PacketLogConverter.LogPackets
 					goals[i] = pak.ReadPascalString();
 #endif
 				}
-				unk1_194 = pak.ReadShort();
-				questLevel = pak.ReadByte();
-				rewardGold = pak.ReadByte();
-				rewardExp = pak.ReadByte();
+
+                moneyReward = pak.ReadInt();
+                rewardExp = pak.ReadByte();
 				baseRewardsCount = pak.ReadByte();
 				baseRewards = new StoC_0x02_InventoryUpdate.Item[baseRewardsCount];
 				for (int i = 0; i < baseRewardsCount; i++)
@@ -128,8 +127,8 @@ namespace PacketLogConverter.LogPackets
 				{
 					text.Write("\n\t[{0}]: \"{1}\"", i, goals[i]);
 				}
-				text.Write("\n\trewardLevel:{0} gold:{1}% Exp:{2:00.0}% baseRewardsCount:{3}", questLevel, rewardGold, rewardExp, baseRewardsCount);
-				text.Write(" unk1_194:0x{0:X4}", unk1_194);
+                text.Write("\n\tMoney_Reward:{0} Exp:{1:00.0}% baseRewardsCount:{2}", MoneyRewardFormatted(moneyReward), rewardExp, baseRewardsCount);
+                
 				for (int i = 0; i < baseRewardsCount; i++)
 				{
 
