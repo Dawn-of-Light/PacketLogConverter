@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace PacketLogConverter.LogPackets
@@ -221,7 +222,30 @@ namespace PacketLogConverter.LogPackets
 			public override void MakeString(TextWriter text, bool flagsDescription)
 			{
 			}
-		}
+            public string MoneyRewardFormatted(uint value)
+            {
+                var chars = value.ToString().Reverse().ToList();
+
+                var sb = new StringBuilder("c");
+                for (int i = 0; i < chars.Count; i++)
+                {
+                    if (i == 2)
+                    {
+                        sb.Insert(0, "s");
+                    }
+                    else if (i == 4)
+                    {
+                        sb.Insert(0, "g");
+                    }
+                    else if (i == 7)
+                    {
+                        sb.Insert(0, "p");
+                    }
+                    sb.Insert(0, chars[i]);
+                }
+                return sb.ToString();
+            }
+        }
 
 		/// <summary>
 		/// Constructs new instance with given capacity
@@ -230,5 +254,6 @@ namespace PacketLogConverter.LogPackets
 		public StoC_0x81_ShowDialog(int capacity) : base(capacity)
 		{
 		}
-	}
+        
+    }
 }
