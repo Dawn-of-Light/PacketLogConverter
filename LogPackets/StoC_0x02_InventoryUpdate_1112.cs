@@ -27,8 +27,8 @@ namespace PacketLogConverter.LogPackets
 			{
 				Item item = Items[i];
 
-				text.Write("\n\tslot:{0,-3} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} unk_1112:0x{18:X2}{19:X2} \"{17}\"",
-					item.slot, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name, item.unk1_1112, item.unk2_1112);
+				text.Write("\n\tslot:{0,-3} level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} unk_1112:0x{18:X2} bonus level:{19:X2} \"{17}\"",
+					item.slot, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name, item.unk1_1112, item.bonus_level);
 				if (flagsDescription && item.name != null && item.name != "")
 				{
 					text.Write(" ({0}", (eObjectType)item.objectType);
@@ -82,7 +82,7 @@ namespace PacketLogConverter.LogPackets
 					item.condition = ReadByte();
 					item.durability = ReadByte();
 					item.quality = ReadByte();
-					item.unk2_1112 = ReadByte();
+					item.bonus_level = ReadByte();
 					item.bonus = ReadByte();
 					item.model = ReadShort();
 					item.extension = ReadByte();
