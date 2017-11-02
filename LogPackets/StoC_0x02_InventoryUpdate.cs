@@ -204,7 +204,8 @@ namespace PacketLogConverter.LogPackets
 			public byte durability;
 			public byte quality;
 			public byte bonus;
-			public ushort model;
+            public byte bonus_level; // level player receives item bonuses
+            public ushort model;
 			public ushort color;
 			public byte effect;
 			public byte flag;
@@ -214,9 +215,9 @@ namespace PacketLogConverter.LogPackets
 			public string effectName; // new 1.82
 			public ushort effectIcon2; // new 1.82
 			public string effectName2; // new 1.82
-			public byte unk1_1112; // new 1.11.2 ?
-			public byte unk2_1112; // new 1.11.2 ?
-			public ushort unk1_1115; // new 1.11.5 ?
+			public byte unk1_1112; // new 1.11.2 ?			
+			public ushort itemID; // new 1.11.5
+            public ushort effectNew; // changed to short 1.119
 		}
 
 		/// <summary>

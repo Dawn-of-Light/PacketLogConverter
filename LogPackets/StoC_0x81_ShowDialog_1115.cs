@@ -63,7 +63,7 @@ namespace PacketLogConverter.LogPackets
 				for (int i = 0; i < baseRewardsCount; i++)
 				{
 					StoC_0x02_InventoryUpdate.Item item = new StoC_0x02_InventoryUpdate.Item();
-					item.unk1_1115 = pak.ReadShort();
+					item.itemID = pak.ReadShort();
 					item.level = pak.ReadByte();
 
 					item.value1 = pak.ReadByte();
@@ -79,7 +79,7 @@ namespace PacketLogConverter.LogPackets
 					item.durability = pak.ReadByte();
 					item.quality = pak.ReadByte();
 					item.bonus = pak.ReadByte();
-					item.unk2_1112 = pak.ReadByte();
+					item.bonus_level = pak.ReadByte();
 					item.model = pak.ReadShort();
 					item.extension = pak.ReadByte();
 					item.color = pak.ReadShort();
@@ -104,7 +104,7 @@ namespace PacketLogConverter.LogPackets
 				for (int i = 0; i < optionalRewardsCount; i++)
 				{
 					StoC_0x02_InventoryUpdate.Item item = new StoC_0x02_InventoryUpdate.Item();
-					item.unk1_1115 = pak.ReadShort();
+					item.itemID = pak.ReadShort();
 					item.level = pak.ReadByte();
 
 					item.value1 = pak.ReadByte();
@@ -120,7 +120,7 @@ namespace PacketLogConverter.LogPackets
 					item.durability = pak.ReadByte();
 					item.quality = pak.ReadByte();
 					item.bonus = pak.ReadByte();
-					item.unk2_1112 = pak.ReadByte();
+					item.bonus_level = pak.ReadByte();
 					item.model = pak.ReadShort();
 					item.extension = pak.ReadByte();
 					item.color = pak.ReadShort();
@@ -150,6 +150,7 @@ namespace PacketLogConverter.LogPackets
 				{
 					text.Write("\n\t[{0}]: \"{1}\"", i, goals[i]);
 				}
+                
                 text.Write("\n\tMoney_Reward:{0} Exp:{1:00.0}% baseRewardsCount:{2}", MoneyRewardFormatted(moneyReward), rewardExp, baseRewardsCount);
                 
 				for (int i = 0; i < baseRewardsCount; i++)
@@ -157,8 +158,8 @@ namespace PacketLogConverter.LogPackets
 
 					StoC_0x02_InventoryUpdate.Item item = baseRewards[i];
 
-					text.Write("\n\t[{0}]: level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} unk_1112:0x{18:X2}{19:X2} unk_1115:{20} \"{17}\"",
-						i, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name, item.unk1_1112, item.unk2_1112, item.unk1_1115);
+					text.Write("\n\t[{0}]: level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} unk_1112:0x{18:X2} bonus level:{19:X2} itemID:{20} \"{17}\"",
+						i, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name, item.unk1_1112, item.bonus_level, item.itemID);
 					if (flagsDescription && item.name != null && item.name != "")
 						text.Write(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
 					if ((item.flag & 0x08) == 0x08)
@@ -174,8 +175,8 @@ namespace PacketLogConverter.LogPackets
 
 					StoC_0x02_InventoryUpdate.Item item = optionalRewards[i];
 
-					text.Write("\n\t[{0}]: level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} unk_1112:0x{18:X2}{19:X2} unk_1115:{20} \"{17}\"",
-						i, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name, item.unk1_1112, item.unk2_1112, item.unk1_1115);
+					text.Write("\n\t[{0}]: level:{1,-2} value1:0x{2:X2} value2:0x{3:X2} hand:0x{4:X2} damageType:0x{5:X2} objectType:0x{6:X2} weight:{7,-4} con:{8,-3} dur:{9,-3} qual:{10,-3} bonus:{11,-2} model:0x{12:X4} color:0x{13:X4} effect:0x{14:X2} flag:0x{15:X2} extension:{16} unk_1112:0x{18:X2} bonus level:{19:X2} itemID:{20} \"{17}\"",
+						i, item.level, item.value1, item.value2, item.hand, item.damageType, item.objectType, item.weight, item.condition, item.durability, item.quality, item.bonus, item.model, item.color, item.effect, item.flag, item.extension, item.name, item.unk1_1112, item.bonus_level, item.itemID);
 					if (flagsDescription && item.name != null && item.name != "")
 						text.Write(" ({0})", (StoC_0x02_InventoryUpdate.eObjectType)item.objectType);
 					if ((item.flag & 0x08) == 0x08)

@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+
+
 namespace PacketLogConverter.LogPackets
 {
 	[LogPacket(0x81, -1, ePacketDirection.ServerToClient, "Show dialog")]
@@ -241,8 +243,10 @@ namespace PacketLogConverter.LogPackets
                     {
                         sb.Insert(0, "p");
                     }
+
                     sb.Insert(0, chars[i]);
                 }
+
                 return sb.ToString();
             }
         }
