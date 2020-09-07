@@ -8,7 +8,7 @@ namespace PacketLogConverter.LogPackets
 	{
 		public override void GetPacketDataString(TextWriter text, bool flagsDescription)
 		{
-			text.Write("majorVersion:{0} minorVersion:{1} build:{2} keyLenght:{3}",
+			text.Write("majorVersion:{0} minorVersion:{1} build:{2} keyLength:{3}",
 			                 majorVersion, minorVersion, build, keyLenght);
 		}
 		/// <summary>

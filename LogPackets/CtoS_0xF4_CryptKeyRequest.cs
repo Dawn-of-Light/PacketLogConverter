@@ -6,11 +6,12 @@ namespace PacketLogConverter.LogPackets
 	[LogPacket(0xF4, -1, ePacketDirection.ClientToServer, "Crypt key request")]
 	public class CtoS_0xF4_CryptKeyRequest : Packet
 	{
-		protected byte rc4Enabled;
+		protected byte rc4Enabled = 0xFF;
 		protected byte clientTypeAndAddons;
 		protected byte clientVersionMajor;
 		protected byte clientVersionMinor;
 		protected byte clientVersionBuild;
+		protected char clientVersionRev = ' ';
 
 		#region public access properties
 
@@ -18,6 +19,7 @@ namespace PacketLogConverter.LogPackets
 		public byte ClientTypeAndAddons { get { return clientTypeAndAddons; } }
 		public byte ClientVersionMajor { get { return clientVersionMajor; } }
 		public byte ClientVersionMinor { get { return clientVersionMinor; } }
+		public char ClientVersionRev { get { return clientVersionRev; } }
 		public byte ClientVersionBuild { get { return clientVersionBuild; } }
 
 		#endregion
@@ -72,13 +74,23 @@ namespace PacketLogConverter.LogPackets
 		{
 			if (log.SubversionReinit)
 				return;
-			Position = 2;
+			if (log.Version >= 1126 && Length > 7)
+				return;
+			Position = 1;
+			int majorTmp = ReadByte();
 			int major = ReadByte();
 			int minor = ReadByte();
 			int build = ReadByte();
-			int version = major*100 + minor*10 + build;
-			if (version >= 200)
+
+			int version = major * 100 + minor * 10 + build;
+			if (majorTmp == 1 && major == 1) // probably 1.12x
+			{
+				version = majorTmp * 1000 + major * 100 + minor;
+			}
+			else if (version >= 200)
+			{
 				version = version + 900;
+			}
 			log.Version = (float)version;
 		}
 
