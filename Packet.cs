@@ -233,6 +233,26 @@ namespace PacketLogConverter
 		}
 
 		/// <summary>
+		/// reads a pascal style string to the stream with length given by ushort low endian
+		/// </summary>		
+		public string ReadPascalStringShortLowEndian()
+		{
+			int length = ReadShortLowEndian();
+			return ReadString(length);
+		}
+
+		/// <summary>
+		/// reads a pascal style string to the stream with lenght given by int low endian and null terminated
+		/// </summary>		
+		public string ReadPascalStringIntLowEndian()
+		{
+			int length = (int)ReadIntLowEndian();
+			string str = ReadString(length - 1); // null terminated pascal strings in 1125+ , so skip the last byte
+			Skip(1);
+			return str;
+		}
+
+		/// <summary>
 		/// Reads the time span.
 		/// </summary>
 		/// <returns>Timespan</returns>

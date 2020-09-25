@@ -208,6 +208,7 @@ namespace PacketLogConverter.LogPackets
             public ushort model;
 			public ushort color;
 			public byte effect;
+			public ushort effect1124;
 			public byte flag;
 			public string name;
 			public byte extension; // new in 1.72

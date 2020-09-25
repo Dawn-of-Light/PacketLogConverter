@@ -136,7 +136,7 @@ namespace PacketLogConverter.LogPackets
 
 		#region ReadPlayerBuffs
 
-		public object ReadPlayerBuffs(byte playerIndex)
+		public virtual object ReadPlayerBuffs(byte playerIndex)
 		{
 			PlayerBuffsData buffsData = new PlayerBuffsData();
 
