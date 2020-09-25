@@ -39,9 +39,9 @@ namespace PacketLogConverter.LogPackets
 			item.weight = ReadShort();
 			item.condition = ReadByte();
 			item.durability = ReadByte();
-			item.quality = ReadByte();
-			item.unk2_1112 = ReadByte();
+			item.quality = ReadByte();			
 			item.bonus = ReadByte();
+			item.bonus_level = ReadByte();
 			item.model = ReadShort();
 			item.extension = ReadByte();
 			item.color = ReadShort();

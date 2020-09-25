@@ -63,10 +63,10 @@ namespace PacketLogConverter
 				}
 			}
 			return true;
-		}
+		}		
 
 		/// <summary>
-		/// Parse the string to int.
+		/// Parse the string to float.
 		/// </summary>
 		/// <param name="str"></param>
 		/// <returns></returns>

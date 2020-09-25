@@ -72,14 +72,31 @@ namespace PacketLogConverter.LogPackets
 		{
 			if (log.SubversionReinit)
 				return;
-			Position = 2;
-			int major = ReadByte();
-			int minor = ReadByte();
-			int build = ReadByte();
-			int version = major*100 + minor*10 + build;
-			if (version >= 200)
-				version = version + 900;
-			log.Version = (float)version;
+			Position = 0;
+			int major;
+			int minor;
+			int build;
+			int version;
+
+			int checkVer = ReadByte();
+			// after 1115 we need to do this differently
+			if (checkVer > 0)
+            {
+				major = ReadByte();
+				minor = ReadByte();
+				build = ReadByte();
+				version = major * 1000 + minor * 100 + build;				
+			}
+            else
+            {
+				Position = 2;
+				major = ReadByte();
+				minor = ReadByte();
+				build = ReadByte();
+				version = major * 100 + minor * 10 + build;
+			}			
+			log.Version = version;
+			log.SubversionReinit = true;
 		}
 
 		/// <summary>

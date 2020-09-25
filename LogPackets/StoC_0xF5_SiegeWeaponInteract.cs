@@ -154,6 +154,10 @@ namespace PacketLogConverter.LogPackets
 			public ushort unk3;
 			public ushort unk4;
 			public string name;
+			public ushort objectId; // 1124
+			public ushort unk5; // 1124
+			public byte unk6; // 1124
+			public ushort unk7; // 1124
 		}
 
 		/// <summary>

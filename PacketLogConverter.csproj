@@ -277,6 +277,33 @@
     <Compile Include="LogPacketAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\CtoS_0x10_CharacterSelectRequest_1126.cs" />
+    <Compile Include="LogPackets\CtoS_0x14_UdpInitRequest_1125.cs" />
+    <Compile Include="LogPackets\CtoS_0x90_RegionChangeRequest_1127.cs" />
+    <Compile Include="LogPackets\CtoS_0xA7_LoginRequest_1125.cs" />
+    <Compile Include="LogPackets\CtoS_0xA7_LoginRequest_1126.cs" />
+    <Compile Include="LogPackets\CtoS_0xA9_PlayerPosition_1124.cs" />
+    <Compile Include="LogPackets\CtoS_0xA9_PlayerPosition_1127.cs" />
+    <Compile Include="LogPackets\CtoS_0xAC_PlayerResetCharacter_1126.cs" />
+    <Compile Include="LogPackets\CtoS_0xAF_PlayerCommand_1127.cs" />
+    <Compile Include="LogPackets\CtoS_0xBA_PlayerShortState_1127.cs" />
+    <Compile Include="LogPackets\CtoS_0xBB_UseSkill_1124.cs" />
+    <Compile Include="LogPackets\CtoS_0xD4_WorldInitRequest_1124.cs" />
+    <Compile Include="LogPackets\CtoS_0xE8_PlayerWorldInitializeRequest_1126.cs" />
+    <Compile Include="LogPackets\CtoS_0xF4_CryptKeyRequest_1115.cs" />
+    <Compile Include="LogPackets\CtoS_0xF4_CryptKeyRequest_1124.cs" />
+    <Compile Include="LogPackets\CtoS_0xF4_CryptKeyRequest_1125.cs" />
+    <Compile Include="LogPackets\CtoS_0xF4_CryptKeyRequest_1126.cs" />
+    <Compile Include="LogPackets\CtoS_0xFC_CharacterOverviewRequest_1125.cs" />
+    <Compile Include="LogPackets\StoC_0x15_EquipmentUpdate_1124.cs" />
+    <Compile Include="LogPackets\StoC_0x16_VariousUpdate_1125.cs" />
+    <Compile Include="LogPackets\StoC_0x20_PlayerPositionAndObjectID_1124.cs" />
+    <Compile Include="LogPackets\StoC_0x21_SetDebugMode_1126.cs" />
+    <Compile Include="LogPackets\StoC_0x22_VersionAndCryptKey_1124.cs" />
+    <Compile Include="LogPackets\StoC_0x22_VersionAndCryptKey_1125.cs" />
+    <Compile Include="LogPackets\StoC_0x2A_LoginGranted_1125.cs" />
+    <Compile Include="LogPackets\StoC_0x4B_PlayerCreate_1124.cs" />
+    <Compile Include="LogPackets\StoC_0x70_PlayerGroupUpdate_1125.cs" />
     <Compile Include="LogPackets\StoC_0x81_ShowDialog_1119.cs" />
     <Compile Include="LogPackets\StoC_0x02_InventoryUpdate_1119.cs" />
     <Compile Include="LogPackets\CtoS_0x00_HouseMenuRequest.cs">
@@ -644,6 +671,12 @@
     <Compile Include="LogPackets\StoC_0x81_ShowDialog_1115.cs" />
     <Compile Include="LogPackets\StoC_0x83_QuestUpdate_1109.cs" />
     <Compile Include="LogPackets\StoC_0x83_QuestUpdate_1115.cs" />
+    <Compile Include="LogPackets\StoC_0x83_QuestUpdate_1124.cs" />
+    <Compile Include="LogPackets\StoC_0xA9_PlayerPosition_1124.cs" />
+    <Compile Include="LogPackets\StoC_0xA9_PlayerPosition_1127.cs" />
+    <Compile Include="LogPackets\StoC_0xAF_Message_1127.cs" />
+    <Compile Include="LogPackets\StoC_0xB1_StartArena_1126.cs" />
+    <Compile Include="LogPackets\StoC_0xBA_PlayerShortState_1127.cs" />
     <Compile Include="LogPackets\StoC_0xC4_CustomTextWindow_1113.cs" />
     <Compile Include="LogPackets\StoC_0x02_InventoryUpdate.cs">
       <SubType>Code</SubType>
@@ -1182,6 +1215,7 @@
     <Compile Include="LogPackets\StoC_0xF5_SiegeWeaponInteract.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0xF5_SiegeWeaponInteract_1124.cs" />
     <Compile Include="LogPackets\StoC_0xF6_ChangeTarget.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1218,6 +1252,7 @@
     <Compile Include="LogPackets\StoC_0xFE_SetRealm.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogPackets\StoC_0xFE_SetRealm_1124.cs" />
     <Compile Include="LogPackets\StoC_0xXX_Template.cs">
       <SubType>Code</SubType>
     </Compile>

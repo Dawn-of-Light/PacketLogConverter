@@ -1375,9 +1375,8 @@ namespace PacketLogConverter
 		{
 			OpenData data = (OpenData) state;
 			data.Logs = new List<PacketLog>();
-
-			float version;
-			Util.ParseFloat(li_clientVersion.Text, out version, -1);
+			
+			Util.ParseFloat(li_clientVersion.Text, out float version, -1);
 
 			LoadFiles(data.Reader, data.Logs, data.Files, version, li_ignoreVersionChanges.Checked, progress);
 		}
@@ -2338,9 +2337,8 @@ namespace PacketLogConverter
 		}
 
 		private void UpdateInstantParseTab()
-		{
-			float ver;
-			Util.ParseFloat(instantVersion.Text, out ver, -1);
+		{			
+			Util.ParseFloat(instantVersion.Text, out float ver, -1);
 
 			Packet pak = new Packet(0);
 			int code;

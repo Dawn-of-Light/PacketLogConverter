@@ -105,7 +105,7 @@ namespace PacketLogConverter.LogPackets
 			InitSubcode(subCode);
 		}
 
-		private void InitSubcode(byte code)
+		public void InitSubcode(byte code)
 		{
 			switch (code)
 			{
