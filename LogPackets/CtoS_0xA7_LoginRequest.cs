@@ -71,6 +71,9 @@ namespace PacketLogConverter.LogPackets
 		{
 			if (log.SubversionReinit)
 				return;
+			if (log.Version >= 1126)
+				return;
+
 			Position = 2;
 			int major = ReadByte();
 			int minor = ReadByte();
